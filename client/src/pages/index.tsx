@@ -1,5 +1,14 @@
+import Head from 'next/head';
+import * as React from 'react';
+
 const Landing = () => {
-  return <div>Hello world</div>;
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Pedicab</title>
+      </Head>
+    </React.Fragment>
+  );
 };
 
 export default Landing;
