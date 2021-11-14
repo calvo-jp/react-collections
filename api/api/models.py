@@ -26,7 +26,8 @@ class Timestamp(SQLModel):
 class User(Timestamp, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
-    email: EmailStr
+    email: EmailStr = Field(
+        ..., sa_column=Column(String, unique=True, nullable=False))
     email_verified_at: Optional[datetime] = Field(
         default=None, sa_column=Column(ZonedDateTime))
     password: bytes
