@@ -1,4 +1,3 @@
-import CssBaseline from '@mui/material/CssBaseline';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';
@@ -10,7 +9,6 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <CssBaseline />
       <Component {...pageProps} />
     </React.Fragment>
   );
