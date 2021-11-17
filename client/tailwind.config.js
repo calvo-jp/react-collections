@@ -4,7 +4,7 @@ module.exports = {
     './src/layouts/**/*.tsx',
     './src/widgets/**/*.tsx',
   ],
-  darkMode: 'media', // or 'media' or 'class'
+  darkMode: 'media',
   theme: {
     extend: {},
   },
