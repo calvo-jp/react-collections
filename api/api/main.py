@@ -14,6 +14,7 @@ app.add_middleware(
 )
 
 app.include_router(session.router)
+app.include_router(user.router)
 
 
 @app.on_event('startup')
