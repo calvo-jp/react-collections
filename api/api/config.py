@@ -1,7 +1,5 @@
 # pylint:disable=consider-using-f-sting
 
-from os import getenv
-
 from dotenv import load_dotenv
 from pydantic import BaseSettings
 from sqlmodel import create_engine
