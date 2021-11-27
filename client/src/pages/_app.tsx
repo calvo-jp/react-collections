@@ -1,6 +1,3 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/700.css';
 import GlobalProvider from 'hooks/store/GlobalProvider';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
