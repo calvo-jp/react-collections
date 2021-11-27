@@ -1,6 +1,7 @@
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/700.css';
+import GlobalProvider from 'hooks/store/GlobalProvider';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';
@@ -19,7 +20,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <div className="min-h-screen bg-white text-gray-700 font-sans">
-        <Component {...pageProps} />
+        <GlobalProvider>
+          <Component {...pageProps} />
+        </GlobalProvider>
       </div>
     </React.Fragment>
   );
