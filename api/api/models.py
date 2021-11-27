@@ -3,8 +3,8 @@ from enum import IntEnum, auto
 from typing import Generic, Optional, TypeVar
 
 from pydantic.generics import GenericModel
-from pydantic.networks import EmailStr
-from sqlmodel import Column, DateTime, Field, SQLModel, String
+from pydantic.networks import EmailStr, HttpUrl
+from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
 
 from .config import engine
 
@@ -82,7 +82,41 @@ class UpdateUser(SQLModel):
     email: Optional[EmailStr] = None
 
 
-PaginatedT = TypeVar('PaginatedT')
+class Place(Timestamp, table=True):
+    __tablename__: str = 'places'
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    link: HttpUrl
+    name: Optional[str] = None
+    author: Optional[User] = Relationship(back_populates='places')
+    author_id: Optional[int] = Field(default=None, foreign_key='users.id')
+
+    @property
+    def opengraph_metatags(self):
+        pass
+
+
+class ReadPlace(SQLModel):
+    id: int
+    name: Optional[str] = None
+    link: HttpUrl
+    author: Optional[User] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+
+class CreatePlace(SQLModel):
+    name: Optional[str] = Field(default=None, min_length=4, max_length=50)
+    link: HttpUrl
+    author_id: Optional[int] = Field(default=None, ge=1)
+
+
+class UpdatePlace(SQLModel):
+    name: Optional[str] = Field(default=None, min_length=4, max_length=50)
+    link: Optional[HttpUrl] = Field(default=None)
+
+
+PaginatedT = TypeVar('PaginatedT', ReadUser, ReadPlace)
 
 
 class Paginated(GenericModel, Generic[PaginatedT]):
