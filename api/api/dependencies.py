@@ -31,4 +31,4 @@ async def get_current_user(request: Request, user_id: int = Depends(get_current_
             request.state.current_user = user
             return user
         except NoResultFound as error:
-            raise HTTPException(404, 'Invalid token') from error
+            raise HTTPException(401, 'Invalid token') from error
