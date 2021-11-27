@@ -48,8 +48,12 @@ def verify_owner(path_userid_alias: Optional[str] = None):
     @verify_owner()
     @router.post(path='/{id}', ...)
 
-    @verify_owner('user_id')
-    @router.patch(path='/{user_id}', ...)
+    @verify_owner('alias')
+    @router.patch(path='/{alias}', ...)
+
+    # DON'T DO THIS
+    @verify_owner
+    @router.delete(path='/{id}', ...)
     ```
     """
 
@@ -63,12 +67,12 @@ def verify_owner(path_userid_alias: Optional[str] = None):
         if token_userid != path_userid:
             raise HTTPException(403, 'Error making changes to other account')
 
-    def wrapper(callback: Callable):
+    def wrapper(func: Callable):
         def inner(*args, **kwargs):
             dependencies: list = kwargs.get('dependencies') or []
             dependencies.append(Depends(verify_owner_))
             kwargs['dependencies'] = dependencies
-            return callback(*args, **kwargs)
+            return func(*args, **kwargs)
         return inner
     return wrapper
 
