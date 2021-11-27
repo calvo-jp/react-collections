@@ -11,8 +11,8 @@ from .config import engine
 class ZonedDateTime(DateTime):
     """Timestamp with timezone"""
 
-    def __init__(self, timezone: bool = ...):
-        super().__init__(timezone=timezone)
+    def __init__(self):
+        super().__init__(timezone=True)
 
 
 class Timestamp(SQLModel):
@@ -38,8 +38,8 @@ class User(Timestamp, table=True):
         return isinstance(self.email_verified_at, datetime)
 
     @email_verified.setter
-    def email_verified(self, v: bool):
-        self.email_verified_at = datetime.now(timezone.utc) if v else None
+    def email_verified(self, value: bool):
+        self.email_verified_at = datetime.now(timezone.utc) if value else None
 
 
 class ReadUser(SQLModel):
