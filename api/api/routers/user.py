@@ -3,11 +3,13 @@ from datetime import datetime, timezone
 import bcrypt
 from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Body, Path
+from fastapi.param_functions import Body, Depends, Path
 from sqlmodel import Session, select
 
 from ..config import engine
-from ..models import CreateUser, Paginated, ReadUser, UpdateUser, User
+from ..dependencies import UserSearchQuery, get_current_user_id, verify_owner
+from ..models import (CreateUser, Paginated, ReadUser, UpdateUser, User,
+                      UserType)
 
 router = APIRouter(prefix='/users', tags=['users'])
 
@@ -25,7 +27,8 @@ async def create_account(data: CreateUser):
         name=data.name,
         email=data.email,
         password=password,
-        created_at=datetime.now(timezone.utc)
+        created_at=datetime.now(timezone.utc),
+        user_type=UserType.BASIC
     )
 
     with Session(engine) as session:
@@ -39,7 +42,8 @@ async def create_account(data: CreateUser):
 @router.get(
     path='/{id}',
     response_model=ReadUser,
-    response_model_exclude_none=True
+    response_model_exclude_none=True,
+    dependencies=[Depends(get_current_user_id)]
 )
 async def profile(id_: int = Path(..., alias='id')):
     with Session(engine) as session:
@@ -55,17 +59,28 @@ async def profile(id_: int = Path(..., alias='id')):
 @router.get(
     path='/',
     response_model=Paginated[ReadUser],
-    response_model_exclude_none=True
+    response_model_exclude_none=True,
+    dependencies=[Depends(get_current_user_id)]
 )
-async def get_users():
-    pass
+async def get_users(query: UserSearchQuery = Depends()):
+    offset = (query.page - 1) * query.page_size
+
+    stmt = select(User).limit(query.page_size).offset(offset)
+
+    with Session(engine) as session:
+        data = session.exec(stmt).all()
+
+        return dict(
+            rows=data,
+            total_rows=0,
+            page=query.page,
+            page_size=query.page_size,
+            has_next=False
+        )
 
 
-@router.patch(
-    path='/{id}',
-    response_model=ReadUser,
-    response_model_exclude_none=True
-)
+@verify_owner()
+@router.patch(path='/{id}', response_model=ReadUser, response_model_exclude_none=True)
 async def update(id_: int = Path(..., alias='id'), data: UpdateUser = Body(...)):
     with Session(engine) as session:
         stmt = select(User).where(User.id == id_)
@@ -74,9 +89,9 @@ async def update(id_: int = Path(..., alias='id'), data: UpdateUser = Body(...))
         if user is None:
             raise HTTPException(404)
 
-        for k, v in data.dict(exclude_none=True).items():
-            if hasattr(user, k):
-                setattr(user, k, v)
+        for attr, value in data.dict(exclude_none=True).items():
+            if hasattr(user, attr):
+                setattr(user, attr, value)
 
         user.updated_at = datetime.now(timezone.utc)
 
@@ -87,6 +102,7 @@ async def update(id_: int = Path(..., alias='id'), data: UpdateUser = Body(...))
         return user
 
 
+@verify_owner()
 @router.delete('/{id}', status_code=204)
 async def delete_account(id_: int = Path(..., alias='id')):
     with Session(engine) as session:
