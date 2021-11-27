@@ -1,6 +1,6 @@
 """JWT helper exclusive for current app use"""
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from typing import Any
 from uuid import uuid4
 
@@ -21,8 +21,7 @@ def sign(claims: dict[str, Any]):
     payload = claims.copy()
 
     payload['_id'] = uuid4().hex
-    payload['exp'] = (datetime.now(timezone.utc) +
-                      timedelta(days=14)).timestamp()
+    payload['exp'] = (datetime.now() + timedelta(days=14)).timestamp()
 
     return jwt.encode(payload, _key, _alg[0])
 
@@ -44,7 +43,6 @@ def invalidate(token: str):
     """Blacklists a token until it expires"""
 
     claims = decode(token)
-    duration = (datetime.now(timezone.utc) -
-                datetime.fromtimestamp(claims['exp'], timezone.utc))
+    duration = datetime.now() - datetime.fromtimestamp(claims['exp'])
 
     _blacklist.setex(claims['_id'], duration, "")
