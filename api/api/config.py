@@ -1,4 +1,4 @@
-# pylint:disable=consider-using-f-sting
+# pylint:disable=consider-using-f-string
 
 from dotenv import load_dotenv
 from pydantic import BaseSettings
