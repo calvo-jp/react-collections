@@ -1,5 +1,3 @@
-interface GlobalState {
-  navbarOpen?: boolean;
-}
+interface GlobalState {}
 
 export default GlobalState;
