@@ -1,12 +1,14 @@
 from datetime import datetime, timezone
 from enum import IntEnum, auto
-from typing import Generic, Optional, TypeVar
+from typing import Generic, List, Optional, TypeVar
 
+from pydantic import validator
 from pydantic.generics import GenericModel
-from pydantic.networks import EmailStr, HttpUrl
+from pydantic.networks import EmailStr
 from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
 
 from .config import engine
+from .utils.validator import validate_url
 
 
 class ZonedDateTime(DateTime):
@@ -41,6 +43,7 @@ class User(Timestamp, table=True):
         default=None, sa_column=Column(ZonedDateTime))
     password: bytes
     user_type: UserType
+    places: List['Place'] = Relationship(back_populates='author')
 
     @property
     def email_verified(self):
@@ -86,7 +89,7 @@ class Place(Timestamp, table=True):
     __tablename__: str = 'places'
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    link: HttpUrl
+    link: str
     name: Optional[str] = None
     author: Optional[User] = Relationship(back_populates='places')
     author_id: Optional[int] = Field(default=None, foreign_key='users.id')
@@ -99,7 +102,7 @@ class Place(Timestamp, table=True):
 class ReadPlace(SQLModel):
     id: int
     name: Optional[str] = None
-    link: HttpUrl
+    link: str
     author: Optional[User] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
@@ -107,17 +110,29 @@ class ReadPlace(SQLModel):
 
 class CreatePlace(SQLModel):
     name: Optional[str] = Field(default=None, min_length=4, max_length=50)
-    link: HttpUrl = Field(..., min_length=30, max_length=255)
+    link: str = Field(..., min_length=30, max_length=255)
     author_id: Optional[int] = Field(default=None, ge=1)
+
+    @validator('link')
+    @classmethod
+    def validate_url_(cls, value: str):
+        assert validate_url(value), 'Malformed url'
+        return value
 
 
 class UpdatePlace(SQLModel):
     name: Optional[str] = Field(default=None, min_length=4, max_length=50)
-    link: Optional[HttpUrl] = Field(
+    link: Optional[str] = Field(
         default=None,
         min_length=30,
         max_length=255
     )
+
+    @validator('link')
+    @classmethod
+    def validate_url_(cls, value: Optional[str] = None):
+        assert value is None or validate_url(value), 'Malformed url'
+        return value
 
 
 PaginatedT = TypeVar('PaginatedT', ReadUser, ReadPlace)
