@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from enum import IntEnum, auto
 from typing import Generic, Optional, TypeVar
 
 from pydantic.generics import GenericModel
@@ -24,6 +25,11 @@ class Timestamp(SQLModel):
         default=None, sa_column=Column(ZonedDateTime))
 
 
+class UserType(IntEnum):
+    BASIC = auto()
+    ADMIN = auto()
+
+
 class User(Timestamp, table=True):
     __tablename__: str = 'users'
 
@@ -34,6 +40,7 @@ class User(Timestamp, table=True):
     email_verified_at: Optional[datetime] = Field(
         default=None, sa_column=Column(ZonedDateTime))
     password: bytes
+    user_type: UserType
 
     @property
     def email_verified(self):
@@ -43,6 +50,14 @@ class User(Timestamp, table=True):
     def email_verified(self, value: bool):
         self.email_verified_at = datetime.now(timezone.utc) if value else None
 
+    @property
+    def basic(self):
+        return True if self.user_type == UserType.BASIC else None
+
+    @property
+    def admin(self):
+        return True if self.user_type == UserType.ADMIN else None
+
 
 class ReadUser(SQLModel):
     id: int
@@ -50,6 +65,8 @@ class ReadUser(SQLModel):
     email: EmailStr
     email_verified: bool
     email_verified_at: Optional[datetime] = None
+    basic: Optional[bool] = None
+    admin: Optional[bool] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
 
