@@ -68,7 +68,7 @@ def verify_owner(path_userid_alias: Optional[str] = None):
             dependencies: list = kwargs.get('dependencies') or []
             dependencies.append(Depends(verify_owner_))
             kwargs['dependencies'] = dependencies
-            return callback(*args, **kwargs, dependencies=dependencies)
+            return callback(*args, **kwargs)
         return inner
     return wrapper
 
