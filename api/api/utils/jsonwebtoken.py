@@ -11,7 +11,7 @@ from redis import Redis
 
 from ..config import config
 
-_blacklist = Redis(config.redis_host, int(config.redis_port), 99)
+_blacklist = Redis(config.redis_host, config.redis_port, 99)
 
 _key = config.access_token_secretkey
 _alg = [ALGORITHMS.HS256]
