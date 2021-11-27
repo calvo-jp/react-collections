@@ -11,6 +11,11 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
     <React.Fragment>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="url, shortener, url shortener" />
+        <meta
+          name="description"
+          content="Create a shorter and more meaningful url"
+        />
       </Head>
 
       <div className="min-h-screen bg-white text-gray-700 font-sans">
