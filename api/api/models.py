@@ -107,13 +107,17 @@ class ReadPlace(SQLModel):
 
 class CreatePlace(SQLModel):
     name: Optional[str] = Field(default=None, min_length=4, max_length=50)
-    link: HttpUrl
+    link: HttpUrl = Field(..., min_length=30, max_length=255)
     author_id: Optional[int] = Field(default=None, ge=1)
 
 
 class UpdatePlace(SQLModel):
     name: Optional[str] = Field(default=None, min_length=4, max_length=50)
-    link: Optional[HttpUrl] = Field(default=None)
+    link: Optional[HttpUrl] = Field(
+        default=None,
+        min_length=30,
+        max_length=255
+    )
 
 
 PaginatedT = TypeVar('PaginatedT', ReadUser, ReadPlace)
