@@ -1,5 +1,8 @@
 # pylint:disable=consider-using-f-string
 
+from enum import Enum
+from typing import Optional
+
 from dotenv import load_dotenv
 from pydantic import BaseSettings
 from sqlmodel import create_engine
@@ -7,8 +10,13 @@ from sqlmodel import create_engine
 load_dotenv()
 
 
+class Env(str, Enum):
+    PRODUCTION = 'production'
+    DEVELOPMENT = 'development'
+
+
 class Config(BaseSettings):
-    development: bool
+    env: Optional[Env] = None
 
     pgsql_host: str
     pgsql_port: int
@@ -32,6 +40,12 @@ class Config(BaseSettings):
             self.pgsql_port,
             self.pgsql_database
         )
+
+    @property
+    def production(self):
+        """true if environment is set to production"""
+
+        return self.env == Env.PRODUCTION
 
 
 config = Config()
