@@ -40,7 +40,7 @@ def verify_owner(path_userid_alias: Optional[str] = None):
     """
     A decorator that raises a `403` error if user id in path
     does not match the user id found in token.
-    Be default the param name is `id`, but you can also pass a custom name or alias.
+    By default the param name is `id`, but you can also pass a custom name or alias.
     Note that this should not be used like a regular dependecy.
     See example usage below.
 
