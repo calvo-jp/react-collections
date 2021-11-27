@@ -28,6 +28,7 @@ class Config(BaseSettings):
     redis_port: int
 
     access_token_secretkey: str
+    refresh_token_secretkey: str
 
     @property
     def pgsql_dsn(self):
