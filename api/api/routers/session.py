@@ -1,10 +1,9 @@
-from typing import Literal
-
-import bcrypt
+from bcrypt import checkpw
 from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from jose.exceptions import JWTError
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
@@ -17,7 +16,7 @@ router = APIRouter(prefix='/sessions', tags=['sessions'])
 
 class LoginResponse(BaseModel):
     access_token: str
-    token_type: Literal['bearer']
+    token_type: str
     user: ReadUser
 
 
@@ -35,11 +34,11 @@ async def login(credential: OAuth2PasswordRequestForm = Depends()):
         stmt = select(User).where(User.email == username)
         user = session.exec(stmt).one_or_none()
 
-        if user is None or bcrypt.checkpw(password.encode('utf-8'), user.password):
+        if user is None or checkpw(password.encode('utf-8'), user.password):
             raise HTTPException(400, 'Invalid username or password')
 
         return dict(
-            access_token=jsonwebtoken.sign({'sub': user.id}),
+            access_token=jsonwebtoken.sign(dict(sub=user.id)),
             token_type='bearer',
             data=user
         )
@@ -47,4 +46,7 @@ async def login(credential: OAuth2PasswordRequestForm = Depends()):
 
 @router.delete('/{token}', status_code=204)
 async def logout(token: str):
-    jsonwebtoken.invalidate(token)
+    try:
+        jsonwebtoken.invalidate(token)
+    except JWTError as error:
+        raise HTTPException(400, 'Invalid token') from error
