@@ -1,4 +1,4 @@
-"""JWT helper exclusive for current app use"""
+"""App JWT helper"""
 
 from datetime import datetime, timedelta
 from typing import Any
