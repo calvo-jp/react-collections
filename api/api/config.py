@@ -43,10 +43,12 @@ class Config(BaseSettings):
 
     @property
     def production(self):
-        """true if environment is set to production"""
-
         return self.env == Env.PRODUCTION
+
+    @property
+    def development(self):
+        return not self.production
 
 
 config = Config()
-engine = create_engine(config.pgsql_dsn)
+engine = create_engine(config.pgsql_dsn, echo=config.development)
