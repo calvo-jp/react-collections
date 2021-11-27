@@ -75,6 +75,4 @@ class Paginated(GenericModel, Generic[PaginatedT]):
 
 
 def generate_models():
-    """Creates database tables. Also, creates database for sqlite"""
-
     SQLModel.metadata.create_all(engine)
