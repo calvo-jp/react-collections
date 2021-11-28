@@ -5,6 +5,7 @@ from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends, Path
 from fastapi.security.oauth2 import OAuth2PasswordBearer
 from jose import ExpiredSignatureError, JWTError
+from pydantic.fields import Field
 from sqlalchemy.exc import NoResultFound
 from sqlmodel import Session, select
 
@@ -80,10 +81,24 @@ def verify_owner(path_userid_alias: Optional[str] = None):
 class UserSearchQuery:
     def __init__(
         self,
-        page: Optional[int] = None,
-        page_size: Optional[int] = None,
-        search: Optional[str] = None
+        page: Optional[int] = Field(default=None, ge=1),
+        page_size: Optional[int] = Field(default=None, ge=1, le=100),
+        search: Optional[str] = Field(default=None, min_length=1),
     ):
         self.page = page or 1
         self.page_size = page_size or 25
         self.search = search
+
+
+class PlaceSearchQuery:
+    def __init__(
+        self,
+        page: Optional[int] = Field(default=None, ge=1),
+        page_size: Optional[int] = Field(default=None, ge=1, le=100),
+        search: Optional[str] = Field(default=None, min_length=1),
+        author_id: Optional[int] = None,
+    ):
+        self.page = page or 1
+        self.page_size = page_size or 25
+        self.search = search
+        self.author_id = author_id
