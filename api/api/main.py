@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .models import generate_models
-from .routers import account_recovery, place, session, user, validator
+from .routers import account_recovery, place, session, socket, user
 
 app = FastAPI()
 
@@ -17,7 +17,7 @@ app.include_router(session.router)
 app.include_router(user.router)
 app.include_router(place.router)
 app.include_router(account_recovery.router)
-app.include_router(validator.router)
+app.include_router(socket.router)
 
 
 @app.on_event('startup')
