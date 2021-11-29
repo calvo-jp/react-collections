@@ -33,32 +33,34 @@ async def get_current_user(request: Request, token: str = Depends(oauth2_scheme)
             raise HTTPException(401, 'Invalid token') from error
 
 
-def verify_owner(path_userid_alias: Optional[str] = None):
+def verify_owner(alias: Optional[str] = None):
     """
-    A decorator that raises a `403` error if user id in path
-    does not match the user id found in token.
-    By default the param name is `id`, but you can also pass a custom name or alias.
-    Note that this should not be used like a regular dependecy.
-    See example usage below.
+    Decorator function that validates if param user id matches token user id
+
+    Usage:
 
     ```
     @verify_owner()
-    @router.post(path='/{id}', ...)
+    @router.patch(path='/{id}', ...)
+    ...
 
-    @verify_owner('alias')
-    @router.patch(path='/{alias}', ...)
+    @verify_owner(alias='userId')
+    @router.patch(path='/{userId}', ...)
+    async def update(id_: int = Path(..., alias='userId'), ...)
+    ...
 
     # DON'T DO THIS
     @verify_owner
-    @router.delete(path='/{id}', ...)
+    @router.delete(path='/{id}')
+    ...
     ```
     """
 
-    if path_userid_alias is None:
-        path_userid_alias = 'id'
+    if alias is None:
+        alias = 'id'
 
     def verify_owner_(
-        path_userid: int = Path(..., alias=path_userid_alias),
+        path_userid: int = Path(..., alias=alias),
         user: User = Depends(get_current_user)
     ):
         if user.id != path_userid:
