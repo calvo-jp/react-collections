@@ -89,7 +89,7 @@ class Place(Timestamp, table=True):
     __tablename__: str = 'places'
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    link: str
+    link: str = Field(..., sa_column=Column(String, unique=True))
     name: Optional[str] = None
     author: Optional[User] = Relationship(back_populates='places')
     author_id: Optional[int] = Field(default=None, foreign_key='users.id')
