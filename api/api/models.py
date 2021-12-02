@@ -86,7 +86,7 @@ class Place(Timestamp, table=True):
     title: str
     description: str
     keywords: list[str]
-    image: str
+    image: Optional[str] = None
 
 
 def create_tables():
