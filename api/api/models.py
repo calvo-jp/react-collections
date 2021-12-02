@@ -1,9 +1,9 @@
 from datetime import datetime, timezone
-from typing import Generic, Optional, TypeVar
+from typing import Generic, List, Optional, TypeVar
 
 from pydantic import EmailStr
 from pydantic.generics import GenericModel
-from sqlmodel import Column, DateTime, Field, SQLModel, String
+from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
 
 from .config import engine
 
@@ -30,6 +30,7 @@ class User(Timestamp, table=True):
     email_verified_at: Optional[datetime] = Field(
         default=None, sa_column=Column(ZonedDateTime))
     password: bytes
+    places: List['Place'] = Relationship(back_populates='places.author_id')
 
     @property
     def email_verified(self):
@@ -78,6 +79,8 @@ class Place(Timestamp):
     __tablename__: str = 'places'
 
     id: Optional[int] = Field(default=None, primary_key=True)
+    author: User = Relationship(back_populates='places')
+    author_id: int = Field(..., foreign_key='users.id')
     url: str = Field(
         ..., sa_column=Column(String, unique=True, nullable=False))
     title: str
