@@ -59,10 +59,21 @@ class CreateUser(SQLModel):
     email: EmailStr
     password: str = Field(..., min_length=5, max_length=255)
 
+    @validator('email', pre=True)
+    @classmethod
+    def emailtolowercase(cls, value: str):
+        return value.lower()
+
 
 class UpdateUser(SQLModel):
     name: Optional[str] = Field(default=None, min_length=2, max_length=25)
     email: Optional[EmailStr] = None
+
+    @validator('email', pre=True)
+    @classmethod
+    def emailtolowercase(cls, value: Optional[str] = None):
+        if value is not None:
+            return value.lower()
 
 
 class Place(Timestamp, table=True):
