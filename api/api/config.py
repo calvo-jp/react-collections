@@ -21,9 +21,11 @@ class Config(BaseSettings):
     pgsql_host: str
     pgsql_port: int
     pgsql_user: str
-
     pgsql_password: str
     pgsql_database: str
+
+    redis_host: str
+    redis_port: int
 
     access_token_secret: str
     refresh_token_secret: str
