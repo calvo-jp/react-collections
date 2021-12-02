@@ -72,5 +72,15 @@ class Paginated(GenericModel, Generic[PaginatedT]):
     has_next: bool
 
 
+class Place(Timestamp):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    url: str = Field(
+        ..., sa_column=Column(String, unique=True, nullable=False))
+    title: str
+    description: str
+    keywords: list[str]
+    image: str
+
+
 def create_tables():
     SQLModel.metadata.create_all(engine)
