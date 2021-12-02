@@ -65,17 +65,6 @@ class UpdateUser(SQLModel):
     email: Optional[EmailStr] = None
 
 
-PaginatedT = TypeVar('PaginatedT')
-
-
-class Paginated(GenericModel, Generic[PaginatedT]):
-    rows: list[PaginatedT]
-    total_rows: int
-    page: int
-    page_size: int
-    has_next: bool
-
-
 class Place(Timestamp, table=True):
     __tablename__: str = 'places'
 
@@ -129,6 +118,17 @@ class UpdatePlace(SQLModel):
     def isurl(cls, value: Optional[str] = None):
         assert not validate_url(value), 'Malformed url'
         return value
+
+
+PaginatedT = TypeVar('PaginatedT', ReadUser, ReadPlace)
+
+
+class Paginated(GenericModel, Generic[PaginatedT]):
+    rows: list[PaginatedT]
+    total_rows: int
+    page: int
+    page_size: int
+    has_next: bool
 
 
 def create_tables():
