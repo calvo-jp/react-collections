@@ -23,6 +23,8 @@ class Timestamp(SQLModel):
 
 
 class User(Timestamp, table=True):
+    __tablename__: str = 'users'
+
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     email: EmailStr = Field(
@@ -30,7 +32,7 @@ class User(Timestamp, table=True):
     email_verified_at: Optional[datetime] = Field(
         default=None, sa_column=Column(ZonedDateTime))
     password: bytes
-    places: List['Place'] = Relationship(back_populates='places.author_id')
+    places: List['Place'] = Relationship(back_populates='author_id')
 
     @property
     def email_verified(self):
@@ -42,8 +44,6 @@ class User(Timestamp, table=True):
 
 
 class ReadUser(SQLModel):
-    __tablename__: str = 'users'
-
     id: int
     name: str
     email: EmailStr
@@ -75,7 +75,7 @@ class Paginated(GenericModel, Generic[PaginatedT]):
     has_next: bool
 
 
-class Place(Timestamp):
+class Place(Timestamp, table=True):
     __tablename__: str = 'places'
 
     id: Optional[int] = Field(default=None, primary_key=True)
