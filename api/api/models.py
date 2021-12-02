@@ -41,6 +41,8 @@ class User(Timestamp, table=True):
 
 
 class ReadUser(SQLModel):
+    __tablename__: str = 'users'
+
     id: int
     name: str
     email: EmailStr
@@ -73,6 +75,8 @@ class Paginated(GenericModel, Generic[PaginatedT]):
 
 
 class Place(Timestamp):
+    __tablename__: str = 'places'
+
     id: Optional[int] = Field(default=None, primary_key=True)
     url: str = Field(
         ..., sa_column=Column(String, unique=True, nullable=False))
