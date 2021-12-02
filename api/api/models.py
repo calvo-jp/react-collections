@@ -1,11 +1,12 @@
 from datetime import datetime, timezone
 from typing import Generic, List, Optional, TypeVar
 
-from pydantic import EmailStr, HttpUrl
+from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
 from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
 
 from .config import engine
+from .utils.validator import validate_url
 
 
 class ZonedDateTime(DateTime):
@@ -81,12 +82,53 @@ class Place(Timestamp, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     author: User = Relationship(back_populates='places')
     author_id: int = Field(..., foreign_key='users.id')
-    url: str = Field(
-        ..., sa_column=Column(String, unique=True, nullable=False))
-    title: str
-    description: str
-    keywords: set[str]
+    url: Optional[str] = Field(
+        default=None, sa_column=Column(String, unique=True, nullable=False))
+    title: Optional[str] = None
+    description: Optional[str] = None
+    keywords: Optional[set[str]] = set()
     image: Optional[str] = None
+
+
+class ReadPlace(SQLModel):
+    id: int
+    author: User
+    url: str
+    title: Optional[str] = None
+    description: Optional[str] = None
+    keywords: Optional[set[str]] = set()
+    image: Optional[str] = Field(default=None, description='Stream url')
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+
+class CreatePlace(SQLModel):
+    author_id: int
+    url: str = Field(..., min_length=25, max_length=255)
+    title: Optional[str] = Field(default=None, min_length=5, max_length=50)
+    description: Optional[str] = Field(
+        default=None, min_length=20, max_length=255)
+    keywords: Optional[list[str]] = Field(default=[], max_items=15)
+
+    @validator('url')
+    @classmethod
+    def isurl(cls, value: str):
+        assert not validate_url(value), 'Malformed url'
+        return value
+
+
+class UpdatePlace(SQLModel):
+    url: Optional[str] = Field(default=None, min_length=25, max_length=255)
+    title: Optional[str] = Field(default=None, min_length=5, max_length=50)
+    description: Optional[str] = Field(
+        default=None, min_length=20, max_length=255)
+    keywords: Optional[list[str]] = Field(default=[], max_items=15)
+
+    @validator('url')
+    @classmethod
+    def isurl(cls, value: Optional[str] = None):
+        assert not validate_url(value), 'Malformed url'
+        return value
 
 
 def create_tables():
