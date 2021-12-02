@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Generic, Optional, TypeVar
 
 from pydantic import EmailStr
+from pydantic.generics import GenericModel
 from sqlmodel import Column, DateTime, Field, SQLModel, String
 
 from .config import engine
@@ -58,6 +59,17 @@ class CreateUser(SQLModel):
 class UpdateUser(SQLModel):
     name: Optional[str] = Field(default=None, min_length=2, max_length=25)
     email: Optional[EmailStr] = None
+
+
+PaginatedT = TypeVar('PaginatedT')
+
+
+class Paginated(GenericModel, Generic[PaginatedT]):
+    rows: list[PaginatedT]
+    total_rows: int
+    page: int
+    page_size: int
+    has_next: bool
 
 
 def create_tables():
