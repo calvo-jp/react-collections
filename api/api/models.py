@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Generic, List, Optional, TypeVar
 
-from pydantic import EmailStr
+from pydantic import EmailStr, HttpUrl
 from pydantic.generics import GenericModel
 from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
 
@@ -85,7 +85,7 @@ class Place(Timestamp, table=True):
         ..., sa_column=Column(String, unique=True, nullable=False))
     title: str
     description: str
-    keywords: list[str]
+    keywords: set[str]
     image: Optional[str] = None
 
 
