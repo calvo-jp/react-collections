@@ -29,7 +29,7 @@ def sign(payload: dict[str, Any]):
     return jwt.encode(claims, _secretkey, _algorithm)
 
 
-def decode(token: str):
+def decode(token: str) -> dict[str, Any]:
     claims = jwt.decode(token, _secretkey, [_algorithm])
 
     if _blacklisted(claims['_id']):
