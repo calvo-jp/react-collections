@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Callable, Optional
+from typing import Callable, Optional
 
 from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
