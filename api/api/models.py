@@ -39,5 +39,26 @@ class User(Timestamp, table=True):
         self.email_verified_at = datetime.now(timezone.utc) if v else None
 
 
+class ReadUser(SQLModel):
+    id: int
+    name: str
+    email: EmailStr
+    email_verified: Optional[bool] = None
+    email_verified_at: Optional[datetime] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+
+class CreateUser(SQLModel):
+    name: str = Field(..., min_length=2, max_length=25)
+    email: EmailStr
+    password: str = Field(..., min_length=5, max_length=255)
+
+
+class UpdateUser(SQLModel):
+    name: Optional[str] = Field(default=None, min_length=2, max_length=25)
+    email: Optional[EmailStr] = None
+
+
 def create_tables():
     SQLModel.metadata.create_all(engine)
