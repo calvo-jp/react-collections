@@ -85,7 +85,7 @@ class Place(Timestamp, table=True):
         default=None, sa_column=Column(String, unique=True, nullable=False))
     title: Optional[str] = None
     description: Optional[str] = None
-    keywords: Optional[set[str]] = set()
+    keywords: Optional[list[str]] = Field(default=[])
     image: Optional[str] = None
 
 
