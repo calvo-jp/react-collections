@@ -72,8 +72,7 @@ class UpdateUser(SQLModel):
     @validator('email', pre=True)
     @classmethod
     def emailtolowercase(cls, value: Optional[str] = None):
-        if value is not None:
-            return value.lower()
+        return None if value is None else value.lower()
 
 
 class Place(Timestamp, table=True):
