@@ -1,6 +1,7 @@
 # pylint: disable=consider-using-f-string
 
 from enum import Enum
+from os import path
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -31,6 +32,10 @@ class Config(BaseSettings):
     refresh_token_secret: str
 
     @property
+    def uploads_dir(self):
+        return path.abspath(".uploads")
+
+    @property
     def debug(self):
         return self.env == Environment.DEVELOPMENT
 
@@ -49,3 +54,5 @@ class Config(BaseSettings):
 
 config = Config()
 engine = create_engine(url=config.pgsql_dsn, echo=config.debug)
+
+print(config.uploads_dir)
