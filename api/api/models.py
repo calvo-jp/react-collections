@@ -33,7 +33,7 @@ class User(Timestamp, table=True):
     email_verified_at: Optional[datetime] = Field(
         default=None, sa_column=Column(ZonedDateTime))
     password: bytes
-    places: List['Place'] = Relationship(back_populates='author_id')
+    places: List['Place'] = Relationship(back_populates='author')
 
     @property
     def email_verified(self):
