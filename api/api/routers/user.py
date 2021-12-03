@@ -89,7 +89,7 @@ def verify_owner(alias: Optional[str] = None):
     def wrapper(func: Callable):
         def inner(*args, **kwargs):
             dependencies = kwargs.get('dependencies') or []
-            dependencies.append(Depends(verifier))
+            dependencies.insert(0, Depends(verifier))
             return func(*args, **kwargs, dependencies=dependencies)
 
         return inner
