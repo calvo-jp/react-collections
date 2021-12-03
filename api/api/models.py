@@ -102,7 +102,6 @@ class ReadPlace(SQLModel):
 
 
 class CreatePlace(SQLModel):
-    author_id: int
     url: str = Field(..., min_length=25, max_length=255)
     title: Optional[str] = Field(default=None, min_length=5, max_length=50)
     description: Optional[str] = Field(
