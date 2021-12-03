@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from sqlmodel import Session, select
 
 from ..config import engine
+from ..dependencies import get_current_user
 from ..models import ReadUser, User
 from ..utils import jsonwebtoken
 
@@ -48,7 +49,11 @@ async def login(data: OAuth2PasswordRequestForm = Depends()):
         )
 
 
-@router.delete(path='/{token}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    path='/{token}',
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(get_current_user)]
+)
 async def logout(token: str):
     try:
         jsonwebtoken.invalidate(token)
