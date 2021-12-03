@@ -54,5 +54,3 @@ class Config(BaseSettings):
 
 config = Config()
 engine = create_engine(url=config.pgsql_dsn, echo=config.debug)
-
-print(config.uploads_dir)
