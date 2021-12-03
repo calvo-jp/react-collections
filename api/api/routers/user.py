@@ -47,7 +47,7 @@ async def readall(query: Query = Depends()):
 
         hasnext = total - (query.page * query.page_size) > 0
 
-        rows = session.exec(stmt.offset(offset).limit(query.page_size))
+        rows = session.exec(stmt.offset(offset).limit(query.page_size)).all()
 
         return Response(
             content=dict(
