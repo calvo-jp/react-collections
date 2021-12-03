@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Callable, Optional
+from typing import Optional
 
 from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
@@ -32,7 +32,6 @@ class Query:
     path='/',
     response_model=Paginated[ReadUser],
     response_model_exclude_none=True,
-    dependencies=[Depends(get_current_user)],
 )
 async def readall(query: Query = Depends()):
     with Session(engine) as session:
@@ -65,7 +64,6 @@ async def readall(query: Query = Depends()):
     path='/{id}',
     response_model=ReadUser,
     response_model_exclude_none=True,
-    dependencies=[Depends(get_current_user)],
 )
 async def readone(id_: int = Path(..., alias='id')):
     with Session(engine) as session:
@@ -76,24 +74,6 @@ async def readone(id_: int = Path(..., alias='id')):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
         return user
-
-
-def verify_owner(alias: Optional[str] = None):
-    if alias is None:
-        alias = 'id'
-
-    def verifier(user: User = Depends(get_current_user)):
-        if user.id != alias:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
-
-    def wrapper(func: Callable):
-        def inner(*args, **kwargs):
-            dependencies = kwargs.get('dependencies') or []
-            dependencies.insert(0, Depends(verifier))
-            return func(*args, **kwargs, dependencies=dependencies)
-
-        return inner
-    return wrapper
 
 
 @router.post(
@@ -120,17 +100,23 @@ async def create(data: CreateUser):
         return user
 
 
-@verify_owner()
+def verify_owner(
+    id_: int = Path(..., alias='id', ge=1),
+    user: User = Depends(get_current_user)
+):
+    if user.id == id_:
+        return user
+
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+
+
 @router.patch(
     path='/{id}',
     response_model=ReadUser,
     response_model_exclude_none=True
 )
-async def update(id_: int = Path(..., alias='id'), data: UpdateUser = Body(...)):
+async def update(user: User = Depends(verify_owner), data: UpdateUser = Body(...)):
     with Session(engine) as session:
-        stmt = select(User).where(User.id == id_)
-        user = session.exec(stmt).one_or_none()
-
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
@@ -148,3 +134,10 @@ async def update(id_: int = Path(..., alias='id'), data: UpdateUser = Body(...))
         session.refresh(user)
 
         return user
+
+
+@router.delete(path='/{id}', status_code=status.HTTP_204_NO_CONTENT)
+async def delete(user: User = Depends(verify_owner)):
+    with Session(engine) as session:
+        session.delete(user)
+        session.commit()
