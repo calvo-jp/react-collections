@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .models import create_tables
-from .routers import session, user
+from .routers import place, session, user
 
 app = FastAPI()
 
@@ -15,6 +15,7 @@ app.add_middleware(
 
 app.include_router(router=session.router)
 app.include_router(router=user.router)
+app.include_router(router=place.router)
 
 
 @app.on_event(event_type='startup')
