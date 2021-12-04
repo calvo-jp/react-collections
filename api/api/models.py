@@ -18,9 +18,13 @@ class ZonedDateTime(DateTime):
 
 class Timestamp(SQLModel):
     created_at: datetime = Field(
-        ..., sa_column=Column(ZonedDateTime, nullable=False))
+        ...,
+        sa_column=Column(ZonedDateTime, nullable=False)
+    )
     updated_at: Optional[datetime] = Field(
-        default=None, sa_column=Column(ZonedDateTime))
+        default=None,
+        sa_column=Column(ZonedDateTime)
+    )
 
 
 class User(Timestamp, table=True):
@@ -29,9 +33,13 @@ class User(Timestamp, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     email: EmailStr = Field(
-        ..., sa_column=Column(String, unique=True, nullable=False))
+        ...,
+        sa_column=Column(String, unique=True, nullable=False)
+    )
     email_verified_at: Optional[datetime] = Field(
-        default=None, sa_column=Column(ZonedDateTime))
+        default=None,
+        sa_column=Column(ZonedDateTime)
+    )
     password: bytes
     places: List['Place'] = Relationship(back_populates='author')
 
@@ -82,7 +90,9 @@ class Place(Timestamp, table=True):
     author: User = Relationship(back_populates='places')
     author_id: int = Field(..., foreign_key='users.id')
     url: Optional[str] = Field(
-        default=None, sa_column=Column(String, unique=True, nullable=False))
+        default=None,
+        sa_column=Column(String, unique=True, nullable=False)
+    )
     title: Optional[str] = None
     description: Optional[str] = None
     keywords: Optional[list[str]] = Field(default=[])
@@ -105,7 +115,10 @@ class CreatePlace(SQLModel):
     url: str = Field(..., min_length=25, max_length=255)
     title: Optional[str] = Field(default=None, min_length=5, max_length=50)
     description: Optional[str] = Field(
-        default=None, min_length=20, max_length=255)
+        default=None,
+        min_length=20,
+        max_length=255
+    )
     keywords: Optional[list[str]] = Field(default=[], max_items=15)
 
     @validator('url')
@@ -119,13 +132,16 @@ class UpdatePlace(SQLModel):
     url: Optional[str] = Field(default=None, min_length=25, max_length=255)
     title: Optional[str] = Field(default=None, min_length=5, max_length=50)
     description: Optional[str] = Field(
-        default=None, min_length=20, max_length=255)
+        default=None,
+        min_length=20,
+        max_length=255
+    )
     keywords: Optional[list[str]] = Field(default=[], max_items=15)
 
     @validator('url')
     @classmethod
     def isurl(cls, value: Optional[str] = None):
-        assert not validate_url(value), 'Malformed url'
+        assert value is not None and not validate_url(value), 'Malformed url'
         return value
 
 
