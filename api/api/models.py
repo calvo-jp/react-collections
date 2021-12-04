@@ -95,7 +95,7 @@ class ReadPlace(SQLModel):
     url: str
     title: Optional[str] = None
     description: Optional[str] = None
-    keywords: Optional[set[str]] = set()
+    keywords: Optional[list[str]] = []
     image: Optional[str] = Field(default=None, description='Stream url')
     created_at: datetime
     updated_at: Optional[datetime] = None
