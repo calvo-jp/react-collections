@@ -1,7 +1,7 @@
 # pylint: disable=consider-using-f-string
 
+import os
 from enum import Enum
-from os import path
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -33,7 +33,12 @@ class Config(BaseSettings):
 
     @property
     def uploads_dir(self):
-        return path.abspath(".uploads")
+        fullpath = os.path.abspath(".uploads")
+
+        if not os.path.isdir(fullpath):
+            os.mkdir(fullpath)
+
+        return fullpath
 
     @property
     def debug(self):
