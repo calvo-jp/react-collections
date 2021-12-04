@@ -117,9 +117,6 @@ def verify_owner(
 )
 async def update(user: User = Depends(verify_owner), data: UpdateUser = Body(...)):
     with Session(engine) as session:
-        if not user:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
         if data.email != user.email:
             user.email_verified = False
 
