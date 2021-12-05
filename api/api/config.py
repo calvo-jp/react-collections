@@ -1,8 +1,11 @@
 # pylint: disable=consider-using-f-string
 from typing import Optional
 
+from dotenv import load_dotenv
 from pydantic import BaseSettings
 from sqlmodel import create_engine
+
+load_dotenv()
 
 
 class Config(BaseSettings):
