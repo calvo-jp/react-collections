@@ -42,7 +42,7 @@ async def readall(*, query: Query = Depends(), session: Session = Depends(get_se
 
 @router.get(
     path='/{id}',
-    response_model=Paginated[ReadPlace],
+    response_model=ReadPlace,
     response_model_exclude_none=True
 )
 async def readone(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
