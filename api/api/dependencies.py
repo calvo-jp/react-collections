@@ -35,3 +35,8 @@ async def get_current_user(request: Request, token: str = Depends(_oauth2_scheme
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Invalid token.'
         ) from error
+
+
+async def get_session():
+    with Session(engine) as session:
+        yield session
