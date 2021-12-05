@@ -7,8 +7,7 @@ from jose.exceptions import JWTError
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
-from ..config import engine
-from ..dependencies import get_current_user
+from ..dependencies import get_current_user, get_session
 from ..models import ReadUser, User
 from ..utils import jsonwebtoken
 
@@ -27,26 +26,27 @@ class LoginResponse(BaseModel):
     response_model=LoginResponse,
     response_model_exclude_none=True
 )
-async def login(data: OAuth2PasswordRequestForm = Depends()):
+async def login(
+    *,
+    data: OAuth2PasswordRequestForm = Depends(),
+    session: Session = Depends(get_session)
+):
     username: str = data.username
     password: bytes = data.password.encode('utf-8')
 
-    with Session(engine) as session:
-        user = session.exec(
-            select(User)
-            .where(User.email == username)
-        ).one_or_none()
+    stmt = select(User).where(User.email == username)
+    user = session.exec(stmt).one_or_none()
 
-        if user is None or not checkpw(password, user.password):
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+    if user is None or not checkpw(password, user.password):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
-        access_token = jsonwebtoken.sign(dict(sub=user.id))
+    access_token = jsonwebtoken.sign(dict(sub=user.id))
 
-        return dict(
-            access_token=access_token,
-            token_type='bearer',
-            data=user
-        )
+    return dict(
+        access_token=access_token,
+        token_type='bearer',
+        data=user
+    )
 
 
 @router.delete(
@@ -54,7 +54,7 @@ async def login(data: OAuth2PasswordRequestForm = Depends()):
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(get_current_user)]
 )
-async def logout(token: str):
+async def logout(*, token: str):
     try:
         jsonwebtoken.invalidate(token)
     except JWTError as error:
