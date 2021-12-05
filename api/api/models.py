@@ -4,6 +4,8 @@ from typing import Optional
 from pydantic import EmailStr, validator
 from sqlmodel import Column, DateTime, Field, SQLModel, String
 
+from .config import engine
+
 
 class ZonedDateTime(DateTime):
     """Timestamp with timezone"""
@@ -75,3 +77,7 @@ class UpdateUser(SQLModel):
         if v is None:
             return None
         return v.lower()
+
+
+def create_tables():
+    SQLModel.metadata.create_all(engine)
