@@ -32,7 +32,7 @@ class Query:
     response_model=Paginated[ReadUser],
     response_model_exclude_none=True,
 )
-async def readall(query: Query = Depends(), session: Session = Depends(get_session)):
+async def readall(*, query: Query = Depends(), session: Session = Depends(get_session)):
     offset = (query.page - 1) * query.page_size
 
     stmt = select(User)
@@ -63,7 +63,7 @@ async def readall(query: Query = Depends(), session: Session = Depends(get_sessi
     response_model=ReadUser,
     response_model_exclude_none=True,
 )
-async def readone(id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
+async def readone(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
     stmt = select(User).where(User.id == id_)
     user = session.exec(stmt).one_or_none()
 
@@ -94,7 +94,7 @@ async def create(*, data: CreateUser, session: Session = Depends(get_session)):
     return user
 
 
-def verify_owner(id_: int = Path(..., alias='id', ge=1), user: User = Depends(get_current_user)):
+def verify_owner(*, id_: int = Path(..., alias='id', ge=1), user: User = Depends(get_current_user)):
     if user.id == id_:
         return user
 
@@ -129,6 +129,6 @@ async def update(
 
 
 @router.delete(path='/{id}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete(user: User = Depends(verify_owner), session: Session = Depends(get_session)):
+async def delete(*, user: User = Depends(verify_owner), session: Session = Depends(get_session)):
     session.delete(user)
     session.commit()
