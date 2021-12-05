@@ -4,11 +4,10 @@ from typing import Optional
 from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Body, Depends, Path
+from fastapi.param_functions import Depends, Path
 from fastapi.responses import Response
 from sqlmodel import Session, select
 
-from ..config import engine
 from ..dependencies import get_current_user, get_session
 from ..models import CreateUser, Paginated, ReadUser, UpdateUser, User
 
