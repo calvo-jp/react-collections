@@ -69,7 +69,7 @@ async def create(
 ):
     # just making pylance happy here
     if author.id is None:
-        raise HTTPException(503)
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE)
 
     place = Place(
         url=data.url,
