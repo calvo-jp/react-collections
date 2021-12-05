@@ -45,11 +45,7 @@ async def readall(*, query: Query = Depends(), session: Session = Depends(get_se
     response_model=Paginated[ReadPlace],
     response_model_exclude_none=True
 )
-async def readone(
-    *,
-    id_: int = Path(..., alias='id'),
-    session: Session = Depends(get_session)
-):
+async def readone(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
     stmt = select(User, Place).where(Place.id == id_)
     place = session.exec(stmt).one_or_none()
 
