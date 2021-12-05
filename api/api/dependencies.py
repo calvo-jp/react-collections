@@ -14,17 +14,26 @@ from .utils import jsonwebtoken
 _oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/sessions')
 
 
-async def get_current_user(*, token: str = Depends(_oauth2_scheme), request: Request):
+async def get_session():
+    with Session(engine) as session:
+        yield session
+
+
+async def get_current_user(
+    *,
+    token: str = Depends(_oauth2_scheme),
+    request: Request,
+    session: Session = Depends(get_session)
+):
     try:
         claims = jsonwebtoken.decode(token)
 
-        with Session(engine) as session:
-            stmt = select(User).where(User.id == claims['sub'])
-            user = session.exec(stmt).one()
+        stmt = select(User).where(User.id == claims['sub'])
+        user = session.exec(stmt).one()
 
-            request.state.current_user = user
+        request.state.current_user = user
 
-            return user
+        return user
     except ExpiredSignatureError as error:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -35,8 +44,3 @@ async def get_current_user(*, token: str = Depends(_oauth2_scheme), request: Req
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Invalid token.'
         ) from error
-
-
-async def get_session():
-    with Session(engine) as session:
-        yield session
