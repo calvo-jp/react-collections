@@ -101,7 +101,7 @@ class Place(Timestamp, table=True):
 
 class ReadPlace(SQLModel):
     id: int
-    author: User
+    author: ReadUser
     url: str
     title: Optional[str] = None
     description: Optional[str] = None
