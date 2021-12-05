@@ -9,7 +9,7 @@ from fastapi.responses import Response
 from sqlmodel import Session, select
 
 from ..config import engine
-from ..dependencies import get_current_user
+from ..dependencies import get_current_user, get_session
 from ..models import CreateUser, Paginated, ReadUser, UpdateUser, User
 
 router = APIRouter(prefix='/users', tags=['user'])
@@ -33,31 +33,30 @@ class Query:
     response_model=Paginated[ReadUser],
     response_model_exclude_none=True,
 )
-async def readall(query: Query = Depends()):
-    with Session(engine) as session:
-        offset = (query.page - 1) * query.page_size
+async def readall(query: Query = Depends(), session: Session = Depends(get_session)):
+    offset = (query.page - 1) * query.page_size
 
-        stmt = select(User)
+    stmt = select(User)
 
-        if query.search:
-            pass
+    if query.search:
+        pass
 
-        total = session.query(stmt).count()
+    total = session.query(stmt).count()
 
-        hasnext = total - (query.page * query.page_size) > 0
+    hasnext = total - (query.page * query.page_size) > 0
 
-        rows = session.exec(stmt.offset(offset).limit(query.page_size)).all()
+    rows = session.exec(stmt.offset(offset).limit(query.page_size)).all()
 
-        return Response(
-            content=dict(
-                page=1,
-                page_size=25,
-                rows=rows,
-                total_rows=total,
-                has_next=hasnext,
-            ),
-            status_code=status.HTTP_206_PARTIAL_CONTENT if hasnext else status.HTTP_200_OK
-        )
+    return Response(
+        content=dict(
+            page=1,
+            page_size=25,
+            rows=rows,
+            total_rows=total,
+            has_next=hasnext,
+        ),
+        status_code=status.HTTP_206_PARTIAL_CONTENT if hasnext else status.HTTP_200_OK
+    )
 
 
 @router.get(
@@ -65,15 +64,14 @@ async def readall(query: Query = Depends()):
     response_model=ReadUser,
     response_model_exclude_none=True,
 )
-async def readone(id_: int = Path(..., alias='id')):
-    with Session(engine) as session:
-        stmt = select(User).where(User.id == id_)
-        user = session.exec(stmt).one_or_none()
+async def readone(id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
+    stmt = select(User).where(User.id == id_)
+    user = session.exec(stmt).one_or_none()
 
-        if user is None:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-        return user
+    return user
 
 
 @router.post(
@@ -82,28 +80,22 @@ async def readone(id_: int = Path(..., alias='id')):
     response_model=ReadUser,
     response_model_exclude_none=True
 )
-async def create(data: CreateUser):
-    encrypted = hashpw(data.password.encode('utf-8'), gensalt())
+async def create(*, data: CreateUser, session: Session = Depends(get_session)):
+    user = User(
+        name=data.name,
+        email=data.email,
+        password=hashpw(data.password.encode('utf-8'), gensalt()),
+        created_at=datetime.now(timezone.utc)
+    )
 
-    with Session(engine) as session:
-        user = User(
-            name=data.name,
-            email=data.email,
-            password=encrypted,
-            created_at=datetime.now(timezone.utc)
-        )
+    session.add(user)
+    session.commit()
+    session.refresh(user)
 
-        session.add(user)
-        session.commit()
-        session.refresh(user)
-
-        return user
+    return user
 
 
-def verify_owner(
-    id_: int = Path(..., alias='id', ge=1),
-    user: User = Depends(get_current_user)
-):
+def verify_owner(id_: int = Path(..., alias='id', ge=1), user: User = Depends(get_current_user)):
     if user.id == id_:
         return user
 
@@ -115,26 +107,29 @@ def verify_owner(
     response_model=ReadUser,
     response_model_exclude_none=True
 )
-async def update(user: User = Depends(verify_owner), data: UpdateUser = Body(...)):
-    with Session(engine) as session:
-        if data.email != user.email:
-            user.email_verified = False
+async def update(
+    *,
+    data: UpdateUser,
+    user: User = Depends(verify_owner),
+    session: Session = Depends(get_session)
+):
+    if data.email != user.email:
+        user.email_verified = False
 
-        for k, v in data.dict(exclude_none=True).items():
-            if hasattr(user, k):
-                setattr(user, k, v)
+    for k, v in data.dict(exclude_none=True).items():
+        if hasattr(user, k):
+            setattr(user, k, v)
 
-        user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now(timezone.utc)
 
-        session.add(user)
-        session.commit()
-        session.refresh(user)
+    session.add(user)
+    session.commit()
+    session.refresh(user)
 
-        return user
+    return user
 
 
 @router.delete(path='/{id}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete(user: User = Depends(verify_owner)):
-    with Session(engine) as session:
-        session.delete(user)
-        session.commit()
+async def delete(user: User = Depends(verify_owner), session: Session = Depends(get_session)):
+    session.delete(user)
+    session.commit()
