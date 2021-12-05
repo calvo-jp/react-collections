@@ -14,7 +14,7 @@ from .utils import jsonwebtoken
 _oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/sessions')
 
 
-async def get_current_user(request: Request, token: str = Depends(_oauth2_scheme)):
+async def get_current_user(*, token: str = Depends(_oauth2_scheme), request: Request):
     try:
         claims = jsonwebtoken.decode(token)
 
