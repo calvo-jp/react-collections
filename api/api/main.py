@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from .models import create_tables
+
 app = FastAPI()
 
 app.add_middleware(
@@ -9,3 +11,8 @@ app.add_middleware(
     allow_methods='*',
     allow_headers='*',
 )
+
+
+@app.on_event(event_type='startup')
+async def startup():
+    create_tables()
