@@ -1,12 +1,14 @@
 from datetime import datetime, timezone
 
+from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends, Path
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session
 
 from ..dependency import get_current_user, get_session
-from ..models import ReadUser, UpdateUser, User
+from ..models import CreateUser, ReadUser, UpdateUser, User
 
 router = APIRouter(prefix='/users', tags=['user'])
 
@@ -23,6 +25,33 @@ async def read_one(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     return user
+
+
+@router.post(
+    path='/',
+    status_code=status.HTTP_201_CREATED,
+    response_model=ReadUser,
+    response_model_exclude_none=True
+)
+async def create(*, data: CreateUser, session: Session = Depends(get_session)):
+    try:
+        user = User(
+            name=data.name,
+            email=data.email,
+            password=hashpw(data.password.encode('utf-8'), gensalt()),
+            created_at=datetime.now(timezone.utc)
+        )
+
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+
+        return user
+    except IntegrityError as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Email already exists'
+        ) from error
 
 
 async def verify_owner(
