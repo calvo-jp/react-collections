@@ -103,6 +103,7 @@ async def create(
         url=data.url,
         title=data.title,
         description=data.description,
+        keywords=data.keywords,
         author_id=author.id,
         created_at=datetime.now(timezone.utc)
     )
