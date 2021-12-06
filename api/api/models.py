@@ -1,3 +1,4 @@
+# pylint: disable=consider-using-f-string
 from datetime import datetime, timezone
 from typing import Generic, List, Optional, TypeVar
 
@@ -184,6 +185,17 @@ class Image:
     @property
     def stream_url(self):
         pass
+
+    # TODO:
+    # 1. Add delete method to delete the actual image and class instance
+    # 2. Add static method to upload image and return instance
+
+    def __repr__(self):
+        return "<class 'Image' filename='%s' filetype='%s' filesize=%s>" % (
+            self.filename,
+            self.filetype,
+            self.filesize
+        )
 
 
 class ReadImage(SQLModel):
