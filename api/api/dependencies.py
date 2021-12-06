@@ -4,7 +4,6 @@ from fastapi.param_functions import Depends
 from fastapi.requests import Request
 from fastapi.security.oauth2 import OAuth2PasswordBearer
 from jose.exceptions import ExpiredSignatureError, JWTError
-from sqlalchemy.exc import NoResultFound
 from sqlmodel import Session, select
 
 from .config import engine
@@ -27,19 +26,16 @@ async def get_current_user(
 ):
     try:
         claims = jsonwebtoken.decode(token)
-
-        stmt = select(User).where(User.id == claims['sub'])
-        user = session.exec(stmt).one()
-
+        user = session.get(User, claims['user_id'])
+        assert user is not None
         request.state.current_user = user
-
-        return user
+        return request.state.current_user
     except ExpiredSignatureError as error:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Expired token.'
         ) from error
-    except (JWTError, NoResultFound) as error:
+    except (JWTError, AssertionError) as error:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Invalid token.'
