@@ -36,7 +36,12 @@ class Query:
 
 
 @router.get(path='/', response_model=Paginated[ReadUser], response_model_exclude_none=True)
-async def read_all(*, query: Query = Depends(), session: Session = Depends(get_session)):
+async def read_all(
+    *,
+    query: Query = Depends(),
+    session: Session = Depends(get_session),
+    response: Response
+):
     stmt = select(User)
 
     # TODO: implement fulltext search
@@ -52,16 +57,14 @@ async def read_all(*, query: Query = Depends(), session: Session = Depends(get_s
     ).all()
 
     has_next = total_rows > query.page * query.page_size
+    response.status_code = status.HTTP_206_PARTIAL_CONTENT if has_next else status.HTTP_200_OK
 
-    return Response(
-        status_code=status.HTTP_206_PARTIAL_CONTENT if has_next else status.HTTP_200_OK,
-        content=dict(
-            page=query.page,
-            page_size=query.page_size,
-            total_rows=total_rows,
-            rows=rows,
-            has_next=has_next
-        ),
+    return dict(
+        page=query.page,
+        page_size=query.page_size,
+        total_rows=total_rows,
+        rows=rows,
+        has_next=has_next
     )
 
 
@@ -141,7 +144,8 @@ async def setup_avatar(
     *,
     image: UploadFile = File(...),
     user: User = Depends(verify_owner),
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
+    response: Response
 ):
     valid_types = [
         'image/jpeg',
@@ -182,7 +186,8 @@ async def setup_avatar(
         session.commit()
         session.refresh(user)
 
-        return Response(status_code=status_code, content=user)
+        response.status_code = status_code
+        return user
 
 
 @router.delete(path='/{id}/avatar', status_code=status.HTTP_204_NO_CONTENT)
