@@ -13,8 +13,8 @@ app.add_middleware(
     allow_headers='*',
 )
 
-app.include_router(router=user.router)
 app.include_router(router=session.router)
+app.include_router(router=user.router)
 
 
 @app.on_event(event_type='startup')
