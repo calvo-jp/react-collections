@@ -7,7 +7,7 @@ from jose.exceptions import JWTError
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
-from ..dependencies import get_current_user, get_session
+from ..dependencies import get_session
 from ..models import ReadUser, User
 from ..utils import jsonwebtoken
 
@@ -49,11 +49,7 @@ async def login(
     )
 
 
-@router.delete(
-    path='/{token}',
-    status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(get_current_user)]
-)
+@router.delete(path='/{token}', status_code=status.HTTP_204_NO_CONTENT,)
 async def logout(*, token: str):
     try:
         jsonwebtoken.invalidate(token)
