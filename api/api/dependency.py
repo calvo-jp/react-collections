@@ -28,7 +28,7 @@ async def get_current_user(
 ):
     try:
         claims = jsonwebtoken.decode(token)
-        user = session.get(User, claims['sub'])
+        user = session.get(User, claims['user_id'])
 
         if not user:
             raise NoResultFound()
