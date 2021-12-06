@@ -1,4 +1,5 @@
 # pylint: disable=consider-using-f-string
+
 import os
 import shutil
 import uuid
@@ -14,7 +15,7 @@ from sqlmodel import Session
 
 from ..config import config
 from ..dependency import get_current_user, get_session
-from ..models import Attachment, CreateUser, ReadUser, UpdateUser, User
+from ..models import CreateUser, ReadUser, UpdateUser, User
 
 router = APIRouter(prefix='/users', tags=['user'])
 
@@ -98,7 +99,7 @@ async def setup_avatar(
     session: Session = Depends(get_session)
 ):
     if user.avatar is not None:
-        fullpath = os.path.join(config.uploads_dir, user.avatar.file_name)
+        fullpath = os.path.join(config.uploads_dir, user.avatar)
 
         if os.path.exists(fullpath):
             os.unlink(fullpath)
@@ -115,19 +116,19 @@ async def setup_avatar(
     if not image.content_type in valid_types:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail='Image type not supported'
+            detail='Unsupported file type'
         )
 
+    # TODO: ensure unique filename
     filetype: str = image.content_type
-    filetype = filetype.removeprefix('image/')
-    filename = uuid.uuid4().hex
-    filename = '%s.%s' % (filename, filetype)
+    extension = filetype.removeprefix("image/")
+    filename = '%s.%s' % (uuid.uuid4().hex, extension)
     fullpath = os.path.join(config.uploads_dir, filename)
 
     with open(fullpath, 'wb') as buffer:
         shutil.copyfileobj(image.file, buffer)
 
-        user.avatar = Attachment(file_name=filename)
+        user.avatar = filename
         user.updated_at = datetime.now(timezone.utc)
 
         session.add(user)
@@ -135,3 +136,24 @@ async def setup_avatar(
         session.refresh(user)
 
         return user
+
+
+@router.delete(path='/{id}/avatar', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_avatar(
+    *,
+    user: User = Depends(verify_owner),
+    session: Session = Depends(get_session)
+):
+    if user.avatar is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+    fullpath = os.path.join(config.uploads_dir, user.avatar)
+
+    if os.path.exists(fullpath):
+        os.unlink(fullpath)
+
+    user.avatar = None
+    user.updated_at = datetime.now(timezone.utc)
+
+    session.add(user)
+    session.commit()
