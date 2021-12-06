@@ -4,7 +4,8 @@ from typing import Generic, List, Optional, TypeVar
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
-from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
+from sqlmodel import (ARRAY, Column, DateTime, Field, Relationship, SQLModel,
+                      String)
 
 from .config import engine
 from .utils.validator import validate_url
@@ -95,7 +96,10 @@ class Place(Timestamp, table=True):
     url: str
     title: Optional[str] = None
     description: Optional[str] = None
-    keywords: Optional[list[str]] = Field(default=[])
+    keywords: Optional[list[str]] = Field(
+        default=None,
+        sa_column=Column(ARRAY(String))
+    )
     image: Optional[str] = None
 
 
