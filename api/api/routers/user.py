@@ -7,7 +7,7 @@ from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends, Path
 from fastapi.responses import Response
 from sqlalchemy.exc import IntegrityError
-from sqlmodel import Session, select
+from sqlmodel import Session, func, select
 
 from ..dependencies import get_current_user, get_session
 from ..models import CreateUser, Paginated, ReadUser, UpdateUser, User
@@ -33,29 +33,33 @@ class Query:
     response_model=Paginated[ReadUser],
     response_model_exclude_none=True,
 )
-async def readall(*, query: Query = Depends(), session: Session = Depends(get_session)):
-    offset = (query.page - 1) * query.page_size
-
+async def read_all(
+    *,
+    query: Query = Depends(),
+    session: Session = Depends(get_session),
+    response: Response
+):
     stmt = select(User)
 
+    # TODO: implement fulltext search
     if query.search:
         pass
 
-    total = session.query(stmt).count()
+    total_rows: int = session.execute(
+        stmt.with_only_columns(func.count(User.id))
+    ).scalar_one()
+    hasnext = total_rows - (query.page * query.page_size) > 0
+    rows = session.exec(
+        stmt.limit(query.page_size).offset((query.page - 1) * query.page_size)
+    ).all()
 
-    hasnext = total - (query.page * query.page_size) > 0
-
-    rows = session.exec(stmt.offset(offset).limit(query.page_size)).all()
-
-    return Response(
-        content=dict(
-            page=1,
-            page_size=25,
-            rows=rows,
-            total_rows=total,
-            has_next=hasnext,
-        ),
-        status_code=status.HTTP_206_PARTIAL_CONTENT if hasnext else status.HTTP_200_OK
+    response.status_code = status.HTTP_206_PARTIAL_CONTENT if hasnext else status.HTTP_200_OK
+    return dict(
+        page=1,
+        page_size=25,
+        rows=rows,
+        total_rows=total_rows,
+        has_next=hasnext,
     )
 
 
@@ -101,10 +105,9 @@ async def create(*, data: CreateUser, session: Session = Depends(get_session)):
 
 
 def verify_owner(*, id_: int = Path(..., alias='id', ge=1), user: User = Depends(get_current_user)):
-    if user.id == id_:
-        return user
-
-    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    if user.id != id_:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    return user
 
 
 @router.patch(
@@ -126,7 +129,7 @@ async def update(
             if hasattr(user, k):
                 setattr(user, k, v)
 
-        user.updated_at = datetime.now(timezone.utc)
+            user.updated_at = datetime.now(timezone.utc)
 
         session.add(user)
         session.commit()
@@ -138,9 +141,3 @@ async def update(
             status_code=status.HTTP_403_FORBIDDEN,
             detail='Email already exists'
         ) from error
-
-
-@router.delete(path='/{id}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete(*, user: User = Depends(verify_owner), session: Session = Depends(get_session)):
-    session.delete(user)
-    session.commit()
