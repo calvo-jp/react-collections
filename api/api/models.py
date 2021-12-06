@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import EmailStr, validator
-from sqlmodel import Column, DateTime, Field, SQLModel, String
+from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
 
 from .config import engine
 
@@ -36,6 +36,8 @@ class User(SQLModel, table=True):
         default=None,
         sa_column=Column(ZonedDateTime)
     )
+
+    recipes: List['Recipe'] = Relationship(back_populates='author')
 
     @property
     def email_verified(self):
@@ -77,6 +79,31 @@ class UpdateUser(SQLModel):
         if v is None:
             return None
         return v.lower()
+
+
+class Recipe(SQLModel, table=True):
+    __tablename__: str = 'recipes'
+
+    id: Optional[int] = Field(..., primary_key=True)
+    name: str
+    description: str
+    author_id: int = Field(..., foreign_key='users.id')
+    author: User = Relationship(back_populates='recipes')
+    ingredients: list[str]
+    instructions: list[str]
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+
+class ReadRecipe(SQLModel):
+    id: int
+    name: str
+    description: str
+    author: ReadUser
+    ingredients: list[str]
+    instructions: list[str]
+    created_at: datetime
+    updated_at: Optional[datetime] = None
 
 
 def create_tables():
