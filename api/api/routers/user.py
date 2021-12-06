@@ -3,14 +3,16 @@ from typing import Optional
 
 from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
+from fastapi.datastructures import UploadFile
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Depends, Path
+from fastapi.param_functions import Depends, File, Path
 from fastapi.responses import Response
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, func, select
 
 from ..dependencies import get_current_user, get_session
 from ..models import CreateUser, Paginated, ReadUser, UpdateUser, User
+from ..utils import file_uploader
 
 router = APIRouter(prefix='/users', tags=['user'])
 
@@ -141,3 +143,46 @@ async def update(
             status_code=status.HTTP_403_FORBIDDEN,
             detail='Email already exists'
         ) from error
+
+
+@router.put(path='/{id}/avatar', response_model=ReadUser, response_model_exclude_none=True)
+async def setup_avatar(
+    *,
+    avatar: UploadFile = File(...),
+    user: User = Depends(verify_owner),
+    session: Session = Depends(get_session),
+    response: Response
+):
+    response.status_code = status.HTTP_201_CREATED
+
+    if user.avatar is not None:
+        file_uploader.delete(user.avatar)
+
+        response.status_code = status.HTTP_200_OK
+
+    user.avatar = file_uploader.upload(avatar)
+    user.updated_at = datetime.now(timezone.utc)
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    return user
+
+
+@router.delete(path='/{id}/avatar', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_avatar(
+    *,
+    user: User = Depends(verify_owner),
+    session: Session = Depends(get_session),
+):
+    if user.avatar is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+    file_uploader.delete(user.avatar)
+
+    user.avatar = None
+    user.updated_at = datetime.now(timezone.utc)
+
+    session.add(user)
+    session.commit()
