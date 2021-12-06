@@ -128,7 +128,7 @@ class CreatePlace(SQLModel):
     @validator('url')
     @classmethod
     def isurl(cls, value: str):
-        assert not validate_url(value), 'Malformed url'
+        assert validate_url(value), 'Malformed url'
         return value
 
 
@@ -145,7 +145,7 @@ class UpdatePlace(SQLModel):
     @validator('url')
     @classmethod
     def isurl(cls, value: Optional[str] = None):
-        assert value is not None and not validate_url(value), 'Malformed url'
+        assert value is None or validate_url(value), 'Malformed url'
         return value
 
 
