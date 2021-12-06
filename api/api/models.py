@@ -89,10 +89,7 @@ class Place(Timestamp, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     author: User = Relationship(back_populates='places')
     author_id: int = Field(..., foreign_key='users.id')
-    url: Optional[str] = Field(
-        default=None,
-        sa_column=Column(String, unique=True, nullable=False)
-    )
+    url: str
     title: Optional[str] = None
     description: Optional[str] = None
     keywords: Optional[list[str]] = Field(default=[])
