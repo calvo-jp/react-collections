@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'jit',
   purge: [
     './src/pages/**/*.tsx',
     './src/layouts/**/*.tsx',
@@ -7,9 +8,6 @@ module.exports = {
   darkMode: 'media',
   theme: {
     extend: {},
-    fontFamily: {
-      sans: ['Roboto', 'sans-serif'],
-    },
   },
   variants: {
     extend: {},
