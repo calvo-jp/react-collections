@@ -20,6 +20,8 @@ class Config(BaseSettings):
     redis_host: str
     redis_port: int
 
+    access_token_secret: str
+
     @property
     def debug(self):
         return self.env == 'development'
