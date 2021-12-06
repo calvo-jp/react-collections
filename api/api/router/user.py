@@ -143,13 +143,15 @@ async def setup_avatar(
     user: User = Depends(verify_owner),
     session: Session = Depends(get_session)
 ):
+    status_code = status.HTTP_201_CREATED
+
     if user.avatar is not None:
         fullpath = os.path.join(config.uploads_dir, user.avatar)
-
         if os.path.exists(fullpath):
             os.unlink(fullpath)
 
-        session.delete(user.avatar)
+        # update should return 200 OK status
+        status_code = status.HTTP_200_OK
 
     valid_types = [
         'image/jpeg',
@@ -180,7 +182,7 @@ async def setup_avatar(
         session.commit()
         session.refresh(user)
 
-        return user
+        return Response(status_code=status_code, content=user)
 
 
 @router.delete(path='/{id}/avatar', status_code=status.HTTP_204_NO_CONTENT)
