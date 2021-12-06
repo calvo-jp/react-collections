@@ -22,7 +22,7 @@ def _randstr(length: Optional[int] = None):
     return "".join(secrets.choice(alphabet) for _ in range(length))
 
 
-async def upload(
+def upload(
     file: UploadFile, *,
     whitelist: Optional[list[str]] = None,
     prefix: Optional[str] = None
@@ -44,10 +44,10 @@ async def upload(
     with open(fullpath, 'wb') as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    return fullpath
+    return filename
 
 
-async def delete(filename: str):
+def delete(filename: str):
     fullpath = os.path.join(config.uploads_dir, filename)
     if os.path.exists(fullpath):
         os.unlink(fullpath)
