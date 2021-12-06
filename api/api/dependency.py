@@ -22,7 +22,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/sessions')
 
 async def get_current_user(
     *,
-    token: str,
+    token: str = Depends(oauth2_scheme),
     request: Request,
     session: Session = Depends(get_session)
 ):
