@@ -4,8 +4,7 @@ from typing import Generic, List, Optional, TypeVar
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
-from sqlmodel import (Column, DateTime, Field, Relationship, SQLModel, String,
-                      default)
+from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
 
 from .config import engine
 from .utils.validator import validate_url
