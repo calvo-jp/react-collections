@@ -3,10 +3,11 @@ from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from jose.exceptions import ExpiredSignatureError, JWTError
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
-from ..dependency import get_current_user, get_session
+from ..dependency import get_session
 from ..models import ReadUser, User
 from ..utils import jsonwebtoken
 
@@ -34,17 +35,24 @@ async def login(
     if user is None or not checkpw(password, user.password):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail='Invalid credentials'
+            detail='Invalid credentials.'
         )
 
-    token = jsonwebtoken.sign(dict(sub=user.id))
+    token = jsonwebtoken.sign(dict(user_id=user.id))
     return dict(access_token=token, token_type='bearer', data=user)
 
 
-@router.delete(
-    path='/{token}',
-    status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(get_current_user)]
-)
+@router.delete(path='/{token}', status_code=status.HTTP_204_NO_CONTENT)
 async def logout(*, token: str):
-    jsonwebtoken.invalidate(token)
+    try:
+        jsonwebtoken.invalidate(token)
+    except ExpiredSignatureError as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Expired token.'
+        ) from error
+    except JWTError as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Invalid token.'
+        ) from error
