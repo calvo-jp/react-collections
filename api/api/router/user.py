@@ -97,3 +97,9 @@ async def update(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Email already exists'
         ) from error
+
+
+@router.delete(path='/{id}', status_code=status.HTTP_204_NO_CONTENT)
+async def delete(*, user: User = Depends(verify_owner), session: Session = Depends(get_session)):
+    session.delete(user)
+    session.commit()
