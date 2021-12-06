@@ -115,10 +115,28 @@ class ReadRecipe(SQLModel):
 
 class CreateRecipe(SQLModel):
     name: str = Field(..., min_length=4, max_length=50)
-    name: str = Field(..., min_length=15, max_length=255)
-    description: str
+    description: str = Field(..., min_length=15, max_length=255)
     ingredients: list[str] = Field(..., min_items=2, max_items=15)
     instructions: list[str] = Field(..., min_items=2, max_items=15)
+
+
+class UpdateRecipe(SQLModel):
+    name: Optional[str] = Field(default=None, min_length=4, max_length=50)
+    description: Optional[str] = Field(
+        default=None,
+        min_length=15,
+        max_length=255
+    )
+    ingredients: Optional[list[str]] = Field(
+        default=None,
+        min_items=2,
+        max_items=15
+    )
+    instructions: Optional[list[str]] = Field(
+        default=None,
+        min_items=2,
+        max_items=15
+    )
 
 
 def create_tables():
