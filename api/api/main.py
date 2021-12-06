@@ -1,10 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.router import stream
-
 from .models import create_tables
-from .router import recipe, session, user
+from .router import recipe, session, socket, stream, user
 
 app = FastAPI()
 
@@ -19,6 +17,7 @@ app.include_router(router=session.router)
 app.include_router(router=user.router)
 app.include_router(router=recipe.router)
 app.include_router(router=stream.router)
+app.include_router(router=socket.router)
 
 
 @app.on_event(event_type='startup')
