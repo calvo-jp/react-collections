@@ -46,8 +46,7 @@ async def readall(*, query: Query = Depends(), session: Session = Depends(get_se
     response_model_exclude_none=True
 )
 async def readone(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
-    stmt = select(User, Place).where(Place.id == id_)
-    place = session.exec(stmt).one_or_none()
+    place = session.get(Place, id_)
 
     if place is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -94,8 +93,7 @@ def verify_owner(
 ):
     """verifies current user owns the record"""
 
-    stmt = select(Place).where(id_ == Place.id)
-    place = session.exec(stmt).one_or_none()
+    place = session.get(Place, id_)
 
     if place is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
