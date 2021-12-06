@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from enum import Enum
 from typing import Optional
 
 from fastapi import APIRouter, status
@@ -158,28 +159,44 @@ async def delete(
     session.commit()
 
 
-@router.put(path='/{id}/image', response_model=ReadRecipe, response_model_exclude_none=True)
-async def upsert_image(
+class Media(str, Enum):
+    VIDEO = 'video'
+    IMAGE = 'image'
+
+
+@router.put(path='/{id}/{media}', response_model=ReadRecipe, response_model_exclude_none=True)
+async def upsert_media(
     *,
-    image: UploadFile = File(...),
+    file: UploadFile = File(...),
+    media: Media,
     recipe: Recipe = Depends(get_recipe_strict),
     session: Session = Depends(get_session),
     response: Response,
 ):
     status_code = status.HTTP_201_CREATED
-    if recipe.image is not None:
+    if getattr(recipe, media) is not None:
         status_code = status.HTTP_200_OK
-        file_uploader.delete(recipe.image)
+        file_uploader.delete(getattr(recipe, media))
 
-    whitelist = [
-        'image/jpeg',
-        'image/jpe',
-        'image/jpg',
-        'image/png',
-    ]
+    whitelist = dict(
+        image=[
+            'image/jpeg',
+            'image/jpe',
+            'image/jpg',
+            'image/png',
+        ],
+        video=[
+            'video/mp4'
+        ]
+    )
 
     try:
-        recipe.image = file_uploader.upload(image, whitelist=whitelist)
+        setattr(
+            recipe,
+            media,
+            file_uploader.upload(file, whitelist=whitelist[media])
+        )
+
         recipe.updated_at = datetime.now(timezone.utc)
 
         session.add(recipe)
@@ -195,18 +212,19 @@ async def upsert_image(
         ) from error
 
 
-@router.delete(path='/{id}/image', status_code=status.HTTP_204_NO_CONTENT)
-async def delete_image(
+@router.delete(path='/{id}/{media}', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_media(
     *,
+    media: Media,
     recipe: Recipe = Depends(get_recipe_strict),
     session: Session = Depends(get_session)
 ):
-    if recipe.image is None:
+    if getattr(recipe, media) is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-    file_uploader.delete(recipe.image)
+    file_uploader.delete(getattr(recipe, media))
 
-    recipe.image = None
+    setattr(recipe, media, None)
     recipe.updated_at = datetime.now(timezone.utc)
 
     session.add(recipe)
