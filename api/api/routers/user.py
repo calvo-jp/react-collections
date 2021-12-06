@@ -6,6 +6,7 @@ from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends, Path
 from fastapi.responses import Response
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
 from ..dependencies import get_current_user, get_session
@@ -64,8 +65,7 @@ async def readall(*, query: Query = Depends(), session: Session = Depends(get_se
     response_model_exclude_none=True,
 )
 async def readone(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
-    stmt = select(User).where(User.id == id_)
-    user = session.exec(stmt).one_or_none()
+    user = session.get(User, id_)
 
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -80,18 +80,24 @@ async def readone(*, id_: int = Path(..., alias='id'), session: Session = Depend
     response_model_exclude_none=True
 )
 async def create(*, data: CreateUser, session: Session = Depends(get_session)):
-    user = User(
-        name=data.name,
-        email=data.email,
-        password=hashpw(data.password.encode('utf-8'), gensalt()),
-        created_at=datetime.now(timezone.utc)
-    )
+    try:
+        user = User(
+            name=data.name,
+            email=data.email,
+            password=hashpw(data.password.encode('utf-8'), gensalt()),
+            created_at=datetime.now(timezone.utc)
+        )
 
-    session.add(user)
-    session.commit()
-    session.refresh(user)
+        session.add(user)
+        session.commit()
+        session.refresh(user)
 
-    return user
+        return user
+    except IntegrityError as error:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='Email already exists'
+        ) from error
 
 
 def verify_owner(*, id_: int = Path(..., alias='id', ge=1), user: User = Depends(get_current_user)):
@@ -112,20 +118,26 @@ async def update(
     user: User = Depends(verify_owner),
     session: Session = Depends(get_session)
 ):
-    if data.email != user.email:
-        user.email_verified = False
+    try:
+        if data.email != user.email:
+            user.email_verified = False
 
-    for k, v in data.dict(exclude_none=True).items():
-        if hasattr(user, k):
-            setattr(user, k, v)
+        for k, v in data.dict(exclude_none=True).items():
+            if hasattr(user, k):
+                setattr(user, k, v)
 
-    user.updated_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now(timezone.utc)
 
-    session.add(user)
-    session.commit()
-    session.refresh(user)
+        session.add(user)
+        session.commit()
+        session.refresh(user)
 
-    return user
+        return user
+    except IntegrityError as error:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='Email already exists'
+        ) from error
 
 
 @router.delete(path='/{id}', status_code=status.HTTP_204_NO_CONTENT)
