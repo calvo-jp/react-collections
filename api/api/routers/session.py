@@ -4,7 +4,7 @@ from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from jose.exceptions import JWTError
-from pydantic import BaseModel
+from pydantic import BaseModel, errors
 from sqlmodel import Session, select
 
 from ..dependencies import get_session
@@ -53,8 +53,8 @@ async def login(
 async def logout(*, token: str):
     try:
         jsonwebtoken.invalidate(token)
-    except JWTError:
+    except JWTError as error:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Invalid token.'
-        )
+        ) from error
