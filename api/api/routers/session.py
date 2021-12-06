@@ -4,7 +4,7 @@ from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from jose.exceptions import JWTError
-from pydantic import BaseModel, errors
+from pydantic import BaseModel
 from sqlmodel import Session, select
 
 from ..dependencies import get_session
