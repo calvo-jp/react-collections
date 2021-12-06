@@ -1,4 +1,5 @@
 # pylint: disable=consider-using-f-string
+from os import mkdir, path
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -37,6 +38,15 @@ class Config(BaseSettings):
             self.pgsql_port,
             self.pgsql_database
         )
+
+    @property
+    def uploads_dir(self):
+        fullpath = path.abspath('.uploads')
+
+        if not path.exists(fullpath):
+            mkdir(fullpath)
+
+        return fullpath
 
 
 config = Config()
