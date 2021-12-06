@@ -35,10 +35,18 @@ class Query:
     response_model_exclude_none=True
 )
 async def readall(*, query: Query = Depends(), session: Session = Depends(get_session)):
-    stmt = select(Place)
-    rows = session.exec(stmt).all()
+    # TODO: make this work
 
-    return rows
+    stmt = select(Place)
+    data = session.exec(stmt).all()
+
+    return dict(
+        rows=data,
+        total_rows=0,
+        page=query.page,
+        page_size=query.page_size,
+        has_next=False
+    )
 
 
 @router.get(
