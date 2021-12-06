@@ -34,7 +34,6 @@ async def check_email_availability(socket: WebSocket):
             email = data.get("subject")
 
             try:
-
                 validate_email(email, check_deliverability=False)
 
                 with Session(engine) as session:
