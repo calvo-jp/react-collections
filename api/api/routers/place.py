@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from os import path, unlink
 from typing import Optional
 
 from fastapi import APIRouter, status
@@ -148,3 +149,16 @@ async def update(
     session.refresh(place)
 
     return place
+
+
+@router.delete(path='/{id}', status_code=status.HTTP_204_NO_CONTENT)
+async def delete(
+    *,
+    place: Place = Depends(verify_owner),
+    session: Session = Depends(get_session)
+):
+    if place.image is not None and path.exists(place.image):
+        unlink(place.image)
+
+    session.delete(place)
+    session.commit()
