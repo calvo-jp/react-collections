@@ -29,7 +29,6 @@ class Config(BaseSettings):
     redis_port: int
 
     access_token_secret: str
-    refresh_token_secret: str
 
     @property
     def uploads_dir(self):
