@@ -21,7 +21,7 @@ class User(SQLModel, table=True):
     name: str
     email: EmailStr = Field(
         ...,
-        sa_column=Column(String, unique=True)
+        sa_column=Column(String, unique=True, nullable=False)
     )
     email_verified_at: Optional[datetime] = Field(
         default=None,
