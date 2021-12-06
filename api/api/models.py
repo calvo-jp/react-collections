@@ -42,11 +42,7 @@ class User(Timestamp, table=True):
         sa_column=Column(ZonedDateTime)
     )
     password: bytes
-    internalonly_avatar: Optional[str] = Field(
-        default=None,
-        sa_column=Column('avatar', String)
-    )
-
+    avatar: Optional[str] = None
     places: List['Place'] = Relationship(back_populates='author')
 
     @property
@@ -57,16 +53,6 @@ class User(Timestamp, table=True):
     def email_verified(self, v: bool):
         self.email_verified_at = datetime.now(timezone.utc) if v else None
 
-    @property
-    def avatar(self):
-        if self.internalonly_avatar is None:
-            return None
-        return Image(self.internalonly_avatar)
-
-    @avatar.setter
-    def avatar(self, v: Optional[str] = None):
-        self.internalonly_avatar = v
-
 
 class ReadUser(SQLModel):
     id: int
@@ -74,7 +60,7 @@ class ReadUser(SQLModel):
     email: EmailStr
     email_verified: Optional[bool] = None
     email_verified_at: Optional[datetime] = None
-    avatar: Optional['ReadImage'] = None
+    avatar: Optional[str] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
 
@@ -110,20 +96,7 @@ class Place(Timestamp, table=True):
     title: Optional[str] = None
     description: Optional[str] = None
     keywords: Optional[list[str]] = Field(default=[])
-    internalonly_image: Optional[str] = Field(
-        default=None,
-        sa_column=Column('image', String)
-    )
-
-    @property
-    def image(self):
-        if self.internalonly_image is None:
-            return None
-        return Image(self.internalonly_image)
-
-    @image.setter
-    def image(self, v: Optional[str] = None):
-        self.internalonly_image = v
+    image: Optional[str] = None
 
 
 class ReadPlace(SQLModel):
@@ -133,7 +106,7 @@ class ReadPlace(SQLModel):
     title: Optional[str] = None
     description: Optional[str] = None
     keywords: Optional[list[str]] = []
-    image: Optional['ReadImage'] = None
+    image: Optional[str] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
 
@@ -172,49 +145,6 @@ class UpdatePlace(SQLModel):
         return value
 
 
-class Image:
-    def __init__(self, filename: str):
-        self.filename = filename
-
-    @property
-    def filetype(self):
-        pass
-
-    @property
-    def filesize(self):
-        pass
-
-    @property
-    def base64_data(self):
-        pass
-
-    @property
-    def stream_url(self):
-        pass
-
-    # TODO:
-    # 1. Add delete magic method to delete the actual image and class instance
-    # 2. Add static method to upload image and return instance
-
-    def __repr__(self):
-        return "<class 'Image' filename='%s' filetype='%s' filesize=%s>" % (
-            self.filename,
-            self.filetype,
-            self.filesize
-        )
-
-
-class ReadImage(SQLModel):
-    filename: str = Field(..., alias='file_name')
-    filetype: str = Field(..., alias='file_type')
-    filesize: float = Field(..., alias='file_size')
-    stream_url: str
-    base64_data: str
-
-
-ReadUser.update_forward_refs()
-ReadPlace.update_forward_refs()
-
 PaginatedT = TypeVar('PaginatedT', ReadUser, ReadPlace)
 
 
@@ -227,5 +157,4 @@ class Paginated(GenericModel, Generic[PaginatedT]):
 
 
 def create_tables():
-    SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
