@@ -2,14 +2,16 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import APIRouter, status
+from fastapi.datastructures import UploadFile
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Depends, Path
+from fastapi.param_functions import Depends, File, Path
 from fastapi.responses import Response
 from sqlmodel import Session, func, select
 
 from ..dependency import get_current_user, get_session
 from ..models import (CreateRecipe, Paginated, ReadRecipe, Recipe,
                       UpdateRecipe, User)
+from ..utils import file_uploader
 
 router = APIRouter(prefix='/recipes', tags=['recipe'])
 
@@ -30,7 +32,12 @@ class Query:
 
 
 @router.get(path='/', response_model=Paginated[ReadRecipe], response_model_exclude_none=True)
-async def read_all(*, session: Session = Depends(get_session), query: Query = Depends()):
+async def read_all(
+    *,
+    query: Query = Depends(),
+    session: Session = Depends(get_session),
+    response: Response
+):
     stmt = select(Recipe)
 
     if query.author_id:
@@ -49,16 +56,14 @@ async def read_all(*, session: Session = Depends(get_session), query: Query = De
     ).all()
 
     has_next = total_rows > query.page * query.page_size
+    response.status_code = status.HTTP_206_PARTIAL_CONTENT if has_next else status.HTTP_200_OK
 
-    return Response(
-        status_code=status.HTTP_206_PARTIAL_CONTENT if has_next else status.HTTP_200_OK,
-        content=dict(
-            page=query.page,
-            page_size=query.page_size,
-            total_rows=total_rows,
-            rows=rows,
-            has_next=has_next
-        ),
+    return dict(
+        page=query.page,
+        page_size=query.page_size,
+        total_rows=total_rows,
+        rows=rows,
+        has_next=has_next
     )
 
 
@@ -150,4 +155,59 @@ async def delete(
     session: Session = Depends(get_session)
 ):
     session.delete(recipe)
+    session.commit()
+
+
+@router.put(path='/{id}/image', response_model=ReadRecipe, response_model_exclude_none=True)
+async def upsert_image(
+    *,
+    image: UploadFile = File(...),
+    recipe: Recipe = Depends(get_recipe_strict),
+    session: Session = Depends(get_session),
+    response: Response,
+):
+    status_code = status.HTTP_201_CREATED
+    if recipe.image is not None:
+        status_code = status.HTTP_200_OK
+        file_uploader.delete(recipe.image)
+
+    whitelist = [
+        'image/jpeg',
+        'image/jpe',
+        'image/jpg',
+        'image/png',
+    ]
+
+    try:
+        recipe.image = file_uploader.upload(image, whitelist=whitelist)
+        recipe.updated_at = datetime.now(timezone.utc)
+
+        session.add(recipe)
+        session.commit()
+        session.refresh(recipe)
+
+        response.status_code = status_code
+        return recipe
+    except file_uploader.UnsupportedFileType as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Unsupported file type'
+        ) from error
+
+
+@router.delete(path='/{id}/image', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_image(
+    *,
+    recipe: Recipe = Depends(get_recipe_strict),
+    session: Session = Depends(get_session)
+):
+    if recipe.image is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+    file_uploader.delete(recipe.image)
+
+    recipe.image = None
+    recipe.updated_at = datetime.now(timezone.utc)
+
+    session.add(recipe)
     session.commit()
