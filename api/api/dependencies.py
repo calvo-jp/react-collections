@@ -4,7 +4,7 @@ from fastapi.param_functions import Depends
 from fastapi.requests import Request
 from fastapi.security.oauth2 import OAuth2PasswordBearer
 from jose.exceptions import ExpiredSignatureError, JWTError
-from sqlmodel import Session, select
+from sqlmodel import Session
 
 from .config import engine
 from .models import User
