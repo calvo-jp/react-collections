@@ -17,7 +17,7 @@ class ZonedDateTime(DateTime):
 class User(SQLModel, table=True):
     __tablename__: str = 'users'
 
-    id: Optional[int] = Field(..., primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     email: EmailStr = Field(
         ...,
