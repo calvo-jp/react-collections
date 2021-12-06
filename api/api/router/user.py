@@ -4,6 +4,7 @@ import os
 import shutil
 import uuid
 from datetime import datetime, timezone
+from typing import Optional
 
 from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
@@ -11,13 +12,53 @@ from fastapi.datastructures import UploadFile
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends, File, Path
 from sqlalchemy.exc import IntegrityError
-from sqlmodel import Session
+from sqlmodel import Session, func, select
 
 from ..config import config
 from ..dependency import get_current_user, get_session
-from ..models import CreateUser, ReadUser, UpdateUser, User
+from ..models import CreateUser, Paginated, ReadUser, UpdateUser, User
 
 router = APIRouter(prefix='/users', tags=['user'])
+
+
+class Query:
+    def __init__(
+        self,
+        *,
+        page: Optional[int] = None,
+        page_size: Optional[int] = None,
+        search: Optional[str] = None
+    ):
+        self.page = page or 1
+        self.page_size = page_size or 25
+        self.search = search
+
+
+@router.get(path='/', response_model=Paginated[ReadUser], response_model_exclude_none=True)
+async def read_all(*, query: Query = Depends(), session: Session = Depends(get_session)):
+    stmt = select(User)
+
+    # TODO: implement fulltext search
+    if query.search:
+        pass
+
+    total_rows: int = session.execute(
+        stmt.with_only_columns(func.count(User.id))
+    ).scalar_one()
+
+    rows = session.exec(
+        stmt.limit(query.page_size).offset((query.page - 1) * query.page_size)
+    ).all()
+
+    has_next = total_rows > query.page * query.page_size
+
+    return dict(
+        page=query.page,
+        page_size=query.page_size,
+        total_rows=total_rows,
+        rows=rows,
+        has_next=has_next
+    )
 
 
 @router.post(
