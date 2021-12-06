@@ -101,6 +101,8 @@ class Recipe(SQLModel, table=True):
         ...,
         sa_column=Column(ARRAY(String))
     )
+    image: Optional[str] = None
+    video: Optional[str] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
 
@@ -112,6 +114,8 @@ class ReadRecipe(SQLModel):
     author: ReadUser
     ingredients: Optional[list[str]] = []
     instructions: Optional[list[str]] = []
+    image: Optional[str] = None
+    video: Optional[str] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
 
