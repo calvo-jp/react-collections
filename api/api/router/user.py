@@ -78,16 +78,22 @@ async def update(
     data: UpdateUser,
     session: Session = Depends(get_session)
 ):
-    for k, v in data.dict(exclude_none=True).items():
-        setattr(user, k, v)
+    try:
+        for k, v in data.dict(exclude_none=True).items():
+            setattr(user, k, v)
 
-    if data.email is not None and data.email != user.email:
-        user.email_verified = False
+        if data.email is not None and data.email != user.email:
+            user.email_verified = False
 
-    user.updated_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now(timezone.utc)
 
-    session.add(user)
-    session.commit()
-    session.refresh(user)
+        session.add(user)
+        session.commit()
+        session.refresh(user)
 
-    return user
+        return user
+    except IntegrityError as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Email already exists'
+        ) from error
