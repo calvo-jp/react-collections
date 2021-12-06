@@ -4,10 +4,11 @@ from typing import Optional
 from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends, Path
-from sqlmodel import Session, select
+from sqlmodel import Session, func, select
 
 from ..dependency import get_current_user, get_session
-from ..models import CreateRecipe, ReadRecipe, Recipe, UpdateRecipe, User
+from ..models import (CreateRecipe, Paginated, ReadRecipe, Recipe,
+                      UpdateRecipe, User)
 
 router = APIRouter(prefix='/recipes', tags=['recipe'])
 
@@ -27,18 +28,34 @@ class Query:
         self.author_id = author_id
 
 
-@router.get(path='/', response_model=list[ReadRecipe], response_model_exclude_none=True)
+@router.get(path='/', response_model=Paginated[ReadRecipe], response_model_exclude_none=True)
 async def read_all(*, session: Session = Depends(get_session), query: Query = Depends()):
     stmt = select(Recipe)
 
     if query.author_id:
         stmt = stmt.where(Recipe.author_id == query.author_id)
 
-    data = session.exec(
+    # TODO: implement a fulltext search
+    if query.search:
+        pass
+
+    total_rows: int = session.execute(
+        stmt.with_only_columns(func.count(Recipe.id))
+    ).scalar_one()
+
+    rows = session.exec(
         stmt.limit(query.page_size).offset((query.page - 1) * query.page_size)
     ).all()
 
-    return data
+    has_next = total_rows > query.page * query.page_size
+
+    return dict(
+        page=query.page,
+        page_size=query.page_size,
+        rows=rows,
+        total_rows=total_rows,
+        has_next=has_next
+    )
 
 
 @router.get(path='/{id}', response_model=ReadRecipe, response_model_exclude_none=True)
