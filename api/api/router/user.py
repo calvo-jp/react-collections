@@ -1,8 +1,3 @@
-# pylint: disable=consider-using-f-string
-
-import os
-import shutil
-import uuid
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -15,9 +10,9 @@ from fastapi.responses import Response
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, func, select
 
-from ..config import config
 from ..dependency import get_current_user, get_session
 from ..models import CreateUser, Paginated, ReadUser, UpdateUser, User
+from ..utils import file_uploader
 
 router = APIRouter(prefix='/users', tags=['user'])
 
@@ -147,6 +142,11 @@ async def setup_avatar(
     session: Session = Depends(get_session),
     response: Response
 ):
+    status_code = status.HTTP_201_CREATED
+    if user.avatar is not None:
+        file_uploader.delete(user.avatar)
+        status_code = status.HTTP_200_OK
+
     valid_types = [
         'image/jpeg',
         'image/jpe',
@@ -154,32 +154,8 @@ async def setup_avatar(
         'image/png',
     ]
 
-    if not image.content_type in valid_types:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail='Unsupported file type'
-        )
-
-    status_code = status.HTTP_201_CREATED
-
-    if user.avatar is not None:
-        fullpath = os.path.join(config.uploads_dir, user.avatar)
-        if os.path.exists(fullpath):
-            os.unlink(fullpath)
-
-        # update should return 200 OK status
-        status_code = status.HTTP_200_OK
-
-    # TODO: ensure unique filename
-    filetype: str = image.content_type
-    extension = filetype.removeprefix("image/")
-    filename = '%s.%s' % (uuid.uuid4().hex, extension)
-    fullpath = os.path.join(config.uploads_dir, filename)
-
-    with open(fullpath, 'wb') as buffer:
-        shutil.copyfileobj(image.file, buffer)
-
-        user.avatar = filename
+    try:
+        user.avatar = file_uploader.upload(image, whitelist=valid_types)
         user.updated_at = datetime.now(timezone.utc)
 
         session.add(user)
@@ -188,6 +164,11 @@ async def setup_avatar(
 
         response.status_code = status_code
         return user
+    except file_uploader.UnsupportedFileType as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Unsupported file type'
+        ) from error
 
 
 @router.delete(path='/{id}/avatar', status_code=status.HTTP_204_NO_CONTENT)
@@ -199,10 +180,7 @@ async def delete_avatar(
     if user.avatar is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-    fullpath = os.path.join(config.uploads_dir, user.avatar)
-
-    if os.path.exists(fullpath):
-        os.unlink(fullpath)
+    file_uploader.delete(user.avatar)
 
     user.avatar = None
     user.updated_at = datetime.now(timezone.utc)
