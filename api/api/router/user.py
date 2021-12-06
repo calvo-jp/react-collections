@@ -1,14 +1,20 @@
+# pylint: disable=consider-using-f-string
+import os
+import shutil
+import uuid
 from datetime import datetime, timezone
 
 from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
+from fastapi.datastructures import UploadFile
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Depends, Path
+from fastapi.param_functions import Depends, File, Path
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session
 
+from ..config import config
 from ..dependency import get_current_user, get_session
-from ..models import CreateUser, ReadUser, UpdateUser, User
+from ..models import Attachment, CreateUser, ReadUser, UpdateUser, User
 
 router = APIRouter(prefix='/users', tags=['user'])
 
@@ -82,3 +88,50 @@ async def update(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Email already exists'
         ) from error
+
+
+@router.put(path='/{id}/avatar', response_model=ReadUser, response_model_exclude_none=True)
+async def setup_avatar(
+    *,
+    image: UploadFile = File(...),
+    user: User = Depends(verify_owner),
+    session: Session = Depends(get_session)
+):
+    if user.avatar is not None:
+        fullpath = os.path.join(config.uploads_dir, user.avatar.file_name)
+
+        if os.path.exists(fullpath):
+            os.unlink(fullpath)
+
+        session.delete(user.avatar)
+
+    valid_types = [
+        'image/jpeg',
+        'image/jpe',
+        'image/jpg',
+        'image/png',
+    ]
+
+    if not image.content_type in valid_types:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Image type not supported'
+        )
+
+    filetype: str = image.content_type
+    filetype = filetype.removeprefix('image/')
+    filename = uuid.uuid4().hex
+    filename = '%s.%s' % (filename, filetype)
+    fullpath = os.path.join(config.uploads_dir, filename)
+
+    with open(fullpath, 'wb') as buffer:
+        shutil.copyfileobj(image.file, buffer)
+
+        user.avatar = Attachment(file_name=filename)
+        user.updated_at = datetime.now(timezone.utc)
+
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+
+        return user
