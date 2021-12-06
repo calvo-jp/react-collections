@@ -30,6 +30,11 @@ class User(SQLModel, table=True):
         sa_column=Column(ZonedDateTime)
     )
     password: bytes
+    avatar: Optional['Attachment'] = Relationship()
+    avatar_id: Optional[int] = Field(
+        default=None,
+        foreign_key='attachments.id'
+    )
     created_at: datetime = Field(
         ...,
         sa_column=Column(ZonedDateTime, nullable=False)
@@ -56,6 +61,7 @@ class ReadUser(SQLModel):
     email: EmailStr
     email_verified: bool
     email_verified_at: Optional[datetime] = None
+    avatar: Optional['ReadAttachment'] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
 
@@ -138,6 +144,49 @@ class UpdateRecipe(SQLModel):
         min_items=2,
         max_items=15
     )
+
+
+class Attachment(SQLModel, table=True):
+    __tablename__: str = 'attachments'
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    file_name: str = Field(..., sa_column=Column(String, unique=True))
+
+    @property
+    def file_type(self):
+        return ""
+
+    @property
+    def file_size(self):
+        return ""
+
+    @property
+    def dimension(self) -> tuple[float, float]:
+        return (0, 0)
+
+    @property
+    def stream_url(self):
+        return ""
+
+    @property
+    def base64_data(self):
+        return ""
+
+
+class ReadAttachment(SQLModel):
+    id: int
+    file_name: str
+    file_size: str
+    file_type: str
+    dimension: Optional[tuple[float, float]] = Field(
+        default=None,
+        description='width and height'
+    )
+    stream_url: str
+    base64_data: str
+
+
+ReadUser.update_forward_refs()
 
 
 PaginatedT = TypeVar('PaginatedT', ReadUser, ReadRecipe)
