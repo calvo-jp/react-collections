@@ -69,7 +69,7 @@ class CreateUser(SQLModel):
 
     @validator('email', pre=True)
     @classmethod
-    def emailtolowercase(cls, value: str):
+    def ensure_email_lcase(cls, value: str):
         return value.lower()
 
 
