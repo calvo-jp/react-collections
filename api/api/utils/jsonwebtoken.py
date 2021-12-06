@@ -32,8 +32,7 @@ def decode(token: str) -> dict[str, Any]:
 
     try:
         assert not blacklisted(claims['_id'])
-        assert isinstance(blacklist['exp'], float)
-
+        assert isinstance(claims['exp'], float)
         return dict(claims)
     except (AssertionError, IndexError) as error:
         raise JWTError() from error
