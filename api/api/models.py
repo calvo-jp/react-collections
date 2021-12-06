@@ -2,7 +2,8 @@ from datetime import datetime, timezone
 from typing import List, Optional
 
 from pydantic import EmailStr, validator
-from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
+from sqlmodel import (ARRAY, Column, DateTime, Field, Relationship, SQLModel,
+                      String)
 
 from .config import engine
 
@@ -84,13 +85,19 @@ class UpdateUser(SQLModel):
 class Recipe(SQLModel, table=True):
     __tablename__: str = 'recipes'
 
-    id: Optional[int] = Field(..., primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     description: str
     author_id: int = Field(..., foreign_key='users.id')
     author: User = Relationship(back_populates='recipes')
-    ingredients: list[str]
-    instructions: list[str]
+    ingredients: list[str] = Field(
+        ...,
+        sa_column=Column(ARRAY(String))
+    )
+    instructions: list[str] = Field(
+        ...,
+        sa_column=Column(ARRAY(String))
+    )
     created_at: datetime
     updated_at: Optional[datetime] = None
 
@@ -100,10 +107,18 @@ class ReadRecipe(SQLModel):
     name: str
     description: str
     author: ReadUser
-    ingredients: list[str]
-    instructions: list[str]
+    ingredients: Optional[list[str]] = []
+    instructions: Optional[list[str]] = []
     created_at: datetime
     updated_at: Optional[datetime] = None
+
+
+class CreateRecipe(SQLModel):
+    name: str = Field(..., min_length=4, max_length=50)
+    name: str = Field(..., min_length=15, max_length=255)
+    description: str
+    ingredients: list[str] = Field(..., min_items=2, max_items=15)
+    instructions: list[str] = Field(..., min_items=2, max_items=15)
 
 
 def create_tables():
