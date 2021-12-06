@@ -119,7 +119,7 @@ async def update(
     session: Session = Depends(get_session)
 ):
     try:
-        if data.email != user.email:
+        if data.email is not None and data.email != user.email:
             user.email_verified = False
 
         for k, v in data.dict(exclude_none=True).items():
