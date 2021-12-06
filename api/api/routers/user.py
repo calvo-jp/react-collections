@@ -47,10 +47,10 @@ async def read_all(
     if query.search:
         pass
 
-    total_rows: int = session.execute(
+    totalrows: int = session.execute(
         stmt.with_only_columns(func.count(User.id))
     ).scalar_one()
-    hasnext = total_rows - (query.page * query.page_size) > 0
+    hasnext = totalrows - (query.page * query.page_size) > 0
     rows = session.exec(
         stmt.limit(query.page_size).offset((query.page - 1) * query.page_size)
     ).all()
@@ -60,7 +60,7 @@ async def read_all(
         page=1,
         page_size=25,
         rows=rows,
-        total_rows=total_rows,
+        total_rows=totalrows,
         has_next=hasnext,
     )
 
