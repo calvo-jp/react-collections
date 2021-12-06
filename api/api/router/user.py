@@ -11,6 +11,7 @@ from fastapi import APIRouter, status
 from fastapi.datastructures import UploadFile
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends, File, Path
+from fastapi.responses import Response
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, func, select
 
@@ -52,12 +53,15 @@ async def read_all(*, query: Query = Depends(), session: Session = Depends(get_s
 
     has_next = total_rows > query.page * query.page_size
 
-    return dict(
-        page=query.page,
-        page_size=query.page_size,
-        total_rows=total_rows,
-        rows=rows,
-        has_next=has_next
+    return Response(
+        status_code=status.HTTP_206_PARTIAL_CONTENT if has_next else status.HTTP_200_OK,
+        content=dict(
+            page=query.page,
+            page_size=query.page_size,
+            total_rows=total_rows,
+            rows=rows,
+            has_next=has_next
+        ),
     )
 
 

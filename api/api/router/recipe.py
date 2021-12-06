@@ -4,6 +4,7 @@ from typing import Optional
 from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends, Path
+from fastapi.responses import Response
 from sqlmodel import Session, func, select
 
 from ..dependency import get_current_user, get_session
@@ -49,12 +50,15 @@ async def read_all(*, session: Session = Depends(get_session), query: Query = De
 
     has_next = total_rows > query.page * query.page_size
 
-    return dict(
-        page=query.page,
-        page_size=query.page_size,
-        rows=rows,
-        total_rows=total_rows,
-        has_next=has_next
+    return Response(
+        status_code=status.HTTP_206_PARTIAL_CONTENT if has_next else status.HTTP_200_OK,
+        content=dict(
+            page=query.page,
+            page_size=query.page_size,
+            total_rows=total_rows,
+            rows=rows,
+            has_next=has_next
+        ),
     )
 
 
