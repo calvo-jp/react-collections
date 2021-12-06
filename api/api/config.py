@@ -17,6 +17,9 @@ class Config(BaseSettings):
     pgsql_password: str
     pgsql_database: str
 
+    redis_host: str
+    redis_port: int
+
     @property
     def debug(self):
         return self.env == 'development'
