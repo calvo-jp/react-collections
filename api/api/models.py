@@ -4,7 +4,8 @@ from typing import Generic, List, Optional, TypeVar
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
-from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
+from sqlmodel import (Column, DateTime, Field, Relationship, SQLModel, String,
+                      default)
 
 from .config import engine
 from .utils.validator import validate_url
@@ -42,7 +43,10 @@ class User(Timestamp, table=True):
         sa_column=Column(ZonedDateTime)
     )
     password: bytes
-    _avatar: Optional[str] = None
+    internalonly_avatar: Optional[str] = Field(
+        default=None,
+        sa_column=Column('avatar', String)
+    )
 
     places: List['Place'] = Relationship(back_populates='author')
 
@@ -56,13 +60,13 @@ class User(Timestamp, table=True):
 
     @property
     def avatar(self):
-        if self._avatar is None:
+        if self.internalonly_avatar is None:
             return None
-        return Image(self._avatar)
+        return Image(self.internalonly_avatar)
 
     @avatar.setter
     def avatar(self, v: Optional[str] = None):
-        self._avatar = v
+        self.internalonly_avatar = v
 
 
 class ReadUser(SQLModel):
@@ -107,17 +111,20 @@ class Place(Timestamp, table=True):
     title: Optional[str] = None
     description: Optional[str] = None
     keywords: Optional[list[str]] = Field(default=[])
-    _image: Optional[str] = None
+    internalonly_image: Optional[str] = Field(
+        default=None,
+        sa_column=Column('image', String)
+    )
 
     @property
     def image(self):
-        if self._image is None:
+        if self.internalonly_image is None:
             return None
-        return Image(self._image)
+        return Image(self.internalonly_image)
 
     @image.setter
     def image(self, v: Optional[str] = None):
-        self._image = v
+        self.internalonly_image = v
 
 
 class ReadPlace(SQLModel):
@@ -187,7 +194,7 @@ class Image:
         pass
 
     # TODO:
-    # 1. Add delete method to delete the actual image and class instance
+    # 1. Add delete magic method to delete the actual image and class instance
     # 2. Add static method to upload image and return instance
 
     def __repr__(self):
