@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import Generic, List, Optional, TypeVar
 
 from pydantic import EmailStr, validator
+from pydantic.generics import GenericModel
 from sqlmodel import (ARRAY, Column, DateTime, Field, Relationship, SQLModel,
                       String)
 
@@ -137,6 +138,17 @@ class UpdateRecipe(SQLModel):
         min_items=2,
         max_items=15
     )
+
+
+PaginatedT = TypeVar('PaginatedT', ReadUser, ReadRecipe)
+
+
+class Paginated(GenericModel, Generic[PaginatedT]):
+    rows: list[PaginatedT]
+    total_rows: int
+    page: int
+    page_size: int
+    has_next: bool
 
 
 def create_tables():
