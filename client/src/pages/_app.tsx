@@ -16,11 +16,11 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         />
       </Head>
 
-      <div className="min-h-screen bg-white text-gray-700 font-sans">
-        <GlobalProvider>
+      <GlobalProvider>
+        <div className="min-h-screen bg-white text-gray-700 font-sans">
           <Component {...pageProps} />
-        </GlobalProvider>
-      </div>
+        </div>
+      </GlobalProvider>
     </React.Fragment>
   );
 };
