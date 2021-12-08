@@ -1,3 +1,12 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json"
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "lib": [
+      "esnext"
+    ],
+    "esModuleInterop": true
+  }
 }
