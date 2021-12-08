@@ -1,3 +1,3 @@
-## Pedicab
+## Rooms
 
-Get a shorter and more meaningful url
+Get a shorter url
