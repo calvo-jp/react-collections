@@ -1,9 +1,12 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2021",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "outDir": "dist",
-    "strict": true,
     "lib": [
       "esnext"
     ],
