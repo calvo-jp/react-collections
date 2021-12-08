@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -7,7 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Room {
+model Door {
   id          Int      @id @default(autoincrement())
   url         String   @unique
   title       String?
