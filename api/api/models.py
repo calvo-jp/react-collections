@@ -63,6 +63,9 @@ class Household(SQLModelTimestamped, table=True):
     total_families: int
 
     members: List['User'] = Relationship(back_populates='household')
+    document_requests: List['DocumentRequest'] = Relationship(
+        back_populates='purok'
+    )
 
     @property
     def total_members(self):
@@ -157,6 +160,9 @@ class User(SQLModelTimestamped, table=True):
     )
     household: Optional[Household] = Relationship(back_populates='members')
     employment: List['Employee'] = Relationship(back_populates='user')
+    document_requests: List['DocumentRequest'] = Relationship(
+        back_populates='user'
+    )
 
     @property
     def age(self):
@@ -213,6 +219,37 @@ class Employee(SQLModelTimestamped, table=True):
     start: date
     until: Optional[date] = None
     reason_for_leaving: Optional[str] = None
+
+
+class DocumentType(str, Enum):
+    BARANGAY_PERMIT = 'barangay permit'
+    BARANGAY_CERTIFICATE = 'barangay certificate'
+    CERTIFICATE_OF_OWNERSHIP = 'certificate of ownership'
+    CERTIFICATE_OF_SINGLENESS = 'certificate of singleness'
+    CERTIFICATE_OF_CUTTING_TREES = 'certificate of cutting trees'
+
+
+class DocumentRequestStatus(str, Enum):
+    PENDING = 'pending'
+    APPROVED = 'approved'
+    CANCELED = 'canceled'
+    FORWARDED = 'forwarded'
+
+
+class DocumentRequest(SQLModelTimestamped, table=True):
+    __tablename__: str = 'document_requests'
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    type_: DocumentType = Field(
+        ..., sa_column=Column(SQLAlchemyEnum(DocumentType), nullable=False)
+    )
+    status: DocumentRequestStatus = Field(
+        ..., sa_column=Column(SQLAlchemyEnum(DocumentRequestStatus), nullable=False)
+    )
+    user: User = Relationship(back_populates='document_requests')
+    user_id: int = Field(..., foreign_key='users.id')
+    purok: User = Relationship(back_populates='document_requests')
+    purok_id: int = Field(..., foreign_key='puroks.id')
 
 
 def create_tables():
