@@ -1,15 +1,11 @@
-# pylint: disable=consider-using-f-string
 from os import mkdir, path
 from typing import Optional
 
-from dotenv import load_dotenv
 from pydantic import BaseSettings
 from sqlmodel import create_engine
 
-load_dotenv()
 
-
-class Config(BaseSettings):
+class Settings(BaseSettings):
     env: Optional[str]
 
     pgsql_host: str
@@ -48,6 +44,9 @@ class Config(BaseSettings):
 
         return fullpath
 
+    class Config:
+        env_file = ".env"
 
-config = Config()
+
+config = Settings()
 engine = create_engine(url=config.pgsql_dsn, echo=config.debug)
