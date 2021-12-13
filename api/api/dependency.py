@@ -40,7 +40,7 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Expired token.'
         ) from error
-    except (IndexError, JWTError) as error:
+    except (IndexError, JWTError, NoResultFound) as error:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Invalid token.'
