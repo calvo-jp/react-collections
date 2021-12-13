@@ -1,15 +1,14 @@
 module.exports = {
-  mode: 'jit',
-  purge: [
-    './src/pages/**/*.tsx',
-    './src/layouts/**/*.tsx',
-    './src/widgets/**/*.tsx',
+  content: [
+    "./src/pages/**/*.tsx",
+    "./src/layouts/**/*.tsx",
+    "./src/widgets/**/*.tsx",
   ],
-  darkMode: 'media',
+  darkMode: "media",
   theme: {
     extend: {},
     fontFamily: {
-      sans: ["'Poppins'", 'sans-serif'],
+      sans: ["'Source Sans 3", "sans-serif"],
     },
   },
   variants: {
