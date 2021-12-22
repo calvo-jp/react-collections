@@ -49,7 +49,13 @@ const TextField: React.FC<TextFieldProps> = ({
   };
 
   return (
-    <div className="inline-block relative">
+    <div
+      className={clsx(
+        "relative",
+        !fullWidth && "inline-block",
+        fullWidth && "block w-full"
+      )}
+    >
       <label
         htmlFor={props.id}
         onClick={handleClick}
@@ -65,11 +71,10 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         ref={inputRef}
         className={clsx(
-          "p-2 border border-gray-300 outline-none transition-all duration-300",
+          "p-2 border border-gray-300 outline-none transition-all duration-300 w-full",
           !error &&
             "hover:border-gray-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-200",
           error && "border-red-400 focus:ring-4 focus:ring-red-200",
-          fullWidth && "block w-full",
           className
         )}
         {...props}
