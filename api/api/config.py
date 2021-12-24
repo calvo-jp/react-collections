@@ -1,3 +1,5 @@
+import os
+
 from pydantic import BaseSettings
 from sqlmodel import create_engine
 
@@ -31,6 +33,15 @@ class Settings(BaseSettings):
             self.pgsql_port,
             self.pgsql_database
         )
+
+    @property
+    def uploads_dir(self):
+        fullpath = os.path.join(os.getcwd(), ".uploads")
+
+        if os.path.exists(fullpath):
+            os.mkdir(fullpath)
+
+        return fullpath
 
     class Config:
         env_file = ".env"
