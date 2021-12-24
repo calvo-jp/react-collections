@@ -2,12 +2,17 @@ from datetime import datetime, timezone
 
 from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, Depends, HTTPException, Path, status
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from ..dependencies import get_session
 from ..models import CreateUser, ReadUser, UpdateUser, User
 
 router = APIRouter(prefix="/user", tags=["users"])
+
+
+@router.get(path="/", response_model=list[ReadUser])
+async def findall(*, session: Session = Depends(get_session)):
+    return session.exec(select(User)).all()
 
 
 @router.get(path="/{id}", response_model=ReadUser)
