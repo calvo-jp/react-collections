@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
+from pydantic import EmailStr, validator
 from sqlmodel import Column, DateTime, Field, SQLModel, String
 
 from .config import engine
@@ -29,6 +30,38 @@ class User(SQLModel, table=True):
         default=None,
         sa_column=Column(ZonedDateTime)
     )
+
+
+class ReadUser(SQLModel):
+    id: int
+    name: str
+    email: EmailStr
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+    @validator("email", pre=True)
+    @classmethod
+    def lower_email(cls, email: EmailStr):
+        return email.lower()
+
+
+class CreateUser(SQLModel):
+    name: str = Field(..., min_length=2, max_length=50)
+    email: EmailStr
+    password: str = Field(..., min_length=5, max_length=100)
+
+
+class UpdateUser(SQLModel):
+    name: Optional[str] = Field(default=None, min_length=2, max_length=50)
+    email: Optional[EmailStr]
+
+    @validator("email", pre=True)
+    @classmethod
+    def lower_email(cls, email: EmailStr | None = None):
+        if email is None:
+            return None
+
+        return email.lower()
 
 
 def generate_tables():
