@@ -32,6 +32,9 @@ class Settings(BaseSettings):
             self.pgsql_database
         )
 
+    class Config:
+        env_file = ".env"
+
 
 config = Settings()
 engine = create_engine(url=config.pgsql_dsn, echo=config.debug)
