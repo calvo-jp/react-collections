@@ -1,5 +1,5 @@
 import enum
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from pydantic import EmailStr, validator
@@ -29,6 +29,10 @@ class User(SQLModel, table=True):
     )
     password: bytes
     avatar: Optional[str] = None
+    email_verified_at: Optional[datetime] = Field(
+        default=None,
+        sa_column=Column(ZonedDateTime)
+    )
     created_at: datetime = Field(
         ...,
         sa_column=Column(ZonedDateTime, nullable=False)
@@ -46,11 +50,21 @@ class User(SQLModel, table=True):
     def is_admin(self):
         return self.user_type == UserType.ADMIN
 
+    @property
+    def email_verified(self):
+        return isinstance(self.email_verified, datetime)
+
+    @email_verified.setter
+    def email_verified(self, v: bool):
+        self.email_verified_at = datetime.now(timezone.utc) if v else None
+
 
 class ReadUser(SQLModel):
     id: int
     name: str
     email: EmailStr
+    email_verified: bool
+    email_verified_at: Optional[datetime]
     avatar: Optional[str]
     is_admin: Optional[bool]
     created_at: datetime
