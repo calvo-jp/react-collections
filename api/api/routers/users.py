@@ -1,11 +1,13 @@
 from datetime import datetime, timezone
 
 from bcrypt import gensalt, hashpw
-from fastapi import APIRouter, Depends, HTTPException, Path, status
+from fastapi import (APIRouter, Depends, File, HTTPException, Path, Response,
+                     UploadFile, status)
 from sqlmodel import Session, select
 
 from ..dependencies import get_session
 from ..models import CreateUser, ReadUser, UpdateUser, User
+from ..utils import file_uploader
 
 router = APIRouter(prefix="/user", tags=["users"])
 
@@ -70,3 +72,55 @@ async def update(
     session.refresh(user)
 
     return user
+
+
+@router.put(
+    path="/{id}/avatar",
+    response_model_exclude_none=True,
+    response_model=User
+)
+async def set_avatar(
+    *,
+    user: User = Depends(findone_strict),
+    file: UploadFile = File(...),
+    session: Session = Depends(get_session),
+    response: Response
+):
+    response.status_code = status.HTTP_201_CREATED
+
+    if isinstance(user.avatar, str):
+        file_uploader.remove(user.avatar)
+
+        response.status_code = status.HTTP_200_OK
+
+    fileinfo = file_uploader.upload(file, whitelist=[
+        "image/jpeg",
+        "image/jpg",
+        "image/png"
+    ])
+
+    user.avatar = fileinfo["filename"]
+    user.updated_at = datetime.now(timezone.utc)
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    return user
+
+
+@router.delete(path="/{id}/avatar", status_code=status.HTTP_204_NO_CONTENT)
+async def unset_avatar(
+    *,
+    user: User = Depends(findone_strict),
+    session: Session = Depends(get_session)
+):
+    if isinstance(user.avatar, str):
+        file_uploader.remove(user.avatar)
+
+        user.avatar = None
+        user.updated_at = datetime.now(timezone.utc)
+
+        session.add(user)
+        session.commit()
+        session.refresh(user)
