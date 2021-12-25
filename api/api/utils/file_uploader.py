@@ -23,7 +23,7 @@ class UploadedFile(TypedDict):
     fullpath: str
 
 
-def randstr(length: Optional[int] = None):
+def _randstr(length: Optional[int] = None):
     alphabet = string.ascii_letters + string.digits
 
     if length is None:
@@ -58,7 +58,7 @@ def upload(
     fullpath = os.path.join(config.uploads_dir, filename)
 
     if os.path.exists(fullpath):
-        return upload(file, whitelist=whitelist, prefix=randstr())
+        return upload(file, whitelist=whitelist, prefix=_randstr())
 
     with open(fullpath, mode="wb", encoding="utf-8") as buffer:
         shutil.copyfileobj(file.file, buffer)
