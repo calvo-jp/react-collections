@@ -22,6 +22,7 @@ class User(SQLModel, table=True):
         sa_column=Column(String, unique=True, nullable=False)
     )
     password: bytes
+    avatar: Optional[str] = None
     created_at: datetime = Field(
         ...,
         sa_column=Column(ZonedDateTime, nullable=False)
@@ -36,6 +37,7 @@ class ReadUser(SQLModel):
     id: int
     name: str
     email: EmailStr
+    avatar: Optional[str]
     created_at: datetime
     updated_at: Optional[datetime]
 
