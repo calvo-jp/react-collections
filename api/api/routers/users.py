@@ -115,12 +115,14 @@ async def unset_avatar(
     user: User = Depends(findone_strict),
     session: Session = Depends(get_session)
 ):
-    if isinstance(user.avatar, str):
-        file_uploader.remove(user.avatar)
+    if user.avatar is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-        user.avatar = None
-        user.updated_at = datetime.now(timezone.utc)
+    file_uploader.remove(user.avatar)
 
-        session.add(user)
-        session.commit()
-        session.refresh(user)
+    user.avatar = None
+    user.updated_at = datetime.now(timezone.utc)
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
