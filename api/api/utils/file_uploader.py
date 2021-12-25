@@ -74,3 +74,15 @@ def remove(filename: str):
 
     if os.path.exists(fullpath):
         os.remove(fullpath)
+
+
+def info(filename: str):
+    fullpath = os.path.join(config.uploads_dir, filename)
+
+    if os.path.exists(fullpath):
+        return None
+
+    return UploadedFile(
+        filename=filename,
+        fullpath=fullpath
+    )
