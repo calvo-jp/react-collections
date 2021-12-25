@@ -1,8 +1,9 @@
+import enum
 from datetime import datetime
 from typing import Optional
 
 from pydantic import EmailStr, validator
-from sqlmodel import Column, DateTime, Field, SQLModel, String
+from sqlmodel import Column, DateTime, Enum, Field, SQLModel, String
 
 from .config import engine
 
@@ -12,6 +13,11 @@ class ZonedDateTime(DateTime):
 
     def __init__(self):
         super().__init__(timezone=True)
+
+
+class UserType(str, enum.Enum):
+    ADMIN = "admin"
+    BASIC = "basic"
 
 
 class User(SQLModel, table=True):
@@ -31,6 +37,14 @@ class User(SQLModel, table=True):
         default=None,
         sa_column=Column(ZonedDateTime)
     )
+    user_type: UserType = Field(
+        default=UserType.BASIC,
+        sa_column=Column(Enum(UserType), nullable=False)
+    )
+
+    @property
+    def is_admin(self):
+        return self.user_type == UserType.ADMIN
 
 
 class ReadUser(SQLModel):
@@ -38,6 +52,7 @@ class ReadUser(SQLModel):
     name: str
     email: EmailStr
     avatar: Optional[str]
+    is_admin: Optional[bool]
     created_at: datetime
     updated_at: Optional[datetime]
 
