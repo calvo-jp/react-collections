@@ -9,7 +9,7 @@ from ..dependencies import get_session
 from ..models import CreateUser, ReadUser, UpdateUser, User
 from ..utils import file_uploader
 
-router = APIRouter(prefix="/user", tags=["users"])
+router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get(path="/", response_model=list[ReadUser])
