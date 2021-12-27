@@ -50,6 +50,8 @@ async def get_current_user(
 
 
 class SearchParams:
+    """Base class for common pagination queries"""
+
     def __init__(
         self,
         *,
