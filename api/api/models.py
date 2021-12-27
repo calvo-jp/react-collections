@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Generic, List, Optional, Type, TypeVar
+from typing import Generic, List, Optional, TypeVar
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
@@ -30,11 +30,6 @@ class SQLModelTimestamped(SQLModel):
         default=None,
         sa_column=Column(ZonedDateTime)
     )
-
-
-@event.listens_for(SQLModelTimestamped, 'before_update')
-def update_timestamp(_, table: Type[SQLModelTimestamped]):
-    table.updated_at = utcnow_()
 
 
 class User(SQLModelTimestamped, table=True):
@@ -161,6 +156,11 @@ class Paginated(GenericModel, Generic[PaginatedT]):
     page_size: int
     has_next: bool
     search: Optional[str]
+
+
+@event.listens_for(User, 'before_update')
+def update_timestamp(_mapper, _engine, model: User):
+    model.updated_at = utcnow_()
 
 
 def create_tables():
