@@ -99,7 +99,7 @@ class ReadHousehold(SQLModel):
     updated_at: Optional[datetime]
 
 
-class Name(TypedDict):
+class Name(SQLModel):
     first: str
     middle: Optional[str]
     last: str
