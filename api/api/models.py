@@ -16,6 +16,21 @@ class ZonedDateTime(DateTime):
         super().__init__(timezone=True)
 
 
+def utcnow_():
+    return datetime.now(timezone.utc)
+
+
+class SQLModelTimestamped(SQLModel):
+    created_at: datetime = Field(
+        default_factory=utcnow_,
+        sa_column=Column(ZonedDateTime, nullable=False)
+    )
+    updated_at: Optional[datetime] = Field(
+        default=None,
+        sa_column=Column(ZonedDateTime)
+    )
+
+
 class User(SQLModel, table=True):
     __tablename__: str = 'users'
 
