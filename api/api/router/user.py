@@ -29,7 +29,7 @@ class UserSearchParams(SearchParams):
 
 
 @router.get(path='/', response_model=Paginated[ReadUser], response_model_exclude_none=True)
-async def read_all(
+async def findall(
     *,
     params: UserSearchParams = Depends(),
     session: Session = Depends(get_session),
@@ -95,7 +95,7 @@ async def create(*, data: CreateUser, session: Session = Depends(get_session)):
 
 
 @router.get(path='/{id}', response_model=ReadUser, response_model_exclude_none=True)
-async def read_one(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
+async def findone(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
     user = session.get(User, id_)
 
     if user is None:
@@ -104,7 +104,11 @@ async def read_one(*, id_: int = Path(..., alias='id'), session: Session = Depen
     return user
 
 
-async def verify_owner(*, id_: int = Path(..., alias='id'), user: User = Depends(get_current_user)):
+async def findone_strict(
+    *,
+    id_: int = Path(..., alias='id'),
+    user: User = Depends(get_current_user)
+):
     if user.id != id_:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     return user
@@ -113,7 +117,7 @@ async def verify_owner(*, id_: int = Path(..., alias='id'), user: User = Depends
 @router.patch(path='/{id}', response_model=ReadUser, response_model_exclude_none=True)
 async def update(
     *,
-    user: User = Depends(verify_owner),
+    user: User = Depends(findone_strict),
     data: UpdateUser,
     session: Session = Depends(get_session)
 ):
@@ -137,10 +141,10 @@ async def update(
 
 
 @router.put(path='/{id}/avatar', response_model=ReadUser, response_model_exclude_none=True)
-async def setup_avatar(
+async def set_avatar(
     *,
     image: UploadFile = File(...),
-    user: User = Depends(verify_owner),
+    user: User = Depends(findone_strict),
     session: Session = Depends(get_session),
     response: Response
 ):
@@ -174,9 +178,9 @@ async def setup_avatar(
 
 
 @router.delete(path='/{id}/avatar', status_code=status.HTTP_204_NO_CONTENT)
-async def delete_avatar(
+async def unset_avatar(
     *,
-    user: User = Depends(verify_owner),
+    user: User = Depends(findone_strict),
     session: Session = Depends(get_session)
 ):
     if user.avatar is None:
