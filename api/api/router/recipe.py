@@ -70,7 +70,7 @@ async def findall(
     # page does not exist (404) if
     # user navigates to a certain page other than page 1
     # and no more records are found
-    if len(rows) == 0 and not hasnext and params.page > 1:
+    if params.page > 1 and not hasnext and len(rows) == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     return dict(
