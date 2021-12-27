@@ -106,7 +106,6 @@ async def create(
         ingredients=data.ingredients,
         instructions=data.instructions,
         author_id=author.id,
-        created_at=datetime.now(timezone.utc),
     )
 
     session.add(recipe)
@@ -143,10 +142,7 @@ async def update(
     session: Session = Depends(get_session)
 ):
     for k, v in data.dict(exclude_none=True).items():
-        if hasattr(recipe, k):
-            setattr(recipe, k, v)
-
-        recipe.updated_at = datetime.now(timezone.utc)
+        setattr(recipe, k, v)
 
     session.add(recipe)
     session.commit()
@@ -203,8 +199,6 @@ async def upsert_media(
             file_uploader.upload(file, whitelist=whitelist[media])
         )
 
-        recipe.updated_at = datetime.now(timezone.utc)
-
         session.add(recipe)
         session.commit()
         session.refresh(recipe)
@@ -231,7 +225,6 @@ async def delete_media(
     file_uploader.delete(getattr(recipe, media))
 
     setattr(recipe, media, None)
-    recipe.updated_at = datetime.now(timezone.utc)
 
     session.add(recipe)
     session.commit()
