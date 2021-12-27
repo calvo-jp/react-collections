@@ -61,7 +61,7 @@ class User(SQLModelTimestamped, table=True):
 
     @email_verified.setter
     def email_verified(self, v: bool):
-        self.email_verified_at = datetime.now(timezone.utc) if v else None
+        self.email_verified_at = utcnow_() if v else None
 
 
 class ReadUser(SQLModel):
@@ -69,10 +69,10 @@ class ReadUser(SQLModel):
     name: str
     email: EmailStr
     email_verified: bool
-    email_verified_at: Optional[datetime] = None
-    avatar: Optional[str] = None
+    email_verified_at: Optional[datetime]
+    avatar: Optional[str]
     created_at: datetime
-    updated_at: Optional[datetime] = None
+    updated_at: Optional[datetime]
 
 
 class CreateUser(SQLModel):
@@ -88,7 +88,7 @@ class CreateUser(SQLModel):
 
 class UpdateUser(SQLModel):
     name: Optional[str] = Field(default=None, min_length=2, max_length=25)
-    email: Optional[EmailStr] = None
+    email: Optional[EmailStr]
 
     @validator('email', pre=True)
     @classmethod
@@ -106,14 +106,8 @@ class Recipe(SQLModelTimestamped, table=True):
     description: str
     author_id: int = Field(..., foreign_key='users.id')
     author: User = Relationship(back_populates='recipes')
-    ingredients: list[str] = Field(
-        ...,
-        sa_column=Column(ARRAY(String))
-    )
-    instructions: list[str] = Field(
-        ...,
-        sa_column=Column(ARRAY(String))
-    )
+    ingredients: list[str] = Field(..., sa_column=Column(ARRAY(String)))
+    instructions: list[str] = Field(..., sa_column=Column(ARRAY(String)))
     image: Optional[str] = None
     video: Optional[str] = None
 
@@ -123,12 +117,12 @@ class ReadRecipe(SQLModel):
     name: str
     description: str
     author: ReadUser
-    ingredients: Optional[list[str]] = []
-    instructions: Optional[list[str]] = []
-    image: Optional[str] = None
-    video: Optional[str] = None
+    ingredients: list[str]
+    instructions: list[str]
+    image: Optional[str]
+    video: Optional[str]
     created_at: datetime
-    updated_at: Optional[datetime] = None
+    updated_at: Optional[datetime]
 
 
 class CreateRecipe(SQLModel):
