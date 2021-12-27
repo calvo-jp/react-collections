@@ -271,6 +271,15 @@ class Employee(SQLModelTimestamped, table=True):
     reason_for_leaving: Optional[str] = None
 
 
+class ReadEmployee(SQLModel):
+    id: int
+    position: EmployeePosition
+    user: User
+    start: date
+    until: Optional[date]
+    reason_for_leaving: Optional[str]
+
+
 class DocumentType(str, Enum):
     BARANGAY_PERMIT = 'barangay permit'
     BARANGAY_CERTIFICATE = 'barangay certificate'
