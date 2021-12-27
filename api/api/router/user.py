@@ -4,7 +4,7 @@ from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
 from fastapi.datastructures import UploadFile
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Depends, File, Path, Query
+from fastapi.param_functions import Depends, File, Path
 from fastapi.responses import Response
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, func, select
@@ -16,21 +16,10 @@ from ..utils import file_uploader
 router = APIRouter(prefix='/users', tags=['user'])
 
 
-class UserSearchParams(SearchParams):
-    def __init__(
-        self,
-        *,
-        page: Optional[int] = Query(default=None, ge=1),
-        page_size: Optional[int] = Query(default=None, ge=1, le=100),
-        search: Optional[str] = None
-    ):
-        super().__init__(page=page, page_size=page_size, search=search)
-
-
 @router.get(path='/', response_model=Paginated[ReadUser], response_model_exclude_none=True)
 async def findall(
     *,
-    params: UserSearchParams = Depends(),
+    params: SearchParams = Depends(),
     session: Session = Depends(get_session),
     response: Response
 ):
