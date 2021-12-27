@@ -37,6 +37,11 @@ class SQLModelTimestamped(SQLModel):
     )
 
 
+@event.listens_for(SQLModelTimestamped, "before_update")
+def update_timestamp(_, table: SQLModelTimestamped):
+    table.updated_at = utcnow_()
+
+
 class Purok(SQLModelTimestamped, table=True):
     __tablename__: str = 'puroks'
 
