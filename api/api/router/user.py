@@ -41,9 +41,11 @@ async def read_all(
     if params.search:
         pass
 
-    total_rows: int = session.execute(
+    totalrows: int = session.execute(
         stmt.with_only_columns(func.count(User.id))
     ).scalar_one()
+
+    hasnext = totalrows > params.page * params.limit
 
     rows = session.exec(
         stmt
@@ -51,16 +53,14 @@ async def read_all(
         .offset(params.offset)
     ).all()
 
-    hasnext = total_rows > params.page * params.page_size
+    response.status_code = status.HTTP_200_OK
 
     if hasnext:
         response.status_code = status.HTTP_206_PARTIAL_CONTENT
-    else:
-        response.status_code = status.HTTP_200_OK
 
     return dict(
         rows=rows,
-        total_rows=total_rows,
+        total_rows=totalrows,
         has_next=hasnext,
         page=params.page,
         page_size=params.limit,
