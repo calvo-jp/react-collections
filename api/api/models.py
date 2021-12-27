@@ -208,7 +208,7 @@ class User(SQLModelTimestamped, table=True):
     def name(self):
         return Name(
             first=self.first_name,
-            middle=self.last_name,
+            middle=self.middle_name,
             last=self.last_name,
             suffix=self.suffix
         )
@@ -222,7 +222,7 @@ class User(SQLModelTimestamped, table=True):
             self.suffix or ""
         )
 
-        return "".join(name.split())
+        return " ".join(name.split())
 
 
 class ReadUser(SQLModel):
