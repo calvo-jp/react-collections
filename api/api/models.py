@@ -1,8 +1,9 @@
 from datetime import datetime, timezone
-from typing import Generic, List, Optional, TypeVar
+from typing import Generic, List, Optional, Type, TypeVar
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
+from sqlalchemy import event
 from sqlmodel import (ARRAY, Column, DateTime, Field, Relationship, SQLModel,
                       String)
 
@@ -29,6 +30,11 @@ class SQLModelTimestamped(SQLModel):
         default=None,
         sa_column=Column(ZonedDateTime)
     )
+
+
+@event.listens_for(SQLModelTimestamped, 'before_update')
+def update_timestamp(_, table: Type[SQLModelTimestamped]):
+    table.updated_at = utcnow_()
 
 
 class User(SQLModelTimestamped, table=True):
