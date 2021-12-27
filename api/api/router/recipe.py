@@ -32,7 +32,7 @@ class RecipeSearchParams(SearchParams):
 
 
 @router.get(path='/', response_model=Paginated[ReadRecipe], response_model_exclude_none=True)
-async def read_all(
+async def findall(
     *,
     params: RecipeSearchParams = Depends(),
     session: Session = Depends(get_session),
@@ -75,7 +75,7 @@ async def read_all(
 
 
 @router.get(path='/{id}', response_model=ReadRecipe, response_model_exclude_none=True)
-async def read_one(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
+async def findone(*, id_: int = Path(..., alias='id'), session: Session = Depends(get_session)):
     recipe = session.get(Recipe, id_)
 
     if recipe is None:
@@ -115,7 +115,7 @@ async def create(
     return recipe
 
 
-async def get_recipe_strict(
+async def findone_strict(
     *,
     id_: int = Path(..., alias='id'),
     user: User = Depends(get_current_user),
@@ -138,7 +138,7 @@ async def get_recipe_strict(
 async def update(
     *,
     data: UpdateRecipe,
-    recipe: Recipe = Depends(get_recipe_strict),
+    recipe: Recipe = Depends(findone_strict),
     session: Session = Depends(get_session)
 ):
     for k, v in data.dict(exclude_none=True).items():
@@ -154,7 +154,7 @@ async def update(
 @router.delete(path='/{id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete(
     *,
-    recipe: Recipe = Depends(get_recipe_strict),
+    recipe: Recipe = Depends(findone_strict),
     session: Session = Depends(get_session)
 ):
     session.delete(recipe)
@@ -171,7 +171,7 @@ async def upsert_media(
     *,
     file: UploadFile = File(...),
     media: Media,
-    recipe: Recipe = Depends(get_recipe_strict),
+    recipe: Recipe = Depends(findone_strict),
     session: Session = Depends(get_session),
     response: Response,
 ):
@@ -216,7 +216,7 @@ async def upsert_media(
 async def delete_media(
     *,
     media: Media,
-    recipe: Recipe = Depends(get_recipe_strict),
+    recipe: Recipe = Depends(findone_strict),
     session: Session = Depends(get_session)
 ):
     if getattr(recipe, media) is None:
