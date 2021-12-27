@@ -278,6 +278,8 @@ class ReadEmployee(SQLModel):
     start: date
     until: Optional[date]
     reason_for_leaving: Optional[str]
+    created_at: datetime
+    updated_at: Optional[datetime]
 
 
 class DocumentType(str, Enum):
@@ -309,6 +311,16 @@ class DocumentRequest(SQLModelTimestamped, table=True):
     user_id: int = Field(..., foreign_key='users.id')
     purok: Purok = Relationship(back_populates='document_requests')
     purok_id: int = Field(..., foreign_key='puroks.id')
+
+
+class ReadDocumentRequest(SQLModel):
+    id: int
+    type_: DocumentType = Field(..., alias='type')
+    status: DocumentRequest
+    user: User
+    purok: Purok
+    created_at: datetime
+    updated_at: Optional[datetime]
 
 
 def create_tables():
