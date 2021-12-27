@@ -1,7 +1,7 @@
 
 from datetime import date, datetime, timezone
 from enum import Enum
-from typing import Any, List, Optional, TypedDict
+from typing import List, Optional, TypedDict
 
 from pydantic import EmailStr
 from sqlalchemy import event
@@ -20,7 +20,7 @@ class ZonedDateTime(DateTime):
         super().__init__(timezone=True)
 
 
-def utc_datetime():
+def utcnow_():
     return datetime.now(timezone.utc)
 
 
@@ -28,7 +28,7 @@ class SQLModelTimestamped(SQLModel):
     """Add created_at and updated_at field to sqlmodel table"""
 
     created_at: datetime = Field(
-        default_factory=utc_datetime,
+        default_factory=utcnow_,
         sa_column=Column(ZonedDateTime, nullable=False)
     )
     updated_at: Optional[datetime] = Field(
@@ -60,6 +60,13 @@ class Purok(SQLModelTimestamped, table=True):
         pass
 
 
+class ReadPurok(SQLModel):
+    id: int
+    name: str
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+
 class Household(SQLModelTimestamped, table=True):
     __tablename__: str = 'households'
 
@@ -75,6 +82,15 @@ class Household(SQLModelTimestamped, table=True):
     @property
     def total_members(self):
         pass
+
+
+class ReadHousehold(SQLModel):
+    id: int
+    code: str
+    purok: ReadPurok
+    total_families: int
+    created_at: datetime
+    updated_at: Optional[datetime]
 
 
 class Name(TypedDict):
@@ -201,6 +217,30 @@ class User(SQLModelTimestamped, table=True):
         )
 
         return "".join(name.split())
+
+
+class ReadUser(SQLModel):
+    id: int
+    name: Name
+    full_name: str
+    gender: Optional[Gender]
+    marital: Optional[Marital]
+    is_pwd: Optional[bool]
+    date_of_birth: Optional[date]
+    age: Optional[Age]
+    employment_status: Optional[EmploymentStatus]
+    educational_attainment: Optional[EducationalAttainment]
+    phone_number: Optional[str]
+    username: Optional[str]
+    email: Optional[EmailStr]
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+    purok: Optional[ReadPurok]
+    household: Optional[ReadHousehold] = Field(
+        default=None,
+        exclude=('purok',)
+    )
 
 
 class EmployeePosition(str, Enum):
