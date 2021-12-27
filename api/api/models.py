@@ -143,7 +143,7 @@ class Age(TypedDict):
 class User(SQLModelTimestamped, table=True):
     __tablename__: str = 'users'
 
-    id: Optional[int] = Field(default=False, primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True)
     first_name: str
     middle_name: Optional[str] = None
     last_name: str
@@ -257,7 +257,7 @@ class CreateUser(SQLModel):
     date_of_birth: Optional[date]
     employment_status: Optional[EmploymentStatus]
     educational_attainment: Optional[EducationalAttainment]
-    phone_number: Optional[str]
+    phone_number: Optional[str] = Field(default=None)
     username: Optional[str]
     password: Optional[str]
     email: Optional[EmailStr]
