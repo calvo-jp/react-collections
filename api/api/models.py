@@ -105,6 +105,23 @@ class Name(SQLModel):
     last: str
     suffix: Optional[str]
 
+    @validator(
+        'first',
+        'middle',
+        'last',
+        pre=True
+    )
+    @classmethod
+    def ensure_length(cls, subject: Optional[str] = None):
+        if subject is not None:
+            subject = subject.strip()
+
+            assert (
+                1 < len(subject) < 51
+            ), 'Names must be between 2 to 50 characters'
+
+        return subject
+
 
 class Gender(str, Enum):
     MALE = 'male'
