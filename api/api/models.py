@@ -3,7 +3,7 @@ from datetime import date, datetime, timezone
 from enum import Enum
 from typing import Generic, List, Optional, TypedDict, TypeVar
 
-from pydantic import EmailStr
+from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
 from sqlalchemy import event
 from sqlmodel import Column, Date, DateTime
@@ -11,7 +11,7 @@ from sqlmodel import Enum as EnumField
 from sqlmodel import Field, Relationship, SQLModel, String
 
 from .config import engine
-from .utils import date_difference
+from .utils import date_difference, validators
 
 
 class ZonedDateTime(DateTime):
@@ -247,6 +247,40 @@ class ReadUser(SQLModel):
         default=None,
         exclude=('purok',)
     )
+
+
+class CreateUser(SQLModel):
+    name: Name
+    gender: Optional[Gender]
+    marital: Optional[Marital]
+    is_pwd: Optional[bool]
+    date_of_birth: Optional[date]
+    employment_status: Optional[EmploymentStatus]
+    educational_attainment: Optional[EducationalAttainment]
+    phone_number: Optional[str]
+    username: Optional[str]
+    password: Optional[str]
+    email: Optional[EmailStr]
+
+    @validator(
+        'email',
+        'gender',
+        'marital',
+        'username',
+        'employment_status',
+        'educational_attainment',
+        pre=True
+    )
+    @classmethod
+    def lowercase(cls, subject: Optional[str] = None):
+        return subject.lower() if subject is not None else None
+
+    @validator('phone_number')
+    @classmethod
+    def validate_phone(cls, subject: Optional[str] = None):
+        if subject is not None:
+            assert validators.is_phone(subject), 'Malformed phone number'
+        return subject
 
 
 class EmployeePosition(str, Enum):
