@@ -1,6 +1,8 @@
+from typing import Optional
+
 from fastapi import status
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Depends
+from fastapi.param_functions import Depends, Query
 from fastapi.requests import Request
 from fastapi.security.oauth2 import OAuth2PasswordBearer
 from jose.exceptions import ExpiredSignatureError, JWTError
@@ -45,3 +47,24 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Invalid token.'
         ) from error
+
+
+class SearchParams:
+    def __init__(
+        self,
+        *,
+        page: Optional[int] = Query(default=None, ge=1),
+        page_size: Optional[int] = Query(default=None, ge=1, le=100),
+        search: Optional[str] = None
+    ):
+        self.page = page or 1
+        self.page_size = page_size or 25
+        self.search = search
+
+    @property
+    def limit(self):
+        return self.page_size
+
+    @property
+    def offset(self):
+        return (self.page - 1) * self.limit
