@@ -167,7 +167,7 @@ class Media(str, Enum):
 
 
 @router.put(path='/{id}/{media}', response_model=ReadRecipe, response_model_exclude_none=True)
-async def upsert_media(
+async def upload_file(
     *,
     file: UploadFile = File(...),
     media: Media,
@@ -213,7 +213,7 @@ async def upsert_media(
 
 
 @router.delete(path='/{id}/{media}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete_media(
+async def delete_uploaded_file(
     *,
     media: Media,
     recipe: Recipe = Depends(findone_strict),
