@@ -1,13 +1,12 @@
-from enum import Enum
-from typing import Optional
+from typing import Literal, Optional, TypeAlias
 
 from pydantic import BaseSettings
 from sqlmodel import create_engine
 
-
-class Environment(str, Enum):
-    PRODUCTION = 'production'
-    DEVELOPMENT = 'development'
+Environment: TypeAlias = Literal[
+    'production',
+    'development',
+]
 
 
 class Settings(BaseSettings):
@@ -21,7 +20,7 @@ class Settings(BaseSettings):
 
     @property
     def debug(self):
-        return self.env == Environment.DEVELOPMENT
+        return self.env == 'development'
 
     @property
     def pgsql_dsn(self):
