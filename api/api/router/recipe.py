@@ -174,6 +174,7 @@ async def upsert_media(
     response: Response,
 ):
     status_code = status.HTTP_201_CREATED
+
     if getattr(recipe, media) is not None:
         status_code = status.HTTP_200_OK
         file_uploader.delete(getattr(recipe, media))
@@ -181,7 +182,6 @@ async def upsert_media(
     whitelist = dict(
         image=[
             'image/jpeg',
-            'image/jpe',
             'image/jpg',
             'image/png',
         ],
