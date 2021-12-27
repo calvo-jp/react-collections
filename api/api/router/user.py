@@ -1,5 +1,3 @@
-from typing import Optional
-
 from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
 from fastapi.datastructures import UploadFile
