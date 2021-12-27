@@ -163,9 +163,9 @@ PaginatedT = TypeVar('PaginatedT', ReadUser, ReadRecipe)
 class Paginated(GenericModel, Generic[PaginatedT]):
     rows: list[PaginatedT]
     total_rows: int
-    has_next: bool
     page: int
     page_size: int
+    has_next: bool
     search: Optional[str]
 
 
