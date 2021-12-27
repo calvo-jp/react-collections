@@ -1,9 +1,10 @@
 
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from enum import Enum
-from typing import List, Optional, TypedDict
+from typing import Any, List, Optional, TypedDict
 
 from pydantic import EmailStr
+from sqlalchemy import event
 from sqlmodel import Column, Date, DateTime
 from sqlmodel import Enum as EnumField
 from sqlmodel import Field, Relationship, SQLModel, String
@@ -19,11 +20,16 @@ class ZonedDateTime(DateTime):
         super().__init__(timezone=True)
 
 
+def utc_datetime():
+    return datetime.now(timezone.utc)
+
+
 class SQLModelTimestamped(SQLModel):
     """Add created_at and updated_at field to sqlmodel table"""
 
     created_at: datetime = Field(
-        ..., sa_column=Column(ZonedDateTime, nullable=False)
+        default_factory=utc_datetime,
+        sa_column=Column(ZonedDateTime, nullable=False)
     )
     updated_at: Optional[datetime] = Field(
         default=None,
