@@ -5,11 +5,11 @@ from typing import Optional
 from fastapi import APIRouter, status
 from fastapi.datastructures import UploadFile
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Depends, File, Path
+from fastapi.param_functions import Depends, File, Path, Query
 from fastapi.responses import Response
 from sqlmodel import Session, func, select
 
-from ..dependency import get_current_user, get_session
+from ..dependency import SearchParams, get_current_user, get_session
 from ..models import (CreateRecipe, Paginated, ReadRecipe, Recipe,
                       UpdateRecipe, User)
 from ..utils import file_uploader
@@ -17,54 +17,60 @@ from ..utils import file_uploader
 router = APIRouter(prefix='/recipes', tags=['recipe'])
 
 
-class Query:
+class RecipeSearchParams(SearchParams):
     def __init__(
         self,
         *,
-        page: Optional[int] = None,
-        page_size: Optional[int] = None,
+        page: Optional[int] = Query(default=None, ge=1),
+        page_size: Optional[int] = Query(default=None, ge=1, le=100),
         search: Optional[str] = None,
         author_id: Optional[int] = None
     ):
-        self.page = page or 1
-        self.page_size = page_size or 25
-        self.search = search
+        super().__init__(page=page, page_size=page_size, search=search)
+
         self.author_id = author_id
 
 
 @router.get(path='/', response_model=Paginated[ReadRecipe], response_model_exclude_none=True)
 async def read_all(
     *,
-    query: Query = Depends(),
+    params: RecipeSearchParams = Depends(),
     session: Session = Depends(get_session),
     response: Response
 ):
     stmt = select(Recipe)
 
-    if query.author_id:
-        stmt = stmt.where(Recipe.author_id == query.author_id)
+    if params.author_id is not None:
+        stmt = stmt.where(Recipe.author_id == params.author_id)
 
     # TODO: implement a fulltext search
-    if query.search:
+    if params.search is not None:
         pass
 
-    total_rows: int = session.execute(
+    totalrows: int = session.execute(
         stmt.with_only_columns(func.count(Recipe.id))
     ).scalar_one()
 
     rows = session.exec(
-        stmt.limit(query.page_size).offset((query.page - 1) * query.page_size)
+        stmt
+        .limit(params.limit)
+        .offset(params.offset)
     ).all()
 
-    has_next = total_rows > query.page * query.page_size
-    response.status_code = status.HTTP_206_PARTIAL_CONTENT if has_next else status.HTTP_200_OK
+    hasnext = totalrows > params.page * params.limit
+
+    response.status_code = status.HTTP_200_OK
+
+    if hasnext:
+        response.status_code = status.HTTP_206_PARTIAL_CONTENT
 
     return dict(
-        page=query.page,
-        page_size=query.page_size,
-        total_rows=total_rows,
         rows=rows,
-        has_next=has_next
+        total_rows=totalrows,
+        page=params.page,
+        page_size=params.limit,
+        has_next=hasnext,
+        search=params.search
     )
 
 
