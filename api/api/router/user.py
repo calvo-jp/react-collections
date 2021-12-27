@@ -5,42 +5,40 @@ from bcrypt import gensalt, hashpw
 from fastapi import APIRouter, status
 from fastapi.datastructures import UploadFile
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Depends, File, Path
+from fastapi.param_functions import Depends, File, Path, Query
 from fastapi.responses import Response
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, func, select
 
-from ..dependency import get_current_user, get_session
+from ..dependency import SearchParams, get_current_user, get_session
 from ..models import CreateUser, Paginated, ReadUser, UpdateUser, User
 from ..utils import file_uploader
 
 router = APIRouter(prefix='/users', tags=['user'])
 
 
-class Query:
+class UserSearchParams(SearchParams):
     def __init__(
         self,
         *,
-        page: Optional[int] = None,
-        page_size: Optional[int] = None,
+        page: Optional[int] = Query(default=None, ge=1),
+        page_size: Optional[int] = Query(default=None, ge=1, le=100),
         search: Optional[str] = None
     ):
-        self.page = page or 1
-        self.page_size = page_size or 25
-        self.search = search
+        super().__init__(page=page, page_size=page_size, search=search)
 
 
 @router.get(path='/', response_model=Paginated[ReadUser], response_model_exclude_none=True)
 async def read_all(
     *,
-    query: Query = Depends(),
+    params: UserSearchParams = Depends(),
     session: Session = Depends(get_session),
     response: Response
 ):
     stmt = select(User)
 
     # TODO: implement fulltext search
-    if query.search:
+    if params.search:
         pass
 
     total_rows: int = session.execute(
@@ -48,18 +46,25 @@ async def read_all(
     ).scalar_one()
 
     rows = session.exec(
-        stmt.limit(query.page_size).offset((query.page - 1) * query.page_size)
+        stmt
+        .limit(params.limit)
+        .offset(params.offset)
     ).all()
 
-    has_next = total_rows > query.page * query.page_size
-    response.status_code = status.HTTP_206_PARTIAL_CONTENT if has_next else status.HTTP_200_OK
+    hasnext = total_rows > params.page * params.page_size
+
+    if hasnext:
+        response.status_code = status.HTTP_206_PARTIAL_CONTENT
+    else:
+        response.status_code = status.HTTP_200_OK
 
     return dict(
-        page=query.page,
-        page_size=query.page_size,
-        total_rows=total_rows,
         rows=rows,
-        has_next=has_next
+        total_rows=total_rows,
+        has_next=hasnext,
+        page=params.page,
+        page_size=params.limit,
+        search=params.search
     )
 
 
