@@ -3,7 +3,7 @@ import secrets
 import shutil
 import string
 import uuid
-from typing import Optional
+from typing import Optional, TypedDict
 
 from fastapi import UploadFile
 
@@ -20,11 +20,16 @@ def _randstr(length: Optional[int] = None):
     return "".join(secrets.choice(alphabet) for _ in range(length))
 
 
+class UploadedFile(TypedDict):
+    filename: str
+    fullpath: str
+
+
 def upload(
     file: UploadFile, *,
     whitelist: Optional[list[str]] = None,
     prefix: Optional[str] = None
-) -> str:
+) -> UploadedFile:
     """
     Uploads a file into the `config.uploads_dir` and returns the filename
 
@@ -51,7 +56,11 @@ def upload(
 
     with open(fullpath, 'wb') as buffer:
         shutil.copyfileobj(file.file, buffer)
-        return filename
+
+        return UploadedFile(
+            filename=filename,
+            fullpath=fullpath
+        )
 
 
 def delete(filename: str):
