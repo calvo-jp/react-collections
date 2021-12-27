@@ -1,9 +1,11 @@
+import logging
 from json.decoder import JSONDecodeError
 
 from email_validator import EmailNotValidError, validate_email
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from sqlmodel import Session, func, select
 
+from ..config import config
 from ..dependency import get_session
 from ..models import User
 
@@ -57,7 +59,11 @@ async def check_email_availability(
                 JSONDecodeError,
                 AssertionError,
                 EmailNotValidError,
-            ):
+            ) as mistake:
                 await socket.send_json(dict(available=False))
+
+                if config.debug:
+                    logging.warning(mistake)
+
     except WebSocketDisconnect:
         await socket.close()
