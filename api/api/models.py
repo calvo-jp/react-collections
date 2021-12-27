@@ -41,6 +41,9 @@ class Purok(SQLModelTimestamped, table=True):
 
     households: List['Household'] = Relationship(back_populates='purok')
     residents: List['User'] = Relationship(back_populates='purok')
+    document_requests: List['DocumentRequest'] = Relationship(
+        back_populates='purok'
+    )
 
     @property
     def total_residents(self):
@@ -61,11 +64,7 @@ class Household(SQLModelTimestamped, table=True):
     purok_id: int = Field(..., foreign_key='puroks.id')
     purok: Purok = Relationship(back_populates='households')
     total_families: int
-
     members: List['User'] = Relationship(back_populates='household')
-    document_requests: List['DocumentRequest'] = Relationship(
-        back_populates='purok'
-    )
 
     @property
     def total_members(self):
@@ -248,7 +247,7 @@ class DocumentRequest(SQLModelTimestamped, table=True):
     )
     user: User = Relationship(back_populates='document_requests')
     user_id: int = Field(..., foreign_key='users.id')
-    purok: User = Relationship(back_populates='document_requests')
+    purok: Purok = Relationship(back_populates='document_requests')
     purok_id: int = Field(..., foreign_key='puroks.id')
 
 
