@@ -1,9 +1,12 @@
+
 from datetime import date, datetime
-from typing import List, Literal, Optional, TypeAlias, TypedDict
+from enum import Enum
+from typing import List, Optional, TypedDict
 
 from pydantic import EmailStr
-from sqlmodel import (Column, Date, DateTime, Field, Relationship, SQLModel,
-                      String)
+from sqlmodel import Column, Date, DateTime
+from sqlmodel import Enum as EnumField
+from sqlmodel import Field, Relationship, SQLModel, String
 
 from .config import engine
 from .utils import date_difference
@@ -29,15 +32,15 @@ class SQLModelTimestamped(SQLModel):
 
 
 class Purok(SQLModelTimestamped, table=True):
-    __tablename__: str = "puroks"
+    __tablename__: str = 'puroks'
 
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(
         ..., sa_column=Column(String, unique=True, nullable=False)
     )
 
-    households: List["Household"] = Relationship(back_populates="purok")
-    residents: List["User"] = Relationship(back_populates="purok")
+    households: List['Household'] = Relationship(back_populates='purok')
+    residents: List['User'] = Relationship(back_populates='purok')
 
     @property
     def total_residents(self):
@@ -49,19 +52,19 @@ class Purok(SQLModelTimestamped, table=True):
 
 
 class Household(SQLModelTimestamped, table=True):
-    __tablename__: str = "households"
+    __tablename__: str = 'households'
 
     id: Optional[int] = Field(default=None, primary_key=True)
     code: str = Field(
         ..., sa_column=Column(String, unique=True, nullable=False)
     )
-    purok_id: int = Field(..., foreign_key="puroks.id")
-    purok: Purok = Relationship(back_populates="households")
+    purok_id: int = Field(..., foreign_key='puroks.id')
+    purok: Purok = Relationship(back_populates='households')
     total_families: int
 
-    members: List["User"] = Relationship(back_populates="household")
-    document_requests: List["DocumentRequest"] = Relationship(
-        back_populates="purok"
+    members: List['User'] = Relationship(back_populates='household')
+    document_requests: List['DocumentRequest'] = Relationship(
+        back_populates='purok'
     )
 
     @property
@@ -76,36 +79,32 @@ class Name(TypedDict):
     suffix: Optional[str]
 
 
-Gender: TypeAlias = Literal[
-    "male",
-    "female"
-]
+class Gender(str, Enum):
+    MALE = 'male'
+    FEMALE = 'female'
 
 
-Marital: TypeAlias = Literal[
-    "single",
-    "married",
-    "widowed",
-    "divorced",
-]
+class Marital(str, Enum):
+    SINGLE = 'single'
+    MARRIED = 'married'
+    WIDOWED = 'widowed'
+    DIVORCED = 'divorced'
 
 
-EmploymentStatus: TypeAlias = Literal[
-    "student",
-    "employed",
-    "unemployed",
-    "self employed",
-]
+class EmploymentStatus(str, Enum):
+    STUDENT = 'student'
+    EMPLOYED = 'employed'
+    UNEMPLOYED = 'unemployed'
+    SELF_EMPLOYED = 'self employed'
 
 
-EducationalAttainment: TypeAlias = Literal[
-    "college level",
-    "highschool level",
-    "elementary level",
-    "college graduate",
-    "highschool graduate",
-    "elementary graduate",
-]
+class EducationalAttainment(str, Enum):
+    COLLEGE_LEVEL = 'college level'
+    HIGHSCHOOL_LEVEL = 'highschool level'
+    ELEMENTARY_LEVEL = 'elementary level'
+    COLLEGE_GRADUATE = 'college graduate'
+    HIGHSCHOOL_GRADUATE = 'highschool graduate'
+    ELEMENTARY_GRADUATE = 'elementary graduate'
 
 
 class Age(TypedDict):
@@ -115,7 +114,7 @@ class Age(TypedDict):
 
 
 class User(SQLModelTimestamped, table=True):
-    __tablename__: str = "users"
+    __tablename__: str = 'users'
 
     id: Optional[int] = Field(default=False, primary_key=True)
     first_name: str
@@ -124,21 +123,21 @@ class User(SQLModelTimestamped, table=True):
     suffix: Optional[str] = None
     gender: Optional[Gender] = Field(
         default=None,
-        sa_column=Column(String)
+        sa_column=Column(EnumField(Gender))
     )
     marital: Optional[Marital] = Field(
         default=None,
-        sa_column=Column(String)
+        sa_column=Column(EnumField(Marital))
     )
     date_of_birth: Optional[date] = Field(default=None, sa_column=Column(Date))
     is_pwd: Optional[bool] = None
     employment_status: Optional[EmploymentStatus] = Field(
         default=None,
-        sa_column=Column(String)
+        sa_column=Column(EnumField(EmploymentStatus))
     )
     educational_attainment: Optional[EducationalAttainment] = Field(
         default=None,
-        sa_column=Column(String)
+        sa_column=Column(EnumField(EducationalAttainment))
     )
     email: Optional[EmailStr] = Field(
         default=None,
@@ -153,16 +152,16 @@ class User(SQLModelTimestamped, table=True):
         sa_column=Column(String, unique=True)
     )
     password: Optional[bytes] = None
-    purok_id: Optional[int] = Field(default=None, foreign_key="puroks.id")
-    purok: Optional[Purok] = Relationship(back_populates="residents")
+    purok_id: Optional[int] = Field(default=None, foreign_key='puroks.id')
+    purok: Optional[Purok] = Relationship(back_populates='residents')
     household_id:  Optional[int] = Field(
         default=None,
-        foreign_key="households.id"
+        foreign_key='households.id'
     )
-    household: Optional[Household] = Relationship(back_populates="members")
-    employment: List["Employee"] = Relationship(back_populates="user")
-    document_requests: List["DocumentRequest"] = Relationship(
-        back_populates="user"
+    household: Optional[Household] = Relationship(back_populates='members')
+    employment: List['Employee'] = Relationship(back_populates='user')
+    document_requests: List['DocumentRequest'] = Relationship(
+        back_populates='user'
     )
 
     @property
@@ -173,9 +172,9 @@ class User(SQLModelTimestamped, table=True):
         diff = date_difference(self.date_of_birth)
 
         return Age(
-            years=diff["years"],
-            months=diff["months"],
-            days=diff["days"]
+            years=diff['years'],
+            months=diff['months'],
+            days=diff['days']
         )
 
     @property
@@ -189,7 +188,7 @@ class User(SQLModelTimestamped, table=True):
 
     @property
     def full_name(self):
-        name = "%s %s %s %s" % (
+        name = '%s %s %s %s' % (
             self.first_name,
             self.middle_name or "",
             self.last_name,
@@ -199,55 +198,58 @@ class User(SQLModelTimestamped, table=True):
         return "".join(name.split())
 
 
-EmployeePosition: TypeAlias = Literal[
-    "Barangay Captain",
-    "Secretary",
-    "SK Chairman",
-    "SK Kagawad",
-    "SK Member",
-    "Lupon",
-]
+class EmployeePosition(str, Enum):
+    BARANGAY_CAPTAIN = 'Barangay Captain'
+    SECRETARY = 'Secretary'
+    SK_CHAIRMAN = 'SK Chairman'
+    SK_KAGAWAD = 'SK Kagawad'
+    SK_MEMBER = 'SK Member'
+    LUPON = 'Lupon'
 
 
 class Employee(SQLModelTimestamped, table=True):
-    __tablename__: str = "employees"
+    __tablename__: str = 'employees'
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    position: EmployeePosition = Field(..., sa_column=Column(String))
-    user_id: int = Field(..., foreign_key="users.id")
-    user: User = Relationship(back_populates="employment")
+    position: EmployeePosition = Field(
+        ..., sa_column=Column(EnumField(EmployeePosition))
+    )
+    user_id: int = Field(..., foreign_key='users.id')
+    user: User = Relationship(back_populates='employment')
     start: date
     until: Optional[date] = None
     reason_for_leaving: Optional[str] = None
 
 
-DocumentType: TypeAlias = Literal[
-    "barangay permit",
-    "barangay certificate",
-    "certificate of ownership",
-    "certificate of singleness",
-    "certificate of cutting trees",
-]
+class DocumentType(str, Enum):
+    BARANGAY_PERMIT = 'barangay permit'
+    BARANGAY_CERTIFICATE = 'barangay certificate'
+    CERTIFICATE_OF_OWNERSHIP = 'certificate of ownership'
+    CERTIFICATE_OF_SINGLENESS = 'certificate of singleness'
+    CERTIFICATE_OF_CUTTING_TREES = 'certificate of cutting trees'
 
 
-DocumentRequestStatus: TypeAlias = Literal[
-    "pending",
-    "approved",
-    "canceled",
-    "forwarded",
-]
+class DocumentRequestStatus(str, Enum):
+    PENDING = 'pending'
+    APPROVED = 'approved'
+    CANCELED = 'canceled'
+    FORWARDED = 'forwarded'
 
 
 class DocumentRequest(SQLModelTimestamped, table=True):
-    __tablename__: str = "document_requests"
+    __tablename__: str = 'document_requests'
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    type_: DocumentType = Field(..., sa_column=Column(String))
-    status: DocumentRequestStatus = Field(..., sa_column=Column(String))
-    user: User = Relationship(back_populates="document_requests")
-    user_id: int = Field(..., foreign_key="users.id")
-    purok: User = Relationship(back_populates="document_requests")
-    purok_id: int = Field(..., foreign_key="puroks.id")
+    type_: DocumentType = Field(
+        ..., sa_column=Column('type', EnumField(DocumentType))
+    )
+    status: DocumentRequestStatus = Field(
+        ..., sa_column=Column(EnumField(DocumentRequestStatus))
+    )
+    user: User = Relationship(back_populates='document_requests')
+    user_id: int = Field(..., foreign_key='users.id')
+    purok: User = Relationship(back_populates='document_requests')
+    purok_id: int = Field(..., foreign_key='puroks.id')
 
 
 def create_tables():
