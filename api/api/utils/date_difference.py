@@ -1,9 +1,9 @@
 from calendar import monthrange
 from datetime import date, datetime, timezone
-from typing import Optional, TypedDict, Union
+from typing import Optional, TypedDict
 
 
-def _ensure_datetime(subject: Union[datetime, date, None] = None):
+def _ensure_datetime(subject: datetime | date | None = None):
     if isinstance(subject, datetime):
         return subject.astimezone(timezone.utc)
     if isinstance(subject, date):
@@ -22,15 +22,12 @@ class DateDifference(TypedDict):
     future: bool
 
 
-def date_difference(
-    date_left: Union[datetime, date],
-    date_right: Optional[Union[datetime, date]] = None
-) -> DateDifference:
-    _d1 = _ensure_datetime(date_left)
-    _d2 = _ensure_datetime(date_right)
+def date_difference(date_left: datetime | date, date_right: Optional[datetime | date] = None):
+    date_left = _ensure_datetime(date_left)
+    date_right = _ensure_datetime(date_right)
 
-    date1 = _d1 if _d1 >= _d2 else _d2
-    date2 = _d2 if _d1 >= _d2 else _d1
+    date1 = date_left if date_left >= date_right else date_right
+    date2 = date_right if date_left >= date_right else date_left
 
     years = date1.year - date2.year
     months = date1.month - date2.month
@@ -61,13 +58,13 @@ def date_difference(
         years = years - 1
         months = 12 + months
 
-    return {
-        'years': years,
-        'months': months,
-        'days': days,
-        'hours': hours,
-        'minutes': minutes,
-        'seconds': seconds,
-        'milliseconds': round(microseconds * 0.001, 2),
-        'future': _d1 >= _d2
-    }
+    return DateDifference(
+        years=years,
+        months=months,
+        days=days,
+        hours=hours,
+        minutes=minutes,
+        seconds=seconds,
+        milliseconds=round(microseconds * 0.001, 2),
+        future=date_left >= date_right
+    )
