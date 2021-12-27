@@ -46,6 +46,7 @@ async def findall(
     if params.search is not None:
         pass
 
+    # actual total number of matching records
     totalrows: int = session.execute(
         stmt.with_only_columns(func.count(Recipe.id))
     ).scalar_one()
@@ -56,12 +57,19 @@ async def findall(
         .offset(params.offset)
     ).all()
 
+    # is there still a next page?
     hasnext = totalrows > params.page * params.limit
 
+    # assume we are on the last page
     response.status_code = status.HTTP_200_OK
 
+    # we are not on the last page yet
     if hasnext:
         response.status_code = status.HTTP_206_PARTIAL_CONTENT
+
+    # page does not exist
+    if len(rows) == 0 and not hasnext:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     return dict(
         rows=rows,
