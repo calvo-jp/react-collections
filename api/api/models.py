@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Generic, List, Optional, TypeVar
+from typing import Generic, List, Optional, TypeVar, Union
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
@@ -158,9 +158,17 @@ class Paginated(GenericModel, Generic[PaginatedT]):
     search: Optional[str]
 
 
-@event.listens_for(User, 'before_update')
-def update_timestamp(_mapper, _engine, model: User):
-    model.updated_at = utcnow_()
+def __listen():
+    def listener(__mapper, __engine, target: Union[User, Recipe]):
+        target.updated_at = utcnow_()
+
+    models = [User, Recipe]
+
+    for model in models:
+        event.listen(model, 'before_update', listener)
+
+
+__listen()
 
 
 def create_tables():
