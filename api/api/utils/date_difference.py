@@ -50,7 +50,7 @@ def date_difference(date_left: datetime | date, date_right: Optional[datetime | 
         days = days - 1
         hours = 24 + hours
     if days < 0:
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         totaldays = monthrange(now.year, now.month)[1]
         months = months - 1
         days = totaldays + days
