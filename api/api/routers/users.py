@@ -3,23 +3,21 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
 from sqlmodel import Session, select
 
-from ..dependencies import get_session
+from ..dependencies import SearchParams, get_session
 from ..models import Paginated, ReadUser, User
 
 router = APIRouter(prefix='/users', tags=['users'])
 
 
-class SearchParams:
+class UserSearchParams(SearchParams):
     def __init__(
         self,
         *,
         page: Optional[int] = Query(default=None, ge=1),
         page_size: Optional[int] = Query(default=None, ge=25, le=100),
-        search: Optional[str] = None
+        search: Optional[str] = None,
     ):
-        self.page = page or 1
-        self.page_size = page_size or 25
-        self.search = search
+        super().__init__(page=page, page_size=page_size, search=search)
 
 
 @router.get(
@@ -29,10 +27,14 @@ class SearchParams:
 )
 async def findall(
     *,
-    params: SearchParams = Depends(),
+    params: UserSearchParams = Depends(),
     session: Session = Depends(get_session)
 ):
-    rows = session.exec(select(User)).all()
+    rows = session.exec(
+        select(User)
+        .limit(params.limit)
+        .offset(params.offset)
+    ).all()
 
     return Paginated(
         rows=rows,
