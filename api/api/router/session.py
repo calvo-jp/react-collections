@@ -39,7 +39,12 @@ async def login(
         )
 
     token = jsonwebtoken.sign(dict(user_id=user.id))
-    return dict(access_token=token, token_type='bearer', data=user)
+
+    return LoginResponse(
+        access_token=token,
+        token_type='bearer',
+        data=user
+    )
 
 
 @router.delete(path='/{token}', status_code=status.HTTP_204_NO_CONTENT)
