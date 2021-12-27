@@ -1,15 +1,21 @@
+from json.decoder import JSONDecodeError
+
 from email_validator import EmailNotValidError, validate_email
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from sqlmodel import Session, func, select
 
-from ..config import engine
+from ..dependency import get_session
 from ..models import User
 
 router = APIRouter()
 
 
 @router.websocket(path='/validators/emails')
-async def check_email_availability(socket: WebSocket):
+async def check_email_availability(
+    *,
+    socket: WebSocket,
+    session: Session = Depends(get_session)
+):
     """
     @example
     ```javascript
@@ -30,22 +36,28 @@ async def check_email_availability(socket: WebSocket):
 
     try:
         while True:
-            data = await socket.receive_json()
-            email = data.get("subject")
-
             try:
-                validate_email(email, check_deliverability=False)
+                data = await socket.receive_json()
+                assert isinstance(data, dict)
 
-                with Session(engine) as session:
-                    count: int = session.execute(
-                        select(User)
-                        .with_only_columns(func.count(User.id))
-                        .where(User.email == email)
-                        .limit(1)
-                    ).scalar_one()
+                subject = data.get("subject")
+                assert isinstance(subject, str)
 
-                    await socket.send_json(dict(available=count == 0))
-            except EmailNotValidError:
+                validate_email(subject, check_deliverability=False)
+
+                count: int = session.execute(
+                    select(User)
+                    .with_only_columns(func.count(User.id))
+                    .where(User.email == subject)
+                    .limit(1)
+                ).scalar_one()
+
+                await socket.send_json(dict(available=count == 0))
+            except (
+                JSONDecodeError,
+                AssertionError,
+                EmailNotValidError,
+            ):
                 await socket.send_json(dict(available=False))
     except WebSocketDisconnect:
         await socket.close()
