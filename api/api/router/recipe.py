@@ -179,6 +179,7 @@ async def upload_file(
 
     if getattr(recipe, media) is not None:
         status_code = status.HTTP_200_OK
+
         file_uploader.delete(getattr(recipe, media))
 
     whitelist = dict(
@@ -193,10 +194,12 @@ async def upload_file(
     )
 
     try:
+        uploaded = file_uploader.upload(file, whitelist=whitelist[media])
+
         setattr(
             recipe,
             media,
-            file_uploader.upload(file, whitelist=whitelist[media])
+            uploaded['filename']
         )
 
         session.add(recipe)
@@ -204,6 +207,7 @@ async def upload_file(
         session.refresh(recipe)
 
         response.status_code = status_code
+
         return recipe
     except file_uploader.UnsupportedFileType as error:
         raise HTTPException(

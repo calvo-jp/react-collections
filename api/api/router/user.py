@@ -160,7 +160,8 @@ async def set_avatar(
     ]
 
     try:
-        user.avatar = file_uploader.upload(image, whitelist=valid_types)
+        uploaded = file_uploader.upload(image, whitelist=valid_types)
+        user.avatar = uploaded['filename']
 
         session.add(user)
         session.commit()
