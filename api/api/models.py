@@ -1,9 +1,10 @@
 
 from datetime import date, datetime, timezone
 from enum import Enum
-from typing import List, Optional, TypedDict
+from typing import Generic, List, Optional, TypedDict, TypeVar
 
 from pydantic import EmailStr
+from pydantic.generics import GenericModel
 from sqlalchemy import event
 from sqlmodel import Column, Date, DateTime
 from sqlmodel import Enum as EnumField
@@ -323,6 +324,23 @@ class ReadDocumentRequest(SQLModel):
     updated_at: Optional[datetime]
 
 
+PaginatedT = TypeVar(
+    'PaginatedT',
+    ReadPurok,
+    ReadHousehold,
+    ReadUser,
+    ReadEmployee
+)
+
+
+class Paginated(GenericModel, Generic[PaginatedT]):
+    rows: list[PaginatedT]
+    total_rows: int
+    page: int
+    page_size: int
+    has_next: bool
+    search: Optional[str]
+
+
 def create_tables():
-    SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
