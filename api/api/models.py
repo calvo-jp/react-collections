@@ -122,12 +122,24 @@ class User(SQLModelTimestamped, table=True):
     middle_name: Optional[str] = None
     last_name: str
     suffix: Optional[str] = None
-    gender: Optional[str] = None
-    marital: Optional[str] = None
+    gender: Optional[Gender] = Field(
+        default=None,
+        sa_column=Column(String)
+    )
+    marital: Optional[Marital] = Field(
+        default=None,
+        sa_column=Column(String)
+    )
     date_of_birth: Optional[date] = Field(default=None, sa_column=Column(Date))
     is_pwd: Optional[bool] = None
-    employment_status: Optional[str] = None
-    educational_attainment: Optional[str] = None
+    employment_status: Optional[EmploymentStatus] = Field(
+        default=None,
+        sa_column=Column(String)
+    )
+    educational_attainment: Optional[EducationalAttainment] = Field(
+        default=None,
+        sa_column=Column(String)
+    )
     email: Optional[EmailStr] = Field(
         default=None,
         sa_column=Column(String, unique=True)
@@ -201,7 +213,7 @@ class Employee(SQLModelTimestamped, table=True):
     __tablename__: str = "employees"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    position: str
+    position: EmployeePosition = Field(..., sa_column=Column(String))
     user_id: int = Field(..., foreign_key="users.id")
     user: User = Relationship(back_populates="employment")
     start: date
@@ -230,8 +242,8 @@ class DocumentRequest(SQLModelTimestamped, table=True):
     __tablename__: str = "document_requests"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    type_: str
-    status: str
+    type_: DocumentType = Field(..., sa_column=Column(String))
+    status: DocumentRequestStatus = Field(..., sa_column=Column(String))
     user: User = Relationship(back_populates="document_requests")
     user_id: int = Field(..., foreign_key="users.id")
     purok: User = Relationship(back_populates="document_requests")
