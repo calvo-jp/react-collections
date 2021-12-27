@@ -38,7 +38,7 @@ async def read_all(
     stmt = select(User)
 
     # TODO: implement fulltext search
-    if params.search:
+    if params.search is None:
         pass
 
     totalrows: int = session.execute(
