@@ -116,8 +116,6 @@ class Recipe(SQLModelTimestamped, table=True):
     )
     image: Optional[str] = None
     video: Optional[str] = None
-    created_at: datetime
-    updated_at: Optional[datetime] = None
 
 
 class ReadRecipe(SQLModel):
