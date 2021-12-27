@@ -154,7 +154,6 @@ async def setup_avatar(
 
     valid_types = [
         'image/jpeg',
-        'image/jpe',
         'image/jpg',
         'image/png',
     ]
