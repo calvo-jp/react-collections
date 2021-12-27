@@ -31,7 +31,7 @@ class SQLModelTimestamped(SQLModel):
     )
 
 
-class User(SQLModel, table=True):
+class User(SQLModelTimestamped, table=True):
     __tablename__: str = 'users'
 
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -46,14 +46,6 @@ class User(SQLModel, table=True):
     )
     password: bytes
     avatar: Optional[str] = None
-    created_at: datetime = Field(
-        ...,
-        sa_column=Column(ZonedDateTime, nullable=False)
-    )
-    updated_at: Optional[datetime] = Field(
-        default=None,
-        sa_column=Column(ZonedDateTime)
-    )
 
     recipes: List['Recipe'] = Relationship(back_populates='author')
 
@@ -100,7 +92,7 @@ class UpdateUser(SQLModel):
         return v.lower()
 
 
-class Recipe(SQLModel, table=True):
+class Recipe(SQLModelTimestamped, table=True):
     __tablename__: str = 'recipes'
 
     id: Optional[int] = Field(default=None, primary_key=True)
