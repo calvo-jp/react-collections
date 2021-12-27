@@ -79,8 +79,7 @@ async def create(*, data: CreateUser, session: Session = Depends(get_session)):
         user = User(
             name=data.name,
             email=data.email,
-            password=hashpw(data.password.encode('utf-8'), gensalt()),
-            created_at=datetime.now(timezone.utc)
+            password=hashpw(data.password.encode('utf-8'), gensalt())
         )
 
         session.add(user)
@@ -125,8 +124,6 @@ async def update(
         for k, v in data.dict(exclude_none=True).items():
             setattr(user, k, v)
 
-            user.updated_at = datetime.now(timezone.utc)
-
         session.add(user)
         session.commit()
         session.refresh(user)
@@ -148,6 +145,7 @@ async def setup_avatar(
     response: Response
 ):
     status_code = status.HTTP_201_CREATED
+
     if user.avatar is not None:
         file_uploader.delete(user.avatar)
         status_code = status.HTTP_200_OK
@@ -160,13 +158,13 @@ async def setup_avatar(
 
     try:
         user.avatar = file_uploader.upload(image, whitelist=valid_types)
-        user.updated_at = datetime.now(timezone.utc)
 
         session.add(user)
         session.commit()
         session.refresh(user)
 
         response.status_code = status_code
+
         return user
     except file_uploader.UnsupportedFileType as error:
         raise HTTPException(
@@ -187,7 +185,6 @@ async def delete_avatar(
     file_uploader.delete(user.avatar)
 
     user.avatar = None
-    user.updated_at = datetime.now(timezone.utc)
 
     session.add(user)
     session.commit()
