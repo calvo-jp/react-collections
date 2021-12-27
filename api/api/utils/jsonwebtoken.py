@@ -1,7 +1,7 @@
 """JWT helper"""
 
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, TypeAlias
 from uuid import uuid4
 
 from jose import jwt
@@ -18,12 +18,14 @@ blacklist = Redis(
     decode_responses=True
 )
 
+DictStrAny: TypeAlias = dict[str, Any]
+
 
 def blacklisted(token_id: str):
     return blacklist.get(token_id) is not None
 
 
-def sign(payload: dict[str, Any]):
+def sign(payload: DictStrAny):
     claims = payload.copy()
 
     claims['_id'] = uuid4().hex
@@ -32,7 +34,7 @@ def sign(payload: dict[str, Any]):
     return jwt.encode(claims, config.access_token_secret)
 
 
-def decode(token: str) -> dict[str, Any]:
+def decode(token: str) -> DictStrAny:
     claims = jwt.decode(token, config.access_token_secret, [ALGORITHMS.HS256])
     claims_id = claims.get('_id')
     claims_exp = claims.get('exp')
