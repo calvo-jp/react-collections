@@ -34,8 +34,14 @@ def sign(payload: dict[str, Any]):
 
 def decode(token: str) -> dict[str, Any]:
     claims = jwt.decode(token, config.access_token_secret, [ALGORITHMS.HS256])
+    claims_id = claims.get('_id')
+    claims_exp = claims.get('exp')
 
-    if blacklisted(claims['_id']):
+    if (
+        not isinstance(claims_exp, float) or
+        not isinstance(claims_id, str) or
+        blacklisted(claims_id)
+    ):
         raise JWTError()
 
     return dict(claims)
@@ -45,6 +51,6 @@ def invalidate(token: str):
     """blacklists a token until it expires"""
 
     claims = decode(token)
-    duration = datetime.fromtimestamp(claims['exp']) - datetime.now()
 
-    blacklist.setex(claims['_id'], duration, "")
+    blacklist_duration = datetime.fromtimestamp(claims['exp']) - datetime.now()
+    blacklist.setex(claims['_id'], blacklist_duration, "")
