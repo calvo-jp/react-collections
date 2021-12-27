@@ -1,4 +1,4 @@
-from os import mkdir, path
+import os
 from typing import Optional
 
 from pydantic import BaseSettings
@@ -37,10 +37,10 @@ class Settings(BaseSettings):
 
     @property
     def uploads_dir(self):
-        fullpath = path.abspath('.uploads')
+        fullpath = os.path.abspath('.uploads')
 
-        if not path.exists(fullpath):
-            mkdir(fullpath)
+        if not os.path.exists(fullpath):
+            os.mkdir(fullpath)
 
         return fullpath
 
