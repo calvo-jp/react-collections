@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      serif: ["'Source Sans Pro", "Times New Roman", "serif"],
+      sans: ["M PLUS Code Latin", "sans-serif"],
     },
   },
   variants: {
