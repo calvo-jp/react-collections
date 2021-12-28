@@ -71,7 +71,7 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         ref={inputRef}
         className={clsx(
-          "p-2 border border-gray-300 outline-none transition-all duration-300 w-full",
+          "p-2 border border-gray-300 outline-none transition-all duration-300 w-full rounded-md",
           !error &&
             "hover:border-gray-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-200",
           error && "border-red-400 focus:ring-4 focus:ring-red-200",
