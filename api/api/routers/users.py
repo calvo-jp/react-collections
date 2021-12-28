@@ -76,10 +76,6 @@ async def create(
     data: CreateUser,
     session: Session = Depends(get_session)
 ):
-    encrypted_password = None
-
-    if data.password is not None:
-        encrypted_password = hashpw(data.password.encode('utf-8'), gensalt())
 
     user = User(
         first_name=data.name.first,
@@ -91,11 +87,13 @@ async def create(
         marital=data.marital,
         email=data.email,
         username=data.username,
-        password=encrypted_password,
         phone_number=data.phone_number,
         employment_status=data.employment_status,
         educational_attainment=data.educational_attainment,
     )
+
+    if data.password is not None:
+        user.password = hashpw(data.password.encode('utf-8'), gensalt())
 
     if data.household_id is not None:
         record = session.exec(
