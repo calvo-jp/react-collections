@@ -1,4 +1,5 @@
-from typing import Literal, Optional, TypeAlias
+from enum import Enum
+from typing import Literal, Optional
 
 from fastapi import APIRouter, status
 from fastapi.datastructures import UploadFile
@@ -111,6 +112,8 @@ async def create(
     recipe = Recipe(
         name=data.name,
         description=data.description,
+        ingredients=data.ingredients,
+        instructions=data.instructions,
         author_id=author.id,
     )
 
@@ -167,7 +170,7 @@ async def delete(
     session.commit()
 
 
-Media: TypeAlias = Literal[
+Media = Literal[
     "video",
     "image"
 ]

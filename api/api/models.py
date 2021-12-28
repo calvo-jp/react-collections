@@ -101,14 +101,8 @@ class Recipe(SQLModelTimestamped, table=True):
     description: str
     author_id: int = Field(..., foreign_key='users.id')
     author: User = Relationship(back_populates='recipes')
-    ingredients: list[str] = Field(
-        default_factory=list,
-        sa_column=Column(ARRAY(String))
-    )
-    instructions: list[str] = Field(
-        default_factory=list,
-        sa_column=Column(ARRAY(String))
-    )
+    ingredients: list[str] = Field(..., sa_column=Column(ARRAY(String)))
+    instructions: list[str] = Field(..., sa_column=Column(ARRAY(String)))
     image: Optional[str] = None
     video: Optional[str] = None
 
@@ -129,6 +123,8 @@ class ReadRecipe(SQLModel):
 class CreateRecipe(SQLModel):
     name: str = Field(..., min_length=4, max_length=50)
     description: str = Field(..., min_length=15, max_length=255)
+    ingredients: list[str] = Field(..., min_items=2, max_items=15)
+    instructions: list[str] = Field(..., min_items=2, max_items=15)
 
 
 class UpdateRecipe(SQLModel):
@@ -137,6 +133,16 @@ class UpdateRecipe(SQLModel):
         default=None,
         min_length=15,
         max_length=255
+    )
+    ingredients: Optional[list[str]] = Field(
+        default=None,
+        min_items=2,
+        max_items=15
+    )
+    instructions: Optional[list[str]] = Field(
+        default=None,
+        min_items=2,
+        max_items=15
     )
 
 
