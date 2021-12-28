@@ -151,13 +151,17 @@ class Paginated(GenericModel, Generic[PaginatedT]):
 
 
 def __listen():
-    def listener(__mapper, __engine, target: User | Recipe):
-        target.updated_at = utcnow_()
+    def listener(__mapper, __engine, target):
+        if hasattr(target, 'updated_at'):
+            setattr(target, 'updated_at', utcnow_())
 
-    models = [User, Recipe]
+    tables = [
+        User,
+        Recipe
+    ]
 
-    for model in models:
-        event.listen(model, 'before_update', listener)
+    for table in tables:
+        event.listen(table, 'before_update', listener)
 
 
 __listen()
