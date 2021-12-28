@@ -1,7 +1,7 @@
 
 from datetime import date, datetime, timezone
 from enum import Enum
-from typing import Generic, List, Optional, TypedDict, TypeVar
+from typing import Generic, List, Optional, TypeAlias, TypedDict, TypeVar
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
@@ -26,8 +26,6 @@ def utcnow_():
 
 
 class SQLModelTimestamped(SQLModel):
-    """Add created_at and updated_at field to sqlmodel table"""
-
     created_at: datetime = Field(
         default_factory=utcnow_,
         sa_column=Column(ZonedDateTime, nullable=False)
@@ -36,11 +34,6 @@ class SQLModelTimestamped(SQLModel):
         default=None,
         sa_column=Column(ZonedDateTime)
     )
-
-
-@event.listens_for(SQLModelTimestamped, "before_update")
-def update_timestamp(_, table: SQLModelTimestamped):
-    table.updated_at = utcnow_()
 
 
 class Purok(SQLModelTimestamped, table=True):
@@ -380,7 +373,8 @@ PaginatedT = TypeVar(
     ReadPurok,
     ReadHousehold,
     ReadUser,
-    ReadEmployee
+    ReadEmployee,
+    ReadTransaction
 )
 
 
@@ -391,6 +385,26 @@ class Paginated(GenericModel, Generic[PaginatedT]):
     page_size: int
     has_next: bool
     search: Optional[str]
+
+
+def __listen():
+    def listener(__mapper, __engine, target):
+        if hasattr(target, 'updated_at'):
+            setattr(target, 'updated_at', utcnow_)
+
+    tables = [
+        User,
+        Purok,
+        Employee,
+        Household,
+        Transaction
+    ]
+
+    for table in tables:
+        event.listen(table, 'before_update', listener)
+
+
+__listen()
 
 
 def create_tables():
