@@ -388,7 +388,7 @@ class Paginated(GenericModel, Generic[PaginatedT]):
 def __listen():
     def listener(__mapper, __engine, target):
         if hasattr(target, 'updated_at'):
-            setattr(target, 'updated_at', utcnow_)
+            setattr(target, 'updated_at', utcnow_())
 
     tables = [
         User,
