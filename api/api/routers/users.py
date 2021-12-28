@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
 from sqlmodel import Session, select
 
 from ..dependencies import SearchParams, get_session
-from ..models import CreateUser, Paginated, ReadUser, User
+from ..models import CreateUser, Household, Paginated, Purok, ReadUser, User
 
 router = APIRouter(prefix='/users', tags=['users'])
 
@@ -93,11 +93,44 @@ async def create(
         username=data.username,
         password=encrypted_password,
         phone_number=data.phone_number,
-        household_id=data.household_id,
-        purok_id=data.purok_id,
         employment_status=data.employment_status,
         educational_attainment=data.educational_attainment,
     )
+
+    if data.household_id is not None:
+        record = session.exec(
+            select(Household, Purok)
+            .where(Household.id == data.household_id)
+            .limit(1)
+        ).one_or_none()
+
+        if record is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Household not found'
+            )
+
+        household, purok = record
+
+        if data.purok_id is not None and data.purok_id != purok.id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+        user.purok = purok
+        user.household = household
+
+    elif data.purok_id is not None:
+        purok = session.get(Purok, data.purok_id)
+
+        if purok is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Purok not found'
+            )
+
+        user.purok = purok
+
+    else:
+        pass
 
     session.add(user)
     session.commit()
