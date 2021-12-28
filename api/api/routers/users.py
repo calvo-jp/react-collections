@@ -96,19 +96,19 @@ async def create(
         user.password = hashpw(data.password.encode('utf-8'), gensalt())
 
     if data.household_id is not None:
-        record = session.exec(
+        rows = session.exec(
             select(Household, Purok)
             .where(Household.id == data.household_id)
             .limit(1)
         ).one_or_none()
 
-        if record is None:
+        if rows is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail='Household not found'
             )
 
-        household, purok = record
+        household, purok = rows
 
         if data.purok_id is not None and data.purok_id != purok.id:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
