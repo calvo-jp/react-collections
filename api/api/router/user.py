@@ -31,25 +31,34 @@ async def findall(
         stmt.with_only_columns(func.count(User.id))
     ).scalar_one()
 
-    hasnext = totalrows > params.page * params.limit
-
     rows = session.exec(
         stmt
         .limit(params.limit)
         .offset(params.offset)
     ).all()
 
+    # is there still a next page?
+    hasnext = totalrows > params.page * params.limit
+
+    # assume we are on the last page
     response.status_code = status.HTTP_200_OK
 
+    # we are not on the last page yet
     if hasnext:
         response.status_code = status.HTTP_206_PARTIAL_CONTENT
+
+    # page does not exist (404) if
+    # user navigates to a certain page other than page 1
+    # and no more records are found
+    if params.page > 1 and not hasnext and len(rows) == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     return dict(
         rows=rows,
         total_rows=totalrows,
-        has_next=hasnext,
         page=params.page,
         page_size=params.limit,
+        has_next=hasnext,
         search=params.search
     )
 
