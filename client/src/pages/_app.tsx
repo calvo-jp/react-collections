@@ -1,4 +1,3 @@
-import "assets/fonts/source-sans-pro/source-sans-pro.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import * as React from "react";
