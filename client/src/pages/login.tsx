@@ -76,7 +76,7 @@ const Login = () => {
               </Button>
             </form>
 
-            <div className="text-center mt-8 text-gray-600">
+            <div className="text-center mt-4 text-gray-600">
               <span>No account?</span>
 
               <Link href="/create-account" passHref>
