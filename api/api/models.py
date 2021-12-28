@@ -123,8 +123,14 @@ class ReadRecipe(SQLModel):
 class CreateRecipe(SQLModel):
     name: str = Field(..., min_length=4, max_length=50)
     description: str = Field(..., min_length=15, max_length=255)
-    ingredients: list[str] = Field(..., min_items=2, max_items=15)
-    instructions: list[str] = Field(..., min_items=2, max_items=15)
+    ingredients: list[str] = Field(
+        default_factory=list,
+        max_items=25
+    )
+    instructions: list[str] = Field(
+        default_factory=list,
+        max_items=25
+    )
 
 
 class UpdateRecipe(SQLModel):
@@ -134,16 +140,8 @@ class UpdateRecipe(SQLModel):
         min_length=15,
         max_length=255
     )
-    ingredients: Optional[list[str]] = Field(
-        default=None,
-        min_items=2,
-        max_items=15
-    )
-    instructions: Optional[list[str]] = Field(
-        default=None,
-        min_items=2,
-        max_items=15
-    )
+    ingredients: Optional[list[str]] = Field(default=None, max_items=25)
+    instructions: Optional[list[str]] = Field(default=None, max_items=25)
 
 
 PaginatedT = TypeVar('PaginatedT', ReadUser, ReadRecipe)
