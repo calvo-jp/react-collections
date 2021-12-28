@@ -53,7 +53,7 @@ class Purok(SQLModelTimestamped, table=True):
 
     households: List['Household'] = Relationship(back_populates='purok')
     residents: List['User'] = Relationship(back_populates='purok')
-    document_requests: List['DocumentRequest'] = Relationship(
+    transactions: List['Transaction'] = Relationship(
         back_populates='purok'
     )
 
@@ -204,7 +204,7 @@ class User(SQLModelTimestamped, table=True):
     )
     household: Optional[Household] = Relationship(back_populates='members')
     employment: List['Employee'] = Relationship(back_populates='user')
-    document_requests: List['DocumentRequest'] = Relationship(
+    transactions: List['Transaction'] = Relationship(
         back_populates='user'
     )
 
@@ -334,7 +334,7 @@ class ReadEmployee(SQLModel):
     updated_at: Optional[datetime]
 
 
-class DocumentType(str, Enum):
+class TransactionType(str, Enum):
     BARANGAY_PERMIT = 'barangay permit'
     BARANGAY_CERTIFICATE = 'barangay certificate'
     CERTIFICATE_OF_OWNERSHIP = 'certificate of ownership'
@@ -342,33 +342,33 @@ class DocumentType(str, Enum):
     CERTIFICATE_OF_CUTTING_TREES = 'certificate of cutting trees'
 
 
-class DocumentRequestStatus(str, Enum):
+class TransactionStatus(str, Enum):
     PENDING = 'pending'
     APPROVED = 'approved'
     CANCELED = 'canceled'
     FORWARDED = 'forwarded'
 
 
-class DocumentRequest(SQLModelTimestamped, table=True):
-    __tablename__: str = 'document_requests'
+class Transaction(SQLModelTimestamped, table=True):
+    __tablename__: str = 'transactions'
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    type_: DocumentType = Field(
-        ..., sa_column=Column('type', EnumField(DocumentType))
+    type_: TransactionType = Field(
+        ..., sa_column=Column('type', EnumField(TransactionType))
     )
-    status: DocumentRequestStatus = Field(
-        ..., sa_column=Column(EnumField(DocumentRequestStatus))
+    status: TransactionStatus = Field(
+        ..., sa_column=Column(EnumField(TransactionStatus))
     )
-    user: User = Relationship(back_populates='document_requests')
+    user: User = Relationship(back_populates='transactions')
     user_id: int = Field(..., foreign_key='users.id')
-    purok: Purok = Relationship(back_populates='document_requests')
+    purok: Purok = Relationship(back_populates='transactions')
     purok_id: int = Field(..., foreign_key='puroks.id')
 
 
-class ReadDocumentRequest(SQLModel):
+class ReadTransaction(SQLModel):
     id: int
-    type_: DocumentType = Field(..., alias='type')
-    status: DocumentRequest
+    type_: TransactionType = Field(..., alias='type')
+    status: TransactionStatus
     user: User
     purok: Purok
     created_at: datetime
