@@ -1,8 +1,8 @@
-import clsx from "clsx";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
+import Rating from "widgets/Rating";
 
 const Landing = () => {
   return (
@@ -114,7 +114,7 @@ interface CardProps {
   image: string;
 }
 
-const Card = ({ title, description, image }: CardProps) => {
+const Card: React.FC<CardProps> = ({ title, description, image }) => {
   return (
     <div className="w-[325px] flex flex-col">
       <div className="relative flex-grow h-[325px]">
@@ -129,51 +129,15 @@ const Card = ({ title, description, image }: CardProps) => {
 
       <div className="p-2">
         <div>
-          <h3 className="font-bold text-xl">{title}</h3>
+          <h3 className="text-xl">{title}</h3>
           <p className="text-sm">{description}</p>
         </div>
 
-        <Rating value={4} className="mt-2" />
+        <div className="mt-2">
+          <Rating value={5} />
+        </div>
       </div>
     </div>
-  );
-};
-
-interface RatingProps
-  extends Omit<
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLSpanElement>,
-      HTMLSpanElement
-    >,
-    "children" | "onChange" | "style"
-  > {
-  value: number;
-  onChange?: (value: number) => void;
-}
-
-const Rating = ({ value, onChange, className }: RatingProps) => {
-  const handleChange = onChange || function (..._args: any) {};
-
-  return (
-    <span className="flex">
-      {[1, 2, 3, 4, 5].map((index) => (
-        <svg
-          key={index}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className={clsx(
-            "h-5 w-5 cursor-pointer transition-colors duration-300",
-            index > value && "text-gray-300 hover:text-amber-400",
-            index <= value && "text-amber-500 hover:text-amber-400",
-            className
-          )}
-          onClick={() => handleChange(index)}
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </span>
   );
 };
 
@@ -186,7 +150,7 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center gap-4">
-          <div className="p-2 border border-gray-200 bg-white flex items-center w-[350px] gap-2">
+          <div className="p-2 border border-gray-200 bg-white flex items-center w-[350px] gap-2 rounded-md overflow-hidden">
             <div className="flex-grow">
               <input
                 type="search"
