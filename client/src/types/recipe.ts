@@ -8,10 +8,13 @@ interface IRecipe {
   ingredients: string[];
   instructions: string[];
   tags: string[];
+
   /** image url */
   image: string;
+
   /** video url */
   video?: string;
+
   /** average rate from 0-5 */
   rating: number;
   createdAt: string;
