@@ -60,7 +60,7 @@ const Login = () => {
                   value={credential.password}
                   fullWidth
                 />
-                <p className="text-xs mt-1.5">
+                <p className="text-sm mt-1.5">
                   <span>Forgot password?</span>
 
                   <Link href="/account-recovery" passHref>
