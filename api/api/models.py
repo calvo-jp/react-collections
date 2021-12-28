@@ -1,7 +1,7 @@
 
 from datetime import date, datetime, timezone
 from enum import Enum
-from typing import Generic, List, Optional, TypeAlias, TypedDict, TypeVar
+from typing import Generic, List, Optional, TypedDict, TypeVar
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
