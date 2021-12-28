@@ -1,5 +1,4 @@
-from enum import Enum
-from typing import Optional
+from typing import Literal, Optional, TypeAlias
 
 from fastapi import APIRouter, status
 from fastapi.datastructures import UploadFile
@@ -112,8 +111,6 @@ async def create(
     recipe = Recipe(
         name=data.name,
         description=data.description,
-        ingredients=data.ingredients,
-        instructions=data.instructions,
         author_id=author.id,
     )
 
@@ -170,9 +167,10 @@ async def delete(
     session.commit()
 
 
-class Media(str, Enum):
-    VIDEO = 'video'
-    IMAGE = 'image'
+Media: TypeAlias = Literal[
+    "video",
+    "image"
+]
 
 
 @router.put(path='/{id}/{media}', response_model=ReadRecipe, response_model_exclude_none=True)
