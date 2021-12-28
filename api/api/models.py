@@ -123,14 +123,8 @@ class ReadRecipe(SQLModel):
 class CreateRecipe(SQLModel):
     name: str = Field(..., min_length=4, max_length=50)
     description: str = Field(..., min_length=15, max_length=255)
-    ingredients: list[str] = Field(
-        default_factory=list,
-        max_items=25
-    )
-    instructions: list[str] = Field(
-        default_factory=list,
-        max_items=25
-    )
+    ingredients: list[str] = Field(default_factory=list, max_items=25)
+    instructions: list[str] = Field(default_factory=list, max_items=25)
 
 
 class UpdateRecipe(SQLModel):
