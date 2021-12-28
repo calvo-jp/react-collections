@@ -253,10 +253,7 @@ class ReadUser(SQLModel):
     updated_at: Optional[datetime]
 
     purok: Optional[ReadPurok]
-    household: Optional[ReadHousehold] = Field(
-        default=None,
-        exclude=('purok',)
-    )
+    household: Optional[ReadHousehold]
 
 
 class CreateUser(SQLModel):
