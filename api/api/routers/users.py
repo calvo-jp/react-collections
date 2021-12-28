@@ -93,6 +93,8 @@ async def create(
         username=data.username,
         password=encrypted_password,
         phone_number=data.phone_number,
+        household_id=data.household_id,
+        purok_id=data.purok_id,
         employment_status=data.employment_status,
         educational_attainment=data.educational_attainment,
     )

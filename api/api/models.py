@@ -267,6 +267,8 @@ class CreateUser(SQLModel):
     username: Optional[str]
     password: Optional[str]
     email: Optional[EmailStr]
+    household_id: Optional[int]
+    purok_id: Optional[int]
 
     @validator(
         'email',
