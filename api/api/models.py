@@ -244,6 +244,8 @@ class ReadUser(SQLModel):
     is_pwd: Optional[bool]
     date_of_birth: Optional[date]
     age: Optional[Age]
+    purok: Optional[ReadPurok]
+    household: Optional[ReadHousehold]
     employment_status: Optional[EmploymentStatus]
     educational_attainment: Optional[EducationalAttainment]
     phone_number: Optional[str]
@@ -251,9 +253,6 @@ class ReadUser(SQLModel):
     email: Optional[EmailStr]
     created_at: datetime
     updated_at: Optional[datetime]
-
-    purok: Optional[ReadPurok]
-    household: Optional[ReadHousehold]
 
 
 class CreateUser(SQLModel):
