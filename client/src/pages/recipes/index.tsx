@@ -74,7 +74,7 @@ const Recipes: NextPage<Props> = ({ items }) => {
         <title>Recipes</title>
       </Head>
 
-      <div className="min-h-screen flex flex-col bg-gray-100">
+      <div className="min-h-screen bg-gray-100">
         <Header />
 
         <main className="flex-grow">
@@ -135,7 +135,7 @@ const Item: React.FC<Item> = ({
 
 const Sidebar = () => {
   return (
-    <section className="p-8 flex flex-col gap-8">
+    <section className="p-8 flex flex-col gap-8 sticky top-0">
       <Avatar />
 
       <Button variant="primary" fullWidth>
@@ -162,7 +162,7 @@ const Avatar = () => {
         />
       </div>
 
-      <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 to-blue-300 rounded-full p-1 border-4 border-gray-100">
+      <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 to-blue-400 rounded-full p-1 border-4 border-gray-100">
         <CameraIcon className="h-8 w-8 fill-white" />
       </button>
     </div>
