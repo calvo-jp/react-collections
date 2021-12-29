@@ -76,7 +76,7 @@ const Recipes: NextPage<Props> = ({ items }) => {
           <div className="flex">
             <Sidebar />
 
-            <section className="p-8 w-full">
+            <section className="p-8 flex-grow">
               <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 grid-flow-row-dense">
                 {items.map((item, index) => (
                   <Item {...item} key={index} />
