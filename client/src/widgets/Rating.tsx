@@ -15,7 +15,9 @@ const Rating: React.FC<Partial<RatingProps>> = ({
   const currentValue = value || 0;
 
   const handleChange = (newValue: number) => {
-    return function () {
+    return function (e: React.MouseEvent<SVGSVGElement, MouseEvent>) {
+      e.preventDefault();
+
       if (typeof onChange === "function") {
         onChange(newValue);
       }
