@@ -19,14 +19,11 @@ const Landing = () => {
             <div className="absolute h-full z-20 max-w-[800px] left-0 right-0 mx-auto p-8 flex flex-col justify-center text-white">
               <h2 className="font-bold text-4xl uppercase">Recipes</h2>
 
-              <p className="text-xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque
-                quis repellat culpa rem, asperiores soluta.
+              <p className="text-md">
+                Find or share amazing recipes anytime for free
               </p>
 
-              <div className="flex text-sm mt-6 items-center">
-                <h5 className="">Find as here</h5>
-                <div className="border-t-2 border-white w-4 mx-4 border-opacity-60" />
+              <div className="flex text-sm mt-8 items-center">
                 <ul className="flex gap-2 items-center">
                   <li>
                     <a href="#">Facebook</a>
