@@ -28,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={clsx(
-        "p-2 outline-none rounded-md",
+        "p-2 outline-none rounded-md flex items-center gap-1 justify-center",
         primary &&
           "text-white border border-blue-500 bg-blue-500 focus:ring-4 focus:ring-blue-200",
         secondary &&
