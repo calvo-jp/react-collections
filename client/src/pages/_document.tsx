@@ -15,7 +15,7 @@ class Document_ extends Document {
           />
         </Head>
 
-        <body className="min-h-screen bg-white font-sans text-gray-700">
+        <body>
           <Main />
           <NextScript />
         </body>
