@@ -80,12 +80,8 @@ const TextField: React.FC<TextFieldProps> = ({
         {...props}
       />
 
-      {error && !!errorText && (
-        <div
-          className="mt-1.5 ml-1.5 flex gap-1 items-center"
-          text-sm
-          text-red-500
-        >
+      {!!errorText && error && (
+        <div className="mt-1.5 ml-1.5 flex gap-1 items-center text-sm text-red-500">
           {errorText}
         </div>
       )}
