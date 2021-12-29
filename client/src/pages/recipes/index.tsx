@@ -122,11 +122,10 @@ const Sidebar = () => {
 
       <Button variant="primary" fullWidth>
         <PencilSquareIcon />
-        <span>Create New</span>
+        Create New
       </Button>
 
       <Navbar />
-
       <Footer />
     </section>
   );
