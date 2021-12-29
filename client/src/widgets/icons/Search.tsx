@@ -1,11 +1,8 @@
 import * as React from "react";
 
-type SearchbarIconProps = React.SVGProps<SVGSVGElement>;
+type SearchIconProps = React.SVGProps<SVGSVGElement>;
 
-const SearchbarIcon: React.FC<SearchbarIconProps> = ({
-  children,
-  ...props
-}) => {
+const SearchIcon: React.FC<SearchIconProps> = ({ children, ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,4 +23,4 @@ const SearchbarIcon: React.FC<SearchbarIconProps> = ({
   );
 };
 
-export default SearchbarIcon;
+export default SearchIcon;
