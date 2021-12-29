@@ -1,8 +1,8 @@
 import * as React from "react";
 
-type ChevronLeftIconProps = React.SVGProps<SVGSVGElement>;
+type ChevronRightIconProps = React.SVGProps<SVGSVGElement>;
 
-const ChevronLeftIcon: React.FC<ChevronLeftIconProps> = ({
+const ChevronRightIcon: React.FC<ChevronRightIconProps> = ({
   children,
   ...props
 }) => {
@@ -20,10 +20,10 @@ const ChevronLeftIcon: React.FC<ChevronLeftIconProps> = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M9 5l7 7-7 7"
+        d="M15 19l-7-7 7-7"
       />
     </svg>
   );
 };
 
-export default ChevronLeftIcon;
+export default ChevronRightIcon;
