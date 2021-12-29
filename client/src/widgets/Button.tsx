@@ -10,11 +10,13 @@ type Variant = "primary" | "secondary";
 
 interface ButtonProps extends BaseProps {
   variant?: Variant;
+  fullWidth?: boolean;
 }
 
 // TODO: add secondary
 const Button: React.FC<ButtonProps> = ({
   variant,
+  fullWidth,
   children,
   className,
   ...props
@@ -32,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({
         secondary &&
           "text-white border border-red-500 bg-red-500 focus:ring-4 focus:ring-red-200",
         disabled && "bg-gray-100 text-gray-400 cursor-not-allowed",
+        fullWidth && "block w-full",
         className
       )}
       {...props}
