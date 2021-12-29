@@ -27,7 +27,7 @@ interface Props {
   items: Item[];
 }
 
-export const getStaticProps: GetStaticProps = () => {
+export const getStaticProps: GetStaticProps = async () => {
   const items = [
     {
       name: "Adobong manok",
@@ -54,7 +54,9 @@ export const getStaticProps: GetStaticProps = () => {
   ];
 
   return {
-    props: { items },
+    props: {
+      items,
+    },
     revalidate: false,
   };
 };
@@ -168,27 +170,6 @@ const Avatar = () => {
   );
 };
 
-const Hamburger = () => {
-  return (
-    <button>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M4 6h16M4 12h16M4 18h16"
-        />
-      </svg>
-    </button>
-  );
-};
-
 const Header = () => {
   return (
     <header className="bg-white shadow-md z-10">
@@ -209,6 +190,27 @@ const Header = () => {
         </div>
       </div>
     </header>
+  );
+};
+
+const Hamburger = () => {
+  return (
+    <button>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
   );
 };
 
