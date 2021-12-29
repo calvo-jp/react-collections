@@ -103,8 +103,13 @@ const Item: React.FC<Item> = ({
 }) => {
   return (
     <Link href={"/recipes/".concat(id.toString())} passHref>
-      <a className="bg-white shadow-md" key={name}>
+      <a
+        className="bg-white shadow-md group hover:ring-4 hover:ring-blue-200"
+        key={name}
+      >
         <figure className="w-full h-[250px] relative overflow-hidden">
+          <div className="absolute w-full h-full z-20 top-0 left-0 bg-black bg-opacity-50 hidden group-hover:flex items-center justify-center" />
+
           <Image
             src={image}
             alt=""
