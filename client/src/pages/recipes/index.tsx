@@ -1,3 +1,4 @@
+import avatar from "assets/images/avatar.jpg";
 import Brand from "layouts/Brand";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
@@ -73,25 +74,14 @@ const Recipes: NextPage<Props> = ({ items }) => {
 
         <main className="flex-grow">
           <div className="flex">
-            <section className="p-8 flex flex-col gap-8">
-              <Avatar />
-
-              <Button variant="primary" fullWidth>
-                <PencilSquareIcon />
-                <span>Create New</span>
-              </Button>
-
-              <Navbar />
-
-              <Footer />
-            </section>
+            <Sidebar />
 
             <section className="p-8 w-full">
-              <main className="grid gap-6 grid-cols-1 lg:grid-cols-2 grid-flow-row-dense">
-                {items.map((item) => (
-                  <Item {...item} key={item.name} />
+              <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 grid-flow-row-dense">
+                {items.map((item, index) => (
+                  <Item {...item} key={index} />
                 ))}
-              </main>
+              </div>
             </section>
           </div>
         </main>
@@ -102,8 +92,8 @@ const Recipes: NextPage<Props> = ({ items }) => {
 
 const Item = ({ name, image, description, averageRating }: Item) => {
   return (
-    <article className="bg-white shadow-md" key={name}>
-      <div className="w-full h-[250px] relative overflow-hidden">
+    <div className="bg-white shadow-md" key={name}>
+      <figure className="w-full h-[250px] relative overflow-hidden">
         <Image
           src={image}
           alt=""
@@ -111,16 +101,54 @@ const Item = ({ name, image, description, averageRating }: Item) => {
           objectFit="cover"
           objectPosition="center"
         />
-      </div>
+      </figure>
 
-      <div className="p-4">
+      <article className="p-4">
         <h4 className="text-xl">{name}</h4>
         <p className="text-sm text-gray-700 truncate">{description}</p>
+
         <div className="mt-2">
           <Rating value={averageRating} />
         </div>
+      </article>
+    </div>
+  );
+};
+
+const Sidebar = () => {
+  return (
+    <section className="p-8 flex flex-col gap-8">
+      <Avatar />
+
+      <Button variant="primary" fullWidth>
+        <PencilSquareIcon />
+        <span>Create New</span>
+      </Button>
+
+      <Navbar />
+
+      <Footer />
+    </section>
+  );
+};
+
+const Avatar = () => {
+  return (
+    <div className="w-[200px] h-[200px] relative">
+      <div className="relative w-full h-full rounded-full overflow-hidden">
+        <Image
+          src={avatar}
+          alt=""
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
+        />
       </div>
-    </article>
+
+      <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 to-blue-300 rounded-full p-1 border-4 border-gray-100">
+        <CameraIcon className="h-8 w-8 fill-white" />
+      </button>
+    </div>
   );
 };
 
@@ -147,70 +175,6 @@ const Footer = () => {
         </li>
       </ul>
     </div>
-  );
-};
-
-const Avatar = () => {
-  return (
-    <div className="w-[200px] h-[200px] relative">
-      <div className="relative w-full h-full rounded-full overflow-hidden">
-        <Image
-          src="/images/pp.jpg"
-          alt=""
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
-        />
-      </div>
-
-      <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 to-blue-300 rounded-full p-1 border-4 border-gray-100">
-        <CameraIcon className="h-8 w-8 fill-white" />
-      </button>
-    </div>
-  );
-};
-
-const Header = () => {
-  return (
-    <header className="bg-white shadow-md z-10">
-      <div className="flex justify-between items-center gap-4 py-2 px-8">
-        <div className="flex items-center gap-2">
-          <Hamburger />
-          <Brand />
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Searchbar className="w-[300px]" />
-
-          <div className="flex gap-2">
-            <button>
-              <BellIcon className="h-8 w-8 fill-slate-300" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-};
-
-const Hamburger = () => {
-  return (
-    <button>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M4 6h16M4 12h16M4 18h16"
-        />
-      </svg>
-    </button>
   );
 };
 
@@ -278,6 +242,50 @@ const NavbarLink: React.FC<NavbarItemProps> = ({
     <Link href={href} passHref>
       {unwrapped}
     </Link>
+  );
+};
+
+const Header = () => {
+  return (
+    <header className="bg-white shadow-md z-10">
+      <div className="flex justify-between items-center gap-4 py-2 px-8">
+        <div className="flex items-center gap-2">
+          <Hamburger />
+          <Brand />
+        </div>
+
+        <div className="flex items-center gap-4">
+          <Searchbar className="w-[300px]" />
+
+          <div className="flex gap-2">
+            <button>
+              <BellIcon className="h-8 w-8 fill-slate-300" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+const Hamburger = () => {
+  return (
+    <button>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
   );
 };
 
