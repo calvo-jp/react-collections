@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
 import ChevronLeftIcon from "widgets/icons/ChevronLeft";
@@ -12,8 +13,84 @@ const Recipe = () => {
 
       <div>
         <Header />
+
+        <Jumbotron />
+
+        <main className="p-8">
+          <div className="max-w-[900px] mx-auto">
+            <div>
+              <h1 className="text-2xl">Adobong Manok</h1>
+              <p className="text-sm text-gray-500">
+                <span>3 mins ago by</span>
+
+                <Link href="/#" passHref>
+                  <a className="ml-1 hover:text-blue-500">calvojp</a>
+                </Link>
+              </p>
+
+              <p className="mt-4">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa
+                nulla nobis inventore eum ratione esse maiores! Sint non itaque
+                doloribus!
+              </p>
+
+              <Tags />
+            </div>
+
+            <Navbar />
+
+            <section className="mt-4">
+              <ul className="list-disc pl-4">
+                <li>16kg chicken</li>
+                <li>1kg tomatoes</li>
+                <li>3pcs datu-puti</li>
+                <li>1mg baby oil para solid</li>
+                <li>bawang at sibuyas</li>
+              </ul>
+            </section>
+          </div>
+        </main>
       </div>
     </React.Fragment>
+  );
+};
+
+const Navbar = () => {
+  return (
+    <nav className="mt-8">
+      <ul className="flex flex-wrap gap-x-4 gap-y-2">
+        <li>How to</li>
+        <li className="font-bold">Ingredients</li>
+      </ul>
+    </nav>
+  );
+};
+
+const Tags = () => {
+  return (
+    <ul className="flex flex-wrap gap-1 mt-4">
+      <Tag>Adobo</Tag>
+      <Tag>Manamit</Tag>
+      <Tag>BrownKaayo</Tag>
+    </ul>
+  );
+};
+
+const Tag: React.FC = ({ children }) => {
+  return <li className="text-sm p-2 bg-sky-200">{children}</li>;
+};
+
+const Jumbotron = () => {
+  return (
+    <div className="relative h-[300px]">
+      <Image
+        src="/images/8.jpg"
+        alt=""
+        layout="fill"
+        objectFit="cover"
+        objectPosition="center"
+      />
+    </div>
   );
 };
 
