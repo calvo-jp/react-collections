@@ -18,6 +18,7 @@ import Rating from "widgets/Rating";
 import Searchbar from "widgets/Searchbar";
 
 interface Item {
+  id: number;
   name: string;
   description: string;
   averageRating?: number;
@@ -31,6 +32,7 @@ interface Props {
 export const getStaticProps: GetStaticProps = async () => {
   const items = [
     {
+      id: 1,
       name: "Adobong manok",
       description:
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit." +
@@ -39,12 +41,14 @@ export const getStaticProps: GetStaticProps = async () => {
       image: "/images/3.jpg",
     },
     {
+      id: 2,
       name: "Tinolang bangus",
       description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit",
       image: "/images/4.jpg",
       averageRating: 4,
     },
     {
+      id: 3,
       name: "Sinanlag nga bugas",
       description:
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit," +
@@ -78,8 +82,8 @@ const Recipes: NextPage<Props> = ({ items }) => {
 
             <section className="p-8 flex-grow">
               <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 grid-flow-row-dense">
-                {items.map((item, index) => (
-                  <Item {...item} key={index} />
+                {items.map((item) => (
+                  <Item {...item} key={item.id} />
                 ))}
               </div>
             </section>
@@ -90,28 +94,36 @@ const Recipes: NextPage<Props> = ({ items }) => {
   );
 };
 
-const Item = ({ name, image, description, averageRating }: Item) => {
+const Item: React.FC<Item> = ({
+  id,
+  name,
+  image,
+  description,
+  averageRating,
+}) => {
   return (
-    <div className="bg-white shadow-md" key={name}>
-      <figure className="w-full h-[250px] relative overflow-hidden">
-        <Image
-          src={image}
-          alt=""
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
-        />
-      </figure>
+    <Link href={"/recipes/".concat(id.toString())} passHref>
+      <a className="bg-white shadow-md" key={name}>
+        <figure className="w-full h-[250px] relative overflow-hidden">
+          <Image
+            src={image}
+            alt=""
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+          />
+        </figure>
 
-      <article className="p-4">
-        <h4 className="text-xl">{name}</h4>
-        <p className="text-sm text-gray-700 truncate">{description}</p>
+        <article className="p-4">
+          <h4 className="text-xl">{name}</h4>
+          <p className="text-sm text-gray-700 truncate">{description}</p>
 
-        <div className="mt-2">
-          <Rating value={averageRating} />
-        </div>
-      </article>
-    </div>
+          <div className="mt-2">
+            <Rating value={averageRating} />
+          </div>
+        </article>
+      </a>
+    </Link>
   );
 };
 
