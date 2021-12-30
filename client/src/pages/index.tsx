@@ -149,7 +149,7 @@ const Header = () => {
 
   return (
     <header
-      className="shadow-md z-10 sticky bg-white transition-all duration-300"
+      className="shadow-md z-30 sticky bg-white transition-all duration-300"
       ref={ref}
     >
       <div className="flex justify-between items-center gap-4 py-2 px-8">
