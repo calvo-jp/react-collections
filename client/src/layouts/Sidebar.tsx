@@ -3,6 +3,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import * as React from "react";
 import Button from "widgets/Button";
 import CameraIcon from "widgets/icons/Camera";
 import CogIcon from "widgets/icons/Cog";
@@ -14,14 +15,9 @@ import PencilSquareIcon from "widgets/icons/PencilSquare";
 
 const Sidebar = () => {
   return (
-    <section className="p-8 flex flex-col gap-8 sticky top-0">
+    <section className="p-8 flex flex-col gap-8">
       <Avatar />
-
-      <Button variant="primary" fullWidth>
-        <PencilSquareIcon />
-        Create New
-      </Button>
-
+      <Action />
       <Navbar />
       <Footer />
     </section>
@@ -48,41 +44,12 @@ const Avatar = () => {
   );
 };
 
-const Footer = () => {
-  const Divider = () => <li className="w-1 h-1 bg-gray-300 rounded-full" />;
-
+const Action = () => {
   return (
-    <div>
-      <ul className="flex flex-wrap gap-1 items-center text-sm max-w-[200px]">
-        <li>
-          <FooterLink href="/about">About</FooterLink>
-        </li>
-        <Divider />
-        <li>
-          <FooterLink href="/cookies-and-terms">Cookies and Terms</FooterLink>
-        </li>
-        <Divider />
-        <li>
-          <FooterLink href="/contact-us">Contact us</FooterLink>
-        </li>
-        <Divider />
-        <li>
-          <FooterLink href="/help">Help</FooterLink>
-        </li>
-      </ul>
-    </div>
-  );
-};
-
-interface FooterLinkProps {
-  href: string;
-}
-
-const FooterLink: React.FC<FooterLinkProps> = ({ href, children }) => {
-  return (
-    <Link href={href} passHref>
-      <a className="hover:text-blue-600">{children}</a>
-    </Link>
+    <Button variant="primary" fullWidth>
+      <PencilSquareIcon />
+      Create New
+    </Button>
   );
 };
 
@@ -125,29 +92,27 @@ const Navbar = () => {
   );
 };
 
-type NavbarItemProps = Omit<
-  React.DetailedHTMLProps<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  >,
-  "className" | "style"
+type NavbarLinkProps = React.DetailedHTMLProps<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
 >;
 
-const NavbarLink: React.FC<NavbarItemProps> = ({
+const NavbarLink: React.FC<NavbarLinkProps> = ({
   href,
   children,
+  className,
   ...props
 }) => {
   const router = useRouter();
   const active = router.pathname === href;
 
-  const unwrapped = (
+  const jsx = (applyActiveCls?: boolean) => (
     <a
-      href="#"
       className={clsx(
-        "flex items-center gap-2 text-lg",
-        !active && "hover:text-orange-500",
-        active && "text-blue-500"
+        "cursor-pointer flex items-center gap-2 text-lg",
+        !applyActiveCls && "hover:text-orange-500",
+        applyActiveCls && "text-blue-500",
+        className
       )}
       {...props}
     >
@@ -155,13 +120,59 @@ const NavbarLink: React.FC<NavbarItemProps> = ({
     </a>
   );
 
-  if (!href) return unwrapped;
+  if (!href || href === "#") return jsx();
 
   return (
     <Link href={href} passHref>
-      {unwrapped}
+      {jsx(active)}
     </Link>
   );
+};
+
+const Footer = () => {
+  return (
+    <div>
+      <ul className="flex flex-wrap gap-2 items-center text-sm max-w-[200px]">
+        <li>
+          <FooterLink href="/about">About</FooterLink>
+        </li>
+        <li>
+          <FooterLinkDivider />
+        </li>
+        <li>
+          <FooterLink href="/cookies-and-terms">Cookies and Terms</FooterLink>
+        </li>
+        <li>
+          <FooterLinkDivider />
+        </li>
+        <li>
+          <FooterLink href="/contact-us">Contact us</FooterLink>
+        </li>
+        <li>
+          <FooterLinkDivider />
+        </li>
+        <li>
+          <FooterLink href="/help">Help</FooterLink>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+interface FooterLinkProps {
+  href: string;
+}
+
+const FooterLink: React.FC<FooterLinkProps> = ({ href, children }) => {
+  return (
+    <Link href={href} passHref>
+      <a className="hover:text-blue-600">{children}</a>
+    </Link>
+  );
+};
+
+const FooterLinkDivider = () => {
+  return <div className="w-1 h-1 bg-gray-300 rounded-full" />;
 };
 
 export default Sidebar;
