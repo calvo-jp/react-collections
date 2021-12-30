@@ -12,14 +12,23 @@ import GraphIcon from "widgets/icons/Graph";
 import HeartIcon from "widgets/icons/Heart";
 import LightningIcon from "widgets/icons/Lightning";
 import PencilSquareIcon from "widgets/icons/PencilSquare";
+import HelpLinks from "./HelpLinks";
 
 const Sidebar = () => {
   return (
     <section className="p-8 flex flex-col gap-8">
       <Avatar />
-      <Action />
+
+      <Button variant="primary" fullWidth>
+        <PencilSquareIcon />
+        Create New
+      </Button>
+
       <Navbar />
-      <Footer />
+
+      <div>
+        <HelpLinks className="max-w-[200px]" />
+      </div>
     </section>
   );
 };
@@ -41,15 +50,6 @@ const Avatar = () => {
         <CameraIcon className="h-7 w-7 fill-white group-hover:w-8 group-hover:h-8 transition-all duration-100" />
       </button>
     </div>
-  );
-};
-
-const Action = () => {
-  return (
-    <Button variant="primary" fullWidth>
-      <PencilSquareIcon />
-      Create New
-    </Button>
   );
 };
 
@@ -127,52 +127,6 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({
       {jsx(active)}
     </Link>
   );
-};
-
-const Footer = () => {
-  return (
-    <div>
-      <ul className="flex flex-wrap gap-2 items-center text-sm max-w-[200px]">
-        <li>
-          <FooterLink href="/about">About</FooterLink>
-        </li>
-        <li>
-          <FooterLinkDivider />
-        </li>
-        <li>
-          <FooterLink href="/cookies-and-terms">Cookies and Terms</FooterLink>
-        </li>
-        <li>
-          <FooterLinkDivider />
-        </li>
-        <li>
-          <FooterLink href="/contact-us">Contact us</FooterLink>
-        </li>
-        <li>
-          <FooterLinkDivider />
-        </li>
-        <li>
-          <FooterLink href="/help">Help</FooterLink>
-        </li>
-      </ul>
-    </div>
-  );
-};
-
-interface FooterLinkProps {
-  href: string;
-}
-
-const FooterLink: React.FC<FooterLinkProps> = ({ href, children }) => {
-  return (
-    <Link href={href} passHref>
-      <a className="hover:text-blue-600">{children}</a>
-    </Link>
-  );
-};
-
-const FooterLinkDivider = () => {
-  return <div className="w-1 h-1 bg-gray-300 rounded-full" />;
 };
 
 export default Sidebar;
