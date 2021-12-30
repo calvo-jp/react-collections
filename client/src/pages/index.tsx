@@ -1,7 +1,10 @@
+import Brand from "layouts/Brand";
+import SocialLinks from "layouts/SocialLinks";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
+import onScrollReveal from "utils/onScrollReveal";
 import Rating from "widgets/Rating";
 import Searchbar from "widgets/Searchbar";
 
@@ -12,46 +15,10 @@ const Landing = () => {
         <title>Recipes - Find or search amazing recipes</title>
       </Head>
 
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen">
         <Header />
         <main className="flex-grow">
-          <section className="h-[500px] relative">
-            <div className="absolute h-full z-20 max-w-[800px] left-0 right-0 mx-auto p-8 flex flex-col justify-center text-white">
-              <h2 className="font-bold text-4xl uppercase">Recipes</h2>
-
-              <p className="text-md">
-                Find or share amazing recipes anytime for free
-              </p>
-
-              <div className="flex text-sm mt-8 items-center">
-                <ul className="flex gap-2 items-center">
-                  <li>
-                    <a href="#">Facebook</a>
-                  </li>
-                  <li className="w-[3px] h-[3px] bg-white bg-opacity-60 rounded-full" />
-
-                  <li>
-                    <a href="#">Instagram</a>
-                  </li>
-                  <li className="w-[3px] h-[3px] bg-white bg-opacity-60 rounded-full" />
-
-                  <li>
-                    <a href="#">Twitter</a>
-                  </li>
-                  <li className="w-[3px] h-[3px] bg-white bg-opacity-60 rounded-full" />
-                  <li>
-                    <a href="#">Youtube</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-cyan-500 to-blue-400 absolute top-0 left-0 w-full h-full" />
-
-            <div className="absolute bottom-0 left-0 w-full overflow-hidden rotate-180">
-              <WavyBorder />
-            </div>
-          </section>
+          <Banner />
 
           <section className="max-w-[1200px] mx-auto mt-10 p-8">
             <div className="flex gap-4 justify-center">
@@ -94,21 +61,48 @@ const Landing = () => {
   );
 };
 
+const Banner = () => {
+  return (
+    <section className="h-[500px] relative">
+      <article className="absolute h-full z-20 max-w-[800px] left-0 right-0 mx-auto p-8 flex flex-col justify-center text-white">
+        <h2 className="font-bold text-4xl uppercase">Recipes</h2>
+
+        <p className="text-md mt-2">
+          Find or share amazing recipes anytime for free
+        </p>
+
+        <SocialLinks size="md" className="mt-4" />
+      </article>
+
+      <Gradient />
+      <WavyBorder />
+    </section>
+  );
+};
+
+const Gradient = () => {
+  return (
+    <div className="bg-gradient-to-r from-cyan-500 to-blue-400 absolute top-0 left-0 w-full h-full" />
+  );
+};
+
 const WavyBorder = () => {
   return (
-    <svg
-      data-name="Layer 1"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1200 120"
-      preserveAspectRatio="none"
-      className="block relative h-[83px]"
-      style={{ width: "calc(122% + 1.3px)" }}
-    >
-      <path
-        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-        className="fill-white"
-      />
-    </svg>
+    <div className="absolute bottom-0 left-0 w-full overflow-hidden rotate-180">
+      <svg
+        data-name="Layer 1"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1200 120"
+        preserveAspectRatio="none"
+        className="block relative h-[83px]"
+        style={{ width: "calc(122% + 1.3px)" }}
+      >
+        <path
+          d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+          className="fill-white"
+        />
+      </svg>
+    </div>
   );
 };
 
@@ -146,36 +140,49 @@ const Card: React.FC<CardProps> = ({ title, description, image }) => {
 };
 
 const Header = () => {
+  const ref = React.useRef<HTMLElement>(null);
+
+  React.useEffect(() => {
+    if (ref.current) onScrollReveal(ref.current);
+  }, []);
+
   return (
-    <header className="shadow-md z-10">
+    <header
+      className="shadow-md z-10 sticky bg-white transition-all duration-300"
+      ref={ref}
+    >
       <div className="flex justify-between items-center gap-4 py-2 px-8">
-        <Link href="/" passHref>
-          <a className="text-xl">Recipe</a>
-        </Link>
+        <Brand />
 
         <div className="flex items-center gap-4">
           <Searchbar className="w-[300px]" />
-
-          <nav>
-            <ul className="flex gap-4">
-              <li>
-                <Link href="/login" passHref>
-                  <a className="font-light">Login</a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/create-account" passHref>
-                  <a className="uppercase">Sign up</a>
-                </Link>
-              </li>
-            </ul>
-          </nav>
+          <HeaderNav />
         </div>
       </div>
     </header>
   );
 };
 
+const HeaderNav = () => {
+  return (
+    <nav>
+      <ul className="flex gap-4">
+        <li>
+          <Link href="/login" passHref>
+            <a>Login</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/create-account" passHref>
+            <a className="uppercase">Sign up</a>
+          </Link>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
+// TODO: move links to a standalone component
 const Footer = () => {
   return (
     <footer className="p-4 px-8 flex items-center justify-between text-sm">
@@ -183,19 +190,41 @@ const Footer = () => {
 
       <ul className="flex gap-2 items-center">
         <li>
-          <a href="">About</a>
+          <Link href="/about" passHref>
+            <a>About</a>
+          </Link>
         </li>
-        <li className="w-1 h-1 bg-gray-300 rounded-full" />
         <li>
-          <a href="">Cookies and Terms</a>
+          <FooterLinkDivider />
         </li>
-        <li className="w-1 h-1 bg-gray-300 rounded-full" />
         <li>
-          <a href="">Help</a>
+          <Link href="/terms" passHref>
+            <a href="">Cookies and Terms</a>
+          </Link>
+        </li>
+        <li>
+          <FooterLinkDivider />
+        </li>
+        <li>
+          <Link href="/contact-us" passHref>
+            <a>Contact us</a>
+          </Link>
+        </li>
+        <li>
+          <FooterLinkDivider />
+        </li>
+        <li>
+          <Link href="/help" passHref>
+            <a>Help</a>
+          </Link>
         </li>
       </ul>
     </footer>
   );
+};
+
+const FooterLinkDivider = () => {
+  return <div className="w-1 h-1 bg-gray-300 rounded-full" />;
 };
 
 export default Landing;
