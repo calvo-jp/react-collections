@@ -18,35 +18,53 @@ const Recipe = () => {
 
         <main className="p-8">
           <div className="max-w-[900px] mx-auto">
-            <div>
-              <h1 className="text-2xl">Adobong Manok</h1>
-              <p className="text-sm text-gray-500">
-                <span>3 mins ago by</span>
+            <section>
+              <article>
+                <h1 className="text-2xl">Adobong Manok</h1>
 
-                <Link href="/#" passHref>
-                  <a className="ml-1 hover:text-blue-500">calvojp</a>
-                </Link>
-              </p>
+                <p className="text-sm text-gray-500">
+                  <span>3 mins ago by</span>
 
-              <p className="mt-4">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa
-                nulla nobis inventore eum ratione esse maiores! Sint non itaque
-                doloribus!
-              </p>
+                  <Link href="/users/1" passHref>
+                    <a className="ml-1 hover:text-blue-500">calvojp</a>
+                  </Link>
+                </p>
 
-              <Tags />
-            </div>
-
-            <Navbar />
+                <p className="mt-4">
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                  Culpa nulla nobis inventore eum ratione esse maiores! Sint non
+                  itaque doloribus!
+                </p>
+              </article>
+            </section>
 
             <section className="mt-4">
-              <ul className="list-disc pl-4">
-                <li>16kg chicken</li>
-                <li>1kg tomatoes</li>
-                <li>3pcs datu-puti</li>
-                <li>1mg baby oil para solid</li>
-                <li>bawang at sibuyas</li>
-              </ul>
+              <Tags
+                items={[
+                  "Adobo",
+                  "Manamit",
+                  "BrownKaayo",
+                  "AriPagd",
+                  "COVID19",
+                  "HappyNewYear2022",
+                ]}
+              />
+            </section>
+
+            <section className="mt-8">
+              <Navbar />
+            </section>
+
+            <section className="mt-4">
+              <Ingredients
+                items={[
+                  "16kg chicken",
+                  "1kg tomatoes",
+                  "3pcs datu-puti",
+                  "1mg baby oil para solid",
+                  "bawang at sibuyas",
+                ]}
+              />
             </section>
           </div>
         </main>
@@ -55,9 +73,23 @@ const Recipe = () => {
   );
 };
 
+interface IngredientsProps {
+  items: string[];
+}
+
+const Ingredients: React.FC<IngredientsProps> = ({ items }) => {
+  return (
+    <ul className="list-disc pl-4">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+
 const Navbar = () => {
   return (
-    <nav className="mt-8">
+    <nav>
       <ul className="flex flex-wrap gap-x-4 gap-y-2">
         <li>How to</li>
         <li className="font-bold">Ingredients</li>
@@ -66,12 +98,16 @@ const Navbar = () => {
   );
 };
 
-const Tags = () => {
+interface TagsProps {
+  items: string[];
+}
+
+const Tags: React.FC<TagsProps> = ({ items }) => {
   return (
-    <ul className="flex flex-wrap gap-1 mt-4">
-      <Tag>Adobo</Tag>
-      <Tag>Manamit</Tag>
-      <Tag>BrownKaayo</Tag>
+    <ul className="flex flex-wrap gap-1">
+      {items.map((item) => (
+        <Tag key={item}>{item}</Tag>
+      ))}
     </ul>
   );
 };
