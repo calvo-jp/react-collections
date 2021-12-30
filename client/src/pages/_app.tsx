@@ -4,7 +4,7 @@ import Head from "next/head";
 import * as React from "react";
 import "tailwindcss/tailwind.css";
 
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <React.Fragment>
       <Head>
@@ -17,4 +17,4 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   );
 };
 
-export default MyApp;
+export default App;
