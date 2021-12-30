@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Link from "next/link";
+import NextLink from "next/link";
 import * as React from "react";
 
 type BaseProps = React.DetailedHTMLProps<
@@ -7,69 +7,80 @@ type BaseProps = React.DetailedHTMLProps<
   HTMLUListElement
 >;
 
-type Size = "sm" | "md" | "lg" | "xl";
+type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
-interface HelpLinksProps extends BaseProps {
-  /** controls fontsize */
-  size?: Size;
-}
-
-const sizes = {
+const sizes: Record<Size, string> = {
   xs: "text-xs",
   sm: "text-sm",
   md: "text-md",
   lg: "text-lg",
-  xl: "text-xs",
+  xl: "text-xl",
 };
 
-const HelpLinks: React.FC<HelpLinksProps> = ({ size, className, ...props }) => {
+interface HelpLinksProps extends BaseProps {
+  /** controls fontsize */
+  size?: Size;
+
+  /** controls gap of links */
+  spacing?: number;
+}
+
+const HelpLinks: React.FC<HelpLinksProps> = ({
+  size,
+  spacing,
+  className,
+  ...props
+}) => {
   return (
     <ul
       className={clsx(
-        "flex flex-wrap gap-x-2 gap-y-1 items-center text-sm",
+        "flex flex-wrap gap-x-2 gap-y-1 items-center",
+        !spacing && "gap-2",
+        spacing && "gap-".concat(spacing.toString()),
         !size && sizes.sm,
         size && sizes[size],
         className
       )}
+      {...props}
     >
       <li>
-        <FooterLink href="/about">About</FooterLink>
+        <Link href="/about">About</Link>
       </li>
       <li>
-        <FooterLinkDivider />
+        <Divider />
       </li>
       <li>
-        <FooterLink href="/cookies-and-terms">Cookies and Terms</FooterLink>
+        <Link href="/cookies-and-terms">Cookies and Terms</Link>
       </li>
       <li>
-        <FooterLinkDivider />
+        <Divider />
       </li>
       <li>
-        <FooterLink href="/contact-us">Contact us</FooterLink>
+        <Link href="/contact-us">Contact us</Link>
       </li>
       <li>
-        <FooterLinkDivider />
+        <Divider />
       </li>
       <li>
-        <FooterLink href="/help">Help</FooterLink>
+        <Link href="/help">Help</Link>
       </li>
     </ul>
   );
 };
 
-interface FooterLinkProps {
+interface LinkProps {
   href: string;
 }
 
-const FooterLink: React.FC<FooterLinkProps> = ({ href, children }) => {
+const Link: React.FC<LinkProps> = ({ href, children }) => {
   return (
-    <Link href={href} passHref>
+    <NextLink href={href} passHref>
       <a className="hover:text-blue-600">{children}</a>
-    </Link>
+    </NextLink>
   );
 };
 
-const FooterLinkDivider = () => {
+const Divider = () => {
   return <div className="w-1 h-1 bg-gray-300 rounded-full" />;
 };
 
