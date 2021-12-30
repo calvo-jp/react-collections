@@ -13,18 +13,16 @@
  * ```
  *
  */
-const onScrollReveal = (function (win, doc) {
-  return function (elem: HTMLElement) {
-    var prevScrollPos = win.scrollY;
+const onScrollReveal = function (element: HTMLElement) {
+  var prevScrollPos = window.scrollY;
 
-    const handleScrolling = function () {
-      const scrollPos = win.scrollY;
-      elem.style.top = prevScrollPos > scrollPos ? "0" : "-100%";
-      prevScrollPos = scrollPos;
-    };
-
-    doc.addEventListener("scroll", handleScrolling, false);
+  const handleScrolling = function () {
+    const scrollPos = window.scrollY;
+    element.style.top = prevScrollPos > scrollPos ? "0" : "-100%";
+    prevScrollPos = scrollPos;
   };
-})(window, document);
+
+  document.addEventListener("scroll", handleScrolling, false);
+};
 
 export default onScrollReveal;
