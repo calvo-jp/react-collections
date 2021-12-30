@@ -1,4 +1,5 @@
 import Brand from "layouts/Brand";
+import HelpLinks from "layouts/HelpLinks";
 import SocialLinks from "layouts/SocialLinks";
 import Head from "next/head";
 import Image from "next/image";
@@ -182,49 +183,14 @@ const HeaderNav = () => {
   );
 };
 
-// TODO: move links to a standalone component
 const Footer = () => {
   return (
     <footer className="p-4 px-8 flex items-center justify-between text-sm">
       <p>&copy; Recipes 2021. All rights reserved</p>
 
-      <ul className="flex gap-2 items-center">
-        <li>
-          <Link href="/about" passHref>
-            <a>About</a>
-          </Link>
-        </li>
-        <li>
-          <FooterLinkDivider />
-        </li>
-        <li>
-          <Link href="/terms" passHref>
-            <a href="">Cookies and Terms</a>
-          </Link>
-        </li>
-        <li>
-          <FooterLinkDivider />
-        </li>
-        <li>
-          <Link href="/contact-us" passHref>
-            <a>Contact us</a>
-          </Link>
-        </li>
-        <li>
-          <FooterLinkDivider />
-        </li>
-        <li>
-          <Link href="/help" passHref>
-            <a>Help</a>
-          </Link>
-        </li>
-      </ul>
+      <HelpLinks />
     </footer>
   );
-};
-
-const FooterLinkDivider = () => {
-  return <div className="w-1 h-1 bg-gray-300 rounded-full" />;
 };
 
 export default Landing;
