@@ -90,11 +90,18 @@ type SocialLinkProps = React.DetailedHTMLProps<
 
 const SocialLink: React.FC<SocialLinkProps> = ({
   href,
+  className,
   children,
   ...props
 }) => {
   return (
-    <a href={href} target="_blank" rel="noReferrer" {...props}>
+    <a
+      href={href}
+      className={clsx("block", className)}
+      target="_blank"
+      rel="noReferrer"
+      {...props}
+    >
       {children}
     </a>
   );
