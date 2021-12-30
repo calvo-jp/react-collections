@@ -1,9 +1,11 @@
 import avatar from "assets/images/avatar.jpg";
+import clsx from "clsx";
 import Brand from "layouts/Brand";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
 import Button from "widgets/Button";
 import BellIcon from "widgets/icons/Bell";
@@ -162,8 +164,8 @@ const Avatar = () => {
         />
       </div>
 
-      <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 to-blue-400 rounded-full p-1 border-4 border-gray-100">
-        <CameraIcon className="h-8 w-8 fill-white" />
+      <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 h-12 w-12 to-blue-400 rounded-full border-4 border-gray-100 flex items-center justify-center group">
+        <CameraIcon className="h-7 w-7 fill-white group-hover:w-8 group-hover:h-8 transition-all duration-100" />
       </button>
     </div>
   );
@@ -176,22 +178,34 @@ const Footer = () => {
     <div>
       <ul className="flex flex-wrap gap-1 items-center text-sm max-w-[200px]">
         <li>
-          <a>About</a>
+          <FooterLink href="/about">About</FooterLink>
         </li>
         <Divider />
         <li>
-          <a>Cookies and Terms</a>
+          <FooterLink href="/cookies-and-terms">Cookies and Terms</FooterLink>
         </li>
         <Divider />
         <li>
-          <a>Contact us</a>
+          <FooterLink href="/contact-us">Contact us</FooterLink>
         </li>
         <Divider />
         <li>
-          <a>Help</a>
+          <FooterLink href="/help">Help</FooterLink>
         </li>
       </ul>
     </div>
+  );
+};
+
+interface FooterLinkProps {
+  href: string;
+}
+
+const FooterLink: React.FC<FooterLinkProps> = ({ href, children }) => {
+  return (
+    <Link href={href} passHref>
+      <a className="hover:text-blue-600">{children}</a>
+    </Link>
   );
 };
 
@@ -247,8 +261,19 @@ const NavbarLink: React.FC<NavbarItemProps> = ({
   children,
   ...props
 }) => {
+  const router = useRouter();
+  const active = router.pathname === href;
+
   const unwrapped = (
-    <a href="#" className="flex items-center gap-2 text-lg" {...props}>
+    <a
+      href="#"
+      className={clsx(
+        "flex items-center gap-2 text-lg",
+        !active && "hover:text-orange-500",
+        active && "text-blue-500"
+      )}
+      {...props}
+    >
       {children}
     </a>
   );
