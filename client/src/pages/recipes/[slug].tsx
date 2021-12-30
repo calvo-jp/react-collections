@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
+import onScrollReveal from "utils/onScrollReveal";
 import ChevronLeftIcon from "widgets/icons/ChevronLeft";
 
 const Recipe = () => {
@@ -91,8 +92,12 @@ const Navbar = () => {
   return (
     <nav>
       <ul className="flex flex-wrap gap-x-4 gap-y-2">
-        <li>How to</li>
-        <li className="font-bold">Ingredients</li>
+        <li>
+          <button>How to</button>
+        </li>
+        <li>
+          <button className="font-bold">Ingredients</button>
+        </li>
       </ul>
     </nav>
   );
@@ -131,8 +136,17 @@ const Jumbotron = () => {
 };
 
 const Header = () => {
+  const ref = React.useRef<HTMLElement>(null);
+
+  React.useEffect(() => {
+    if (ref.current) onScrollReveal(ref.current);
+  }, []);
+
   return (
-    <header className="bg-white shadow-md z-10">
+    <header
+      ref={ref}
+      className="bg-white shadow-md z-10 sticky top-0 transition-all duration-300"
+    >
       <div className="py-4 px-8">
         <Link href="/recipes" passHref>
           <a className="flex items-center gap-1">
