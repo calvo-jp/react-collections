@@ -48,6 +48,7 @@ const Login = () => {
                 onChange={handleChange}
                 value={credential.username}
                 autoFocus
+                fullWidth
               />
 
               <div className="w-full">
@@ -71,7 +72,7 @@ const Login = () => {
                 </p>
               </div>
 
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" fullWidth>
                 Login
               </Button>
             </form>
