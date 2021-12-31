@@ -91,8 +91,10 @@ const Item: React.FC<Item> = ({
   description,
   averageRating,
 }) => {
+  const href = "/recipes/" + id;
+
   return (
-    <Link href={"/recipes/".concat(id.toString())} passHref>
+    <Link href={href} passHref>
       <a
         className="bg-white shadow-md group hover:ring-4 hover:ring-blue-200"
         key={name}
