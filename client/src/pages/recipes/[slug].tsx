@@ -1,11 +1,18 @@
+import clsx from "clsx";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
 import onScrollReveal from "utils/onScrollReveal";
 import ChevronLeftIcon from "widgets/icons/ChevronLeft";
 
 const Recipe = () => {
+  const router = useRouter();
+  const params = router.query;
+
+  const tab = [params.tab].flat().at(0) || "";
+
   return (
     <React.Fragment>
       <Head>
@@ -59,11 +66,10 @@ const Recipe = () => {
             <section className="mt-4">
               <Ingredients
                 items={[
-                  "16kg chicken",
-                  "1kg tomatoes",
-                  "3pcs datu-puti",
-                  "1mg baby oil para solid",
-                  "bawang at sibuyas",
+                  "16kg Chicken",
+                  "3pk Silver swan",
+                  "10pcs garlic",
+                  "4pk baby oil",
                 ]}
               />
             </section>
@@ -93,13 +99,34 @@ const Navbar = () => {
     <nav>
       <ul className="flex flex-wrap gap-x-4 gap-y-2">
         <li>
-          <button>How to</button>
+          <NavbarButton active>Instructions</NavbarButton>
         </li>
         <li>
-          <button className="font-bold">Ingredients</button>
+          <NavbarButton>Ingredients</NavbarButton>
         </li>
       </ul>
     </nav>
+  );
+};
+
+interface NavbarButtonProps
+  extends React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
+  active?: boolean;
+}
+
+const NavbarButton: React.FC<NavbarButtonProps> = ({
+  active,
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <button className={clsx(active && "font-bold", className)} {...props}>
+      {children}
+    </button>
   );
 };
 
