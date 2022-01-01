@@ -1,17 +1,17 @@
-import clsx from "clsx";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import * as React from "react";
-import onScrollReveal from "utils/onScrollReveal";
-import ChevronLeftIcon from "widgets/icons/ChevronLeft";
+import clsx from 'clsx';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import * as React from 'react';
+import onScrollReveal from 'utils/onScrollReveal';
+import ChevronLeftIcon from 'widgets/icons/ChevronLeft';
 
 const Recipe = () => {
   const router = useRouter();
   const params = router.query;
 
-  const tab = [params.tab].flat().at(0) || "";
+  const tab = [params.tab].flat().at(0)?.toLowerCase();
 
   return (
     <React.Fragment>
@@ -49,12 +49,12 @@ const Recipe = () => {
             <section className="mt-4">
               <Tags
                 items={[
-                  "Adobo",
-                  "Manamit",
-                  "BrownKaayo",
-                  "AriPagd",
-                  "COVID19",
-                  "HappyNewYear2022",
+                  'Adobo',
+                  'Manamit',
+                  'BrownKaayo',
+                  'AriPagd',
+                  'COVID19',
+                  'HappyNewYear2022',
                 ]}
               />
             </section>
@@ -66,10 +66,10 @@ const Recipe = () => {
             <section className="mt-4">
               <Ingredients
                 items={[
-                  "16kg Chicken",
-                  "3pk Silver swan",
-                  "10pcs garlic",
-                  "4pk baby oil",
+                  '16kg Chicken',
+                  '3pk Silver swan',
+                  '10pcs garlic',
+                  '4pk baby oil',
                 ]}
               />
             </section>
@@ -124,7 +124,7 @@ const NavbarButton: React.FC<NavbarButtonProps> = ({
   ...props
 }) => {
   return (
-    <button className={clsx(active && "font-bold", className)} {...props}>
+    <button className={clsx(active && 'font-bold', className)} {...props}>
       {children}
     </button>
   );

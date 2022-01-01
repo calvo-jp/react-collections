@@ -18,11 +18,11 @@ const onScrollReveal = function (element: HTMLElement) {
 
   const handleScrolling = function () {
     const scrollPos = window.scrollY;
-    element.style.top = prevScrollPos > scrollPos ? "0" : "-100%";
+    element.style.top = prevScrollPos > scrollPos ? '0' : '-100%';
     prevScrollPos = scrollPos;
   };
 
-  document.addEventListener("scroll", handleScrolling, false);
+  document.addEventListener('scroll', handleScrolling, false);
 };
 
 export default onScrollReveal;

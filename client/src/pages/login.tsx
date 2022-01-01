@@ -1,9 +1,9 @@
-import Head from "next/head";
-import Link from "next/link";
-import * as React from "react";
-import Alert from "widgets/Alert";
-import Button from "widgets/Button";
-import TextField from "widgets/TextField";
+import Head from 'next/head';
+import Link from 'next/link';
+import * as React from 'react';
+import Alert from 'widgets/Alert';
+import Button from 'widgets/Button';
+import TextField from 'widgets/TextField';
 
 interface Credential {
   username: string;
@@ -12,8 +12,8 @@ interface Credential {
 
 const Login = () => {
   const [credential, setCredential] = React.useState<Credential>({
-    username: "calvojp",
-    password: "",
+    username: 'calvojp',
+    password: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

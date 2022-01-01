@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import * as React from "react";
+import clsx from 'clsx';
+import * as React from 'react';
 
 interface RatingProps {
   value: number;
@@ -18,7 +18,7 @@ const Rating: React.FC<Partial<RatingProps>> = ({
     return function (e: React.MouseEvent<SVGSVGElement, MouseEvent>) {
       e.preventDefault();
 
-      if (typeof onChange === "function") {
+      if (typeof onChange === 'function') {
         onChange(newValue);
       }
     };
@@ -27,15 +27,15 @@ const Rating: React.FC<Partial<RatingProps>> = ({
   const numbers = [1, 2, 3, 4, 5];
 
   return (
-    <div className={clsx("flex", className)}>
+    <div className={clsx('flex', className)}>
       {numbers.map((number) => (
         <Star
           key={number}
           onClick={handleChange(number)}
           className={clsx(
-            "h-5 w-5 cursor-pointer transition-colors duration-300",
-            number > currentValue && "fill-gray-300 hover:fill-amber-400",
-            number <= currentValue && "fill-amber-500 hover:fill-amber-400"
+            'h-5 w-5 cursor-pointer transition-colors duration-300',
+            number > currentValue && 'fill-gray-300 hover:fill-amber-400',
+            number <= currentValue && 'fill-amber-500 hover:fill-amber-400'
           )}
         />
       ))}

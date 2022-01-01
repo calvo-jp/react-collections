@@ -1,13 +1,13 @@
-import clsx from "clsx";
-import * as React from "react";
-import SearchIcon from "./icons/Search";
+import clsx from 'clsx';
+import * as React from 'react';
+import SearchIcon from './icons/Search';
 
 type BaseProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 >;
 
-type SearchbarProps = Omit<BaseProps, "type" | "children" | "onClick">;
+type SearchbarProps = Omit<BaseProps, 'type' | 'children' | 'onClick'>;
 
 const Searchbar: React.FC<SearchbarProps> = ({
   className,
@@ -41,9 +41,9 @@ const Searchbar: React.FC<SearchbarProps> = ({
   return (
     <div
       className={clsx(
-        "flex items-center gap-1 p-2 border border-gray-300 outline-none transition-all duration-300 rounded-md",
-        !focused && "hover:border-gray-400",
-        focused && "border-blue-400 ring-4 ring-blue-200",
+        'flex items-center gap-1 p-2 border border-gray-300 outline-none transition-all duration-300 rounded-md',
+        !focused && 'hover:border-gray-400',
+        focused && 'border-blue-400 ring-4 ring-blue-200',
         className
       )}
       onClick={handleClick}

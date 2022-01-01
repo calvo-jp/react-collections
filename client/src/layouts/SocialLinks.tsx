@@ -1,16 +1,16 @@
-import clsx from "clsx";
-import * as React from "react";
-import FacebookIcon from "widgets/icons/Facebook";
-import InstagramIcon from "widgets/icons/Instagram";
-import TwitterIcon from "widgets/icons/Twitter";
-import YoutubeIcon from "widgets/icons/Youtube";
+import clsx from 'clsx';
+import * as React from 'react';
+import FacebookIcon from 'widgets/icons/Facebook';
+import InstagramIcon from 'widgets/icons/Instagram';
+import TwitterIcon from 'widgets/icons/Twitter';
+import YoutubeIcon from 'widgets/icons/Youtube';
 
 type BaseProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLUListElement>,
   HTMLUListElement
 >;
 
-type Size = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 interface SocialsProp extends BaseProps {
   /** size of icons */
@@ -24,12 +24,12 @@ interface SocialsProp extends BaseProps {
 }
 
 const sizes = {
-  xs: "w-4 h-4",
-  sm: "w-5 h-5",
-  md: "w-6 h-6",
-  lg: "w-7 h-7",
-  xl: "w-8 h-8",
-  xxl: "w-9 h-9",
+  xs: 'w-4 h-4',
+  sm: 'w-5 h-5',
+  md: 'w-6 h-6',
+  lg: 'w-7 h-7',
+  xl: 'w-8 h-8',
+  xxl: 'w-9 h-9',
 };
 
 const SocialLinks: React.FC<SocialsProp> = ({
@@ -42,8 +42,8 @@ const SocialLinks: React.FC<SocialsProp> = ({
   /** icon classes */
   const iconClsnms = clsx([
     // color
-    dark && "fill-black",
-    !dark && "fill-white",
+    dark && 'fill-black',
+    !dark && 'fill-white',
 
     // size
     !size && sizes.md,
@@ -53,8 +53,8 @@ const SocialLinks: React.FC<SocialsProp> = ({
   return (
     <ul
       className={clsx(
-        "flex gap-2 items-center",
-        spacing && "gap-".concat(spacing.toString()),
+        'flex gap-2 items-center',
+        spacing && 'gap-'.concat(spacing.toString()),
         className
       )}
       {...props}
@@ -97,7 +97,7 @@ const SocialLink: React.FC<SocialLinkProps> = ({
   return (
     <a
       href={href}
-      className={clsx("block", className)}
+      className={clsx('block', className)}
       target="_blank"
       rel="noReferrer"
       {...props}

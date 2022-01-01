@@ -1,18 +1,18 @@
-import avatar from "assets/images/avatar.jpg";
-import clsx from "clsx";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import * as React from "react";
-import Button from "widgets/Button";
-import CameraIcon from "widgets/icons/Camera";
-import CogIcon from "widgets/icons/Cog";
-import FireIcon from "widgets/icons/Fire";
-import GraphIcon from "widgets/icons/Graph";
-import HeartIcon from "widgets/icons/Heart";
-import LightningIcon from "widgets/icons/Lightning";
-import PencilSquareIcon from "widgets/icons/PencilSquare";
-import HelpLinks from "./HelpLinks";
+import avatar from 'assets/images/avatar.jpg';
+import clsx from 'clsx';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import * as React from 'react';
+import Button from 'widgets/Button';
+import CameraIcon from 'widgets/icons/Camera';
+import CogIcon from 'widgets/icons/Cog';
+import FireIcon from 'widgets/icons/Fire';
+import GraphIcon from 'widgets/icons/Graph';
+import HeartIcon from 'widgets/icons/Heart';
+import LightningIcon from 'widgets/icons/Lightning';
+import PencilSquareIcon from 'widgets/icons/PencilSquare';
+import HelpLinks from './HelpLinks';
 
 const Sidebar = () => {
   return (
@@ -109,9 +109,9 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({
   const jsx = (applyActiveCls?: boolean) => (
     <a
       className={clsx(
-        "cursor-pointer flex items-center gap-2 text-lg",
-        !applyActiveCls && "hover:text-orange-500",
-        applyActiveCls && "text-blue-500",
+        'cursor-pointer flex items-center gap-2 text-lg',
+        !applyActiveCls && 'hover:text-orange-500',
+        applyActiveCls && 'text-blue-500',
         className
       )}
       {...props}
@@ -120,7 +120,7 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({
     </a>
   );
 
-  if (!href || href === "#") return jsx();
+  if (!href || href === '#') return jsx();
 
   return (
     <Link href={href} passHref>

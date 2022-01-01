@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 type TwitterIconProps = React.SVGProps<SVGSVGElement>;
 

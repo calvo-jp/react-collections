@@ -1,7 +1,7 @@
-import BellIcon from "widgets/icons/Bell";
-import MenuIcon from "widgets/icons/Menu";
-import Searchbar from "widgets/Searchbar";
-import Brand from "./Brand";
+import BellIcon from 'widgets/icons/Bell';
+import MenuIcon from 'widgets/icons/Menu';
+import Searchbar from 'widgets/Searchbar';
+import Brand from './Brand';
 
 const Header = () => {
   return (

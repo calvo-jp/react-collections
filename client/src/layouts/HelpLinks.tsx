@@ -1,20 +1,20 @@
-import clsx from "clsx";
-import NextLink from "next/link";
-import * as React from "react";
+import clsx from 'clsx';
+import NextLink from 'next/link';
+import * as React from 'react';
 
 type BaseProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLUListElement>,
   HTMLUListElement
 >;
 
-type Size = "xs" | "sm" | "md" | "lg" | "xl";
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 const sizes: Record<Size, string> = {
-  xs: "text-xs",
-  sm: "text-sm",
-  md: "text-md",
-  lg: "text-lg",
-  xl: "text-xl",
+  xs: 'text-xs',
+  sm: 'text-sm',
+  md: 'text-md',
+  lg: 'text-lg',
+  xl: 'text-xl',
 };
 
 interface HelpLinksProps extends BaseProps {
@@ -34,9 +34,9 @@ const HelpLinks: React.FC<HelpLinksProps> = ({
   return (
     <ul
       className={clsx(
-        "flex flex-wrap gap-x-2 gap-y-1 items-center",
-        !spacing && "gap-2",
-        spacing && "gap-".concat(spacing.toString()),
+        'flex flex-wrap gap-x-2 gap-y-1 items-center',
+        !spacing && 'gap-2',
+        spacing && 'gap-'.concat(spacing.toString()),
         !size && sizes.sm,
         size && sizes[size],
         className

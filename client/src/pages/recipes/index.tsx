@@ -1,11 +1,11 @@
-import Header from "layouts/Header";
-import Sidebar from "layouts/Sidebar";
-import { GetStaticProps, NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import * as React from "react";
-import Rating from "widgets/Rating";
+import Header from 'layouts/Header';
+import Sidebar from 'layouts/Sidebar';
+import { GetStaticProps, NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import * as React from 'react';
+import Rating from 'widgets/Rating';
 
 interface Item {
   id: number;
@@ -23,27 +23,27 @@ export const getStaticProps: GetStaticProps = async () => {
   const items = [
     {
       id: 1,
-      name: "Adobong manok",
+      name: 'Adobong manok',
       description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit." +
-        "Earum, in, illo, molestiae accusantium natus recusandae vel nihil " +
-        "blanditiis labore minus ut explicabo non architecto eum?",
-      image: "/images/3.jpg",
+        'Lorem ipsum dolor sit amet consectetur, adipisicing elit.' +
+        'Earum, in, illo, molestiae accusantium natus recusandae vel nihil ' +
+        'blanditiis labore minus ut explicabo non architecto eum?',
+      image: '/images/3.jpg',
     },
     {
       id: 2,
-      name: "Tinolang bangus",
-      description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit",
-      image: "/images/4.jpg",
+      name: 'Tinolang bangus',
+      description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit',
+      image: '/images/4.jpg',
       averageRating: 4,
     },
     {
       id: 3,
-      name: "Sinanlag nga bugas",
+      name: 'Sinanlag nga bugas',
       description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit," +
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit",
-      image: "/images/6.jpg",
+        'Lorem ipsum dolor sit amet consectetur, adipisicing elit,' +
+        'Lorem ipsum dolor sit amet consectetur, adipisicing elit',
+      image: '/images/6.jpg',
       averageRating: 2,
     },
   ];
@@ -91,7 +91,7 @@ const Item: React.FC<Item> = ({
   description,
   averageRating,
 }) => {
-  const href = "/recipes/" + id;
+  const href = '/recipes/' + id;
 
   return (
     <Link href={href} passHref>
