@@ -52,8 +52,8 @@ const TextField: React.FC<TextFieldProps> = ({
     <div
       className={clsx(
         'relative',
-        !fullWidth && 'inline-block',
-        fullWidth && 'block w-full'
+        fullWidth && 'block w-full',
+        !fullWidth && 'inline-block'
       )}
     >
       <label
@@ -71,20 +71,34 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         ref={inputRef}
         className={clsx(
-          'p-2 border border-gray-300 outline-none transition-all duration-300 w-full rounded-md',
-          !error &&
-            'hover:border-gray-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-200',
-          error && 'border-red-400 focus:ring-4 focus:ring-red-200',
+          'p-2 w-full border border-gray-300 rounded-md outline-none transition-all duration-300',
+          // only add hover styles if no errors
+          !error && 'hover:border-gray-400',
+          !error && 'focus:ring-4 focus:ring-blue-200 focus:border-blue-400',
+          error && 'focus:ring-4 focus:ring-red-200 border-red-400',
           className
         )}
         {...props}
       />
 
-      {!!errorText && error && (
-        <div className="mt-1.5 ml-1.5 flex gap-1 items-center text-sm text-red-500">
-          {errorText}
-        </div>
+      {errorText && <ErrorText open={error}>{errorText}</ErrorText>}
+    </div>
+  );
+};
+
+interface ErrorTextProps {
+  open?: boolean;
+}
+
+const ErrorText: React.FC<ErrorTextProps> = ({ open, children }) => {
+  return (
+    <div
+      className={clsx(
+        open && 'flex gap-1 items-center mt-1.5 ml-1.5 text-sm text-red-500',
+        !open && 'hidden'
       )}
+    >
+      {children}
     </div>
   );
 };
