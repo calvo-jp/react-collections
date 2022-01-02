@@ -177,7 +177,7 @@ const Header = () => {
       <div className="py-4 px-8">
         <Link href="/recipes" passHref>
           <a className="flex items-center gap-1">
-            <ChevronLeftIcon />
+            <ChevronLeftIcon size="xs" />
             Go back
           </a>
         </Link>
