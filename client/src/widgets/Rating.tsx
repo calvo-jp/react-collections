@@ -1,13 +1,27 @@
 import clsx from 'clsx';
 import * as React from 'react';
+import StarIcon from './icons/Star';
+
+type IconProps = Parameters<typeof StarIcon>[0];
+
+// prettier-ignore
+type SelectedIconProps = Pick<
+  IconProps,
+  | 'size' 
+  | 'width' 
+  | 'height' 
+  | 'className'
+>;
 
 interface RatingProps {
-  value: number;
-  onChange: (value: number) => void;
-  className: string;
+  value?: number;
+  onChange?: (value: number) => void;
 }
 
-const Rating: React.FC<Partial<RatingProps>> = ({
+const Rating: React.FC<RatingProps & SelectedIconProps> = ({
+  size,
+  width,
+  height,
   value,
   onChange,
   className,
@@ -18,9 +32,7 @@ const Rating: React.FC<Partial<RatingProps>> = ({
     return function (e: React.MouseEvent<SVGSVGElement, MouseEvent>) {
       e.preventDefault();
 
-      if (typeof onChange === 'function') {
-        onChange(newValue);
-      }
+      if (onChange) onChange(newValue);
     };
   };
 
@@ -29,30 +41,20 @@ const Rating: React.FC<Partial<RatingProps>> = ({
   return (
     <div className={clsx('flex', className)}>
       {numbers.map((number) => (
-        <Star
+        <StarIcon
           key={number}
+          size={size}
+          width={width}
+          height={height}
           onClick={handleChange(number)}
           className={clsx(
-            'h-5 w-5 cursor-pointer transition-colors duration-300',
+            'cursor-pointer transition-colors duration-300',
             number > currentValue && 'fill-gray-300 hover:fill-amber-400',
             number <= currentValue && 'fill-amber-500 hover:fill-amber-400'
           )}
         />
       ))}
     </div>
-  );
-};
-
-const Star: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      {...props}
-    >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-    </svg>
   );
 };
 
