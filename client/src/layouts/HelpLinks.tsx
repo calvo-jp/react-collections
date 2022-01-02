@@ -36,7 +36,7 @@ const HelpLinks: React.FC<HelpLinksProps> = ({
       className={clsx(
         'flex flex-wrap gap-x-2 gap-y-1 items-center',
         !spacing && 'gap-2',
-        spacing && 'gap-'.concat(spacing.toString()),
+        spacing && 'gap-' + spacing,
         !size && sizes.sm,
         size && sizes[size],
         className
