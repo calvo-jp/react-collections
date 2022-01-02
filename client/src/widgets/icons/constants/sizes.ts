@@ -1,4 +1,4 @@
-import Icon from 'widgets/icons/types/icon';
+import Icon from '../types/icon';
 
 type Size = Required<Icon>['size'];
 
