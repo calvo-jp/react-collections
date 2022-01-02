@@ -17,7 +17,7 @@ const Header = () => {
 
           <div className="flex gap-2">
             <button>
-              <BellIcon className="h-8 w-8 fill-slate-300" />
+              <BellIcon size="lg" className="fill-slate-300" />
             </button>
           </div>
         </div>
