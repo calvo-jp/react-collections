@@ -10,12 +10,10 @@ type BaseProps = React.DetailedHTMLProps<
   HTMLUListElement
 >;
 
-type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+type IconProps = Parameters<typeof FacebookIcon>[0];
+type SelectedIconProps = Pick<IconProps, 'size' | 'width' | 'height'>;
 
 interface SocialsProp extends BaseProps {
-  /** size of icons */
-  size?: Size;
-
   /** true to set icons to black */
   dark?: boolean;
 
@@ -23,60 +21,62 @@ interface SocialsProp extends BaseProps {
   spacing?: number;
 }
 
-const sizes = {
-  xs: 'w-4 h-4',
-  sm: 'w-5 h-5',
-  md: 'w-6 h-6',
-  lg: 'w-7 h-7',
-  xl: 'w-8 h-8',
-  xxl: 'w-9 h-9',
-};
-
-const SocialLinks: React.FC<SocialsProp> = ({
-  size,
+const SocialLinks: React.FC<SocialsProp & SelectedIconProps> = ({
   dark,
+  size,
+  width,
+  height,
   spacing,
   className,
   ...props
 }) => {
-  /** icon classes */
-  const iconClsnms = clsx([
-    // color
-    dark && 'fill-black',
-    !dark && 'fill-white',
-
-    // size
-    !size && sizes.md,
-    size && sizes[size],
-  ]);
-
   return (
     <ul
       className={clsx(
         'flex gap-2 items-center',
-        spacing && 'gap-'.concat(spacing.toString()),
+        spacing && 'gap-' + spacing,
         className
       )}
       {...props}
     >
       <li>
         <SocialLink href="https://www.facebook.com/recipes">
-          <FacebookIcon className={iconClsnms} />
+          <FacebookIcon
+            size={size}
+            width={width}
+            height={height}
+            className={clsx(dark ? 'fill-black' : 'fill-white')}
+          />
         </SocialLink>
       </li>
       <li>
         <SocialLink href="https://www.instagram.com/recipes">
-          <InstagramIcon className={iconClsnms} />
+          <InstagramIcon
+            size={size}
+            width={width}
+            height={height}
+            className={clsx(dark ? 'fill-black' : 'fill-white')}
+          />
         </SocialLink>
       </li>
       <li>
         <SocialLink href="https://www.twitter.com/recipes">
-          <TwitterIcon className={iconClsnms} />
+          <TwitterIcon
+            size={size}
+            width={width}
+            height={height}
+            className={clsx(dark ? 'fill-black' : 'fill-white')}
+          />
         </SocialLink>
       </li>
       <li>
         <SocialLink href="https://www.youtube.com/recipes">
-          <YoutubeIcon className={iconClsnms} />
+          <YoutubeIcon
+            size={size}
+            width={width}
+            height={height}
+            className={clsx(dark ? 'fill-black' : 'fill-white')}
+          />
         </SocialLink>
       </li>
     </ul>
@@ -90,16 +90,16 @@ type SocialLinkProps = React.DetailedHTMLProps<
 
 const SocialLink: React.FC<SocialLinkProps> = ({
   href,
-  className,
   children,
+  className,
   ...props
 }) => {
   return (
     <a
       href={href}
-      className={clsx('block', className)}
       target="_blank"
       rel="noReferrer"
+      className={clsx('block', className)}
       {...props}
     >
       {children}
