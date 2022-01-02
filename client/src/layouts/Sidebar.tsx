@@ -58,47 +58,55 @@ const Navbar = () => {
     <nav>
       <ul>
         <li>
-          <NavbarLink href="/dashboard">
-            <GraphIcon className="w-5 h-5" />
-            Dashboard
-          </NavbarLink>
+          <NavbarLink
+            href="/dashboard"
+            icon={<GraphIcon size="sm" />}
+            label="Dashboard"
+          />
         </li>
         <li>
-          <NavbarLink href="/recipes">
-            <FireIcon className="w-5 h-5" />
-            Recipes
-          </NavbarLink>
+          <NavbarLink
+            href="/recipes"
+            icon={<FireIcon size="sm" />}
+            label="Recipes"
+          />
         </li>
         <li>
-          <NavbarLink href="/favorites">
-            <HeartIcon className="w-5 h-5" />
-            Favorites
-          </NavbarLink>
+          <NavbarLink
+            href="/favorites"
+            icon={<HeartIcon size="sm" />}
+            label="Favorites"
+          />
         </li>
         <li>
-          <NavbarLink href="/settings">
-            <CogIcon className="w-5 h-5" />
-            Settings
-          </NavbarLink>
+          <NavbarLink
+            href="/settings"
+            icon={<CogIcon size="sm" />}
+            label="Settings"
+          />
         </li>
         <li>
-          <NavbarLink>
-            <LightningIcon className="w-5 h-5" />
-            Logout
-          </NavbarLink>
+          <NavbarLink icon={<LightningIcon size="sm" />} label="Logout" />
         </li>
       </ul>
     </nav>
   );
 };
 
-type NavbarLinkProps = React.DetailedHTMLProps<
+type NavbarBaseProps = React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
   HTMLAnchorElement
 >;
 
+interface NavbarLinkProps extends NavbarBaseProps {
+  icon?: JSX.Element;
+  label?: string;
+}
+
 const NavbarLink: React.FC<NavbarLinkProps> = ({
   href,
+  icon,
+  label,
   children,
   className,
   ...props
@@ -106,25 +114,27 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({
   const router = useRouter();
   const active = router.pathname === href;
 
-  const jsx = (applyActiveCls?: boolean) => (
+  const jsx = (
     <a
       className={clsx(
         'cursor-pointer flex items-center gap-2 text-lg',
-        !applyActiveCls && 'hover:text-orange-500',
-        applyActiveCls && 'text-blue-500',
+        !active && 'hover:text-orange-500',
+        active && 'text-blue-500',
         className
       )}
       {...props}
     >
+      {icon}
+      {label}
       {children}
     </a>
   );
 
-  if (!href || href === '#') return jsx();
+  if (!href) return jsx;
 
   return (
     <Link href={href} passHref>
-      {jsx(active)}
+      {jsx}
     </Link>
   );
 };
