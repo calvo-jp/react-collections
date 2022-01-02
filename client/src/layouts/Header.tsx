@@ -29,7 +29,7 @@ const Header = () => {
 const Hamburger = () => {
   return (
     <button>
-      <MenuIcon />
+      <MenuIcon size="xs" />
     </button>
   );
 };
