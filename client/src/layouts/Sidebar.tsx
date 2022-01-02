@@ -114,7 +114,7 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({
   const router = useRouter();
   const active = router.pathname === href;
 
-  const jsx = (
+  const anchor = (
     <a
       className={clsx(
         'cursor-pointer flex items-center gap-2 text-lg',
@@ -130,11 +130,11 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({
     </a>
   );
 
-  if (!href) return jsx;
+  if (!href) return anchor;
 
   return (
     <Link href={href} passHref>
-      {jsx}
+      {anchor}
     </Link>
   );
 };
