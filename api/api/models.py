@@ -3,7 +3,6 @@ from typing import Generic, List, Optional, TypeVar
 
 from pydantic import EmailStr, validator
 from pydantic.generics import GenericModel
-from sqlalchemy import event
 from sqlmodel import (ARRAY, Column, DateTime, Field, Relationship, SQLModel,
                       String)
 
@@ -28,7 +27,7 @@ class SQLModelTimestamped(SQLModel):
     )
     updated_at: Optional[datetime] = Field(
         default=None,
-        sa_column=Column(ZonedDateTime)
+        sa_column=Column(ZonedDateTime, onupdate=utcnow_)
     )
 
 
@@ -148,23 +147,6 @@ class Paginated(GenericModel, Generic[PaginatedT]):
     page_size: int
     has_next: bool
     search: Optional[str]
-
-
-def __listen():
-    def listener(__mapper, __engine, target):
-        if hasattr(target, 'updated_at'):
-            setattr(target, 'updated_at', utcnow_())
-
-    tables = [
-        User,
-        Recipe
-    ]
-
-    for table in tables:
-        event.listen(table, 'before_update', listener)
-
-
-__listen()
 
 
 def create_tables():
