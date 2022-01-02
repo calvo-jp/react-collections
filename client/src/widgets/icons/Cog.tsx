@@ -1,15 +1,15 @@
+import clsx from 'clsx';
 import * as React from 'react';
+import sizes from './constants/sizes';
+import Icon from './types/icon';
 
-type CogIconProps = React.SVGProps<SVGSVGElement>;
-
-const CogIcon: React.FC<CogIconProps> = ({ children, ...props }) => {
+const CogIcon: React.FC<Icon> = ({ size, children, className, ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"
-      width={16}
-      height={16}
+      className={clsx(size && sizes[size], className)}
       {...props}
     >
       <path

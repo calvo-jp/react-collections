@@ -1,15 +1,20 @@
+import clsx from 'clsx';
 import * as React from 'react';
+import sizes from './constants/sizes';
+import Icon from './types/icon';
 
-type MessengerIconProps = React.SVGProps<SVGSVGElement>;
-
-const MessengerIcon: React.FC<MessengerIconProps> = (props) => {
+const MessengerIcon: React.FC<Icon> = ({
+  size,
+  children,
+  className,
+  ...props
+}) => {
   return (
     <svg
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      width={16}
-      height={16}
+      className={clsx(size && sizes[size], className)}
       {...props}
     >
       <title>Messenger</title>

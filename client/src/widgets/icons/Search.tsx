@@ -1,16 +1,21 @@
+import clsx from 'clsx';
 import * as React from 'react';
+import sizes from './constants/sizes';
+import Icon from './types/icon';
 
-type SearchIconProps = React.SVGProps<SVGSVGElement>;
-
-const SearchIcon: React.FC<SearchIconProps> = ({ children, ...props }) => {
+const SearchIcon: React.FC<Icon> = ({
+  size,
+  children,
+  className,
+  ...props
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={16}
-      height={16}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
+      className={clsx(size && sizes[size], className)}
       {...props}
     >
       <path

@@ -1,9 +1,12 @@
+import clsx from 'clsx';
 import * as React from 'react';
+import sizes from './constants/sizes';
+import Icon from './types/icon';
 
-type ChevronRightIconProps = React.SVGProps<SVGSVGElement>;
-
-const ChevronRightIcon: React.FC<ChevronRightIconProps> = ({
+const ChevronRightIcon: React.FC<Icon> = ({
+  size,
   children,
+  className,
   ...props
 }) => {
   return (
@@ -12,8 +15,7 @@ const ChevronRightIcon: React.FC<ChevronRightIconProps> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      width={16}
-      height={16}
+      className={clsx(size && sizes[size], className)}
       {...props}
     >
       <path

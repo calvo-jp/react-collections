@@ -1,15 +1,15 @@
+import clsx from 'clsx';
 import * as React from 'react';
+import sizes from './constants/sizes';
+import Icon from './types/icon';
 
-type GraphIconProps = React.SVGProps<SVGSVGElement>;
-
-const GraphIcon: React.FC<GraphIconProps> = ({ children, ...props }) => {
+const GraphIcon: React.FC<Icon> = ({ size, children, className, ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={16}
-      height={16}
       viewBox="0 0 20 20"
       fill="currentColor"
+      className={clsx(size && sizes[size], className)}
       {...props}
     >
       <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />

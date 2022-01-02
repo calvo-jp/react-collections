@@ -1,15 +1,20 @@
+import clsx from 'clsx';
 import * as React from 'react';
+import sizes from './constants/sizes';
+import Icon from './types/icon';
 
-type YoutubeIconProps = React.SVGProps<SVGSVGElement>;
-
-const YoutubeIcon: React.FC<YoutubeIconProps> = (props) => {
+const YoutubeIcon: React.FC<Icon> = ({
+  size,
+  children,
+  className,
+  ...props
+}) => {
   return (
     <svg
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      width={16}
-      height={16}
+      className={clsx(size && sizes[size], className)}
       {...props}
     >
       <title>YouTube</title>

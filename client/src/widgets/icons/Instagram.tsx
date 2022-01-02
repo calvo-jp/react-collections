@@ -1,15 +1,20 @@
+import clsx from 'clsx';
 import * as React from 'react';
+import sizes from './constants/sizes';
+import Icon from './types/icon';
 
-type InstagramIconProps = React.SVGProps<SVGSVGElement>;
-
-const InstagramIcon: React.FC<InstagramIconProps> = (props) => {
+const InstagramIcon: React.FC<Icon> = ({
+  size,
+  className,
+  children,
+  ...props
+}) => {
   return (
     <svg
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      width={16}
-      height={16}
+      className={clsx(size && sizes[size], className)}
       {...props}
     >
       <title>Instagram</title>
