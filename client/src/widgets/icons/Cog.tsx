@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import * as React from 'react';
 import sizes from './constants/sizes';
-import defaultSize from './constants/sizes/default';
 import Icon from './types/icon';
 
 const CogIcon: React.FC<Icon> = ({
@@ -18,7 +17,7 @@ const CogIcon: React.FC<Icon> = ({
       viewBox="0 0 20 20"
       fill="currentColor"
       className={clsx(
-        !size && defaultSize,
+        !size && sizes.md,
         size && sizes[size],
         width && 'w-' + width,
         height && 'h-' + height,

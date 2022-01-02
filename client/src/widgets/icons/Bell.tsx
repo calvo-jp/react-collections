@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import * as React from 'react';
 import sizes from './constants/sizes';
-import defaultSize from './constants/sizes/default';
 import Icon from './types/icon';
 
 const BellIcon: React.FC<Icon> = ({
@@ -15,13 +14,11 @@ const BellIcon: React.FC<Icon> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={16}
-      height={16}
       viewBox="0 0 20 20"
       fill="currentColor"
       className={clsx(
-        !size && defaultSize,
         size && sizes[size],
+        !size && sizes.md,
         width && 'w-' + width,
         height && 'h-' + height,
         className

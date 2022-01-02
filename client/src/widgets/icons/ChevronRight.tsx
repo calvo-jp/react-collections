@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import * as React from 'react';
 import sizes from './constants/sizes';
-import defaultSize from './constants/sizes/default';
 import Icon from './types/icon';
 
 const ChevronRightIcon: React.FC<Icon> = ({
@@ -19,8 +18,8 @@ const ChevronRightIcon: React.FC<Icon> = ({
       viewBox="0 0 24 24"
       stroke="currentColor"
       className={clsx(
-        !size && defaultSize,
         size && sizes[size],
+        !size && sizes.md,
         width && 'w-' + width,
         height && 'h-' + height,
         className
