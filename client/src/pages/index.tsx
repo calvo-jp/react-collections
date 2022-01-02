@@ -133,7 +133,7 @@ const Card: React.FC<CardProps> = ({ title, description, image }) => {
         </div>
 
         <div className="mt-2">
-          <Rating value={5} />
+          <Rating size="sm" value={5} />
         </div>
       </div>
     </div>
