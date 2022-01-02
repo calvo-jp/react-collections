@@ -1,4 +1,4 @@
-import Icon from '../types/icon';
+import Icon from 'widgets/icons/types/icon';
 
 type Size = Record<Required<Icon>['size'], string>;
 
