@@ -116,7 +116,7 @@ const Item: React.FC<Item> = ({
           <p className="text-sm text-gray-700 truncate">{description}</p>
 
           <div className="mt-2">
-            <Rating value={averageRating} />
+            <Rating size="sm" value={averageRating} />
           </div>
         </article>
       </a>
