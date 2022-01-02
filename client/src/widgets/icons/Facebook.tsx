@@ -6,6 +6,8 @@ import Icon from './types/icon';
 
 const FacebookIcon: React.FC<Icon> = ({
   size,
+  width,
+  height,
   children,
   className,
   ...props
@@ -15,7 +17,13 @@ const FacebookIcon: React.FC<Icon> = ({
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(!size && defaultSize, size && sizes[size], className)}
+      className={clsx(
+        !size && defaultSize,
+        size && sizes[size],
+        width && 'w-' + width,
+        height && 'h-' + height,
+        className
+      )}
       {...props}
     >
       <title>Facebook</title>

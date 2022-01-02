@@ -6,6 +6,8 @@ import Icon from './types/icon';
 
 const SearchIcon: React.FC<Icon> = ({
   size,
+  width,
+  height,
   children,
   className,
   ...props
@@ -16,7 +18,13 @@ const SearchIcon: React.FC<Icon> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      className={clsx(!size && defaultSize, size && sizes[size], className)}
+      className={clsx(
+        !size && defaultSize,
+        size && sizes[size],
+        width && 'w-' + width,
+        height && 'h-' + height,
+        className
+      )}
       {...props}
     >
       <path
