@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import * as React from 'react';
 import sizes from './constants/sizes';
+import defaultSize from './constants/sizes/default';
 import Icon from './types/icon';
 
 const TwitterIcon: React.FC<Icon> = ({
@@ -14,7 +15,7 @@ const TwitterIcon: React.FC<Icon> = ({
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(size && sizes[size], className)}
+      className={clsx(!size && defaultSize, size && sizes[size], className)}
       {...props}
     >
       <title>Twitter</title>

@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import * as React from 'react';
 import sizes from './constants/sizes';
+import defaultSize from './constants/sizes/default';
 import Icon from './types/icon';
 
 const MenuIcon: React.FC<Icon> = ({ size, children, className, ...props }) => {
@@ -10,7 +11,7 @@ const MenuIcon: React.FC<Icon> = ({ size, children, className, ...props }) => {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      className={clsx(size && sizes[size], className)}
+      className={clsx(!size && defaultSize, size && sizes[size], className)}
       {...props}
     >
       <path
