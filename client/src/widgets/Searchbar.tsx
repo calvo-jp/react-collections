@@ -10,25 +10,28 @@ type BaseProps = React.DetailedHTMLProps<
 type SearchbarProps = Omit<BaseProps, 'type' | 'children' | 'onClick'>;
 
 const Searchbar: React.FC<SearchbarProps> = ({
-  className,
-  onFocus,
   onBlur,
+  onFocus,
+  className,
   ...props
 }) => {
   const [focused, setFocused] = React.useState(false);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
-    setFocused(true);
-
-    if (!!onFocus) onFocus(e);
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
-    setFocused(false);
-
-    if (!!onBlur) onBlur(e);
+  const handleMouseEvent = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+    switch (e.type) {
+      case 'blur':
+        onBlur?.(e);
+        setFocused(false);
+        break;
+      case 'focus':
+        onFocus?.(e);
+        setFocused(true);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -51,8 +54,8 @@ const Searchbar: React.FC<SearchbarProps> = ({
       <input
         ref={inputRef}
         type="search"
-        onBlur={handleBlur}
-        onFocus={handleFocus}
+        onBlur={handleMouseEvent}
+        onFocus={handleMouseEvent}
         placeholder="Search"
         className="outline-none w-full pr-2"
         {...props}
@@ -61,7 +64,7 @@ const Searchbar: React.FC<SearchbarProps> = ({
       <div className="h-4 my-auto border-l border-gray-200" />
 
       <button className="px-2" tabIndex={-1}>
-        <SearchIcon className="h-4 w-4" />
+        <SearchIcon size="sm" />
       </button>
     </div>
   );
