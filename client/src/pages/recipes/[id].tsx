@@ -1,3 +1,4 @@
+import items from 'assets/json/recipes.json';
 import clsx from 'clsx';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
@@ -10,43 +11,6 @@ import IRecipe from 'types/recipe';
 import capitalize from 'utils/capitalize';
 import onScrollReveal from 'utils/onScrollReveal';
 import ChevronLeftIcon from 'widgets/icons/ChevronLeft';
-
-const items = [
-  {
-    id: 1,
-    name: 'Adobong manok',
-    description:
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa nulla nobis inventore eum ratione esse maiores! Sint non itaque doloribus!',
-    ingredients: [
-      '16kg Chicken',
-      '3pk Silver swan',
-      '10pcs garlic',
-      '4pk baby oil',
-    ],
-    instructions: [],
-    tags: [
-      'Adobo',
-      'Manamit',
-      'BrownKaayo',
-      'AriPagd',
-      'COVID19',
-      'HappyNewYear2022',
-    ],
-    image: '/images/8.jpg',
-    rating: 3,
-    author: {
-      id: 1,
-      name: 'JP Calvo',
-      email: 'calvojp92@gmail.com',
-      avatar: '',
-      createdAt: '2021-01-15',
-      totalRecipes: 4,
-      totalFavorites: 0,
-      totalReviews: 0,
-    },
-    createdAt: '2021-01-30',
-  },
-];
 
 interface Params {
   id: string;
