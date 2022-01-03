@@ -205,15 +205,16 @@ const Tabs = ({ value, onChange }: TabsProps) => {
   );
 };
 
-interface TabProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+interface TabProps {
   active?: boolean;
 }
 
-const Tab: React.FC<TabProps> = ({ active, className, children, ...props }) => {
+const Tab: React.FC<TabProps & React.ComponentProps<'button'>> = ({
+  active,
+  className,
+  children,
+  ...props
+}) => {
   return (
     <button className={clsx(active && 'font-bold', className)} {...props}>
       {children}
