@@ -101,21 +101,19 @@ const Recipe: NextPage<IRecipe> = (data) => {
               <div>
                 <div className="flex justify-between">
                   <div className="flex items-center gap-4">
-                    <article>
+                    <div>
                       <h1 className="text-2xl">{data.name}</h1>
 
-                      <p className="text-sm text-gray-500 flex items-center gap-1">
+                      <div className="text-sm text-gray-500 flex items-center gap-1">
                         <div>{data.createdAt}</div>
-
                         <div>by</div>
-
                         <Link href="/users/1" passHref>
                           <a className="hover:text-blue-500 hover:font-semibold">
                             {data.author.name}
                           </a>
                         </Link>
-                      </p>
-                    </article>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
