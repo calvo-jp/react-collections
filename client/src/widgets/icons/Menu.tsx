@@ -3,27 +3,14 @@ import * as React from 'react';
 import sizes from './constants/sizes';
 import Icon from './types/icon';
 
-const MenuIcon: React.FC<Icon> = ({
-  size,
-  width,
-  height,
-  children,
-  className,
-  ...props
-}) => {
+const MenuIcon: React.FC<Icon> = ({ size, children, className, ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      className={clsx(
-        size && sizes[size],
-        !size && sizes.md,
-        width && 'w-' + width,
-        height && 'h-' + height,
-        className
-      )}
+      className={clsx(size && sizes[size], !size && sizes.md, className)}
       {...props}
     >
       <path

@@ -5,8 +5,6 @@ import Icon from './types/icon';
 
 const ChevronLeftIcon: React.FC<Icon> = ({
   size,
-  width,
-  height,
   children,
   className,
   ...props
@@ -17,13 +15,7 @@ const ChevronLeftIcon: React.FC<Icon> = ({
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      className={clsx(
-        size && sizes[size],
-        !size && sizes.md,
-        width && 'w-' + width,
-        height && 'h-' + height,
-        className
-      )}
+      className={clsx(size && sizes[size], !size && sizes.md, className)}
       {...props}
     >
       <path

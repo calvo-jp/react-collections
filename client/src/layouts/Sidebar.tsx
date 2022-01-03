@@ -47,7 +47,7 @@ const Avatar = () => {
       </div>
 
       <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 h-12 w-12 to-blue-400 rounded-full border-4 border-gray-100 flex items-center justify-center group">
-        <CameraIcon className="fill-white group-hover:w-8 group-hover:h-8 transition-all duration-100" />
+        <CameraIcon className="w-4 h-4 fill-white group-hover:w-8 group-hover:h-8 transition-all duration-100" />
       </button>
     </div>
   );

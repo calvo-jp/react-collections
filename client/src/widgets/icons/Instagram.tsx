@@ -5,8 +5,6 @@ import Icon from './types/icon';
 
 const InstagramIcon: React.FC<Icon> = ({
   size,
-  width,
-  height,
   className,
   children,
   ...props
@@ -16,13 +14,7 @@ const InstagramIcon: React.FC<Icon> = ({
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(
-        size && sizes[size],
-        !size && sizes.md,
-        width && 'w-' + width,
-        height && 'h-' + height,
-        className
-      )}
+      className={clsx(size && sizes[size], !size && sizes.md, className)}
       {...props}
     >
       <title>Instagram</title>
