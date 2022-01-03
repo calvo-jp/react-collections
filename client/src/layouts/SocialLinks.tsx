@@ -5,17 +5,12 @@ import InstagramIcon from 'widgets/icons/Instagram';
 import TwitterIcon from 'widgets/icons/Twitter';
 import YoutubeIcon from 'widgets/icons/Youtube';
 
-type BaseProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLUListElement>,
-  HTMLUListElement
->;
-
-interface SocialsProp extends BaseProps {
+interface SocialsProp {
   /** gap of icons */
   spacing?: number;
 }
 
-const SocialLinks: React.FC<SocialsProp> = ({
+const SocialLinks: React.FC<SocialsProp & React.ComponentProps<'ul'>> = ({
   spacing,
   className,
   ...props
@@ -53,12 +48,7 @@ const SocialLinks: React.FC<SocialsProp> = ({
   );
 };
 
-type SocialLinkProps = React.DetailedHTMLProps<
-  React.AnchorHTMLAttributes<HTMLAnchorElement>,
-  HTMLAnchorElement
->;
-
-const SocialLink: React.FC<SocialLinkProps> = ({
+const SocialLink: React.FC<React.ComponentProps<'a'>> = ({
   href,
   children,
   className,
