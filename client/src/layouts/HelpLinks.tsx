@@ -2,11 +2,6 @@ import clsx from 'clsx';
 import NextLink from 'next/link';
 import * as React from 'react';
 
-type BaseProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLUListElement>,
-  HTMLUListElement
->;
-
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 const sizes: Record<Size, string> = {
@@ -17,7 +12,7 @@ const sizes: Record<Size, string> = {
   xl: 'text-xl',
 };
 
-interface HelpLinksProps extends BaseProps {
+interface HelpLinksProps {
   /** controls fontsize */
   size?: Size;
 
@@ -25,7 +20,7 @@ interface HelpLinksProps extends BaseProps {
   spacing?: number;
 }
 
-const HelpLinks: React.FC<HelpLinksProps> = ({
+const HelpLinks: React.FC<HelpLinksProps & React.ComponentProps<'ul'>> = ({
   size,
   spacing,
   className,
