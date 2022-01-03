@@ -1,27 +1,10 @@
-import items from 'assets/json/recipes.json';
 import Footer from 'layouts/Footer';
 import Header from 'layouts/Header';
 import SocialLinks from 'layouts/SocialLinks';
-import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import * as React from 'react';
-import IRecipe from 'types/recipe';
-import Rating from 'widgets/Rating';
 
-interface Props {
-  items: IRecipe[];
-}
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  return {
-    props: {
-      items,
-    },
-  };
-};
-
-const Landing: NextPage<Props> = (props) => {
+const Landing = () => {
   return (
     <React.Fragment>
       <Head>
@@ -54,13 +37,13 @@ const Banner = () => {
         <SocialLinks className="mt-4" />
       </article>
 
-      <Gradient />
+      <GradientOverlay />
       <WavyBorder />
     </section>
   );
 };
 
-const Gradient = () => {
+const GradientOverlay = () => {
   return (
     <div className="bg-gradient-to-r from-cyan-500 to-blue-400 absolute top-0 left-0 w-full h-full" />
   );
@@ -82,39 +65,6 @@ const WavyBorder = () => {
           className="fill-white"
         />
       </svg>
-    </div>
-  );
-};
-
-interface CardProps {
-  title: string;
-  description: string;
-  image: string;
-}
-
-const Card: React.FC<CardProps> = ({ title, description, image }) => {
-  return (
-    <div className="w-[325px] flex flex-col">
-      <div className="relative flex-grow h-[325px]">
-        <Image
-          src={image}
-          alt=""
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
-        />
-      </div>
-
-      <div className="p-2">
-        <div>
-          <h3 className="text-xl">{title}</h3>
-          <p className="text-sm">{description}</p>
-        </div>
-
-        <div className="mt-2">
-          <Rating value={5} />
-        </div>
-      </div>
     </div>
   );
 };
