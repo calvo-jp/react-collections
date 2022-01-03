@@ -22,6 +22,7 @@ const items: IRecipe[] = [
       'HappyNewYear2022',
     ],
     image: '/images/8.jpg',
+    banner: '/images/9.jpg',
     rating: 3,
     author: {
       id: 1,
@@ -48,7 +49,8 @@ const items: IRecipe[] = [
     ],
     instructions: [],
     tags: ['Tinola', 'Chicken'],
-    image: '/images/9.jpg',
+    image: '/images/10.jpg',
+    banner: '/images/11.jpg',
     rating: 4,
     author: {
       id: 1,
