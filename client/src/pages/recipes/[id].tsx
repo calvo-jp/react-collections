@@ -55,7 +55,7 @@ const Recipe: NextPage<IRecipe> = (data) => {
   const params = router.query as Params;
 
   const getCurrentTab = React.useMemo(() => {
-    return function () {
+    return function (): string {
       return [params.tab].flat().at(0)?.trim().toLowerCase() || tabs[0];
     };
   }, [params.tab]);
@@ -72,7 +72,10 @@ const Recipe: NextPage<IRecipe> = (data) => {
     return () => setCurrentTab(tabs[0]);
   }, [getCurrentTab]);
 
+  // fetching
   if (router.isFallback) return <Loader />;
+
+  // unknown tab
   if (!tabs.includes(currentTab)) return <NotFound />;
 
   return (
