@@ -2,7 +2,7 @@ import IUser from './user';
 
 interface IRecipe {
   id: number;
-  title: string;
+  name: string;
   description: string;
   author: IUser;
   ingredients: string[];
