@@ -1,3 +1,8 @@
+import '@fontsource/m-plus-code-latin/300.css';
+import '@fontsource/m-plus-code-latin/400.css';
+import '@fontsource/m-plus-code-latin/500.css';
+import '@fontsource/m-plus-code-latin/600.css';
+import '@fontsource/m-plus-code-latin/700.css';
 import StoreProvider from 'hooks/store/provider';
 import Loader from 'layouts/Loader';
 import type { AppProps } from 'next/app';
