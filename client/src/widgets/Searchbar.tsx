@@ -1,6 +1,6 @@
+import SearchIcon from '@heroicons/react/solid/SearchIcon';
 import clsx from 'clsx';
 import * as React from 'react';
-import SearchIcon from './icons/Search';
 
 type BaseProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -64,7 +64,7 @@ const Searchbar: React.FC<SearchbarProps> = ({
       <div className="h-4 my-auto border-l border-gray-200" />
 
       <button className="px-2" tabIndex={-1}>
-        <SearchIcon size="sm" />
+        <SearchIcon className="w-4 h-4" />
       </button>
     </div>
   );
