@@ -81,7 +81,13 @@ const Recipe: NextPage<IRecipe> = (data) => {
   return (
     <React.Fragment>
       <Head>
-        <title>Adobong Manok</title>
+        <title>{data.name}</title>
+        <meta property="og:title" content={data.name} key="OG.TITLE" />
+        <meta
+          property="og:description"
+          content={data.description}
+          key="OG.DESCRIPTION"
+        />
       </Head>
 
       <div>
