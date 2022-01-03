@@ -1,6 +1,5 @@
 import Brand from 'layouts/Brand';
 import Footer from 'layouts/Footer';
-import HelpLinks from 'layouts/HelpLinks';
 import SocialLinks from 'layouts/SocialLinks';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -134,7 +133,7 @@ const Card: React.FC<CardProps> = ({ title, description, image }) => {
         </div>
 
         <div className="mt-2">
-          <Rating size="sm" value={5} />
+          <Rating value={5} />
         </div>
       </div>
     </div>
