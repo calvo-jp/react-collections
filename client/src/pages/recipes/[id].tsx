@@ -1,6 +1,7 @@
 import ChevronLeftIcon from '@heroicons/react/solid/ChevronLeftIcon';
 import items from 'assets/json/recipes.json';
 import clsx from 'clsx';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -105,7 +106,9 @@ const Recipe: NextPage<IRecipe> = (data) => {
                       <h1 className="text-2xl">{data.name}</h1>
 
                       <div className="text-sm text-gray-500 flex items-center gap-1">
-                        <div>{data.createdAt}</div>
+                        <div>
+                          {formatDistanceToNow(new Date(data.createdAt))}
+                        </div>
                         <div>by</div>
                         <Link href="/users/1" passHref>
                           <a className="hover:text-blue-500 hover:font-semibold">
