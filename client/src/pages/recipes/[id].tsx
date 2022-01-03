@@ -93,7 +93,7 @@ const Recipe: NextPage<IRecipe> = (data) => {
       <div>
         <Header />
 
-        <Jumbotron src={data.image} />
+        <Jumbotron src={data.cover} />
 
         <main className="p-8">
           <div className="max-w-[900px] mx-auto">
