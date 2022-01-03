@@ -1,20 +1,15 @@
 import clsx from 'clsx';
 import * as React from 'react';
 
-type BaseProps = React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->;
-
 type Variant = 'primary' | 'secondary';
 
-interface ButtonProps extends BaseProps {
+interface ButtonProps {
   variant?: Variant;
   fullWidth?: boolean;
 }
 
 // TODO: add secondary
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<ButtonProps & React.ComponentProps<'button'>> = ({
   variant,
   fullWidth,
   children,
