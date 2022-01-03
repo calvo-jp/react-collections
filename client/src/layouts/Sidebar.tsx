@@ -14,9 +14,12 @@ import * as React from 'react';
 import Button from 'widgets/Button';
 import HelpLinks from './HelpLinks';
 
-const Sidebar = () => {
+const Sidebar: React.FC<React.ComponentProps<'section'>> = ({
+  className,
+  ...props
+}) => {
   return (
-    <section className="p-8 flex flex-col gap-8">
+    <section className={clsx('p-8 flex flex-col gap-8', className)} {...props}>
       <Avatar />
 
       <Button variant="primary" fullWidth>
