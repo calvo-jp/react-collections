@@ -1,4 +1,5 @@
 import Brand from 'layouts/Brand';
+import Footer from 'layouts/Footer';
 import HelpLinks from 'layouts/HelpLinks';
 import SocialLinks from 'layouts/SocialLinks';
 import Head from 'next/head';
@@ -180,16 +181,6 @@ const HeaderNav = () => {
         </li>
       </ul>
     </nav>
-  );
-};
-
-const Footer = () => {
-  return (
-    <footer className="p-4 px-8 flex items-center justify-between text-sm">
-      <p>&copy; Recipes 2021. All rights reserved</p>
-
-      <HelpLinks />
-    </footer>
   );
 };
 
