@@ -96,17 +96,12 @@ const Navbar = () => {
   );
 };
 
-type NavbarBaseProps = React.DetailedHTMLProps<
-  React.AnchorHTMLAttributes<HTMLAnchorElement>,
-  HTMLAnchorElement
->;
-
-interface NavbarLinkProps extends NavbarBaseProps {
+interface NavbarLinkProps {
   icon?: JSX.Element;
   label?: string;
 }
 
-const NavbarLink: React.FC<NavbarLinkProps> = ({
+const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
   href,
   icon,
   label,
