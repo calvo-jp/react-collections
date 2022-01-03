@@ -5,12 +5,12 @@ import InstagramIcon from 'widgets/icons/Instagram';
 import TwitterIcon from 'widgets/icons/Twitter';
 import YoutubeIcon from 'widgets/icons/Youtube';
 
-interface SocialsProp {
+interface SocialLinksProp {
   /** gap of icons */
   spacing?: number;
 }
 
-const SocialLinks: React.FC<SocialsProp & React.ComponentProps<'ul'>> = ({
+const SocialLinks: React.FC<SocialLinksProp & React.ComponentProps<'ul'>> = ({
   spacing,
   className,
   ...props
