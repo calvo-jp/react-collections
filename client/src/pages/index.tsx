@@ -72,7 +72,7 @@ const Banner = () => {
           Find or share amazing recipes anytime for free
         </p>
 
-        <SocialLinks size="md" className="mt-4" />
+        <SocialLinks className="mt-4" />
       </article>
 
       <Gradient />
