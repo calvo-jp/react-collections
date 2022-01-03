@@ -13,7 +13,7 @@ interface IRecipe {
   /** video url */
   video?: string;
   /** image banner */
-  banner: string;
+  cover: string;
   /** average rate from 0-5 */
   rating: number;
   createdAt: string;
