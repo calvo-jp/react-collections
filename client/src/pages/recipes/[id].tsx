@@ -52,7 +52,7 @@ const tabs = [
 
 const Recipe: NextPage<IRecipe> = (data) => {
   const router = useRouter();
-  const params = router.query;
+  const params = router.query as Params;
 
   const getCurrentTab = React.useMemo(() => {
     return function () {
@@ -72,7 +72,7 @@ const Recipe: NextPage<IRecipe> = (data) => {
     return () => setCurrentTab(tabs[0]);
   }, [getCurrentTab]);
 
-  if (router.isFallback) return <Waiting />;
+  if (router.isFallback) return <Loader />;
   if (!tabs.includes(currentTab)) return <NotFound />;
 
   return (
@@ -130,8 +130,12 @@ const Recipe: NextPage<IRecipe> = (data) => {
   );
 };
 
-const Waiting = () => {
-  return <div className="p-4">Loading...</div>;
+const Loader = () => {
+  return (
+    <div className="p-4">
+      <p>Loading...</p>
+    </div>
+  );
 };
 
 interface MainProps {
