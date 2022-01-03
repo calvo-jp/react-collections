@@ -1,7 +1,7 @@
-import ChevronLeftIcon from '@heroicons/react/solid/ChevronLeftIcon';
 import items from 'assets/json/recipes.json';
 import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import HeaderTwo from 'layouts/HeaderTwo';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -11,7 +11,6 @@ import NotFound from 'pages/404';
 import * as React from 'react';
 import IRecipe from 'types/recipe';
 import capitalize from 'utils/capitalize';
-import onScrollReveal from 'utils/onScrollReveal';
 
 interface Params {
   id: string;
@@ -92,7 +91,7 @@ const Recipe: NextPage<IRecipe> = (data) => {
       </Head>
 
       <div>
-        <Header />
+        <HeaderTwo url="/recipes" label="Recipes" />
 
         <Jumbotron src={data.cover} />
 
@@ -262,30 +261,6 @@ const Jumbotron = (props: JumbotronProps) => {
         objectPosition="center"
       />
     </div>
-  );
-};
-
-const Header = () => {
-  const ref = React.useRef<HTMLElement>(null);
-
-  React.useEffect(() => {
-    if (ref.current) onScrollReveal(ref.current);
-  }, []);
-
-  return (
-    <header
-      ref={ref}
-      className="bg-white shadow-md z-10 sticky top-0 transition-all duration-300"
-    >
-      <div className="py-4 px-8">
-        <Link href="/recipes" passHref>
-          <a className="flex items-center gap-1">
-            <ChevronLeftIcon className="w-5 h-5" />
-            Go back
-          </a>
-        </Link>
-      </div>
-    </header>
   );
 };
 
