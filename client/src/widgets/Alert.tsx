@@ -1,11 +1,8 @@
+import CloseIcon from '@heroicons/react/solid/XIcon';
 import clsx from 'clsx';
 import * as React from 'react';
-import CloseIcon from './icons/Close';
 
-type BaseProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
+type BaseProps = React.ComponentProps<'div'>;
 
 type Variant = 'info' | 'success' | 'warning' | 'error';
 
@@ -47,10 +44,7 @@ const Alert: React.FC<AlertProps> = ({
 
       {onClose && (
         <button onClick={onClose} tabIndex={-1}>
-          <CloseIcon
-            size="sm"
-            className="opacity-30 hover:opacity-60 transition-opacity duration-200"
-          />
+          <CloseIcon className="w-5 h-5 opacity-30 hover:opacity-60 transition-opacity duration-200" />
         </button>
       )}
     </div>
