@@ -1,3 +1,10 @@
+import CameraIcon from '@heroicons/react/solid/CameraIcon';
+import ChartPieIcon from '@heroicons/react/solid/ChartPieIcon';
+import CogIcon from '@heroicons/react/solid/CogIcon';
+import FireIcon from '@heroicons/react/solid/FireIcon';
+import HeartIcon from '@heroicons/react/solid/HeartIcon';
+import LightningBoltIcon from '@heroicons/react/solid/LightningBoltIcon';
+import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import avatar from 'assets/images/avatar.jpg';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -5,13 +12,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Button from 'widgets/Button';
-import CameraIcon from 'widgets/icons/Camera';
-import CogIcon from 'widgets/icons/Cog';
-import FireIcon from 'widgets/icons/Fire';
-import GraphIcon from 'widgets/icons/Graph';
-import HeartIcon from 'widgets/icons/Heart';
-import LightningIcon from 'widgets/icons/Lightning';
-import PencilSquareIcon from 'widgets/icons/PencilSquare';
 import HelpLinks from './HelpLinks';
 
 const Sidebar = () => {
@@ -20,7 +20,7 @@ const Sidebar = () => {
       <Avatar />
 
       <Button variant="primary" fullWidth>
-        <PencilSquareIcon size="sm" />
+        <PencilAltIcon className="w-5 h-5" />
         Create New
       </Button>
 
@@ -47,7 +47,7 @@ const Avatar = () => {
       </div>
 
       <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 h-12 w-12 to-blue-400 rounded-full border-4 border-gray-100 flex items-center justify-center group">
-        <CameraIcon className="fill-white group-hover:w-8 group-hover:h-8 transition-all duration-100" />
+        <CameraIcon className="fill-white w-7 h-7 group-hover:w-8 group-hover:h-8 transition-all duration-100" />
       </button>
     </div>
   );
@@ -60,33 +60,36 @@ const Navbar = () => {
         <li>
           <NavbarLink
             href="/dashboard"
-            icon={<GraphIcon size="sm" />}
+            icon={<ChartPieIcon className="w-5 h-5" />}
             label="Dashboard"
           />
         </li>
         <li>
           <NavbarLink
             href="/recipes"
-            icon={<FireIcon size="sm" />}
+            icon={<FireIcon className="w-5 h-5" />}
             label="Recipes"
           />
         </li>
         <li>
           <NavbarLink
             href="/favorites"
-            icon={<HeartIcon size="sm" />}
+            icon={<HeartIcon className="w-5 h-5" />}
             label="Favorites"
           />
         </li>
         <li>
           <NavbarLink
             href="/settings"
-            icon={<CogIcon size="sm" />}
+            icon={<CogIcon className="w-5 h-5" />}
             label="Settings"
           />
         </li>
         <li>
-          <NavbarLink icon={<LightningIcon size="sm" />} label="Logout" />
+          <NavbarLink
+            icon={<LightningBoltIcon className="w-5 h-5" />}
+            label="Logout"
+          />
         </li>
       </ul>
     </nav>
