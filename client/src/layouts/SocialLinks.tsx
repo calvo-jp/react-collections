@@ -10,22 +10,12 @@ type BaseProps = React.DetailedHTMLProps<
   HTMLUListElement
 >;
 
-type IconProps = Parameters<typeof FacebookIcon>[0];
-type SelectedIconProps = Pick<IconProps, 'size' | 'width' | 'height'>;
-
 interface SocialsProp extends BaseProps {
-  /** true to set icons to black */
-  dark?: boolean;
-
   /** gap of icons */
   spacing?: number;
 }
 
-const SocialLinks: React.FC<SocialsProp & SelectedIconProps> = ({
-  dark,
-  size,
-  width,
-  height,
+const SocialLinks: React.FC<SocialsProp> = ({
   spacing,
   className,
   ...props
@@ -41,42 +31,22 @@ const SocialLinks: React.FC<SocialsProp & SelectedIconProps> = ({
     >
       <li>
         <SocialLink href="https://www.facebook.com/recipes">
-          <FacebookIcon
-            size={size}
-            width={width}
-            height={height}
-            className={clsx(dark ? 'fill-black' : 'fill-white')}
-          />
+          <FacebookIcon className="w-6 h-6 fill-white" />
         </SocialLink>
       </li>
       <li>
         <SocialLink href="https://www.instagram.com/recipes">
-          <InstagramIcon
-            size={size}
-            width={width}
-            height={height}
-            className={clsx(dark ? 'fill-black' : 'fill-white')}
-          />
+          <InstagramIcon className="w-6 h-6 fill-white" />
         </SocialLink>
       </li>
       <li>
         <SocialLink href="https://www.twitter.com/recipes">
-          <TwitterIcon
-            size={size}
-            width={width}
-            height={height}
-            className={clsx(dark ? 'fill-black' : 'fill-white')}
-          />
+          <TwitterIcon className="w-6 h-6 fill-white" />
         </SocialLink>
       </li>
       <li>
         <SocialLink href="https://www.youtube.com/recipes">
-          <YoutubeIcon
-            size={size}
-            width={width}
-            height={height}
-            className={clsx(dark ? 'fill-black' : 'fill-white')}
-          />
+          <YoutubeIcon className="w-6 h-6 fill-white" />
         </SocialLink>
       </li>
     </ul>
