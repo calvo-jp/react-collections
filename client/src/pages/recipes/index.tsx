@@ -76,7 +76,7 @@ const Item = ({ id, name, image, description, rating }: IRecipe) => {
           <p className="text-sm text-gray-700 truncate">{description}</p>
 
           <div className="mt-2">
-            <Rating size="sm" value={rating} />
+            <Rating value={rating} />
           </div>
         </article>
       </a>
