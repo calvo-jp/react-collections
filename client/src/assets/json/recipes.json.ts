@@ -49,8 +49,8 @@ const items: IRecipe[] = [
     ],
     instructions: [],
     tags: ['Tinola', 'Chicken'],
-    image: '/images/10.jpg',
-    banner: '/images/11.jpg',
+    image: '/images/7.jpg',
+    banner: '/images/8.jpg',
     rating: 4,
     author: {
       id: 1,
