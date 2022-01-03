@@ -1,3 +1,4 @@
+import items from 'assets/json/recipes.json';
 import Header from 'layouts/Header';
 import Sidebar from 'layouts/Sidebar';
 import { GetStaticProps, NextPage } from 'next';
@@ -5,49 +6,14 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
+import IRecipe from 'types/recipe';
 import Rating from 'widgets/Rating';
 
-interface Item {
-  id: number;
-  name: string;
-  description: string;
-  averageRating?: number;
-  image: string;
-}
-
 interface Props {
-  items: Item[];
+  items: IRecipe[];
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const items = [
-    {
-      id: 1,
-      name: 'Adobong manok',
-      description:
-        'Lorem ipsum dolor sit amet consectetur, adipisicing elit.' +
-        'Earum, in, illo, molestiae accusantium natus recusandae vel nihil ' +
-        'blanditiis labore minus ut explicabo non architecto eum?',
-      image: '/images/3.jpg',
-    },
-    {
-      id: 2,
-      name: 'Tinolang bangus',
-      description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit',
-      image: '/images/4.jpg',
-      averageRating: 4,
-    },
-    {
-      id: 3,
-      name: 'Sinanlag nga bugas',
-      description:
-        'Lorem ipsum dolor sit amet consectetur, adipisicing elit,' +
-        'Lorem ipsum dolor sit amet consectetur, adipisicing elit',
-      image: '/images/6.jpg',
-      averageRating: 2,
-    },
-  ];
-
+export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
       items,
@@ -84,13 +50,7 @@ const Recipes: NextPage<Props> = ({ items }) => {
   );
 };
 
-const Item: React.FC<Item> = ({
-  id,
-  name,
-  image,
-  description,
-  averageRating,
-}) => {
+const Item = ({ id, name, image, description, rating }: IRecipe) => {
   const href = '/recipes/' + id;
 
   return (
@@ -116,7 +76,7 @@ const Item: React.FC<Item> = ({
           <p className="text-sm text-gray-700 truncate">{description}</p>
 
           <div className="mt-2">
-            <Rating size="sm" value={averageRating} />
+            <Rating size="sm" value={rating} />
           </div>
         </article>
       </a>
