@@ -1,3 +1,4 @@
+import ChevronLeftIcon from '@heroicons/react/solid/ChevronLeftIcon';
 import items from 'assets/json/recipes.json';
 import clsx from 'clsx';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
@@ -10,7 +11,6 @@ import * as React from 'react';
 import IRecipe from 'types/recipe';
 import capitalize from 'utils/capitalize';
 import onScrollReveal from 'utils/onScrollReveal';
-import ChevronLeftIcon from 'widgets/icons/ChevronLeft';
 
 interface Params {
   id: string;
@@ -276,7 +276,7 @@ const Header = () => {
       <div className="py-4 px-8">
         <Link href="/recipes" passHref>
           <a className="flex items-center gap-1">
-            <ChevronLeftIcon size="xs" />
+            <ChevronLeftIcon className="w-5 h-5" />
             Go back
           </a>
         </Link>
