@@ -9,6 +9,26 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     <React.Fragment>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="description"
+          content="Find or share amazing recipes anytime for free"
+        />
+        <meta
+          name="keywords"
+          content={[
+            'recipe',
+            'how to',
+            'share',
+            'cook',
+            'food',
+            'find',
+            'free',
+            'chef',
+            'tasty',
+            'amazing',
+            'delicious',
+          ].join()}
+        />
       </Head>
 
       <Loader />
