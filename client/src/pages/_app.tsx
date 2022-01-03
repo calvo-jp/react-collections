@@ -1,3 +1,4 @@
+import StoreProvider from 'hooks/store/provider';
 import Loader from 'layouts/Loader';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -31,8 +32,10 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
         />
       </Head>
 
-      <Loader />
-      <Component {...pageProps} />
+      <StoreProvider>
+        <Loader />
+        <Component {...pageProps} />
+      </StoreProvider>
     </React.Fragment>
   );
 };
