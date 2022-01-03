@@ -2,10 +2,7 @@ import SearchIcon from '@heroicons/react/solid/SearchIcon';
 import clsx from 'clsx';
 import * as React from 'react';
 
-type BaseProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->;
+type BaseProps = React.ComponentProps<'input'>;
 
 type SearchbarProps = Omit<BaseProps, 'type' | 'children' | 'onClick'>;
 
