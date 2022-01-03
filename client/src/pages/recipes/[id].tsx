@@ -1,0 +1,317 @@
+import clsx from 'clsx';
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import NotFound from 'pages/404';
+import * as React from 'react';
+import IRecipe from 'types/recipe';
+import capitalize from 'utils/capitalize';
+import onScrollReveal from 'utils/onScrollReveal';
+import ChevronLeftIcon from 'widgets/icons/ChevronLeft';
+
+const items = [
+  {
+    id: 1,
+    name: 'Adobong manok',
+    description:
+      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa nulla nobis inventore eum ratione esse maiores! Sint non itaque doloribus!',
+    ingredients: [
+      '16kg Chicken',
+      '3pk Silver swan',
+      '10pcs garlic',
+      '4pk baby oil',
+    ],
+    instructions: [],
+    tags: [
+      'Adobo',
+      'Manamit',
+      'BrownKaayo',
+      'AriPagd',
+      'COVID19',
+      'HappyNewYear2022',
+    ],
+    image: '/images/8.jpg',
+    rating: 3,
+    author: {
+      id: 1,
+      name: 'JP Calvo',
+      email: 'calvojp92@gmail.com',
+      avatar: '',
+      createdAt: '2021-01-15',
+      totalRecipes: 4,
+      totalFavorites: 0,
+      totalReviews: 0,
+    },
+    createdAt: '2021-01-30',
+  },
+];
+
+interface Params {
+  id: string;
+  [key: string]: any;
+}
+
+export const getStaticPaths: GetStaticPaths<Params> = async () => {
+  const paths = items.map((item) => ({ params: { id: item.id.toString() } }));
+
+  return {
+    paths,
+    fallback: true,
+  };
+};
+
+export const getStaticProps: GetStaticProps<IRecipe, Params> = async ({
+  params,
+}) => {
+  const item = items.find(({ id }) => id.toString() === params!.id);
+
+  if (!item) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: item,
+    revalidate: 60 * 60 * 24,
+  };
+};
+
+// prettier-ignore
+const tabs = [
+  'ingredients', 
+  'instructions', 
+  'reviews'
+];
+
+const Recipe: NextPage<IRecipe> = (data) => {
+  const router = useRouter();
+  const params = router.query;
+
+  const getCurrentTab = React.useMemo(() => {
+    return function () {
+      return [params.tab].flat().at(0)?.trim().toLowerCase() || tabs[0];
+    };
+  }, [params.tab]);
+
+  const [currentTab, setCurrentTab] = React.useState(getCurrentTab());
+
+  const handleChange = (value: string) => {
+    router.push(`/recipes/${params.id}?tab=${value}`);
+  };
+
+  React.useEffect(() => {
+    setCurrentTab(getCurrentTab());
+
+    return () => setCurrentTab(tabs[0]);
+  }, [getCurrentTab]);
+
+  if (router.isFallback) return <Waiting />;
+  if (!tabs.includes(currentTab)) return <NotFound />;
+
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Adobong Manok</title>
+      </Head>
+
+      <div>
+        <Header />
+
+        <Jumbotron src={data.image} />
+
+        <main className="p-8">
+          <div className="max-w-[900px] mx-auto">
+            <section>
+              <div>
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-4">
+                    <article>
+                      <h1 className="text-2xl">{data.name}</h1>
+
+                      <p className="text-sm text-gray-500">
+                        <span>3 mins ago by</span>
+
+                        <Link href="/users/1" passHref>
+                          <a className="ml-1 hover:text-blue-500">
+                            {data.author.name}
+                          </a>
+                        </Link>
+                      </p>
+                    </article>
+                  </div>
+                </div>
+
+                <p className="mt-4">{data.description}</p>
+              </div>
+            </section>
+
+            <section className="mt-4">
+              <Tags items={data.tags} />
+            </section>
+
+            <section className="mt-8">
+              <Navbar value={currentTab} onChange={handleChange} />
+            </section>
+
+            <section className="mt-4">
+              <Main currentView={currentTab} data={data} />
+            </section>
+          </div>
+        </main>
+      </div>
+    </React.Fragment>
+  );
+};
+
+const Waiting = () => {
+  return <div className="p-4">Loading...</div>;
+};
+
+interface MainProps {
+  data: IRecipe;
+
+  /** which tab is active */
+  currentView: string;
+}
+
+const Main = ({ currentView, data }: MainProps) => {
+  switch (currentView) {
+    case 'reviews':
+      return <React.Fragment />;
+    case 'instructions':
+      return <React.Fragment />;
+    default:
+      return <Ingredients items={data.ingredients} />;
+  }
+};
+
+interface IngredientsProps {
+  items: string[];
+}
+
+const Ingredients = ({ items }: IngredientsProps) => {
+  return (
+    <ul className="list-disc pl-4">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+
+interface NavbarProps {
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+const Navbar = ({ value, onChange }: NavbarProps) => {
+  const handleClick = (newValue: string) => {
+    return function () {
+      if (onChange) onChange(newValue);
+    };
+  };
+
+  return (
+    <nav>
+      <ul className="flex flex-wrap gap-x-4 gap-y-2">
+        {tabs.map((tab) => (
+          <li key={tab}>
+            <NavbarButton onClick={handleClick(tab)} active={value === tab}>
+              {capitalize(tab)}
+            </NavbarButton>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+};
+
+interface NavbarButtonProps
+  extends React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
+  active?: boolean;
+}
+
+const NavbarButton: React.FC<NavbarButtonProps> = ({
+  active,
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <button className={clsx(active && 'font-bold', className)} {...props}>
+      {children}
+    </button>
+  );
+};
+
+interface TagsProps {
+  items: string[];
+}
+
+const Tags: React.FC<TagsProps> = ({ items }) => {
+  return (
+    <ul className="flex flex-wrap gap-1">
+      {items.map((item) => (
+        <Tag key={item} value={item} />
+      ))}
+    </ul>
+  );
+};
+
+interface TagProps {
+  value: string;
+}
+
+const Tag = (props: TagProps) => {
+  return <li className="text-sm p-2 bg-sky-200">{props.value}</li>;
+};
+
+interface JumbotronProps {
+  src: string;
+}
+
+const Jumbotron = (props: JumbotronProps) => {
+  return (
+    <div className="relative h-[300px]">
+      <Image
+        src={props.src}
+        alt=""
+        layout="fill"
+        objectFit="cover"
+        objectPosition="center"
+      />
+    </div>
+  );
+};
+
+const Header = () => {
+  const ref = React.useRef<HTMLElement>(null);
+
+  React.useEffect(() => {
+    if (ref.current) onScrollReveal(ref.current);
+  }, []);
+
+  return (
+    <header
+      ref={ref}
+      className="bg-white shadow-md z-10 sticky top-0 transition-all duration-300"
+    >
+      <div className="py-4 px-8">
+        <Link href="/recipes" passHref>
+          <a className="flex items-center gap-1">
+            <ChevronLeftIcon size="xs" />
+            Go back
+          </a>
+        </Link>
+      </div>
+    </header>
+  );
+};
+
+export default Recipe;
