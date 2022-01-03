@@ -2,17 +2,15 @@ import CloseIcon from '@heroicons/react/solid/XIcon';
 import clsx from 'clsx';
 import * as React from 'react';
 
-type BaseProps = React.ComponentProps<'div'>;
-
 type Variant = 'info' | 'success' | 'warning' | 'error';
 
-interface AlertProps extends BaseProps {
+interface AlertProps {
   open?: boolean;
   variant?: Variant;
   onClose?: () => void;
 }
 
-const Alert: React.FC<AlertProps> = ({
+const Alert: React.FC<AlertProps & React.ComponentProps<'div'>> = ({
   open,
   variant,
   onClose,
