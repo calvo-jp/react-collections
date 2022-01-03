@@ -95,11 +95,13 @@ const Recipe: NextPage<IRecipe> = (data) => {
                     <article>
                       <h1 className="text-2xl">{data.name}</h1>
 
-                      <p className="text-sm text-gray-500">
-                        <span>3 mins ago by</span>
+                      <p className="text-sm text-gray-500 flex items-center gap-1">
+                        <div>{data.createdAt}</div>
+
+                        <div>by</div>
 
                         <Link href="/users/1" passHref>
-                          <a className="ml-1 hover:text-blue-500">
+                          <a className="hover:text-blue-500 hover:font-semibold">
                             {data.author.name}
                           </a>
                         </Link>
@@ -117,11 +119,11 @@ const Recipe: NextPage<IRecipe> = (data) => {
             </section>
 
             <section className="mt-8">
-              <Navbar value={currentTab} onChange={handleChange} />
+              <Tabs value={currentTab} onChange={handleChange} />
             </section>
 
             <section className="mt-4">
-              <Main currentView={currentTab} data={data} />
+              <TabContent currentView={currentTab} data={data} />
             </section>
           </div>
         </main>
@@ -138,14 +140,13 @@ const Loader = () => {
   );
 };
 
-interface MainProps {
+interface TabContentProps {
   data: IRecipe;
-
   /** which tab is active */
   currentView: string;
 }
 
-const Main = ({ currentView, data }: MainProps) => {
+const TabContent = ({ currentView, data }: TabContentProps) => {
   switch (currentView) {
     case 'reviews':
       return <React.Fragment />;
@@ -170,12 +171,12 @@ const Ingredients = ({ items }: IngredientsProps) => {
   );
 };
 
-interface NavbarProps {
+interface TabsProps {
   value?: string;
   onChange?: (value: string) => void;
 }
 
-const Navbar = ({ value, onChange }: NavbarProps) => {
+const Tabs = ({ value, onChange }: TabsProps) => {
   const handleClick = (newValue: string) => {
     return function () {
       if (onChange) onChange(newValue);
@@ -187,9 +188,9 @@ const Navbar = ({ value, onChange }: NavbarProps) => {
       <ul className="flex flex-wrap gap-x-4 gap-y-2">
         {tabs.map((tab) => (
           <li key={tab}>
-            <NavbarButton onClick={handleClick(tab)} active={value === tab}>
+            <Tab onClick={handleClick(tab)} active={value === tab}>
               {capitalize(tab)}
-            </NavbarButton>
+            </Tab>
           </li>
         ))}
       </ul>
@@ -197,7 +198,7 @@ const Navbar = ({ value, onChange }: NavbarProps) => {
   );
 };
 
-interface NavbarButtonProps
+interface TabProps
   extends React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
@@ -205,12 +206,7 @@ interface NavbarButtonProps
   active?: boolean;
 }
 
-const NavbarButton: React.FC<NavbarButtonProps> = ({
-  active,
-  className,
-  children,
-  ...props
-}) => {
+const Tab: React.FC<TabProps> = ({ active, className, children, ...props }) => {
   return (
     <button className={clsx(active && 'font-bold', className)} {...props}>
       {children}
