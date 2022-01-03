@@ -1,59 +1,38 @@
-import Brand from 'layouts/Brand';
+import items from 'assets/json/recipes.json';
 import Footer from 'layouts/Footer';
+import Header from 'layouts/Header';
 import SocialLinks from 'layouts/SocialLinks';
+import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import * as React from 'react';
-import onScrollReveal from 'utils/onScrollReveal';
+import IRecipe from 'types/recipe';
 import Rating from 'widgets/Rating';
-import Searchbar from 'widgets/Searchbar';
 
-const Landing = () => {
+interface Props {
+  items: IRecipe[];
+}
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  return {
+    props: {
+      items,
+    },
+  };
+};
+
+const Landing: NextPage<Props> = (props) => {
   return (
     <React.Fragment>
       <Head>
         <title>Recipes - Find or search amazing recipes</title>
       </Head>
 
-      <div className="min-h-screen">
+      <div className="min-h-screen flex flex-col">
         <Header />
+
         <main className="flex-grow">
           <Banner />
-
-          <section className="max-w-[1200px] mx-auto mt-10 p-8">
-            <div className="flex gap-4 justify-center">
-              <Link href="/recipes/1" passHref>
-                <a>
-                  <Card
-                    title="Adobong manok"
-                    description="Manamit kg mananam nga manok ni brad sito"
-                    image="/images/2.jpg"
-                  />
-                </a>
-              </Link>
-
-              <Link href="/recipes/1" passHref>
-                <a>
-                  <Card
-                    title="Homeburger"
-                    description="Delicious hamburger with just pandesal, petsay and meatloaf"
-                    image="/images/1.jpg"
-                  />
-                </a>
-              </Link>
-
-              <Link href="/recipes/1" passHref>
-                <a>
-                  <Card
-                    title="Fried egg"
-                    description="Korina's stupid fried egg recipe with her pathetic husband shit"
-                    image="/images/3.jpg"
-                  />
-                </a>
-              </Link>
-            </div>
-          </section>
         </main>
 
         <Footer />
@@ -137,49 +116,6 @@ const Card: React.FC<CardProps> = ({ title, description, image }) => {
         </div>
       </div>
     </div>
-  );
-};
-
-const Header = () => {
-  const ref = React.useRef<HTMLElement>(null);
-
-  React.useEffect(() => {
-    if (ref.current) onScrollReveal(ref.current);
-  }, []);
-
-  return (
-    <header
-      className="shadow-md z-30 sticky bg-white transition-all duration-300"
-      ref={ref}
-    >
-      <div className="flex justify-between items-center gap-4 py-2 px-8">
-        <Brand />
-
-        <div className="flex items-center gap-4">
-          <Searchbar className="w-[300px]" />
-          <HeaderNav />
-        </div>
-      </div>
-    </header>
-  );
-};
-
-const HeaderNav = () => {
-  return (
-    <nav>
-      <ul className="flex gap-4">
-        <li>
-          <Link href="/login" passHref>
-            <a>Login</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/create-account" passHref>
-            <a className="uppercase">Sign up</a>
-          </Link>
-        </li>
-      </ul>
-    </nav>
   );
 };
 
