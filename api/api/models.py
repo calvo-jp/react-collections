@@ -2,7 +2,7 @@
 from datetime import datetime, timezone
 from typing import Optional
 
-from sqlmodel import Column, DateTime, Field, SQLModel
+from sqlmodel import Column, DateTime, Field, SQLModel, String
 
 from .config import engine
 
@@ -19,6 +19,8 @@ def utcnow_():
 
 
 class SQLModelTimestamped(SQLModel):
+    tablename: str
+
     created_at: datetime = Field(
         default_factory=utcnow_,
         sa_column=Column(ZonedDateTime, nullable=False)
@@ -29,5 +31,16 @@ class SQLModelTimestamped(SQLModel):
     )
 
 
+class Purok(SQLModelTimestamped, table=True):
+    tablename = "puroks"
+
+    id: int = Field(default=None, primary_key=True)
+    name: str = Field(
+        ...,
+        sa_column=Column(String, unique=True, nullable=False)
+    )
+
+
 def create_tables():
+    SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
