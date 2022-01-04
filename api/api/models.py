@@ -1,10 +1,9 @@
 
 from datetime import date, datetime, timezone
 from enum import Enum
-from typing import Generic, List, Optional, TypedDict, TypeVar
+from typing import List, Optional, TypedDict
 
 from pydantic import EmailStr, validator
-from pydantic.generics import GenericModel
 from sqlmodel import Column, Date, DateTime
 from sqlmodel import Enum as EnumField
 from sqlmodel import Field, Relationship, SQLModel, String
@@ -364,25 +363,6 @@ class ReadTransaction(SQLModel):
     purok: Purok
     created_at: datetime
     updated_at: Optional[datetime]
-
-
-PaginatedT = TypeVar(
-    'PaginatedT',
-    ReadPurok,
-    ReadHousehold,
-    ReadUser,
-    ReadEmployee,
-    ReadTransaction
-)
-
-
-class Paginated(GenericModel, Generic[PaginatedT]):
-    rows: list[PaginatedT]
-    total_rows: int
-    page: int
-    page_size: int
-    has_next: bool
-    search: Optional[str]
 
 
 def create_tables():
