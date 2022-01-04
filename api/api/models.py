@@ -11,7 +11,8 @@ from sqlmodel import Enum as EnumField
 from sqlmodel import Field, Relationship, SQLModel, String
 
 from .config import engine
-from .utils import date_difference, validators
+from .utils import validators
+from .utils.date_difference import date_difference
 
 
 class ZonedDateTime(DateTime):
