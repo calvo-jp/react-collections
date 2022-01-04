@@ -14,11 +14,11 @@ const GET_HELLO = gql`
 const Landing: React.FC = () => {
   const { loading, error, data } = useQuery<Response>(GET_HELLO);
 
-  if (loading) console.log(loading);
-  if (error) console.log(error.message);
-  if (data) console.log(data.hello);
+  if (loading) return <div className="p-2">Loading...</div>;
+  if (error) return <div className="p-2">{error.message}</div>;
+  if (!data) return <div className="p-2">Something went wrong</div>;
 
-  return <div>Hello world</div>;
+  return <div className="p-2">{data.hello}</div>;
 };
 
 export default Landing;
