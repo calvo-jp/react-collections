@@ -11,6 +11,14 @@ def fetchall():
         return [schema.Purok(**row.dict()) for row in rows]
 
 
+def fetchone(id_: int):
+    with Session(config.engine) as session:
+        stmt = select(models.Purok).where(models.Purok.id == id_)
+        purok = session.exec(stmt).one_or_none()
+
+        return None if purok is None else schema.Purok(**purok.dict())
+
+
 def create(name: str):
     with Session(config.engine) as session:
         purok = models.Purok(name=name)

@@ -1,3 +1,5 @@
+from typing import Union
+
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 
@@ -8,6 +10,10 @@ from ..services import purok
 @strawberry.type
 class Query:
     puroks: list[Purok] = strawberry.field(resolver=purok.fetchall)
+
+    @strawberry.field
+    def purok(self, id_: int) -> Union[Purok, None]:
+        return purok.fetchone(id_)
 
 
 @strawberry.type
