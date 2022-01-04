@@ -1,9 +1,8 @@
-import strawberry
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from strawberry.fastapi import GraphQLRouter
 
 from .models import create_tables
+from .routers import graphql
 
 app = FastAPI()
 
@@ -16,17 +15,7 @@ app.add_middleware(
 )
 
 
-@strawberry.type
-class Query:
-    @strawberry.field
-    def hello(self) -> str:
-        return "Hello World"
-
-
-schema = strawberry.Schema(Query)
-graphql_app = GraphQLRouter(schema)
-
-app.include_router(graphql_app, prefix="/graphql")
+app.include_router(graphql.router)
 
 
 @app.on_event(event_type='startup')
