@@ -1,9 +1,9 @@
 from calendar import monthrange
 from datetime import date, datetime, timezone
-from typing import Optional, TypedDict
+from typing import Optional, TypedDict, Union
 
 
-def _ensure_datetime(subject: datetime | date | None = None):
+def __ensure_datetime(subject: Union[datetime, date, None] = None):
     if isinstance(subject, datetime):
         return subject.astimezone(timezone.utc)
     if isinstance(subject, date):
@@ -22,9 +22,12 @@ class DateDifference(TypedDict):
     future: bool
 
 
-def date_difference(date_left: datetime | date, date_right: Optional[datetime | date] = None):
-    date_left = _ensure_datetime(date_left)
-    date_right = _ensure_datetime(date_right)
+def date_difference(
+    date_left: Union[datetime, date],
+    date_right: Optional[Union[datetime, date]] = None
+):
+    date_left = __ensure_datetime(date_left)
+    date_right = __ensure_datetime(date_right)
 
     date1 = date_left if date_left >= date_right else date_right
     date2 = date_right if date_left >= date_right else date_left
