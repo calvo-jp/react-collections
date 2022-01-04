@@ -1,19 +1,22 @@
-import { gql, useQuery } from '@apollo/client';
-import * as React from 'react';
+import { gql, useQuery } from "@apollo/client";
+import * as React from "react";
 
-const EXCHANGE_RATES = gql`
-  query GetExchangeRates {
-    rates(currency: "USD") {
-      currency
-      rate
-    }
+interface Response {
+  hello: string;
+}
+
+const GET_HELLO = gql`
+  query getHello {
+    hello
   }
 `;
 
 const Landing: React.FC = () => {
-  const { loading, error, data } = useQuery(EXCHANGE_RATES);
+  const { loading, error, data } = useQuery<Response>(GET_HELLO);
 
-  console.log(data);
+  if (loading) console.log(loading);
+  if (error) console.log(error.message);
+  if (data) console.log(data.hello);
 
   return <div>Hello world</div>;
 };
