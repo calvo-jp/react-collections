@@ -1,17 +1,20 @@
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 
+from ..schema import Purok
+from ..services import purok
+
 
 @strawberry.type
 class Query:
-    hello: str
+    puroks: list[Purok] = strawberry.field(resolver=purok.fetchall)
 
 
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def example(self, ) -> str:
-        return ""
+    def create_purok(self, name: str) -> Purok:
+        return purok.create(name)
 
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)

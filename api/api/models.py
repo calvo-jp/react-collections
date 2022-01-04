@@ -40,5 +40,4 @@ class Purok(SQLModelTimestamped, table=True):
 
 
 def create_tables():
-    SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
