@@ -1,24 +1,28 @@
 import { gql, useQuery } from "@apollo/client";
 import * as React from "react";
+import IPurok from "../types/purok";
 
-interface Response {
-  hello: string;
-}
-
-const GET_HELLO = gql`
-  query getHello {
-    hello
+const GET_PUROKS = gql`
+  query getPuroks {
+    puroks {
+      id
+      name
+      createdAt
+      updatedAt
+    }
   }
 `;
 
 const Landing: React.FC = () => {
-  const { loading, error, data } = useQuery<Response>(GET_HELLO);
+  const { loading, error, data } = useQuery<IPurok>(GET_PUROKS);
 
   if (loading) return <div className="p-2">Loading...</div>;
   if (error) return <div className="p-2">{error.message}</div>;
   if (!data) return <div className="p-2">Something went wrong</div>;
 
-  return <div className="p-2">{data.hello}</div>;
+  console.log(data);
+
+  return <div className="p-2"></div>;
 };
 
 export default Landing;
