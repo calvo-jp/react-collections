@@ -7,14 +7,10 @@ import '@fontsource/ibm-plex-sans/500.css';
 import '@fontsource/ibm-plex-sans/600.css';
 import '@fontsource/ibm-plex-sans/700.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import config from './config';
 import Landing from './pages/Landing';
 
-const apolloClient = new ApolloClient({
-  uri: 'https://48p1r2roz4.sse.codesandbox.io',
-  cache: new InMemoryCache(),
-});
-
-const App = () => {
+export default function App() {
   return (
     <ApolloProvider client={apolloClient}>
       <Router>
@@ -24,6 +20,9 @@ const App = () => {
       </Router>
     </ApolloProvider>
   );
-};
+}
 
-export default App;
+const apolloClient = new ApolloClient({
+  uri: config.ENDPOINT,
+  cache: new InMemoryCache(),
+});
