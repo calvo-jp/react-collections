@@ -8,7 +8,6 @@ interface ButtonProps {
   fullWidth?: boolean;
 }
 
-// TODO: add secondary
 const Button: React.FC<ButtonProps & React.ComponentProps<'button'>> = ({
   variant,
   fullWidth,
