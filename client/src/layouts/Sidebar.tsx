@@ -21,18 +21,23 @@ const Sidebar: React.FC<React.ComponentProps<'section'>> = ({
   return (
     <section className={clsx('p-8 flex flex-col gap-8', className)} {...props}>
       <Avatar />
-
-      <Button variant="primary" fullWidth>
-        <PencilAltIcon className="w-5 h-5" />
-        Create New
-      </Button>
-
+      <CreateButton />
       <Navbar />
-
-      <div>
-        <HelpLinks className="max-w-[200px]" />
-      </div>
+      <Footer />
     </section>
+  );
+};
+
+const CreateButton = () => {
+  return (
+    <Link href="/recipes/new" passHref>
+      <a>
+        <Button variant="primary" fullWidth>
+          <PencilAltIcon className="w-5 h-5" />
+          Create New
+        </Button>
+      </a>
+    </Link>
   );
 };
 
@@ -138,6 +143,10 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
       {anchor}
     </Link>
   );
+};
+
+const Footer = () => {
+  return <HelpLinks className="max-w-[200px]" />;
 };
 
 export default Sidebar;
