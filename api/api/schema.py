@@ -10,3 +10,11 @@ class Purok:
     name: str
     created_at: datetime
     updated_at: Optional[datetime]
+
+
+@strawberry.type
+class Household:
+    id: int
+    code: str
+    purok: Purok
+    total_families: int

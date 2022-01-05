@@ -3,13 +3,14 @@ from typing import Union
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 
-from ..schema import Purok
-from ..services import purok
+from ..schema import Household, Purok
+from ..services import household, purok
 
 
 @strawberry.type
 class Query:
     puroks: list[Purok] = strawberry.field(resolver=purok.fetchall)
+    households: list[Household] = strawberry.field(resolver=household.fetchall)
 
     @strawberry.field
     def purok(self, id_: int) -> Union[Purok, None]:
