@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
 
 /**
+ * @description abstraction of `router.query`
  * @example
  * ```javascript
  * useQuery("page")
  * useQuery("page", "pageSize")
+ * ...
  * ```
  */
 const useQuery = <T extends string>(...keys: T[]) => {
