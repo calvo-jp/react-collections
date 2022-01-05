@@ -16,6 +16,10 @@ class Query:
     def purok(self, id_: int) -> Union[Purok, None]:
         return purok.fetchone(id_)
 
+    @strawberry.field
+    def household(self, id_: int) -> Union[Household, None]:
+        return household.fetchone(id_)
+
 
 @strawberry.type
 class Mutation:
