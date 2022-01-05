@@ -29,8 +29,13 @@ const Sidebar: React.FC<React.ComponentProps<'section'>> = ({
 };
 
 const CreateButton = () => {
+  const router = useRouter();
+
   return (
-    <Link href="/recipes/new" passHref>
+    <Link
+      href={'/recipes/new?origin=' + encodeURIComponent(router.asPath)}
+      passHref
+    >
       <a>
         <Button variant="primary" fullWidth>
           <PencilAltIcon className="w-5 h-5" />
