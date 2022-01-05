@@ -1,8 +1,8 @@
 
 from datetime import datetime, timezone
-from typing import Optional
+from typing import List, Optional
 
-from sqlmodel import Column, DateTime, Field, SQLModel, String
+from sqlmodel import Column, DateTime, Field, Relationship, SQLModel, String
 
 from .config import engine
 
@@ -34,9 +34,21 @@ class Purok(SQLModelTimestamped, table=True):
 
     id: int = Field(default=None, primary_key=True)
     name: str = Field(
-        ...,
-        sa_column=Column(String, unique=True, nullable=False)
+        ..., sa_column=Column(String, unique=True, nullable=False)
     )
+    households: List['Household'] = Relationship(back_populates="purok")
+
+
+class Household(SQLModelTimestamped, table=True):
+    __tablename__: str = "households"
+
+    id: int = Field(default=None, primary_key=True)
+    code: str = Field(
+        ..., sa_column=Column(String, unique=True, nullable=False)
+    )
+    purok: Purok = Relationship(back_populates="households")
+    purok_id: int = Field(..., foreign_key="puroks.id")
+    total_families: int = Field(default=1)
 
 
 def create_tables():
