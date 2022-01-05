@@ -7,7 +7,9 @@ module.exports = {
       sans: ['M PLUS Code Latin', 'sans-serif'],
     },
     fontWeight: {
-      light: 300,
+      extralight: 100,
+      light: 200,
+      semilight: 300,
       normal: 400,
       semibold: 500,
       bold: 600,
