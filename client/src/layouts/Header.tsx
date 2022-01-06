@@ -20,7 +20,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <header ref={ref} className="bg-white shadow-md sticky top-0 z-50">
-      <div className="flex justify-between items-center gap-4 p-2 pl-3">
+      <div className="flex justify-between items-center gap-4 p-2 px-3">
         <div className="flex items-center gap-2">
           <button>
             <MenuIcon className="w-4 h-4" />
