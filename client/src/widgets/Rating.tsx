@@ -18,7 +18,7 @@ const Rating: React.FC<RatingProps> = ({ value, onChange }) => {
     };
   };
 
-  const numbers = [1, 2, 3, 4, 5];
+  const numbers = new Array(5).fill(1).map((one, index) => index + one);
 
   return (
     <div className="flex">
