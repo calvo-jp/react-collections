@@ -35,22 +35,37 @@ const TextField: React.FC<TextFieldProps> = ({
   fullWidth,
   multiline,
   className,
+  onChange,
   ...props
 }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  // whether input has a value
+  const [empty, setEmpty] = React.useState(!props.value);
+
+  // focus textfield whenever label is click
   const handleClick = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) => {
     e.preventDefault();
-
-    if (inputRef.current) inputRef.current.focus();
+    inputRef.current?.focus();
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmpty(e.target.value.length === 0);
+    onChange?.(e);
+  };
+
+  React.useEffect(() => {
+    setEmpty(!props.value);
+    return () => setEmpty(true);
+  }, [props.value]);
 
   return (
     <div
       className={clsx(
         'relative',
         fullWidth && 'block w-full',
-        !fullWidth && 'inline-block'
+        !fullWidth && 'inline-block',
+        className
       )}
     >
       <label
@@ -58,8 +73,8 @@ const TextField: React.FC<TextFieldProps> = ({
         onClick={handleClick}
         className={clsx(
           'absolute transition-all duration-100 cursor-text',
-          !!props.value && 'text-gray-500 -top-2 left-2 bg-white px-1 text-sm',
-          !props.value && 'text-gray-600 top-2 left-3'
+          !empty && 'text-gray-500 -top-2 left-2 bg-white px-1 text-sm',
+          empty && 'text-gray-600 top-2 left-3'
         )}
       >
         {label}
@@ -72,9 +87,9 @@ const TextField: React.FC<TextFieldProps> = ({
           // only add hover styles if no errors
           !error && 'hover:border-gray-400',
           !error && 'focus:ring-4 focus:ring-blue-200 focus:border-blue-400',
-          error && 'focus:ring-4 focus:ring-red-200 border-red-400',
-          className
+          error && 'focus:ring-4 focus:ring-red-200 border-red-400'
         )}
+        onChange={handleChange}
         {...props}
       />
 
