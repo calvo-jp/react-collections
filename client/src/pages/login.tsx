@@ -61,7 +61,7 @@ const Login = () => {
                   value={credential.password}
                   fullWidth
                   error
-                  errorText="Password is required"
+                  helperText="Password is required"
                 />
                 <p className="text-sm mt-1.5">
                   <span>Forgot password?</span>
