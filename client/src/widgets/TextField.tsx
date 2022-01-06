@@ -21,9 +21,9 @@ interface TextFieldProps extends BaseProps {
   type?: TextFieldType;
   label?: string;
   error?: boolean;
-  errorText?: string;
+  /** Message to show when error is true */
+  helperText?: string;
   fullWidth?: boolean;
-
   /** WARNING: Feature not implemented yet */
   multiline?: boolean;
 }
@@ -31,7 +31,7 @@ interface TextFieldProps extends BaseProps {
 const TextField: React.FC<TextFieldProps> = ({
   label,
   error,
-  errorText,
+  helperText,
   fullWidth,
   multiline,
   className,
@@ -93,24 +93,9 @@ const TextField: React.FC<TextFieldProps> = ({
         {...props}
       />
 
-      {errorText && <ErrorText open={error}>{errorText}</ErrorText>}
-    </div>
-  );
-};
-
-interface ErrorTextProps {
-  open?: boolean;
-}
-
-const ErrorText: React.FC<ErrorTextProps> = ({ open, children }) => {
-  return (
-    <div
-      className={clsx(
-        open && 'flex gap-1 items-center mt-1.5 ml-1.5 text-sm text-red-500',
-        !open && 'hidden'
+      {error && helperText && (
+        <p className="mt-1 ml-1 text-sm text-red-500">{helperText}</p>
       )}
-    >
-      {children}
     </div>
   );
 };
