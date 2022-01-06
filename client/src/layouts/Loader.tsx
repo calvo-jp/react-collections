@@ -30,7 +30,7 @@ const Loader = () => {
   return (
     <div
       className={clsx(
-        'fixed h-[3px] top-0 left-0 z-50 bg-gradient-to-r from-cyan-500 to-blue-300 transition-all duration-300',
+        'fixed h-[3px] top-0 left-0 z-[999] bg-gradient-to-r from-cyan-500 to-blue-300 transition-all duration-300',
         status === Status.waiting && 'hidden',
         status === Status.started && 'w-1/2',
         status === Status.complte && 'w-full'
