@@ -41,9 +41,9 @@ const Searchbar: React.FC<SearchbarProps> = ({
   return (
     <div
       className={clsx(
-        'flex items-center gap-1 p-2 border border-gray-300 outline-none transition-all duration-300 rounded-md',
-        !focused && 'hover:border-gray-400',
-        focused && 'border-blue-400 ring-4 ring-blue-200',
+        'flex items-center gap-1 p-2 border outline-none transition-all duration-300 rounded-lg group cursor-text',
+        !focused && 'border-gray-200 hover:border-gray-400',
+        focused && 'border-blue-400 ring-2 ring-blue-200',
         className
       )}
       onClick={handleClick}
@@ -54,15 +54,19 @@ const Searchbar: React.FC<SearchbarProps> = ({
         onBlur={handleMouseEvent}
         onFocus={handleMouseEvent}
         placeholder="Search"
-        className="outline-none w-full pr-2"
+        className="outline-none w-full"
         {...props}
       />
 
-      <div className="h-4 my-auto border-l border-gray-200" />
-
-      <button className="px-2" tabIndex={-1}>
-        <SearchIcon className="w-4 h-4" />
-      </button>
+      <div className="px-1" tabIndex={-1}>
+        <SearchIcon
+          className={clsx(
+            'w-4 h-4 transition-all duration-300',
+            !focused && 'text-gray-400 group-hover:text-gray-500',
+            focused && 'text-gray-500'
+          )}
+        />
+      </div>
     </div>
   );
 };
