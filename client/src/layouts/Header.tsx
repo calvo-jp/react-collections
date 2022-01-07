@@ -1,4 +1,3 @@
-import BellIcon from '@heroicons/react/solid/BellIcon';
 import MenuIcon from '@heroicons/react/solid/MenuIcon';
 import Link from 'next/link';
 import * as React from 'react';
