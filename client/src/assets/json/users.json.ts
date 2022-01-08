@@ -12,7 +12,7 @@ const users: IUser[] = [
     totalReviews: 32,
   },
   {
-    id: 1,
+    id: 2,
     name: 'Mary Williams',
     email: 'marywilliams@yahoo.com',
     avatar: '',
