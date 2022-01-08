@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ transparent, children }) => {
     <React.Fragment>
       <Header />
 
-      <div className={clsx('flex', !transparent && 'bg-gray-100')}>
+      <div className={clsx('min-h-screen flex', !transparent && 'bg-gray-100')}>
         <Sidebar />
 
         <main className="p-8 grow">{children}</main>
