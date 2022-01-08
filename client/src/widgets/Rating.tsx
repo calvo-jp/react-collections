@@ -4,17 +4,17 @@ import * as React from 'react';
 
 interface RatingProps {
   value?: number;
+  /** onChange won't work if this is set to true */
+  readonly?: boolean;
   onChange?: (value: number) => void;
 }
 
-const Rating: React.FC<RatingProps> = ({ value, onChange }) => {
+const Rating: React.FC<RatingProps> = ({ value, readonly, onChange }) => {
   const currentValue = value || 0;
 
   const handleChange = (newValue: number) => {
-    return function (e: React.MouseEvent<SVGSVGElement, MouseEvent>) {
-      e.preventDefault();
-
-      if (onChange) onChange(newValue);
+    return function () {
+      if (!readonly && onChange) onChange(newValue);
     };
   };
 
@@ -27,9 +27,9 @@ const Rating: React.FC<RatingProps> = ({ value, onChange }) => {
           key={number}
           onClick={handleChange(number)}
           className={clsx(
-            'w-5 h-5 cursor-pointer transition-colors duration-300',
-            number > currentValue && 'fill-gray-300 hover:fill-amber-400',
-            number <= currentValue && 'fill-amber-500 hover:fill-amber-400'
+            'w-5 h-5 transition-colors duration-300',
+            number > currentValue ? 'fill-gray-300' : 'fill-amber-500',
+            !readonly && 'cursor-pointer hover:fill-amber-400'
           )}
         />
       ))}
