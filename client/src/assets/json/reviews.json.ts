@@ -17,7 +17,7 @@ const reviews: IReview[] = [
     body: 'Good.',
     author: users[1],
     recipe: recipes[2],
-    createdAt: '2022-01-01 23:05',
+    createdAt: '2021-12-24 22:01',
   },
 ];
 
