@@ -1,8 +1,6 @@
 import items from 'assets/json/recipes.json';
-import Header from 'layouts/Header';
-import Sidebar from 'layouts/Sidebar';
+import Layout from 'layouts/Layout';
 import { GetStaticProps, NextPage } from 'next';
-import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
@@ -24,29 +22,13 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 const Recipes: NextPage<Props> = ({ items }) => {
   return (
-    <React.Fragment>
-      <Head>
-        <title>Recipes</title>
-      </Head>
-
-      <div className="min-h-screen bg-gray-100">
-        <Header authorized />
-
-        <main className="flex-grow">
-          <div className="flex">
-            <Sidebar />
-
-            <section className="p-8 flex-grow">
-              <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 grid-flow-row-dense">
-                {items.map((item) => (
-                  <Recipe key={item.id} data={item} />
-                ))}
-              </div>
-            </section>
-          </div>
-        </main>
+    <Layout>
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 grid-flow-row-dense">
+        {items.map((item) => (
+          <Recipe key={item.id} data={item} />
+        ))}
       </div>
-    </React.Fragment>
+    </Layout>
   );
 };
 
@@ -68,7 +50,7 @@ const Recipe = ({ data }: RecipeProps) => {
     <Link href={'/recipes/'.concat(id.toString())} passHref>
       <a
         key={name}
-        className="block bg-white shadow-md group hover:ring-4 hover:ring-blue-200"
+        className="block bg-white shadow-md hover:ring-4 hover:ring-blue-200 group"
       >
         <figure className="relative overflow-hidden h-[250px]">
           <div className="absolute w-full h-full z-20 top-0 left-0 bg-black bg-opacity-50 hidden group-hover:flex items-center justify-center" />
@@ -83,7 +65,7 @@ const Recipe = ({ data }: RecipeProps) => {
         </figure>
 
         <article className="p-4">
-          <h4>{name}</h4>
+          <h4 className="text-lg">{name}</h4>
 
           <p className="text-sm text-gray-700 truncate">{description}</p>
 
