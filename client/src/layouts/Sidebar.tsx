@@ -67,40 +67,42 @@ const Avatar = () => {
 };
 
 const Navbar = () => {
+  const iconCls = 'block w-[18px] h-[18px]';
+
   return (
     <nav>
       <ul>
         <li>
           <NavbarLink
             href="/dashboard"
-            icon={<ChartPieIcon className="w-5 h-5" />}
+            icon={<ChartPieIcon className={iconCls} />}
             label="Dashboard"
           />
         </li>
         <li>
           <NavbarLink
             href="/recipes"
-            icon={<FireIcon className="w-5 h-5" />}
+            icon={<FireIcon className={iconCls} />}
             label="Recipes"
           />
         </li>
         <li>
           <NavbarLink
             href="/favorites"
-            icon={<HeartIcon className="w-5 h-5" />}
+            icon={<HeartIcon className={iconCls} />}
             label="Favorites"
           />
         </li>
         <li>
           <NavbarLink
             href="/settings"
-            icon={<CogIcon className="w-5 h-5" />}
+            icon={<CogIcon className={iconCls} />}
             label="Settings"
           />
         </li>
         <li>
           <NavbarLink
-            icon={<LightningBoltIcon className="w-5 h-5" />}
+            icon={<LightningBoltIcon className={iconCls} />}
             label="Logout"
           />
         </li>
@@ -128,8 +130,8 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
   const anchor = (
     <a
       className={clsx(
-        'cursor-pointer flex items-center gap-2 text-lg',
-        !active && 'hover:text-orange-500',
+        'cursor-pointer flex items-center gap-2 px-2',
+        !active && 'text-slate-600 hover:text-slate-700',
         active && 'text-blue-500',
         className
       )}
