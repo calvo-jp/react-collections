@@ -1,5 +1,12 @@
+import BookOpenIcon from '@heroicons/react/outline/BookOpenIcon';
+import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
+import CogIcon from '@heroicons/react/outline/CogIcon';
+import DotsHorizontalIcon from '@heroicons/react/outline/DotsHorizontalIcon';
+import HeartIcon from '@heroicons/react/outline/HeartIcon';
+import PencilAltIcon from '@heroicons/react/outline/PencilAltIcon';
 import avatar from 'assets/images/avatar.jpg';
 import recipes from 'assets/json/recipes.json';
+import reviews from 'assets/json/reviews.json';
 import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import HeaderTwo from 'layouts/HeaderTwo';
@@ -13,7 +20,9 @@ import * as React from 'react';
 import IRecipe from 'types/recipe';
 import IReview from 'types/review';
 import capitalize from 'utils/capitalize';
+import Button from 'widgets/Button';
 import Rating from 'widgets/Rating';
+import TextField from 'widgets/TextField';
 
 interface Params {
   id: string;
@@ -46,11 +55,20 @@ export const getStaticProps: GetStaticProps<IRecipe, Params> = async ({
   };
 };
 
+/**
+ *
+ * - ingredients
+ * - instructions
+ * - reviews
+ * - settings
+ *
+ */
 // prettier-ignore
 const tabs = [
   'ingredients', 
   'instructions', 
-  'reviews'
+  'reviews',
+  'settings'
 ];
 
 const Recipe: NextPage<IRecipe> = (data) => {
@@ -103,13 +121,15 @@ const Recipe: NextPage<IRecipe> = (data) => {
             <section>
               <div>
                 <div className="flex justify-between">
-                  <div className="flex items-center gap-4">
+                  <div className="flex justify-between w-full items-center">
                     <div>
                       <h1 className="text-2xl">{data.name}</h1>
 
                       <div className="text-sm text-gray-500 flex items-center gap-1">
                         <div>
-                          {formatDistanceToNow(new Date(data.createdAt))}
+                          {formatDistanceToNow(new Date(data.createdAt), {
+                            addSuffix: true,
+                          })}
                         </div>
                         <div>by</div>
                         <Link href="/users/1" passHref>
@@ -161,7 +181,7 @@ interface TabContentProps {
 const TabContent = ({ currentView, data }: TabContentProps) => {
   switch (currentView) {
     case 'reviews':
-      return <Reviews />;
+      return <Reviews items={reviews} />;
     case 'instructions':
       return <Instructions />;
     default:
@@ -169,21 +189,51 @@ const TabContent = ({ currentView, data }: TabContentProps) => {
   }
 };
 
-const Reviews = () => {
+interface Reviews {
+  items: IReview[];
+}
+
+const Reviews = ({ items }: Reviews) => {
   return (
-    <div className="flex flex-col gap-4">
-      <Review rate={5} body="Great job!" />
-      <Review rate={4} body="You're awesome" />
+    <div>
+      <div className="flex flex-col gap-4">
+        {items.map((item) => (
+          <Review {...item} key={item.id} />
+        ))}
+      </div>
     </div>
   );
 };
 
-const Review = ({ body, rate }: Pick<IReview, 'rate' | 'body'>) => {
+const Review = (props: IReview) => {
+  // prettier-ignore
+  const {
+    id,
+    body,
+    rate,
+    author,
+    recipe,
+    createdAt,
+    updatedAt 
+  } = props;
+
   return (
     <div>
-      <Rating value={rate} />
+      <Rating value={rate} readonly />
+
       <p>{body}</p>
-      <div className="text-sm text-gray-500">3 mins ago by JP Calvo</div>
+
+      <div className="text-sm text-gray-500 flex gap-1">
+        <span>
+          {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
+        </span>
+        <span>by</span>
+        <Link passHref href={'/users/' + author.id}>
+          <a className="hover:text-blue-500 hover:font-semibold">
+            {author.name}
+          </a>
+        </Link>
+      </div>
     </div>
   );
 };
@@ -218,14 +268,24 @@ const Tabs = ({ value, onChange }: TabsProps) => {
     };
   };
 
+  const items: Record<string, any> = {
+    [tabs[0]]: <ClipboardListIcon className="w-5 h-5" />,
+    [tabs[1]]: <BookOpenIcon className="w-5 h-5" />,
+    [tabs[2]]: <PencilAltIcon className="w-5 h-5" />,
+    [tabs[3]]: <CogIcon className="w-5 h-5" />,
+  };
+
   return (
     <nav>
       <ul className="flex flex-wrap gap-x-4 gap-y-2">
-        {tabs.map((tab) => (
-          <li key={tab}>
-            <Tab onClick={handleClick(tab)} active={value === tab}>
-              {capitalize(tab)}
-            </Tab>
+        {Object.entries(items).map(([tabValue, icon]) => (
+          <li key={tabValue}>
+            <Tab
+              icon={icon}
+              onClick={handleClick(tabValue)}
+              value={capitalize(tabValue)}
+              active={tabValue === value}
+            />
           </li>
         ))}
       </ul>
@@ -234,18 +294,30 @@ const Tabs = ({ value, onChange }: TabsProps) => {
 };
 
 interface TabProps {
+  icon: any;
+  value: string;
   active?: boolean;
 }
 
 const Tab: React.FC<TabProps & React.ComponentProps<'button'>> = ({
+  icon,
+  value,
   active,
   className,
   children,
   ...props
 }) => {
   return (
-    <button className={clsx(active && 'font-bold', className)} {...props}>
-      {children}
+    <button
+      className={clsx(
+        'flex items-center gap-1',
+        active && 'text-blue-600',
+        className
+      )}
+      {...props}
+    >
+      <span>{icon}</span>
+      <span>{value}</span>
     </button>
   );
 };
@@ -269,7 +341,7 @@ interface TagProps {
 }
 
 const Tag = (props: TagProps) => {
-  return <li className="text-sm p-2 bg-sky-200">{props.value}</li>;
+  return <li className="text-sm p-2 bg-blue-100">{props.value}</li>;
 };
 
 interface JumbotronProps {
