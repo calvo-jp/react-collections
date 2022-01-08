@@ -1,7 +1,7 @@
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import StarIcon from '@heroicons/react/solid/StarIcon';
-import items from 'assets/json/recipes.json';
+import recipes from 'assets/json/recipes.json';
 import Layout from 'layouts/Layout';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
@@ -15,7 +15,7 @@ interface Props {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      items,
+      items: recipes,
     },
     revalidate: 60 * 60 * 24,
   };
