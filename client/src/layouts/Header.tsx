@@ -1,5 +1,6 @@
 import MenuIcon from '@heroicons/react/solid/MenuIcon';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import onScrollReveal from 'utils/onScrollReveal';
 import Searchbar from 'widgets/Searchbar';
@@ -12,9 +13,27 @@ class HeaderProps {
 
 const Header = (props: HeaderProps) => {
   const ref = React.useRef<HTMLElement>(null);
+  const router = useRouter();
+  const [keyword, setKeyword] = React.useState('');
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (keyword.trim().length === 0) return setKeyword('');
+
+    const params = new URLSearchParams();
+    params.append('origin', router.asPath);
+    params.append('keyword', keyword);
+    router.push('/search?' + params.toString());
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setKeyword(e.target.value);
 
   React.useEffect(() => {
     if (ref.current) onScrollReveal(ref.current);
+
+    return () => setKeyword('');
   }, []);
 
   return (
@@ -29,7 +48,13 @@ const Header = (props: HeaderProps) => {
         </div>
 
         <div className="flex items-center gap-4">
-          <Searchbar className="w-[300px]" />
+          <form onSubmit={handleSubmit}>
+            <Searchbar
+              className="w-[300px]"
+              onChange={handleChange}
+              value={keyword}
+            />
+          </form>
 
           {!props.authorized && (
             <nav>
