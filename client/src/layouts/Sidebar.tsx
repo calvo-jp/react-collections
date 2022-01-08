@@ -14,17 +14,20 @@ import * as React from 'react';
 import Button from 'widgets/Button';
 import HelpLinks from './HelpLinks';
 
-const Sidebar: React.FC<React.ComponentProps<'section'>> = ({
+const Sidebar: React.FC<React.ComponentProps<'div'>> = ({
   className,
   ...props
 }) => {
   return (
-    <section className={clsx('p-8 flex flex-col gap-8', className)} {...props}>
+    <div
+      className={clsx('p-8 flex flex-col gap-8 bg-white', className)}
+      {...props}
+    >
       <Avatar />
       <CreateButton />
       <Navbar />
       <Footer />
-    </section>
+    </div>
   );
 };
 
