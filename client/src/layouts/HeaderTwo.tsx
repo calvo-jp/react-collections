@@ -5,7 +5,7 @@ import onScrollReveal from 'utils/onScrollReveal';
 
 interface HeaderTwoProps {
   url: string;
-  label: string;
+  label?: string;
 }
 
 /** header which purpose is to somewhat have a back button */
@@ -25,7 +25,9 @@ const HeaderTwo = ({ url, label }: HeaderTwoProps) => {
         <Link href={url} passHref>
           <a className="flex items-center gap-1">
             <ChevronLeftIcon className="w-5 h-5" />
+
             {label}
+            {!label && <React.Fragment>Go back</React.Fragment>}
           </a>
         </Link>
       </div>
