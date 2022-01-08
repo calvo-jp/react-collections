@@ -1,4 +1,4 @@
-import items from 'assets/json/recipes.json';
+import recipes from 'assets/json/recipes.json';
 import Layout from 'layouts/Layout';
 import { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ interface Props {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      items,
+      items: recipes,
     },
     revalidate: false,
   };

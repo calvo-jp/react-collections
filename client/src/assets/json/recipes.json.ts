@@ -1,6 +1,7 @@
 import IRecipe from 'types/recipe';
+import users from './users.json';
 
-const items: IRecipe[] = [
+const recipes: IRecipe[] = [
   {
     id: 1,
     name: 'Adobong manok',
@@ -24,16 +25,7 @@ const items: IRecipe[] = [
     image: '/images/8.jpg',
     cover: '/images/9.jpg',
     rating: 3,
-    author: {
-      id: 1,
-      name: 'JP Calvo',
-      email: 'calvojp92@gmail.com',
-      avatar: '',
-      createdAt: '2021-01-15',
-      totalRecipes: 4,
-      totalFavorites: 0,
-      totalReviews: 0,
-    },
+    author: users[0],
     createdAt: '2021-01-30',
   },
   {
@@ -52,18 +44,9 @@ const items: IRecipe[] = [
     image: '/images/7.jpg',
     cover: '/images/8.jpg',
     rating: 4,
-    author: {
-      id: 1,
-      name: 'JP Calvo',
-      email: 'calvojp92@gmail.com',
-      avatar: '',
-      createdAt: '2021-01-15',
-      totalRecipes: 2,
-      totalFavorites: 0,
-      totalReviews: 0,
-    },
+    author: users[1],
     createdAt: '2021-01-30',
   },
 ];
 
-export default items;
+export default recipes;

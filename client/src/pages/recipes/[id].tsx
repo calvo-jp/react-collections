@@ -1,4 +1,5 @@
-import items from 'assets/json/recipes.json';
+import avatar from 'assets/images/avatar.jpg';
+import recipes from 'assets/json/recipes.json';
 import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import HeaderTwo from 'layouts/HeaderTwo';
@@ -10,7 +11,9 @@ import { useRouter } from 'next/router';
 import NotFound from 'pages/404';
 import * as React from 'react';
 import IRecipe from 'types/recipe';
+import IReview from 'types/review';
 import capitalize from 'utils/capitalize';
+import Rating from 'widgets/Rating';
 
 interface Params {
   id: string;
@@ -18,7 +21,7 @@ interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const paths = items.map((item) => ({ params: { id: item.id.toString() } }));
+  const paths = recipes.map((item) => ({ params: { id: item.id.toString() } }));
 
   return {
     paths,
@@ -29,7 +32,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<IRecipe, Params> = async ({
   params,
 }) => {
-  const item = items.find(({ id }) => id.toString() === params!.id);
+  const item = recipes.find(({ id }) => id.toString() === params!.id);
 
   if (!item) {
     return {
@@ -158,12 +161,35 @@ interface TabContentProps {
 const TabContent = ({ currentView, data }: TabContentProps) => {
   switch (currentView) {
     case 'reviews':
-      return <React.Fragment />;
+      return <Reviews />;
     case 'instructions':
-      return <React.Fragment />;
+      return <Instructions />;
     default:
       return <Ingredients items={data.ingredients} />;
   }
+};
+
+const Reviews = () => {
+  return (
+    <div className="flex flex-col gap-4">
+      <Review rate={5} body="Great job!" />
+      <Review rate={4} body="You're awesome" />
+    </div>
+  );
+};
+
+const Review = ({ body, rate }: Pick<IReview, 'rate' | 'body'>) => {
+  return (
+    <div>
+      <Rating value={rate} />
+      <p>{body}</p>
+      <div className="text-sm text-gray-500">3 mins ago by JP Calvo</div>
+    </div>
+  );
+};
+
+const Instructions = () => {
+  return <div></div>;
 };
 
 interface IngredientsProps {
