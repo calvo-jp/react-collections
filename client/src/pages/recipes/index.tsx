@@ -1,6 +1,7 @@
 import recipes from 'assets/json/recipes.json';
 import Layout from 'layouts/Layout';
 import { GetStaticProps, NextPage } from 'next';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
@@ -23,6 +24,10 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 const Recipes: NextPage<Props> = ({ items }) => {
   return (
     <Layout>
+      <Head>
+        <title>Recipes</title>
+      </Head>
+
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 grid-flow-row-dense">
         {items.map((item) => (
           <Recipe key={item.id} data={item} />
