@@ -20,3 +20,5 @@ const reviews: IReview[] = [
     createdAt: '2022-01-01 23:05',
   },
 ];
+
+export default reviews;
