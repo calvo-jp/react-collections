@@ -13,7 +13,7 @@ const reviews: IReview[] = [
   },
   {
     id: 2,
-    rate: 5,
+    rate: 3,
     body: 'Good.',
     author: users[1],
     recipe: recipes[2],
