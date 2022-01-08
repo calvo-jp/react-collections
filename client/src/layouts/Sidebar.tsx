@@ -19,10 +19,7 @@ const Sidebar: React.FC<React.ComponentProps<'div'>> = ({
   ...props
 }) => {
   return (
-    <div
-      className={clsx('p-8 flex flex-col gap-8 bg-white', className)}
-      {...props}
-    >
+    <div className={clsx('p-8 flex flex-col gap-8', className)} {...props}>
       <Avatar />
       <CreateButton />
       <Navbar />
