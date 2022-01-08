@@ -11,15 +11,15 @@ interface LayoutProps {
 /** base layout */
 const Layout: React.FC<LayoutProps> = ({ transparent, children }) => {
   return (
-    <React.Fragment>
+    <div className={clsx('min-h-screen', !transparent && 'bg-gray-100')}>
       <Header />
 
-      <div className={clsx('min-h-screen flex', !transparent && 'bg-gray-100')}>
+      <div className="flex">
         <Sidebar />
 
         <main className="p-8 grow">{children}</main>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
