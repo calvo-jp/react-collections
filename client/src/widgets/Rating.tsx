@@ -21,7 +21,7 @@ const Rating: React.FC<RatingProps> = ({ value, onChange }) => {
   const numbers = new Array(5).fill(1).map((one, index) => index + one);
 
   return (
-    <div className="flex">
+    <div className="flex w-fit -mx-0.5">
       {numbers.map((number) => (
         <StarIcon
           key={number}
