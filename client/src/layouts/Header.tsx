@@ -1,4 +1,6 @@
+import BellIcon from '@heroicons/react/solid/BellIcon';
 import MenuIcon from '@heroicons/react/solid/MenuIcon';
+import SearchIcon from '@heroicons/react/solid/SearchIcon';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -55,6 +57,12 @@ const Header = (props: HeaderProps) => {
               value={keyword}
             />
           </form>
+
+          {props.authorized && (
+            <button className="relative">
+              <BellIcon className="w-9 h-9 fill-slate-300 hover:fill-slate-400 transition-all duration-200" />
+            </button>
+          )}
 
           {!props.authorized && (
             <nav>
