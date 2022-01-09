@@ -56,40 +56,26 @@ const Searchbar = () => {
   const [focused, setFocused] = React.useState(true);
 
   return (
-    <div>
-      <div
-        className={clsx(
-          'p-2 border rounded-md flex w-full items-center relative',
-          focused && 'border-blue-300 ring-4 ring-blue-200',
-          !focused && 'border-gray-200'
-        )}
-      >
-        <label htmlFor="" className="absolute text-sm -top-3 bg-white px-1">
-          Search
-        </label>
+    <div
+      className={clsx(
+        'p-2 border rounded-md flex w-full items-center relative',
+        focused && 'border-blue-400 ring-4 ring-blue-200',
+        !focused && 'border-gray-200'
+      )}
+    >
+      <label htmlFor="" className="absolute text-sm -top-3 bg-white px-1">
+        Search
+      </label>
 
-        <input className="grow outline-none" value="jp calvo" />
+      <input className="grow outline-none" value="jp calvo" />
 
-        <button className="ml-1">
-          <CloseIcon className="w-4 h-4 text-gray-400" />
-        </button>
+      <button className="ml-1">
+        <CloseIcon className="w-4 h-4 text-gray-400" />
+      </button>
 
-        <div className="h-4 w-[1px] bg-gray-200 mx-3" />
+      <div className="h-4 w-px bg-gray-200 mx-3" />
 
-        <SearchIcon className="w-5 h-5" />
-      </div>
-
-      <div className="mt-2 flex gap-2">
-        <div className="flex items-center gap-1">
-          <input type="checkbox" />
-          <label>Recipes</label>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <input type="checkbox" name="" id="" />
-          <label>Authors</label>
-        </div>
-      </div>
+      <SearchIcon className="w-5 h-5" />
     </div>
   );
 };

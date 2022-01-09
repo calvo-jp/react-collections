@@ -14,10 +14,8 @@ const Loader = () => {
   const [status, setStatus] = React.useState(Status.waiting);
 
   const handleStart = () => setStatus(Status.started);
-
   const handleComplete = () => {
     setStatus(Status.complte);
-
     setTimeout(() => setStatus(Status.waiting), 100);
   };
 
