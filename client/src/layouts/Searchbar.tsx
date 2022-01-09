@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import * as React from 'react';
 
 interface SearchbarProps {
-  /** true to increase ring size from 2 to 4 */
+  /** decrease ring size from 4 to 2 */
   outline?: 'sm';
 }
 
