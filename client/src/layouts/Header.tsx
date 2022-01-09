@@ -28,6 +28,7 @@ const Header = (props: HeaderProps) => {
     router.push('/search?' + params.toString());
   };
 
+  const handleReset = () => setKeyword('');
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setKeyword(e.target.value);
 
@@ -53,6 +54,7 @@ const Header = (props: HeaderProps) => {
             <Searchbar
               outline="sm"
               className="w-[300px]"
+              onReset={handleReset}
               onChange={handleChange}
               value={keyword}
             />
