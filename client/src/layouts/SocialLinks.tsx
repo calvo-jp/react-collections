@@ -1,68 +1,39 @@
-import clsx from 'clsx';
 import * as React from 'react';
 import FacebookIcon from 'widgets/icons/Facebook';
 import InstagramIcon from 'widgets/icons/Instagram';
 import TwitterIcon from 'widgets/icons/Twitter';
 import YoutubeIcon from 'widgets/icons/Youtube';
 
-interface SocialLinksProp {
-  /** gap of icons */
-  spacing?: number;
-}
+type SVGIcon = React.FC<React.SVGProps<SVGSVGElement>>;
 
-const SocialLinks: React.FC<SocialLinksProp & React.ComponentProps<'ul'>> = ({
-  spacing,
-  className,
-  ...props
-}) => {
+const SocialLinks = () => {
+  const items: [string, SVGIcon][] = [
+    ['https://www.facebook.com/recipes', FacebookIcon],
+    ['https://www.instagram.com/recipes', InstagramIcon],
+    ['https://www.twitter.com/recipes', TwitterIcon],
+    ['https://www.youtube.com/recipes', YoutubeIcon],
+  ];
+
   return (
-    <ul
-      className={clsx(
-        'flex gap-2 items-center',
-        spacing && 'gap-' + spacing,
-        className
-      )}
-      {...props}
-    >
-      <li>
-        <SocialLink href="https://www.facebook.com/recipes">
-          <FacebookIcon className="w-6 h-6 fill-white" />
-        </SocialLink>
-      </li>
-      <li>
-        <SocialLink href="https://www.instagram.com/recipes">
-          <InstagramIcon className="w-6 h-6 fill-white" />
-        </SocialLink>
-      </li>
-      <li>
-        <SocialLink href="https://www.twitter.com/recipes">
-          <TwitterIcon className="w-6 h-6 fill-white" />
-        </SocialLink>
-      </li>
-      <li>
-        <SocialLink href="https://www.youtube.com/recipes">
-          <YoutubeIcon className="w-6 h-6 fill-white" />
-        </SocialLink>
-      </li>
+    <ul className="flex gap-2 items-center">
+      {items.map(([href, icon]) => (
+        <li key={href}>
+          <SocialLink href={href} icon={icon} />
+        </li>
+      ))}
     </ul>
   );
 };
 
-const SocialLink: React.FC<React.ComponentProps<'a'>> = ({
-  href,
-  children,
-  className,
-  ...props
-}) => {
+interface SocialLinkProps {
+  href: string;
+  icon: SVGIcon;
+}
+
+const SocialLink = ({ href, icon: SocialIcon }: SocialLinkProps) => {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noReferrer"
-      className={clsx('block', className)}
-      {...props}
-    >
-      {children}
+    <a href={href} target="_blank" rel="noReferrer" className="block">
+      {<SocialIcon className="w-6 h-6 fill-white" />}
     </a>
   );
 };

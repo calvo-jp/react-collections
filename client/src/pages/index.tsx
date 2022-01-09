@@ -34,7 +34,9 @@ const Banner = () => {
           Find or share amazing recipes anytime for free
         </p>
 
-        <SocialLinks className="mt-4" />
+        <div className="mt-4">
+          <SocialLinks />
+        </div>
       </article>
 
       <GradientOverlay />
