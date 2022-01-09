@@ -45,7 +45,7 @@ const Search = () => {
 
         <div className="max-w-[900px] mx-auto p-4">
           <form className="py-8" onSubmit={handleSubmit}>
-            <Searchbar />
+            <Searchbar autoFocus />
           </form>
         </div>
       </div>
