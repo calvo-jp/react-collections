@@ -1,7 +1,7 @@
 import CameraIcon from '@heroicons/react/solid/CameraIcon';
 import ChartPieIcon from '@heroicons/react/solid/ChartPieIcon';
 import CogIcon from '@heroicons/react/solid/CogIcon';
-import FireIcon from '@heroicons/react/solid/FireIcon';
+import FolderIcon from '@heroicons/react/solid/FolderIcon';
 import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import LightningBoltIcon from '@heroicons/react/solid/LightningBoltIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
@@ -82,7 +82,7 @@ const Navbar = () => {
         <li>
           <NavbarLink
             href="/recipes"
-            icon={<FireIcon className={iconCls} />}
+            icon={<FolderIcon className={iconCls} />}
             label="Recipes"
           />
         </li>
