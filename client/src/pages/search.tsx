@@ -5,6 +5,7 @@ import CloseIcon from '@heroicons/react/outline/XIcon';
 import clsx from 'clsx';
 import useQuery from 'hooks/useQuery';
 import HeaderTwo from 'layouts/HeaderTwo';
+import Searchbar from 'layouts/Searchbar';
 import Head from 'next/head';
 import * as React from 'react';
 import IRecipe from 'types/recipe';
@@ -49,34 +50,6 @@ const Search = () => {
         </div>
       </div>
     </React.Fragment>
-  );
-};
-
-const Searchbar = () => {
-  const [focused, setFocused] = React.useState(true);
-
-  return (
-    <div
-      className={clsx(
-        'p-2 border rounded-md flex w-full items-center relative',
-        focused && 'border-blue-400 ring-4 ring-blue-200',
-        !focused && 'border-gray-200'
-      )}
-    >
-      <label htmlFor="" className="absolute text-sm -top-3 bg-white px-1">
-        Search
-      </label>
-
-      <input className="grow outline-none" value="jp calvo" />
-
-      <button className="ml-1">
-        <CloseIcon className="w-4 h-4 text-gray-400" />
-      </button>
-
-      <div className="h-4 w-px bg-gray-200 mx-3" />
-
-      <SearchIcon className="w-5 h-5" />
-    </div>
   );
 };
 
