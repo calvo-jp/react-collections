@@ -1,11 +1,10 @@
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import MenuIcon from '@heroicons/react/solid/MenuIcon';
-import SearchIcon from '@heroicons/react/solid/SearchIcon';
+import Searchbar from 'layouts/Searchbar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import onScrollReveal from 'utils/onScrollReveal';
-import Searchbar from 'widgets/Searchbar';
 import Brand from './Brand';
 
 class HeaderProps {

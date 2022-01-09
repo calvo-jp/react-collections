@@ -2,11 +2,7 @@ import SearchIcon from '@heroicons/react/solid/SearchIcon';
 import clsx from 'clsx';
 import * as React from 'react';
 
-type BaseProps = React.ComponentProps<'input'>;
-
-type SearchbarProps = Omit<BaseProps, 'type' | 'children' | 'onClick'>;
-
-const Searchbar: React.FC<SearchbarProps> = ({
+const Searchbar: React.FC<React.ComponentProps<'input'>> = ({
   onBlur,
   onFocus,
   className,
