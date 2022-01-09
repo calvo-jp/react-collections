@@ -1,3 +1,4 @@
+import ExclamationIcon from '@heroicons/react/solid/ExclamationCircleIcon';
 import clsx from 'clsx';
 import * as React from 'react';
 
@@ -84,7 +85,6 @@ const TextField: React.FC<TextFieldProps> = ({
         ref={inputRef}
         className={clsx(
           'p-2 w-full border border-gray-300 rounded-md outline-none transition-all duration-300',
-          // only add hover styles if no errors
           !error && 'hover:border-gray-400',
           !error && 'focus:ring-4 focus:ring-blue-200 focus:border-blue-400',
           error && 'focus:ring-4 focus:ring-red-200 border-red-400'
@@ -93,8 +93,16 @@ const TextField: React.FC<TextFieldProps> = ({
         {...props}
       />
 
-      {error && helperText && (
-        <p className="mt-1 ml-1 text-sm text-red-500">{helperText}</p>
+      {!!helperText && (
+        <p
+          className={clsx(
+            'h-0 overflow-hidden text-sm text-red-500 flex items-center gap-1 transition-all duration-100',
+            error && 'h-auto mt-1'
+          )}
+        >
+          <ExclamationIcon className="block w-4 h-4" />
+          <span>{helperText}</span>
+        </p>
       )}
     </div>
   );
