@@ -1,11 +1,18 @@
-import SearchIcon from '@heroicons/react/solid/SearchIcon';
+import SearchIcon from '@heroicons/react/outline/SearchIcon';
+import CloseIcon from '@heroicons/react/outline/XIcon';
 import clsx from 'clsx';
 import * as React from 'react';
 
-const Searchbar: React.FC<React.ComponentProps<'input'>> = ({
+interface SearchbarProps {
+  /** true to increase ring size from 2 to 4 */
+  outline?: 'sm';
+}
+
+const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
   onBlur,
   onFocus,
   className,
+  outline,
   ...props
 }) => {
   const [focused, setFocused] = React.useState(false);
@@ -39,7 +46,9 @@ const Searchbar: React.FC<React.ComponentProps<'input'>> = ({
       className={clsx(
         'flex items-center gap-1 p-2 border outline-none transition-all duration-300 rounded-lg group cursor-text',
         !focused && 'border-gray-200 hover:border-gray-400',
-        focused && 'border-blue-400 ring-2 ring-blue-200',
+        focused && 'border-blue-400 ring-blue-200',
+        focused && !outline && 'ring-4',
+        focused && outline && 'ring-2',
         className
       )}
       onClick={handleClick}
@@ -54,7 +63,13 @@ const Searchbar: React.FC<React.ComponentProps<'input'>> = ({
         {...props}
       />
 
-      <div className="px-1" tabIndex={-1}>
+      <button type="button" className="mr-1">
+        <CloseIcon className="w-4 h-4 text-gray-400" />
+      </button>
+
+      <div className="h-4 w-px bg-gray-200 mx-1" />
+
+      <div className="mx-1" tabIndex={-1}>
         <SearchIcon
           className={clsx(
             'w-4 h-4 transition-all duration-300',
