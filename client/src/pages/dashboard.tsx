@@ -30,7 +30,7 @@ const Dashboard: NextPage<Props> = ({ items }) => {
 
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-6 flex items-center gap-4 shadow-md">
+          <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-6 flex items-center gap-4 shadow-md">
             <StarIcon className="w-20 h-20 fill-white" />
 
             <div className="flex-col gap-2 text-white">
