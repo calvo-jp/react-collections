@@ -1,8 +1,6 @@
 import BookOpenIcon from '@heroicons/react/outline/BookOpenIcon';
 import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
 import CogIcon from '@heroicons/react/outline/CogIcon';
-import DotsHorizontalIcon from '@heroicons/react/outline/DotsHorizontalIcon';
-import HeartIcon from '@heroicons/react/outline/HeartIcon';
 import PencilAltIcon from '@heroicons/react/outline/PencilAltIcon';
 import avatar from 'assets/images/avatar.jpg';
 import recipes from 'assets/json/recipes.json';
@@ -20,9 +18,7 @@ import * as React from 'react';
 import IRecipe from 'types/recipe';
 import IReview from 'types/review';
 import capitalize from 'utils/capitalize';
-import Button from 'widgets/Button';
 import Rating from 'widgets/Rating';
-import TextField from 'widgets/TextField';
 
 interface Params {
   id: string;
@@ -61,7 +57,7 @@ const Recipe: NextPage<IRecipe> = (data) => {
   const getCurrentTab = React.useMemo(() => {
     return function () {
       const tab = [query.tab].flat().at(0) || TABS[0];
-      return TABS.find((tab_) => tab === tab_);
+      return TABS.find((tab_) => tab_ === tab);
     };
   }, [query]);
 
@@ -111,6 +107,7 @@ const Recipe: NextPage<IRecipe> = (data) => {
                       <div className="text-sm text-gray-500 flex items-center gap-1">
                         <div>
                           {formatDistanceToNow(new Date(data.createdAt), {
+                            includeSeconds: true,
                             addSuffix: true,
                           })}
                         </div>
@@ -177,7 +174,7 @@ const Settings = () => {
 // *--------------*
 //
 
-const Reviews = ({ items }: IItemable<IReview>) => {
+const Reviews = ({ items }: Itemable<IReview>) => {
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -190,16 +187,7 @@ const Reviews = ({ items }: IItemable<IReview>) => {
 };
 
 const Review = (props: IReview) => {
-  // prettier-ignore
-  const {
-    id,
-    body,
-    rate,
-    author,
-    recipe,
-    createdAt,
-    updatedAt 
-  } = props;
+  const { body, rate, author, createdAt } = props;
 
   return (
     <div>
@@ -209,7 +197,10 @@ const Review = (props: IReview) => {
 
       <div className="text-sm text-gray-500 flex gap-1">
         <span>
-          {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
+          {formatDistanceToNow(new Date(createdAt), {
+            addSuffix: true,
+            includeSeconds: true,
+          })}
         </span>
         <span>by</span>
         <Link passHref href={'/users/' + author.id}>
@@ -238,7 +229,7 @@ const Instructions = () => {
 // *------------------*
 //
 
-const Ingredients = (props: IItemable<string>) => {
+const Ingredients = (props: Itemable<string>) => {
   return (
     <ul className="list-disc pl-4">
       {props.items.map((item) => (
@@ -257,7 +248,7 @@ const Ingredients = (props: IItemable<string>) => {
 interface TabContentProps {
   data: IRecipe;
   /** which tab is active */
-  currentView: TTab;
+  currentView: TabQuery;
 }
 
 const TabContent = ({ currentView, data }: TabContentProps) => {
@@ -280,18 +271,18 @@ const TabContent = ({ currentView, data }: TabContentProps) => {
 //
 
 interface TabsProps {
-  value: TTab;
-  onChange?: (value: TTab) => void;
+  value: TabQuery;
+  onChange?: (value: TabQuery) => void;
 }
 
 const Tabs = ({ value, onChange }: TabsProps) => {
-  const handleClick = (newValue: TTab) => {
+  const handleClick = (newValue: TabQuery) => {
     return function () {
       if (onChange) onChange(newValue);
     };
   };
 
-  const items: [TTab, TSVGIcon][] = [
+  const items: [TabQuery, SVGIcon][] = [
     [TAB1, ClipboardListIcon],
     [TAB2, BookOpenIcon],
     [TAB3, PencilAltIcon],
@@ -351,7 +342,7 @@ const Tab: React.FC<TabProps & React.ComponentProps<'button'>> = ({
 // *-----------*
 //
 
-const Tags = (props: IItemable<string>) => {
+const Tags = (props: Itemable<string>) => {
   return (
     <ul className="flex flex-wrap gap-1">
       {props.items.map((item) => (
@@ -415,8 +406,8 @@ const TABS: [
 // *-------------------*
 //
 
-type TTab = typeof TABS[number];
-type TSVGIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
-type IItemable<T> = Record<'items', T[]>;
+type TabQuery = typeof TABS[number];
+type SVGIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
+type Itemable<T = unknown> = Record<'items', T[]>;
 
 export default Recipe;
