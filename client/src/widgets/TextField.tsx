@@ -93,13 +93,8 @@ const TextField: React.FC<TextFieldProps> = ({
         {...props}
       />
 
-      {!!helperText && (
-        <p
-          className={clsx(
-            'h-0 overflow-hidden text-sm text-red-500 flex items-center gap-1 transition-all duration-100',
-            error && 'h-auto mt-1'
-          )}
-        >
+      {!!helperText && error && (
+        <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
           <ExclamationIcon className="block w-4 h-4" />
           <span>{helperText}</span>
         </p>
