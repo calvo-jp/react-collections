@@ -6,15 +6,21 @@ import * as React from 'react';
 interface SearchbarProps {
   /** decrease ring size from 4 to 2 */
   outline?: 'sm';
+
+  /** adds a clear textfield option */
+  onReset?: () => void;
 }
 
 const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
   onBlur,
   onFocus,
+  onReset,
+  onChange,
   className,
   outline,
   ...props
 }) => {
+  const [empty, setEmpty] = React.useState(!props.value);
   const [focused, setFocused] = React.useState(false);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -41,6 +47,16 @@ const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
     if (inputRef.current) inputRef.current.focus();
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmpty(!e.target.value);
+    onChange?.(e);
+  };
+
+  React.useEffect(() => {
+    setEmpty(!props.value);
+    return () => setEmpty(true);
+  }, [props.value]);
+
   return (
     <div
       className={clsx(
@@ -58,14 +74,17 @@ const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
         type="search"
         onBlur={handleMouseEvent}
         onFocus={handleMouseEvent}
-        placeholder="Search"
+        onChange={handleChange}
         className="outline-none w-full"
+        placeholder="Search"
         {...props}
       />
 
-      <button type="button" className="mr-1">
-        <CloseIcon className="w-4 h-4 text-gray-400" />
-      </button>
+      {onReset && !empty && (
+        <button type="button" className="mr-1" onClick={onReset}>
+          <CloseIcon className="w-4 h-4 text-gray-400" />
+        </button>
+      )}
 
       <div className="h-4 w-px bg-gray-200 mx-1" />
 
