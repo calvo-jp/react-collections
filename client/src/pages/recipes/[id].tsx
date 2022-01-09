@@ -417,9 +417,6 @@ const TABS: [
 
 type TTab = typeof TABS[number];
 type TSVGIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
-
-interface IItemable<T> {
-  items: T[];
-}
+type IItemable<T> = Record<'items', T[]>;
 
 export default Recipe;
