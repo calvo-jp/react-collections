@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import * as React from 'react';
 
-type BaseProps = React.ComponentProps<'input'>;
+type BaseProps = Omit<React.ComponentProps<'input'>, 'placeholder'>;
 
 type TextFieldType =
   | 'date'
