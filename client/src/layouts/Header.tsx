@@ -1,5 +1,6 @@
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import MenuIcon from '@heroicons/react/solid/MenuIcon';
+import UserIcon from '@heroicons/react/solid/UserIcon';
 import Searchbar from 'layouts/Searchbar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -62,7 +63,7 @@ const Header = (props: HeaderProps) => {
 
           {props.authorized && (
             <button className="relative">
-              <BellIcon className="w-9 h-9 fill-slate-300 hover:fill-slate-400 transition-all duration-200" />
+              <BellIcon className="w-8 h-8 fill-[#cccccc] hover:fill-[#c4c4c4] transition-all duration-200" />
             </button>
           )}
 
