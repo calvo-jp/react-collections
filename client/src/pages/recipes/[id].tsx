@@ -55,49 +55,32 @@ export const getStaticProps: GetStaticProps<IRecipe, Params> = async ({
   };
 };
 
-/**
- *
- * - ingredients
- * - instructions
- * - reviews
- * - settings
- *
- */
-// prettier-ignore
-const tabs = [
-  'ingredients', 
-  'instructions', 
-  'reviews',
-  'settings'
-];
-
 const Recipe: NextPage<IRecipe> = (data) => {
-  const router = useRouter();
-  const params = router.query as Params;
+  const { query, isFallback, ...router } = useRouter();
 
   const getCurrentTab = React.useMemo(() => {
-    return function (): string {
-      return [params.tab].flat().at(0)?.trim().toLowerCase() || tabs[0];
+    return function () {
+      const tab = [query.tab].flat().at(0) || TABS[0];
+      return TABS.find((tab_) => tab === tab_);
     };
-  }, [params.tab]);
+  }, [query]);
 
   const [currentTab, setCurrentTab] = React.useState(getCurrentTab());
 
-  const handleChange = (value: string) => {
-    router.push(`/recipes/${params.id}?tab=${value}`);
+  const handleChange = (value: typeof TABS[number]) => {
+    router.push(`/recipes/${query.id}?tab=${value}`);
   };
 
   React.useEffect(() => {
     setCurrentTab(getCurrentTab());
-
-    return () => setCurrentTab(tabs[0]);
+    return () => setCurrentTab(TABS[0]);
   }, [getCurrentTab]);
 
-  // fetching
-  if (router.isFallback) return <Loader />;
+  // next building page
+  if (isFallback) return <Loader />;
 
-  // unknown tab
-  if (!tabs.includes(currentTab)) return <NotFound />;
+  // invalid tab
+  if (!currentTab) return <NotFound />;
 
   return (
     <React.Fragment>
@@ -164,6 +147,12 @@ const Recipe: NextPage<IRecipe> = (data) => {
   );
 };
 
+//
+// *-------------*
+// |   LOADER    |
+// *-------------*
+//
+
 const Loader = () => {
   return (
     <div className="p-4">
@@ -172,28 +161,23 @@ const Loader = () => {
   );
 };
 
-interface TabContentProps {
-  data: IRecipe;
-  /** which tab is active */
-  currentView: string;
-}
+//
+// *---------------*
+// |   SETTINGS    |
+// *---------------*
+//
 
-const TabContent = ({ currentView, data }: TabContentProps) => {
-  switch (currentView) {
-    case 'reviews':
-      return <Reviews items={reviews} />;
-    case 'instructions':
-      return <Instructions />;
-    default:
-      return <Ingredients items={data.ingredients} />;
-  }
+const Settings = () => {
+  return <div></div>;
 };
 
-interface Reviews {
-  items: IReview[];
-}
+//
+// *--------------*
+// |   REVIEWS    |
+// *--------------*
+//
 
-const Reviews = ({ items }: Reviews) => {
+const Reviews = ({ items }: IItemable<IReview>) => {
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -238,53 +222,92 @@ const Review = (props: IReview) => {
   );
 };
 
+//
+// *-------------------*
+// |   INSTRUCTIONS    |
+// *-------------------*
+//
+
 const Instructions = () => {
   return <div></div>;
 };
 
-interface IngredientsProps {
-  items: string[];
-}
+//
+// *------------------*
+// |   INGREDIENTS    |
+// *------------------*
+//
 
-const Ingredients = ({ items }: IngredientsProps) => {
+const Ingredients = (props: IItemable<string>) => {
   return (
     <ul className="list-disc pl-4">
-      {items.map((item) => (
+      {props.items.map((item) => (
         <li key={item}>{item}</li>
       ))}
     </ul>
   );
 };
 
+//
+// *------------------*
+// |   TAB CONTENT    |
+// *------------------*
+//
+
+interface TabContentProps {
+  data: IRecipe;
+  /** which tab is active */
+  currentView: TTab;
+}
+
+const TabContent = ({ currentView, data }: TabContentProps) => {
+  switch (currentView) {
+    case TAB4:
+      return <Settings />;
+    case TAB3:
+      return <Reviews items={reviews} />;
+    case TAB2:
+      return <Instructions />;
+    default:
+      return <Ingredients items={data.ingredients} />;
+  }
+};
+
+//
+// *----------*
+// |   TABS   |
+// *----------*
+//
+
 interface TabsProps {
-  value?: string;
-  onChange?: (value: string) => void;
+  value: TTab;
+  onChange?: (value: TTab) => void;
 }
 
 const Tabs = ({ value, onChange }: TabsProps) => {
-  const handleClick = (newValue: string) => {
+  const handleClick = (newValue: TTab) => {
     return function () {
       if (onChange) onChange(newValue);
     };
   };
 
-  const items: Record<string, any> = {
-    [tabs[0]]: <ClipboardListIcon className="w-5 h-5" />,
-    [tabs[1]]: <BookOpenIcon className="w-5 h-5" />,
-    [tabs[2]]: <PencilAltIcon className="w-5 h-5" />,
-    [tabs[3]]: <CogIcon className="w-5 h-5" />,
-  };
+  const items: [TTab, TSVGIcon][] = [
+    [TAB1, ClipboardListIcon],
+    [TAB2, BookOpenIcon],
+    [TAB3, PencilAltIcon],
+    [TAB4, CogIcon],
+  ];
 
   return (
     <nav>
       <ul className="flex flex-wrap gap-x-4 gap-y-2">
-        {Object.entries(items).map(([tabValue, icon]) => (
+        {items.map(([tabValue, SVGIcon]) => (
           <li key={tabValue}>
             <Tab
-              icon={icon}
-              onClick={handleClick(tabValue)}
+              icon={<SVGIcon className="w-4 h-4" />}
               value={capitalize(tabValue)}
               active={tabValue === value}
+              onClick={handleClick(tabValue)}
             />
           </li>
         ))}
@@ -294,7 +317,7 @@ const Tabs = ({ value, onChange }: TabsProps) => {
 };
 
 interface TabProps {
-  icon: any;
+  icon: JSX.Element;
   value: string;
   active?: boolean;
 }
@@ -322,33 +345,33 @@ const Tab: React.FC<TabProps & React.ComponentProps<'button'>> = ({
   );
 };
 
-interface TagsProps {
-  items: string[];
-}
+//
+// *-----------*
+// |   TAGS    |
+// *-----------*
+//
 
-const Tags: React.FC<TagsProps> = ({ items }) => {
+const Tags = (props: IItemable<string>) => {
   return (
     <ul className="flex flex-wrap gap-1">
-      {items.map((item) => (
+      {props.items.map((item) => (
         <Tag key={item} value={item} />
       ))}
     </ul>
   );
 };
 
-interface TagProps {
-  value: string;
-}
-
-const Tag = (props: TagProps) => {
+function Tag(props: Record<'value', string>) {
   return <li className="text-sm p-2 bg-blue-100">{props.value}</li>;
-};
-
-interface JumbotronProps {
-  src: string;
 }
 
-const Jumbotron = (props: JumbotronProps) => {
+//
+// *----------------*
+// |   JUMBOTRON    |
+// *----------------*
+//
+
+const Jumbotron = (props: Record<'src', string>) => {
   return (
     <div className="relative h-[300px]">
       <Image
@@ -361,5 +384,42 @@ const Jumbotron = (props: JumbotronProps) => {
     </div>
   );
 };
+
+//
+// *----------------*
+// |   CONSTANTS    |
+// *----------------*
+//
+
+const TAB1 = 'ingredients';
+const TAB2 = 'instructions';
+const TAB3 = 'reviews';
+const TAB4 = 'settings';
+
+// prettier-ignore
+const TABS: [
+  typeof TAB1, 
+  typeof TAB2, 
+  typeof TAB3, 
+  typeof TAB4
+] = [
+  TAB1,
+  TAB2,
+  TAB3,
+  TAB4,
+];
+
+//
+// *-------------------*
+// |   SHARED TYPES    |
+// *-------------------*
+//
+
+type TTab = typeof TABS[number];
+type TSVGIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
+
+interface IItemable<T> {
+  items: T[];
+}
 
 export default Recipe;
