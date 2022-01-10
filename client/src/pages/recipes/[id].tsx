@@ -99,26 +99,24 @@ const Recipe: NextPage<IRecipe> = (data) => {
           <div className="max-w-[900px] mx-auto">
             <section>
               <div>
-                <div className="flex justify-between">
-                  <div className="flex justify-between w-full items-center">
-                    <div>
-                      <h1 className="text-2xl">{data.name}</h1>
+                <div className="flex justify-between w-full items-center">
+                  <div>
+                    <h2 className="text-2xl">{data.name}</h2>
 
-                      <div className="text-sm text-gray-500 flex items-center gap-1">
-                        <div>
-                          {formatDistanceToNow(new Date(data.createdAt), {
-                            includeSeconds: true,
-                            addSuffix: true,
-                          })}
-                        </div>
-                        <div>by</div>
-                        <Link href="/users/1" passHref>
-                          <a className="hover:text-blue-500 hover:font-semibold">
-                            {data.author.name}
-                          </a>
-                        </Link>
-                      </div>
-                    </div>
+                    <small className="text-gray-500 flex items-center gap-1">
+                      <time>
+                        {formatDistanceToNow(new Date(data.createdAt), {
+                          includeSeconds: true,
+                          addSuffix: true,
+                        })}
+                      </time>
+                      <div>by</div>
+                      <Link href="/users/1" passHref>
+                        <a className="hover:text-blue-500 hover:font-semibold">
+                          {data.author.name}
+                        </a>
+                      </Link>
+                    </small>
                   </div>
                 </div>
 
@@ -195,20 +193,20 @@ const Review = (props: IReview) => {
 
       <p>{body}</p>
 
-      <div className="text-sm text-gray-500 flex gap-1">
-        <span>
+      <small className="text-gray-500 flex gap-1">
+        <time>
           {formatDistanceToNow(new Date(createdAt), {
             addSuffix: true,
             includeSeconds: true,
           })}
-        </span>
+        </time>
         <span>by</span>
         <Link passHref href={'/users/' + author.id}>
           <a className="hover:text-blue-500 hover:font-semibold">
             {author.name}
           </a>
         </Link>
-      </div>
+      </small>
     </div>
   );
 };
@@ -364,7 +362,7 @@ function Tag(props: Record<'value', string>) {
 
 const Jumbotron = (props: Record<'src', string>) => {
   return (
-    <div className="relative h-[300px]">
+    <figure className="relative h-[300px]">
       <Image
         src={props.src}
         alt=""
@@ -372,7 +370,7 @@ const Jumbotron = (props: Record<'src', string>) => {
         objectFit="cover"
         objectPosition="center"
       />
-    </div>
+    </figure>
   );
 };
 
@@ -388,12 +386,15 @@ const TAB3 = 'reviews';
 const TAB4 = 'settings';
 
 // prettier-ignore
-const TABS: [
+type TabsTuple = [
   typeof TAB1, 
   typeof TAB2, 
   typeof TAB3, 
   typeof TAB4
-] = [
+];
+
+// prettier-ignore
+const TABS: TabsTuple = [
   TAB1,
   TAB2,
   TAB3,
@@ -406,7 +407,7 @@ const TABS: [
 // *-------------------*
 //
 
-type TabQuery = typeof TABS[number];
+type TabQuery = TabsTuple[number];
 type SVGIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
 type Itemable<T = unknown> = Record<'items', T[]>;
 
