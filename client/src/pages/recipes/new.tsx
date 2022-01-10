@@ -24,9 +24,12 @@ const CreateRecipe = () => {
               <TextField fullWidth label="Name" autoFocus />
               <TextField fullWidth label="Description" multiline />
 
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
+              <Button
+                type="submit"
+                label="Submit"
+                color="primary"
+                variant="contained"
+              />
             </form>
           </div>
         </main>

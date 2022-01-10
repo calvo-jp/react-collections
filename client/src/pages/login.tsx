@@ -63,6 +63,7 @@ const Login = () => {
                   error
                   helperText="Password is required"
                 />
+
                 <p className="text-sm mt-1.5">
                   <span>Forgot password?</span>
 
@@ -74,9 +75,13 @@ const Login = () => {
                 </p>
               </div>
 
-              <Button variant="primary" type="submit" fullWidth>
-                Login
-              </Button>
+              <Button
+                type="submit"
+                label="Login"
+                color="primary"
+                variant="contained"
+                fullWidth
+              />
             </form>
 
             <div className="text-center mt-4 text-gray-600">

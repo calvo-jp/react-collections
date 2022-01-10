@@ -37,10 +37,14 @@ const CreateButton = () => {
       passHref
     >
       <a>
-        <Button variant="primary" fullWidth>
-          <PencilAltIcon className="w-5 h-5" />
-          Create New
-        </Button>
+        <Button
+          type="button"
+          color="primary"
+          variant="contained"
+          label="Create New"
+          icon={<PencilAltIcon className="w-5 h-5" />}
+          fullWidth
+        />
       </a>
     </Link>
   );
