@@ -84,8 +84,8 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         ref={inputRef}
         className={clsx(
-          'p-2 w-full border border-gray-300 rounded-md outline-none transition-all duration-300',
-          !error && 'hover:border-gray-400',
+          'p-2 w-full border rounded-md outline-none transition-all duration-300',
+          !error && 'border-gray-300 hover:border-gray-400',
           !error && 'focus:ring-4 focus:ring-blue-200 focus:border-blue-400',
           error && 'focus:ring-4 focus:ring-red-200 border-red-400'
         )}
