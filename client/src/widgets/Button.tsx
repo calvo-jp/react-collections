@@ -21,7 +21,7 @@ type Size =
 
 type BaseProps = Omit<
   React.ComponentProps<'button'>,
-  'className' | 'style' | 'children'
+  'value' | 'className' | 'style' | 'children'
 >;
 
 interface ButtonProps extends BaseProps {
