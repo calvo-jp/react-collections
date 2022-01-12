@@ -1,8 +1,9 @@
 import BookOpenIcon from '@heroicons/react/outline/BookOpenIcon';
 import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
 import CogIcon from '@heroicons/react/outline/CogIcon';
+import HeartIcon from '@heroicons/react/outline/HeartIcon';
 import PencilAltIcon from '@heroicons/react/outline/PencilAltIcon';
-import avatar from 'assets/images/avatar.jpg';
+import StarIcon from '@heroicons/react/solid/StarIcon';
 import recipes from 'assets/json/recipes.json';
 import reviews from 'assets/json/reviews.json';
 import clsx from 'clsx';
@@ -18,6 +19,7 @@ import * as React from 'react';
 import IRecipe from 'types/recipe';
 import IReview from 'types/review';
 import capitalize from 'utils/capitalize';
+import Button from 'widgets/Button';
 import Rating from 'widgets/Rating';
 
 interface Params {
@@ -99,25 +101,29 @@ const Recipe: NextPage<IRecipe> = (data) => {
           <div className="max-w-[900px] mx-auto">
             <section>
               <div>
-                <div className="flex justify-between w-full items-center">
-                  <div>
-                    <h2 className="text-2xl">{data.name}</h2>
+                <div className="flex justify-between w-full items-start">
+                  <div className="flex items-center gap-2">
+                    <div>
+                      <h2 className="text-2xl">{data.name}</h2>
 
-                    <small className="text-gray-500 flex items-center gap-1">
-                      <time>
-                        {formatDistanceToNow(new Date(data.createdAt), {
-                          includeSeconds: true,
-                          addSuffix: true,
-                        })}
-                      </time>
-                      <div>by</div>
-                      <Link href="/users/1" passHref>
-                        <a className="hover:text-blue-500 hover:font-semibold">
-                          {data.author.name}
-                        </a>
-                      </Link>
-                    </small>
+                      <small className="text-gray-500 flex items-center gap-1">
+                        <time>
+                          {formatDistanceToNow(new Date(data.createdAt), {
+                            includeSeconds: true,
+                            addSuffix: true,
+                          })}
+                        </time>
+                        <div>by</div>
+                        <Link href="/users/1" passHref>
+                          <a className="hover:text-blue-500 hover:font-semibold">
+                            {data.author.name}
+                          </a>
+                        </Link>
+                      </small>
+                    </div>
                   </div>
+
+                  <AddToFav />
                 </div>
 
                 <p className="mt-4">{data.description}</p>
@@ -126,6 +132,10 @@ const Recipe: NextPage<IRecipe> = (data) => {
 
             <section className="mt-4">
               <Tags items={data.tags} />
+            </section>
+
+            <section className="mt-8 flex gap-3">
+              <Summary />
             </section>
 
             <section className="mt-8">
@@ -139,6 +149,26 @@ const Recipe: NextPage<IRecipe> = (data) => {
         </main>
       </div>
     </React.Fragment>
+  );
+};
+
+//
+// *---------------------*
+// |   ACTION BUTTONS    |
+// *---------------------*
+//
+
+const AddToFav = () => {
+  const handleClick = () => {};
+
+  return (
+    <button
+      className="flex text-sm items-center gap-2 border p-2 px-3 border-red-300 text-red-400 rounded-md hover:border-red-400 hover:ring-4 hover:ring-red-100"
+      onClick={handleClick}
+    >
+      <HeartIcon className="w-4 h-4" />
+      <span>Add to favs</span>
+    </button>
   );
 };
 
@@ -234,6 +264,30 @@ const Ingredients = (props: Itemable<string>) => {
         <li key={item}>{item}</li>
       ))}
     </ul>
+  );
+};
+
+//
+// *--------------*
+// |   SUMMARY    |
+// *--------------*
+//
+
+const Summary = () => {
+  return (
+    <div className="bg-gradient-to-r from-yellow-500 to-orange-400 p-4 py-3 shadow-md w-fit">
+      <div className="text-white w-[125px] flex flex-col items-center">
+        <div className="text-sm">Average Rating</div>
+
+        <div className="flex mt-1">
+          <StarIcon className="w-6 h-6" />
+          <StarIcon className="w-6 h-6 opacity-40" />
+          <StarIcon className="w-6 h-6 opacity-40" />
+          <StarIcon className="w-6 h-6 opacity-40" />
+          <StarIcon className="w-6 h-6 opacity-40" />
+        </div>
+      </div>
+    </div>
   );
 };
 
