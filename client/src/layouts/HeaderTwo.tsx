@@ -21,7 +21,7 @@ const HeaderTwo = ({ url, label }: HeaderTwoProps) => {
       ref={ref}
       className="bg-white shadow-md z-50 sticky top-0 transition-all duration-300"
     >
-      <div className="py-4 px-3">
+      <div className="py-4 px-3 w-fit">
         <Link href={url} passHref>
           <a className="flex items-center gap-1">
             <ChevronLeftIcon className="w-5 h-5" />
