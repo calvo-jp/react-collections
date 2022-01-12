@@ -35,7 +35,7 @@ const Dashboard: NextPage<Props> = ({ items }) => {
 
             <div className="flex-col gap-2 text-white">
               <div className="text-sm">Average Rating</div>
-              <div className="text-3xl">1.1k+</div>
+              <div className="text-3xl">4</div>
             </div>
           </div>
 
@@ -44,7 +44,7 @@ const Dashboard: NextPage<Props> = ({ items }) => {
 
             <div className="flex-col gap-2 text-white">
               <div className="text-sm">Notifications</div>
-              <div className="text-3xl">1.1k+</div>
+              <div className="text-3xl">13</div>
             </div>
           </div>
 
@@ -53,7 +53,7 @@ const Dashboard: NextPage<Props> = ({ items }) => {
 
             <div className="flex-col gap-2 text-white">
               <div className="text-sm">Favorites</div>
-              <div className="text-3xl">16</div>
+              <div className="text-3xl">8</div>
             </div>
           </div>
         </div>
