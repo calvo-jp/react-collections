@@ -1,7 +1,0 @@
-{
-  "verbose": true,
-  "watch": ["src"],
-  "ext": ".ts",
-  "ignore": [],
-  "exec": "ts-node --require dotenv/config ./src/index.ts"
-}
