@@ -10,29 +10,16 @@ type UpdateInput = Partial<Pick<User, 'name' | 'email'>>;
 type CreateInput = Required<UpdateInput> & Record<'password', string>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
 
+interface Whereable {
+  id: number;
+  email: string;
+}
+
 const service = (database: Db) => {
   const collection = database.user;
 
-  const emailIsTaken = async (email: string) => {
-    const owner = await collection.count({
-      take: 1,
-      where: {
-        email: {
-          equals: email,
-          mode: 'insensitive',
-        },
-      },
-    });
-
-    return owner > 0;
-  };
-
   const create = async (data: CreateInput): Promise<User> => {
     const { name, email, password } = data;
-
-    if (await emailIsTaken(email)) {
-      // TODO
-    }
 
     const user = await collection.create({
       data: {
@@ -47,15 +34,19 @@ const service = (database: Db) => {
   };
 
   const read = {
-    async one(id: number): Promise<User | null> {
+    async by<T extends keyof Whereable>(key: T, value: Whereable[T]) {
       const user = await collection.findFirst({
-        where: { id },
+        where: { [key]: value },
         select: selectables.user,
       });
 
       if (!user) return null;
 
       return normalize.user(user);
+    },
+
+    async one(id: number): Promise<User | null> {
+      return await read.by('id', id);
     },
 
     async all(query?: PagingQuery): Promise<Paginated<User>> {
@@ -126,6 +117,7 @@ const service = (database: Db) => {
     };
   };
 
+  // TODO: return null if user does not exists
   const update = async (id: number, data: UpdateInput): Promise<User> => {
     const user = await collection.update({
       where: { id },
