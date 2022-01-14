@@ -67,3 +67,7 @@ dist
 # development
 .env
 .env.*
+
+
+# uploads folder
+src/uploads
