@@ -2,9 +2,7 @@ import type { RouteHandler } from 'fastify';
 import fp from 'fastify-plugin';
 
 // TODO: make this work properly and connect to redis
-export default fp((fastify, ops) => {
-  fastify.decorateRequest('user', undefined);
-
+export default fp(async (fastify, ops) => {
   fastify.decorate<RouteHandler>('authenticate', async (request, reply) => {
     try {
       await request.jwtVerify();
