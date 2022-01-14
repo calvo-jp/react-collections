@@ -22,18 +22,18 @@ model User {
 }
 
 model Recipe {
-  id           Int        @id @unique @default(autoincrement())
-  name         String
-  description  String
-  tags         String[]
-  avatar       String?
-  banner       String?
-  author       User       @relation(fields: [authorId], references: [id])
-  authorId     Int
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  reviews      Review[]
-  favorited_by Favorite[]
+  id          Int        @id @unique @default(autoincrement())
+  name        String
+  description String
+  tags        String[]
+  avatar      String?
+  banner      String?
+  author      User       @relation(fields: [authorId], references: [id])
+  authorId    Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  reviews     Review[]
+  hearts      Favorite[]
 }
 
 model Review {
