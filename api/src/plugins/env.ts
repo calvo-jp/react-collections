@@ -14,8 +14,6 @@ export default fp(async (fastify) => {
     schema: TConfig,
     dotenv: true,
   });
-
-  fastify.config.NODE_ENV;
 });
 
 declare module 'fastify' {
