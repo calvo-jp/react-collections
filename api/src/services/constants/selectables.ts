@@ -17,6 +17,7 @@ export const user = Prisma.validator<Prisma.UserSelect>()({
   name: true,
   email: true,
   avatar: true,
+  password: true,
   createdAt: true,
   updatedAt: true,
 });
