@@ -17,6 +17,7 @@ export default fp(async (fastify) => {
     dotenv: true,
   });
 
+  // adding config.DEBUG prop to easily check if NODE_ENV is set to dev
   fastify.addHook('onRegister', async (r) => {
     const rgx = /^(dev|development|test)$/gi;
     r.config.DEBUG = !!r.config.NODE_ENV && rgx.test(r.config.NODE_ENV);
