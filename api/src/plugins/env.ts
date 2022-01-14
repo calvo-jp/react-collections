@@ -6,8 +6,7 @@ const TConfig = Type.Strict(
   Type.Object({
     NODE_ENV: Type.Optional(Type.String()),
     ACCESS_TOKEN_SECRETKEY: Type.String(),
-    REDIS_HOST: Type.String(),
-    REDIS_PORT: Type.Number(),
+    REDIS_URL: Type.String(),
   })
 );
 
