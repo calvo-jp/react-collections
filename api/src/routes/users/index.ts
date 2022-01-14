@@ -1,6 +1,5 @@
 import { Static, Type } from '@sinclair/typebox';
 import { FastifyPluginAsync, RouteShorthandOptions } from 'fastify';
-import services from '../../services';
 import TPaginated from '../../shared/typebox/paginated';
 import TUser from '../../shared/typebox/user';
 
@@ -45,7 +44,7 @@ interface PatchRequest extends GetSingleRequest {
 }
 
 const plugin: FastifyPluginAsync = async (fastify) => {
-  const service = services.init(fastify.prisma).get('user');
+  const service = fastify.db.collection.user;
 
   const readAllOps: RouteShorthandOptions = {
     schema: {
@@ -87,9 +86,14 @@ const plugin: FastifyPluginAsync = async (fastify) => {
     },
   };
 
-  fastify.post<PostRequest>('/', createOps, async (req, reply) => {
-    const user = await service.create(req.body);
-    reply.code(201).send(user);
+  fastify.post<PostRequest>('/', createOps, async (request, reply) => {
+    try {
+      const user = await service.create(request.body);
+      reply.code(201).send(user);
+    } catch (error: any) {
+      reply.log.error(error);
+      reply.badRequest(error.message);
+    }
   });
 
   const updateOps: RouteShorthandOptions = {
@@ -103,9 +107,14 @@ const plugin: FastifyPluginAsync = async (fastify) => {
     preValidation: [fastify.authenticate],
   };
 
-  fastify.patch<PatchRequest>('/:id', updateOps, async (req, reply) => {
-    const user = await service.update(req.params.id, req.body);
-    reply.code(200).send(user);
+  fastify.patch<PatchRequest>('/:id', updateOps, async (request, reply) => {
+    try {
+      const user = await service.update(request.params.id, request.body);
+      reply.code(200).send(user);
+    } catch (error) {
+      reply.log.error(error);
+      reply.notFound();
+    }
   });
 };
 
