@@ -1,9 +1,10 @@
-import { Prisma, Recipe } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import selectables from './constants/selectables';
 import Db from './types/db';
 import Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
+type Recipe = ReturnType<typeof normalize.recipe>;
 type CreateInput = Pick<Recipe, 'name' | 'description'>;
 type UpdateInput = CreateInput;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
@@ -13,7 +14,7 @@ const service = (db: Db) => {
 
   const read = {
     /** read by id */
-    async one(id: number) {
+    async one(id: number): Promise<Recipe | null> {
       const recipe = await collection.findFirst({
         select: selectables.recipe,
         where: {
@@ -27,9 +28,7 @@ const service = (db: Db) => {
     },
 
     /** read all or search */
-    async all(
-      query?: PagingQuery
-    ): Promise<Paginated<ReturnType<typeof normalize.recipe>>> {
+    async all(query?: PagingQuery): Promise<Paginated<Recipe>> {
       const { page = 1, pageSize = 50, search } = query || {};
 
       if (search) return await search_({ page, pageSize, search });

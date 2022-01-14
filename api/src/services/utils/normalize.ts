@@ -1,10 +1,14 @@
+//
+// WARNING: Shitty codes ahead
+//
+
 import selectables from '../constants/selectables';
 import Db from '../types/db';
 
 //
 //  This will mutate every results fetched from db
 //  to match whatever http responses we want.
-//  This also keeps http responses consistent.
+//  This also helps keeping http responses consistent.
 //
 
 // TODO: maybe make these block even shorter

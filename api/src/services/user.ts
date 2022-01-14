@@ -1,15 +1,14 @@
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import selectables from './constants/selectables';
 import type Db from './types/db';
 import type Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
-type CreateInput = Pick<User, 'name' | 'email' | 'password'>;
-type UpdateInput = Partial<Pick<CreateInput, 'name' | 'email'>>;
+type User = ReturnType<typeof normalize.user>;
+type UpdateInput = Partial<Pick<User, 'name' | 'email'>>;
+type CreateInput = Required<UpdateInput> & Record<'password', string>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
-
-type IUser = ReturnType<typeof normalize.user>;
 
 const service = (database: Db) => {
   const collection = database.user;
@@ -28,7 +27,7 @@ const service = (database: Db) => {
     return owner > 0;
   };
 
-  const create = async (data: CreateInput): Promise<IUser> => {
+  const create = async (data: CreateInput): Promise<User> => {
     const { name, email, password } = data;
 
     if (await emailIsTaken(email)) {
@@ -48,7 +47,7 @@ const service = (database: Db) => {
   };
 
   const read = {
-    async one(id: number): Promise<IUser | null> {
+    async one(id: number): Promise<User | null> {
       const user = await collection.findFirst({
         where: { id },
         select: selectables.user,
@@ -59,7 +58,7 @@ const service = (database: Db) => {
       return normalize.user(user);
     },
 
-    async all(query?: PagingQuery): Promise<Paginated<IUser>> {
+    async all(query?: PagingQuery): Promise<Paginated<User>> {
       const { page = 1, pageSize = 50, search } = query || {};
 
       // fulltext search
@@ -127,7 +126,7 @@ const service = (database: Db) => {
     };
   };
 
-  const update = async (id: number, data: UpdateInput): Promise<IUser> => {
+  const update = async (id: number, data: UpdateInput): Promise<User> => {
     const user = await collection.update({
       where: { id },
       data,
