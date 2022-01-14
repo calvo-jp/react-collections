@@ -16,10 +16,16 @@ export default fp(async (fastify) => {
     schema: TConfig,
     dotenv: true,
   });
+
+  fastify.addHook('onRegister', async (request) => {
+    request.config.DEBUG =
+      !!request.config.NODE_ENV &&
+      /^(dev|development|test)$/gi.test(request.config.NODE_ENV);
+  });
 });
 
 declare module 'fastify' {
   interface FastifyInstance {
-    config: Static<typeof TConfig>;
+    config: Static<typeof TConfig> & Record<'DEBUG', boolean>;
   }
 }
