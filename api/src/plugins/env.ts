@@ -17,10 +17,9 @@ export default fp(async (fastify) => {
     dotenv: true,
   });
 
-  fastify.addHook('onRegister', async (request) => {
-    request.config.DEBUG =
-      !!request.config.NODE_ENV &&
-      /^(dev|development|test)$/gi.test(request.config.NODE_ENV);
+  fastify.addHook('onRegister', async (r) => {
+    const rgx = /^(dev|development|test)$/gi;
+    r.config.DEBUG = !!r.config.NODE_ENV && rgx.test(r.config.NODE_ENV);
   });
 });
 
