@@ -9,11 +9,7 @@ type User = ReturnType<typeof normalize.user>;
 type UpdateInput = Partial<Pick<User, 'name' | 'email'>>;
 type CreateInput = Required<UpdateInput> & Record<'password', string>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
-
-interface Whereable {
-  id: number;
-  email: string;
-}
+type Whereable = Pick<User, 'email' | 'id'>;
 
 const service = (database: Db) => {
   const collection = database.user;
