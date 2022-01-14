@@ -9,6 +9,8 @@ type CreateInput = Pick<User, 'name' | 'email' | 'password'>;
 type UpdateInput = Partial<Pick<CreateInput, 'name' | 'email'>>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
 
+type IUser = ReturnType<typeof normalize.user>;
+
 const service = (database: Db) => {
   const collection = database.user;
 
@@ -26,7 +28,7 @@ const service = (database: Db) => {
     return owner > 0;
   };
 
-  const create = async (data: CreateInput) => {
+  const create = async (data: CreateInput): Promise<IUser> => {
     const { name, email, password } = data;
 
     if (await emailIsTaken(email)) {
@@ -42,11 +44,11 @@ const service = (database: Db) => {
       select: selectables.user,
     });
 
-    return user;
+    return normalize.user(user);
   };
 
   const read = {
-    async one(id: number) {
+    async one(id: number): Promise<IUser | null> {
       const user = await collection.findFirst({
         where: { id },
         select: selectables.user,
@@ -57,9 +59,7 @@ const service = (database: Db) => {
       return normalize.user(user);
     },
 
-    async all(
-      query?: PagingQuery
-    ): Promise<Paginated<ReturnType<typeof normalize.user>>> {
+    async all(query?: PagingQuery): Promise<Paginated<IUser>> {
       const { page = 1, pageSize = 50, search } = query || {};
 
       // fulltext search
@@ -127,7 +127,7 @@ const service = (database: Db) => {
     };
   };
 
-  const update = async (id: number, data: UpdateInput) => {
+  const update = async (id: number, data: UpdateInput): Promise<IUser> => {
     const user = await collection.update({
       where: { id },
       data,
