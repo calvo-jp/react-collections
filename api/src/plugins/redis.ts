@@ -8,12 +8,6 @@ export default fp(async (fastify, ops) => {
 
   await redis.connect();
 
-  redis.on('error', async (error) => {
-    fastify.log.fatal(error);
-
-    await fastify.close();
-  });
-
   fastify.decorate('redis', redis);
   fastify.addHook('onClose', async (server) => {
     await server.redis.disconnect();
