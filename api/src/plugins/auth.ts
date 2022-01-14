@@ -6,8 +6,8 @@ export default fp(async (fastify, ops) => {
   fastify.decorate<RouteHandler>('authenticate', async (request, reply) => {
     try {
       await request.jwtVerify();
-    } catch (error) {
-      reply.log.error(error);
+    } catch (error: any) {
+      if (fastify.config.DEBUG) reply.log.error(error.message);
       reply.unauthorized();
     }
   });
