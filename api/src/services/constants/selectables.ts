@@ -6,6 +6,14 @@ import { Prisma } from '@prisma/client';
 //
 
 export const user = Prisma.validator<Prisma.UserSelect>()({
+  id: true,
+  name: true,
+  email: true,
+  emailVerifiedAt: true,
+  avatar: true,
+  password: true,
+  createdAt: true,
+  updatedAt: true,
   _count: {
     select: {
       recipes: true,
@@ -13,14 +21,6 @@ export const user = Prisma.validator<Prisma.UserSelect>()({
       favorites: true,
     },
   },
-  id: true,
-  name: true,
-  email: true,
-  avatar: true,
-  password: true,
-  createdAt: true,
-  updatedAt: true,
-  emailVerifiedAt: true,
 });
 
 export const recipe = Prisma.validator<Prisma.RecipeSelect>()({
