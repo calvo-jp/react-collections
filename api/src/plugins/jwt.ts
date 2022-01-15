@@ -1,3 +1,4 @@
+import type { RouteHandler } from 'fastify';
 import jwt from 'fastify-jwt';
 import fp from 'fastify-plugin';
 
@@ -29,6 +30,14 @@ export default fp(async (fastify, ops) => {
       badRequestErrorMessage: 'Missing or invalid token',
     },
   });
+
+  fastify.decorate<RouteHandler>('authenticate', async (request, reply) => {
+    try {
+      await request.jwtVerify();
+    } catch (error: any) {
+      reply.unauthorized(error.message);
+    }
+  });
 });
 
 declare module 'fastify-jwt' {
@@ -42,6 +51,6 @@ declare module 'fastify-jwt' {
 
 declare module 'fastify' {
   interface FastifyInstance {
-    authenticate: any;
+    authenticate: RouteHandler;
   }
 }
