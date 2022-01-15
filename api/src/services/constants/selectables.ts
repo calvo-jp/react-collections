@@ -20,6 +20,7 @@ export const user = Prisma.validator<Prisma.UserSelect>()({
   password: true,
   createdAt: true,
   updatedAt: true,
+  emailVerifiedAt: true,
 });
 
 export const recipe = Prisma.validator<Prisma.RecipeSelect>()({
