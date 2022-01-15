@@ -11,7 +11,7 @@ export default fp(async (fastify, ops) => {
     secret: fastify.config.ACCESS_TOKEN_SECRETKEY,
     sign: {
       algorithm: 'HS256',
-      expiresIn: '14days',
+      expiresIn: '14 days',
     },
     verify: {
       algorithms: ['HS256'],
