@@ -31,7 +31,7 @@ interface LogoutRequest {
   Querystring: Static<typeof THasToken>;
 }
 
-const plugin: FastifyPluginAsync = async (fastify, ops) => {
+const router: FastifyPluginAsync = async (fastify, ops) => {
   const collection = fastify.db.collection.user;
 
   const loginOps: RouteShorthandOptions = {
@@ -115,4 +115,4 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
   });
 };
 
-export default plugin;
+export default router;

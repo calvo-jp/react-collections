@@ -43,7 +43,7 @@ interface PatchRequest extends GetSingleRequest {
   Body: Static<typeof TUpdateInput>;
 }
 
-const plugin: FastifyPluginAsync = async (fastify) => {
+const router: FastifyPluginAsync = async (fastify) => {
   const service = fastify.db.collection.user;
 
   const readAllOps: RouteShorthandOptions = {
@@ -117,4 +117,4 @@ const plugin: FastifyPluginAsync = async (fastify) => {
   });
 };
 
-export default plugin;
+export default router;
