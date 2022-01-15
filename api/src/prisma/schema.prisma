@@ -9,16 +9,19 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @unique @default(autoincrement())
-  name      String
-  email     String     @unique
-  avatar    String?
-  password  String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  recipes   Recipe[]
-  reviews   Review[]
-  favorites Favorite[]
+  id              Int        @id @unique @default(autoincrement())
+  name            String
+  email           String     @unique
+  emailVerifiedAt DateTime
+  avatar          String?
+  password        String
+  createdAt       DateTime   @default(now()) @db.Timestamptz()
+  updatedAt       DateTime   @updatedAt @db.Timestamptz()
+  recipes         Recipe[]
+  reviews         Review[]
+  favorites       Favorite[]
+
+  @@map(name: "users")
 }
 
 model Recipe {
@@ -28,30 +31,37 @@ model Recipe {
   tags        String[]
   avatar      String?
   banner      String?
-  author      User       @relation(fields: [authorId], references: [id])
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    Int
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime   @default(now()) @db.Timestamptz()
+  updatedAt   DateTime   @updatedAt @db.Timestamptz()
   reviews     Review[]
   hearts      Favorite[]
+
+  @@map(name: "recipes")
 }
 
 model Review {
   id        Int      @id @unique @default(autoincrement())
   body      String
   rate      Int
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
   recipe    Recipe   @relation(fields: [recipeId], references: [id])
   authorId  Int
   recipeId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+
+  @@map(name: "reviews")
 }
 
 model Favorite {
-  id       Int     @id @unique @default(autoincrement())
-  recipe   Recipe? @relation(fields: [recipeId], references: [id])
-  recipeId Int?
-  user     User    @relation(fields: [userId], references: [id])
-  userId   Int
+  id        Int      @id @unique @default(autoincrement())
+  recipe    Recipe?  @relation(fields: [recipeId], references: [id], onDelete: SetNull)
+  recipeId  Int?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    Int
+  createdAt DateTime @default(now()) @db.Timestamptz()
+
+  @@map(name: "favorites")
 }
