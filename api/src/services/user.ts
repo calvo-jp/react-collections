@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
+import { hash } from 'bcrypt';
 import selectables from './constants/selectables';
 import type Db from './types/db';
 import type Paginated from './types/paginated';
@@ -21,7 +21,7 @@ const service = (database: Db) => {
       data: {
         name,
         email,
-        password: await bcrypt.hash(password, 8),
+        password: await hash(password, 8),
       },
       select: selectables.user,
     });
