@@ -31,6 +31,7 @@ model Recipe {
   tags        String[]
   avatar      String?
   banner      String?
+  // once author deletes thier account, thier recipes will be deleted, too.
   author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    Int
   createdAt   DateTime   @default(now()) @db.Timestamptz()
@@ -45,9 +46,11 @@ model Review {
   id        Int      @id @unique @default(autoincrement())
   body      String
   rate      Int
+  // reviews from author who deleted thier account are still valid
   author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  recipe    Recipe   @relation(fields: [recipeId], references: [id])
-  authorId  Int
+  authorId  Int?
+  // reviews related to a deleted recipes will be removed
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId  Int
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
@@ -57,10 +60,13 @@ model Review {
 
 model Favorite {
   id        Int      @id @unique @default(autoincrement())
+  // hearts from users who deleted thier accounts no longer counts
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  // users should see something like "Content no longer available"
+  // incase one thier favorited recipes has been deleted
   recipe    Recipe?  @relation(fields: [recipeId], references: [id], onDelete: SetNull)
   recipeId  Int?
-  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId    Int
   createdAt DateTime @default(now()) @db.Timestamptz()
 
   @@map(name: "favorites")
