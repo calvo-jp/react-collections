@@ -115,6 +115,16 @@ const router: FastifyPluginAsync = async (fastify) => {
       reply.notFound();
     }
   });
+
+  // TODO
+  fastify.put('/:id/avatar', async (request, reply) => {
+    reply.serviceUnavailable();
+  });
+
+  // TODO
+  fastify.delete('/:id/avatar', async (request, reply) => {
+    reply.serviceUnavailable();
+  });
 };
 
 export default router;
