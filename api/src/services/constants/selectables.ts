@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 //
-//  This constants will keep our http responses consistent
+//  These constants will keep our http responses consistent
 //  across different endpoints.
 //
 
