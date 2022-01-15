@@ -11,13 +11,11 @@ export default fp(async (fastify, ops) => {
     secret: fastify.config.ACCESS_TOKEN_SECRETKEY,
     sign: {
       algorithm: 'HS256',
-      expiresIn: 60 * 60 * 24 * 14, // 14days
-      notBefore: 3, // 3sec
+      expiresIn: '14days',
     },
     verify: {
       algorithms: ['HS256'],
       cache: true,
-      maxAge: 1000, // 1sec
     },
     trusted: async (request, payload) => {
       return !(await blacklisted(payload.tokenId));
