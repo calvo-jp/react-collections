@@ -19,10 +19,12 @@ const recipeFn = async (db: Db) =>
 
 // TODO: add default avatar
 const user = (data: NonNullable<Awaited<ReturnType<typeof userFn>>>) => {
-  const { _count: summary, ...etc } = data;
+  const { _count: summary, emailVerifiedAt, ...etc } = data;
 
   return {
     summary,
+    emailVerified: !!emailVerifiedAt,
+    emailVerifiedAt,
     ...etc,
   };
 };
