@@ -3,10 +3,10 @@ import { FastifyPluginAsync, RouteShorthandOptions } from 'fastify';
 import TPaginated from '../../shared/typebox/paginated';
 import TUser from '../../shared/typebox/user';
 
-const TUpdateInput = Type.Pick(TUser, ['name', 'email']);
+const TUpdateInput = Type.Partial(Type.Pick(TUser, ['name', 'email']));
 
 const TCreateInput = Type.Intersect([
-  TUpdateInput,
+  Type.Required(TUpdateInput),
   Type.Object({
     password: Type.String({
       minLength: 5,
@@ -91,7 +91,7 @@ const plugin: FastifyPluginAsync = async (fastify) => {
       const user = await service.create(request.body);
       reply.code(201).send(user);
     } catch (error: any) {
-      reply.log.error(error);
+      if (fastify.config.DEBUG) reply.log.error(error);
       reply.badRequest(error.message);
     }
   });
@@ -104,7 +104,6 @@ const plugin: FastifyPluginAsync = async (fastify) => {
         200: TUser,
       },
     },
-    preValidation: [fastify.authenticate],
   };
 
   fastify.patch<PatchRequest>('/:id', updateOps, async (request, reply) => {
@@ -112,7 +111,7 @@ const plugin: FastifyPluginAsync = async (fastify) => {
       const user = await service.update(request.params.id, request.body);
       reply.code(200).send(user);
     } catch (error) {
-      reply.log.error(error);
+      if (fastify.config.DEBUG) reply.log.error(error);
       reply.notFound();
     }
   });
