@@ -4,8 +4,11 @@ import * as path from 'node:path';
 
 export default fp(async (fastify, ops) => {
   fastify.register(static_, {
+    root: path.resolve('src/uploads'),
     prefix: '/images',
     index: false,
-    root: path.resolve('src/uploads'),
+    decorateReply: false,
+    dotfiles: 'ignore',
+    list: fastify.config.DEBUG,
   });
 });
