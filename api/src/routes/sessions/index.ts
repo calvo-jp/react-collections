@@ -75,14 +75,26 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
 
   fastify.delete<LogoutRequest>('/', logoutOps, async (request, reply) => {
     const payload = request.user;
-    const expiresAt = payload.exp as number;
+    const issuedAt = new Date(payload.iat * 1000);
+    const expiresAt = new Date(payload.exp * 1000);
+    /** Current date and time */
+    const currentTime = new Date();
+    /** remaining time until token expires */
+    const remainingTime = (expiresAt.getTime() - currentTime.getTime()) / 1000;
 
-    // FIXME: get remaining time before token expires
-    const blacklistDuration = Date.now() - expiresAt;
+    if (fastify.config.DEBUG) {
+      console.dir({
+        issuedAt,
+        expiresAt,
+        currentTime,
+        remainingTime,
+        remainingTimeInDays: remainingTime / (60 * 60 * 24),
+      });
+    }
 
     fastify.redis.setEx(
       payload.tokenId,
-      blacklistDuration,
+      Math.ceil(remainingTime),
       JSON.stringify(payload)
     );
 
