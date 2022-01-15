@@ -15,14 +15,10 @@ const service = (database: Db) => {
   const collection = database.user;
 
   const create = async (data: CreateInput): Promise<User> => {
-    const { name, email, password } = data;
+    data.password = await hash(data.password, 8);
 
     const user = await collection.create({
-      data: {
-        name,
-        email,
-        password: await hash(password, 8),
-      },
+      data,
       select: selectables.user,
     });
 
@@ -41,14 +37,12 @@ const service = (database: Db) => {
       return normalize.user(user);
     },
 
-    async one(id: number): Promise<User | null> {
-      return await read.by('id', id);
-    },
+    /** read by id */
+    one: async (id: number): Promise<User | null> => await read.by('id', id),
 
     async all(query?: PagingQuery): Promise<Paginated<User>> {
       const { page = 1, pageSize = 50, search } = query || {};
 
-      // fulltext search
       if (search) return await search_({ page, pageSize, search });
 
       const users = await collection.findMany({
