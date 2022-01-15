@@ -26,19 +26,20 @@ const service = (database: Db) => {
   };
 
   const read = {
-    async by<T extends keyof Whereable>(key: T, value: Whereable[T]) {
+    async by<Key extends keyof Whereable>(
+      key: Key,
+      value: Whereable[Key]
+    ): Promise<User | null> {
       const user = await collection.findFirst({
         where: { [key]: value },
         select: selectables.user,
       });
 
-      if (!user) return null;
-
-      return normalize.user(user);
+      return user ? normalize.user(user) : null;
     },
 
     /** read by id */
-    one: async (id: number): Promise<User | null> => await read.by('id', id),
+    one: async (id: number) => await read.by('id', id),
 
     async all(query?: PagingQuery): Promise<Paginated<User>> {
       const { page = 1, pageSize = 50, search } = query || {};
@@ -122,11 +123,18 @@ const service = (database: Db) => {
     await collection.delete({ where: { id } });
   };
 
+  // TODO: make these work
+  const avatar = {
+    async upsert() {},
+    async delete() {},
+  };
+
   return {
     read,
     create,
     update,
     delete: remove,
+    avatar,
   };
 };
 
