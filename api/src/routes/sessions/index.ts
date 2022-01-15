@@ -75,13 +75,22 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
 
   fastify.delete<LogoutRequest>('/', logoutOps, async (request, reply) => {
     const payload = request.user;
+
+    // most if not all jwt lib uses epoch time,
+    // so inorder to get the actual time
+    // we need to multiply stored values to 1000.
+    // we are also converting them to a Date object for convenience purposes
     const issuedAt = new Date(payload.iat * 1000);
     const expiresAt = new Date(payload.exp * 1000);
+
     /** Current date and time */
     const currentTime = new Date();
+
     /** remaining time until token expires */
     const remainingTime = (expiresAt.getTime() - currentTime.getTime()) / 1000;
 
+    // better monitor them on dev mode
+    // so we could see if something's not working
     if (fastify.config.DEBUG) {
       console.dir({
         issuedAt,
@@ -94,6 +103,7 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
 
     fastify.redis.setEx(
       payload.tokenId,
+      // Math.ceil to ensure token expires before it gets removed.
       Math.ceil(remainingTime),
       JSON.stringify(payload)
     );
