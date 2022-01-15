@@ -17,9 +17,7 @@ export default fp(async (fastify, ops) => {
       algorithms: ['HS256'],
       cache: !fastify.config.DEBUG,
     },
-    trusted: async (request, payload) => {
-      return !(await blacklisted(payload.tokenId));
-    },
+    trusted: async (_, payload) => !(await blacklisted(payload.tokenId)),
     messages: {
       authorizationTokenExpiredMessage: 'Expired token',
       noAuthorizationInHeaderMessage: 'Invalid token',
