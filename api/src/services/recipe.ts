@@ -16,15 +16,11 @@ const service = (db: Db) => {
     /** read by id */
     async one(id: number): Promise<Recipe | null> {
       const recipe = await collection.findFirst({
+        where: { id },
         select: selectables.recipe,
-        where: {
-          id,
-        },
       });
 
-      if (!recipe) return null;
-
-      return normalize.recipe(recipe);
+      return recipe ? normalize.recipe(recipe) : null;
     },
 
     /** read all or search */
@@ -101,12 +97,29 @@ const service = (db: Db) => {
   };
 
   const create = (data: CreateInput) => {};
+  // TODO: make these work
   const update = (id: number, data: UpdateInput) => {};
+  const remove = (id: number) => {};
+
+  // TODO: make these work
+  const banner = {
+    async upsert(id: number) {},
+    async delete(id: number) {},
+  };
+
+  // TODO: make these work
+  const avatar = {
+    async upsert(id: number) {},
+    async delete(id: number) {},
+  };
 
   return {
     read,
     create,
     update,
+    delete: remove,
+    banner,
+    avatar,
   };
 };
 
