@@ -15,7 +15,7 @@ export default fp(async (fastify, ops) => {
     },
     verify: {
       algorithms: ['HS256'],
-      cache: true,
+      cache: !fastify.config.DEBUG,
     },
     trusted: async (request, payload) => {
       return !(await blacklisted(payload.tokenId));
