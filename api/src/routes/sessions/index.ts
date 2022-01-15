@@ -1,6 +1,6 @@
 import { Static, Type } from '@sinclair/typebox';
 import { compare } from 'bcrypt';
-import { FastifyPluginAsync, RouteShorthandOptions } from 'fastify';
+import type { FastifyPluginAsync, RouteShorthandOptions } from 'fastify';
 import { v4 as uuid } from 'uuid';
 import TUser from '../../shared/typebox/user';
 
@@ -76,35 +76,38 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
   fastify.delete<LogoutRequest>('/', logoutOps, async (request, reply) => {
     const payload = request.user;
 
+    const iat: number = payload.iat;
+    const exp: number = payload.exp;
+
     // most if not all jwt lib uses epoch time,
     // so inorder to get the actual time
     // we need to multiply stored values to 1000.
     // we are also converting them to a Date object for convenience purposes
-    const issuedAt = new Date(payload.iat * 1000);
-    const expiresAt = new Date(payload.exp * 1000);
+    const actualIAt = new Date(iat * 1000);
+    const actualExp = new Date(exp * 1000);
 
     /** Current date and time */
-    const currentTime = new Date();
+    const now = new Date();
 
-    /** remaining time until token expires */
-    const remainingTime = (expiresAt.getTime() - currentTime.getTime()) / 1000;
+    /** remaining time in milliseconds until token expires */
+    const leftover = (actualExp.getTime() - now.getTime()) / 1000;
 
     // better monitor them on dev mode
     // so we could see if something's not working
     if (fastify.config.DEBUG) {
       console.dir({
-        issuedAt,
-        expiresAt,
-        currentTime,
-        remainingTime,
-        remainingTimeInDays: remainingTime / (60 * 60 * 24),
+        'date today': now,
+        'date issued': actualIAt,
+        'date expires': actualExp,
+        'remaining time': leftover,
+        'remaining time in days': leftover / (60 * 60 * 24),
       });
     }
 
     fastify.redis.setEx(
       payload.tokenId,
       // Math.ceil to ensure token expires before it gets removed.
-      Math.ceil(remainingTime),
+      Math.ceil(leftover),
       JSON.stringify(payload)
     );
 
