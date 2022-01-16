@@ -20,7 +20,7 @@ export default fp(async (fastify, ops) => {
     trusted: async (_, payload) => !(await blacklisted(payload.tokenId)),
     messages: {
       authorizationTokenExpiredMessage: 'Expired token',
-      noAuthorizationInHeaderMessage: 'Invalid token',
+      noAuthorizationInHeaderMessage: 'Missing token',
       authorizationTokenUntrusted: 'Invalid token',
       authorizationTokenInvalid: 'Invalid token',
       badRequestErrorMessage: 'Missing or invalid token',
