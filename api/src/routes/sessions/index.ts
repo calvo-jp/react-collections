@@ -106,7 +106,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     }
 
     fastify.redis.setEx(
-      payload.__id__,
+      payload.tokenId,
       // Math.ceil to ensure token expires before it gets removed.
       Math.ceil(leftover),
       JSON.stringify(payload)
