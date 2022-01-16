@@ -1,7 +1,9 @@
 import selectables from './constants/selectables';
 import Db from './types/db';
 import Paginated from './types/paginated';
+import normalize from './utils/normalize';
 
+type Review = ReturnType<typeof normalize.review>;
 type PagingQuery = Pick<Paginated, 'page' | 'pageSize'>;
 
 interface CreateInput {
@@ -17,45 +19,57 @@ const service = (db: Db) => {
   const collection = db.review;
 
   const read = {
-    async one(id: number) {
-      const review = collection.findFirst({
+    async one(id: number): Promise<Review | null> {
+      const review = await collection.findFirst({
         where: { id },
         select: selectables.review,
       });
 
-      return review;
+      if (!review) return null;
+
+      return normalize.review(review);
     },
 
-    async all(query?: PagingQuery) {
+    async all(query?: PagingQuery): Promise<Paginated<Review>> {
       const { page = 1, pageSize = 50 } = query || {};
 
-      const review = db.review.findFirst({
+      const reviews = await collection.findMany({
         select: selectables.review,
         skip: pageSize * (page - 1),
         take: pageSize,
       });
 
-      return review;
+      const totalRows = await collection.count();
+      const hasNext = totalRows - pageSize * page > 0;
+      const rows = reviews.map(normalize.review);
+
+      return {
+        page,
+        pageSize,
+        rows,
+        totalRows,
+        hasNext,
+      };
     },
   };
 
-  const create = async (data: CreateInput) => {
+  const create = async (data: CreateInput): Promise<Review> => {
     const review = await collection.create({
       data,
       select: selectables.review,
     });
 
-    return review;
+    return normalize.review(review);
   };
 
-  const update = async (id: number, data: UpdateInput) => {
+  const update = async (id: number, data: UpdateInput): Promise<Review> => {
     const review = await collection.update({
       data,
       where: { id },
       select: selectables.review,
     });
 
-    return review;
+    return normalize.review(review);
   };
 
   const remove = async (id: number) => {

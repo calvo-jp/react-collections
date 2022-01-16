@@ -16,9 +16,13 @@ const userFn = async (db: Db) =>
   await db.user.findFirst({ select: selectables.user });
 const recipeFn = async (db: Db) =>
   await db.recipe.findFirst({ select: selectables.recipe });
+const reviewFn = async (db: Db) =>
+  await db.review.findFirst({ select: selectables.review });
 
 // TODO: add default avatar
-const user = (data: NonNullable<Awaited<ReturnType<typeof userFn>>>) => {
+const normalizeUser = (
+  data: NonNullable<Awaited<ReturnType<typeof userFn>>>
+) => {
   const { _count: summary, emailVerifiedAt, ...etc } = data;
 
   return {
@@ -30,11 +34,13 @@ const user = (data: NonNullable<Awaited<ReturnType<typeof userFn>>>) => {
 };
 
 // TODO: add default banner and avatar
-const recipe = (data: NonNullable<Awaited<ReturnType<typeof recipeFn>>>) => {
+const normalizeRecipe = (
+  data: NonNullable<Awaited<ReturnType<typeof recipeFn>>>
+) => {
   const { _count, reviews, author, ...etc } = data;
 
   return {
-    author: user(author),
+    author: normalizeUser(author),
     summary: {
       ..._count,
       // manually calculating average instead of _avg to lessen db queries
@@ -46,9 +52,22 @@ const recipe = (data: NonNullable<Awaited<ReturnType<typeof recipeFn>>>) => {
   };
 };
 
+const normalizeReview = (
+  data: NonNullable<Awaited<ReturnType<typeof reviewFn>>>
+) => {
+  const { author, recipe, ...etc } = data;
+
+  return {
+    author: author ? normalizeUser(author) : null,
+    recipe: normalizeRecipe(recipe),
+    ...etc,
+  };
+};
+
 const normalize = {
-  user,
-  recipe,
+  user: normalizeUser,
+  recipe: normalizeRecipe,
+  review: normalizeReview,
 };
 
 export default normalize;
