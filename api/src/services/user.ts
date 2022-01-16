@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { hash } from 'bcrypt';
-import selectables, { user } from './constants/selectables';
+import selectables from './constants/selectables';
 import type Db from './types/db';
 import type Paginated from './types/paginated';
 import normalize from './utils/normalize';
