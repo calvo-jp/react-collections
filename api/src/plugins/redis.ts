@@ -4,11 +4,11 @@ import { createClient, RedisClientType, RedisScripts } from 'redis';
 export default fp(
   async (fastify, ops) => {
     const redis = createClient({ url: fastify.config.REDIS_URL });
-
     await redis.connect();
 
-    fastify.decorate('redis', redis);
-    fastify.addHook('onClose', async (server) => {
+    if (fastify.config.DEBUG) fastify.log.info('Connected to redis');
+
+    fastify.decorate('redis', redis).addHook('onClose', async (server) => {
       await server.redis.disconnect();
     });
   },
