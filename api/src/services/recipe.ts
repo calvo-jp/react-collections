@@ -5,7 +5,12 @@ import Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
 type Recipe = ReturnType<typeof normalize.recipe>;
-type CreateInput = Pick<Recipe, 'name' | 'description'>;
+interface CreateInput {
+  name: string;
+  description: string;
+  authorId: number;
+}
+
 type UpdateInput = CreateInput;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
 
@@ -96,10 +101,28 @@ const service = (db: Db) => {
     };
   };
 
-  const create = (data: CreateInput) => {};
-  // TODO: make these work
-  const update = (id: number, data: UpdateInput) => {};
-  const remove = (id: number) => {};
+  const create = async (data: CreateInput): Promise<Recipe> => {
+    const recipe = await collection.create({
+      data,
+      select: selectables.recipe,
+    });
+
+    return normalize.recipe(recipe);
+  };
+
+  const update = async (id: number, data: UpdateInput) => {
+    const recipe = await collection.update({
+      data,
+      where: { id },
+      select: selectables.recipe,
+    });
+
+    return normalize.recipe(recipe);
+  };
+
+  const remove = async (id: number) => {
+    await collection.delete({ where: { id } });
+  };
 
   // TODO: make these work
   const banner = {
