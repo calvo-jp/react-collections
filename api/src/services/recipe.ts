@@ -6,23 +6,28 @@ import normalize from './utils/normalize';
 
 type Recipe = ReturnType<typeof normalize.recipe>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
-type CreateInput = Pick<Recipe, 'name' | 'description'> & { authorId: number };
+type CreateInput = Pick<Recipe, 'name' | 'description' | 'authorId'>;
 type UpdateInput = Partial<
   Omit<CreateInput, 'authorId'> & Pick<Recipe, 'avatar' | 'banner'>
 >;
+type Wherable = Pick<Recipe, 'id' | 'authorId'>;
 
 const service = (db: Db) => {
   const collection = db.recipe;
 
   const read = {
-    /** read by id */
-    async one(id: number): Promise<Recipe | null> {
+    async by<T extends keyof Wherable>(key: T, value: Wherable[T]) {
       const recipe = await collection.findFirst({
-        where: { id },
+        where: { [key]: value },
         select: selectables.recipe,
       });
 
       return recipe ? normalize.recipe(recipe) : null;
+    },
+
+    /** read by id */
+    async one(id: number): Promise<Recipe | null> {
+      return await read.by('id', id);
     },
 
     /** read all or search */
