@@ -31,6 +31,7 @@ const recipe = Prisma.validator<Prisma.RecipeSelect>()({
   avatar: true,
   createdAt: true,
   updatedAt: true,
+  authorId: true,
   author: {
     select: user,
   },
@@ -53,9 +54,11 @@ const review = Prisma.validator<Prisma.ReviewSelect>()({
   rate: true,
   createdAt: true,
   updatedAt: true,
+  authorId: true,
   author: {
     select: user,
   },
+  recipeId: true,
   recipe: {
     select: recipe,
   },
