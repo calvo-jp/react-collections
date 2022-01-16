@@ -4,9 +4,7 @@ import fp from 'fastify-plugin';
 
 export default fp(
   async (fastify, ops) => {
-    const blacklisted = async (id: string) => {
-      return !!(await fastify.redis.get(id));
-    };
+    const blacklisted = async (id: string) => !!(await fastify.redis.get(id));
 
     fastify.register(jwt, {
       secret: fastify.config.ACCESS_TOKEN_SECRETKEY,
