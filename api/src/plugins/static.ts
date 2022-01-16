@@ -1,10 +1,9 @@
 import fp from 'fastify-plugin';
 import static_ from 'fastify-static';
-import * as path from 'node:path';
 
 export default fp(async (fastify, ops) => {
   fastify.register(static_, {
-    root: path.resolve('src/uploads'),
+    root: fastify.config.UPLOADS_DIR,
     prefix: '/images',
     index: false,
     decorateReply: false,
