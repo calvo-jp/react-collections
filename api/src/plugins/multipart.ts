@@ -6,7 +6,6 @@ export default fp(async (fastify, ops) => {
     limits: {
       files: 1,
       fileSize: 1024 * 1024 * 15, // 15mb
-      fields: 0,
     },
     throwFileSizeLimit: true,
   });
