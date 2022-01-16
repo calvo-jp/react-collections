@@ -1,5 +1,5 @@
 import { Static, Type } from '@sinclair/typebox';
-import env from 'fastify-env';
+import dotenv from 'fastify-env';
 import fp from 'fastify-plugin';
 import * as fs from 'fs';
 import * as path from 'node:path';
@@ -21,7 +21,7 @@ const TConfig = Type.Strict(
 
 export default fp(
   async (fastify) => {
-    fastify.register(env, {
+    fastify.register(dotenv, {
       schema: TConfig,
       dotenv: true,
     });
