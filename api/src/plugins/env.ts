@@ -1,6 +1,7 @@
 import { Static, Type } from '@sinclair/typebox';
 import env from 'fastify-env';
 import fp from 'fastify-plugin';
+import * as path from 'node:path';
 
 const TConfig = Type.Strict(
   Type.Object({
@@ -17,14 +18,21 @@ export default fp(async (fastify) => {
   });
 
   // adding config.DEBUG prop to easily check if NODE_ENV is set to dev
-  fastify.addHook('onRegister', async (r) => {
-    const rgx = /^(dev|development|test)$/gi;
-    r.config.DEBUG = !!r.config.NODE_ENV && rgx.test(r.config.NODE_ENV);
+  fastify.addHook('onRegister', async (request) => {
+    request.config.UPLOADS_DIR = path.resolve('src/uploads');
+
+    if (request.config.NODE_ENV) {
+      const pattern = /^(dev|development|test)$/i;
+      request.config.DEBUG = pattern.test(request.config.NODE_ENV);
+    }
   });
 });
 
 declare module 'fastify' {
   interface FastifyInstance {
-    config: Static<typeof TConfig> & Record<'DEBUG', boolean>;
+    config: Static<typeof TConfig> & {
+      DEBUG?: boolean;
+      UPLOADS_DIR: string;
+    };
   }
 }
