@@ -2,11 +2,18 @@ import { Static, Type } from '@sinclair/typebox';
 import env from 'fastify-env';
 import fp from 'fastify-plugin';
 
+// prettier-ignore
 const TConfig = Type.Strict(
   Type.Object({
+    NODE_ENV: Type.Optional(
+      Type.Union([
+        Type.Literal('production'), 
+        Type.Literal('development')
+      ])
+    ),
+    DEBUG: Type.Optional(Type.Boolean()),
     ACCESS_TOKEN_SECRETKEY: Type.String(),
     REDIS_URL: Type.String(),
-    NODE_ENV: Type.Optional(Type.String()),
     TZ: Type.String(),
   })
 );
@@ -16,20 +23,10 @@ export default fp(async (fastify, ops) => {
     schema: TConfig,
     dotenv: true,
   });
-
-  // adding config.DEBUG prop to easily check if NODE_ENV is set to dev
-  fastify.addHook('onRegister', async (request) => {
-    if (request.config.NODE_ENV) {
-      const pattern = /^(dev|development|test)$/i;
-      request.config.DEBUG = pattern.test(request.config.NODE_ENV);
-    }
-  });
 });
 
 declare module 'fastify' {
   interface FastifyInstance {
-    config: Static<typeof TConfig> & {
-      DEBUG?: boolean;
-    };
+    config: Static<typeof TConfig>;
   }
 }
