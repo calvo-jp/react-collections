@@ -5,14 +5,10 @@ import Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
 type Recipe = ReturnType<typeof normalize.recipe>;
-
-type CreateInput = {
-  name: string;
-  description: string;
-  authorId: number;
-};
-
-type UpdateInput = CreateInput;
+type CreateInput = Pick<Recipe, 'name' | 'description'> & { authorId: number };
+type UpdateInput = Partial<
+  Omit<CreateInput, 'authorId'> & Pick<Recipe, 'avatar' | 'banner'>
+>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
 
 const service = (db: Db) => {
@@ -125,16 +121,22 @@ const service = (db: Db) => {
     await collection.delete({ where: { id } });
   };
 
-  // TODO: make these work
   const banner = {
-    async upsert(id: number) {},
-    async delete(id: number) {},
+    async set(id: number, banner: string) {
+      return await update(id, { banner });
+    },
+    async unset(id: number) {
+      return await update(id, { banner: null });
+    },
   };
 
-  // TODO: make these work
   const avatar = {
-    async upsert(id: number) {},
-    async delete(id: number) {},
+    async set(id: number, avatar: string) {
+      return await update(id, { avatar });
+    },
+    async unset(id: number) {
+      return await update(id, { avatar: null });
+    },
   };
 
   return {
