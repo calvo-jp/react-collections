@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify';
 
-const root: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
+const index: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get('/', async (request, reply) => {
     reply.code(200).send({
       title: 'recipes',
@@ -10,9 +10,10 @@ const root: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         name: 'jp calvo',
         email: 'calvojp92@gmail.com',
         github: 'https://github.com/calvo-jp',
+        twitter: 'https://twitter.com/calvo__jp',
       },
     });
   });
 };
 
-export default root;
+export default index;
