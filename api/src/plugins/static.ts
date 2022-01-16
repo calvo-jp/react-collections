@@ -10,5 +10,6 @@ export default fp(async (fastify, ops) => {
     decorateReply: false,
     dotfiles: 'ignore',
     list: fastify.config.DEBUG,
+    prefixAvoidTrailingSlash: true,
   });
 });
