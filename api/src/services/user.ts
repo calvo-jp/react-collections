@@ -6,8 +6,10 @@ import type Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
 type User = ReturnType<typeof normalize.user>;
-type UpdateInput = Partial<Pick<User, 'name' | 'email' | 'avatar'>>;
-type CreateInput = Required<UpdateInput> & Record<'password', string>;
+type CreateInput = Pick<User, 'name' | 'email' | 'password'>;
+type UpdateInput = Partial<
+  Omit<CreateInput, 'password'> & Pick<User, 'avatar'>
+>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
 type Whereable = Pick<User, 'email' | 'id'>;
 
