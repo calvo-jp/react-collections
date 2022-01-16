@@ -3,8 +3,8 @@ import jwt from 'fastify-jwt';
 import fp from 'fastify-plugin';
 
 export default fp(async (fastify, ops) => {
-  const blacklisted = async (tokenId: string) => {
-    return !!(await fastify.redis.get(tokenId));
+  const blacklisted = async (id: string) => {
+    return !!(await fastify.redis.get(id));
   };
 
   fastify.register(jwt, {
@@ -40,6 +40,7 @@ declare module 'fastify-jwt' {
   interface FastifyJWT {
     payload: {
       tokenId: string;
+      version: string;
       [key: string]: any;
     };
   }
