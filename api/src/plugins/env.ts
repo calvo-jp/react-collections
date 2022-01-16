@@ -4,9 +4,9 @@ import fp from 'fastify-plugin';
 import * as fs from 'fs';
 import * as path from 'node:path';
 
-// prettier-ignore
 const TConfig = Type.Strict(
   Type.Object({
+    // prettier-ignore
     NODE_ENV: Type.Optional(
       Type.Union([
         Type.Literal('production'), 
@@ -29,21 +29,30 @@ export default fp(
     // calculated config or config based on .env vars
     fastify.register(async (server) => {
       const debug = server.config.NODE_ENV === 'development';
-      server.config.DEBUG = debug;
-
       const uploadsDir = path.resolve('src/uploads');
+
       if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
+
+      // @ts-expect-error
+      server.config.DEBUG = debug;
+      // @ts-expect-error
       server.config.UPLOADS_DIR = uploadsDir;
     });
   },
   { name: 'dotenv' }
 );
 
+type Config = Static<typeof TConfig> & {
+  /** `true` if `NODE_ENV` is set to development */
+  DEBUG: boolean;
+  /** uploaded files directory */
+  UPLOADS_DIR: string;
+};
+
 declare module 'fastify' {
   interface FastifyInstance {
-    config: Static<typeof TConfig> & {
-      DEBUG: boolean;
-      UPLOADS_DIR: string;
+    config: {
+      readonly [P in keyof Config]: Config[P];
     };
   }
 }
