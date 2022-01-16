@@ -5,7 +5,7 @@ import { Prisma } from '@prisma/client';
 //  across different endpoints.
 //
 
-export const user = Prisma.validator<Prisma.UserSelect>()({
+const user = Prisma.validator<Prisma.UserSelect>()({
   id: true,
   name: true,
   email: true,
@@ -23,7 +23,7 @@ export const user = Prisma.validator<Prisma.UserSelect>()({
   },
 });
 
-export const recipe = Prisma.validator<Prisma.RecipeSelect>()({
+const recipe = Prisma.validator<Prisma.RecipeSelect>()({
   id: true,
   name: true,
   description: true,
