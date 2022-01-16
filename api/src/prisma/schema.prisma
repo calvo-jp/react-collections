@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id              Int        @id @unique @default(autoincrement())
+  id              Int        @id @default(autoincrement())
   name            String
   email           String     @unique
   emailVerifiedAt DateTime?
@@ -25,7 +25,7 @@ model User {
 }
 
 model Recipe {
-  id          Int        @id @unique @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String
   description String
   tags        String[]
@@ -43,7 +43,7 @@ model Recipe {
 }
 
 model Review {
-  id        Int      @id @unique @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   body      String
   rate      Int
   // reviews from author who deleted thier account are still valid
@@ -59,7 +59,7 @@ model Review {
 }
 
 model Favorite {
-  id        Int      @id @unique @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   // hearts from users who deleted thier accounts no longer counts
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int      @map("userId")
