@@ -1,6 +1,7 @@
 import { Static, Type } from '@sinclair/typebox';
 import env from 'fastify-env';
 import fp from 'fastify-plugin';
+import * as fs from 'fs';
 import * as path from 'node:path';
 
 // prettier-ignore
@@ -27,8 +28,12 @@ export default fp(
 
     // calculated config or config based on .env vars
     fastify.register(async (server) => {
-      server.config.DEBUG = server.config.NODE_ENV === 'development';
-      server.config.UPLOADS_DIR = path.resolve('src/uploads');
+      const debug = server.config.NODE_ENV === 'development';
+      server.config.DEBUG = debug;
+
+      const uploadsDir = path.resolve('src/uploads');
+      if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
+      server.config.UPLOADS_DIR = uploadsDir;
     });
   },
   { name: 'dotenv' }
