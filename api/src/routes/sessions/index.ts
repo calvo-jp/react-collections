@@ -90,7 +90,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     /** Current date and time */
     const now = new Date();
 
-    /** remaining time in milliseconds until token expires */
+    /** remaining time in seconds until token expires */
     const leftover = (actualExp.getTime() - now.getTime()) / 1000;
 
     // better monitor them on dev mode
