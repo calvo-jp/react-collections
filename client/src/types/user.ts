@@ -2,15 +2,16 @@ interface IUser {
   id: number;
   name: string;
   email: string;
-  /** avatar url */
+  emailVerified: boolean;
+  emailVerifiedAt: string;
   avatar: string;
   createdAt: string;
-  updatedAt?: string;
-  totalRecipes: number;
-  /** number of recipes favorited */
-  totalFavorites: number;
-  /** number of recipes reviewed */
-  totalReviews: number;
+  updatedAt: string;
+  summary: {
+    recipes: number;
+    reviews: number;
+    favorites: number;
+  };
 }
 
 export default IUser;

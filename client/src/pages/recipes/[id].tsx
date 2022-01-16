@@ -95,7 +95,7 @@ const Recipe: NextPage<IRecipe> = (data) => {
       <div>
         <HeaderTwo url="/recipes" label="Recipes" />
 
-        <Jumbotron src={data.cover} />
+        <Jumbotron src={data.avatar} />
 
         <main className="p-8">
           <div className="max-w-[900px] mx-auto">
@@ -231,11 +231,14 @@ const Review = (props: IReview) => {
           })}
         </time>
         <span>by</span>
-        <Link passHref href={'/users/' + author.id}>
-          <a className="hover:text-blue-500 hover:font-semibold">
-            {author.name}
-          </a>
-        </Link>
+
+        {author && (
+          <Link passHref href={'/users/' + author.id}>
+            <a className="hover:text-blue-500 hover:font-semibold">
+              {author.name}
+            </a>
+          </Link>
+        )}
       </small>
     </div>
   );

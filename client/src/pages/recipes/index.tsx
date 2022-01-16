@@ -46,8 +46,8 @@ const Recipe = ({ data }: RecipeProps) => {
   const {
     id,
     name,
-    image,
-    rating,
+    banner,
+    summary,
     description
   } = data
 
@@ -61,7 +61,7 @@ const Recipe = ({ data }: RecipeProps) => {
           <div className="absolute w-full h-full z-20 top-0 left-0 bg-black bg-opacity-50 hidden group-hover:flex items-center justify-center" />
 
           <Image
-            src={image}
+            src={banner}
             alt=""
             layout="fill"
             objectFit="cover"
@@ -75,7 +75,7 @@ const Recipe = ({ data }: RecipeProps) => {
           <p className="text-sm text-gray-700 truncate">{description}</p>
 
           <div className="mt-2">
-            <Rating value={rating} />
+            <Rating value={summary.rating} />
           </div>
         </article>
       </a>

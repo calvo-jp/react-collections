@@ -6,28 +6,18 @@ interface IRecipe {
   description: string;
   author: IUser;
   ingredients: string[];
-  instructions: Instruction[];
+  // TODO: needs to be changed once API is ready
+  instructions: string[];
   tags: string[];
-  /** image url */
-  image: string;
-  /** image banner */
-  cover: string;
-  /** average rate from 0-5 */
-  rating: number;
+  avatar: string;
+  banner: string;
   createdAt: string;
-  updatedAt?: string;
+  updatedAt: string;
+  summary: {
+    rating: number;
+    hearts: number;
+    reviews: number;
+  };
 }
-
-interface Instruction {
-  description: string;
-  attachment?: Attachment;
-}
-
-interface Attachment {
-  src: string;
-  type: AttachmentType;
-}
-
-type AttachmentType = 'image' | 'video';
 
 export default IRecipe;
