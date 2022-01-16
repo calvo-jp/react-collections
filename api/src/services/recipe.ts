@@ -5,11 +5,12 @@ import Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
 type Recipe = ReturnType<typeof normalize.recipe>;
-interface CreateInput {
+
+type CreateInput = {
   name: string;
   description: string;
   authorId: number;
-}
+};
 
 type UpdateInput = CreateInput;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;

@@ -6,12 +6,12 @@ import normalize from './utils/normalize';
 type Review = ReturnType<typeof normalize.review>;
 type PagingQuery = Pick<Paginated, 'page' | 'pageSize'>;
 
-interface CreateInput {
+type CreateInput = {
   body: string;
   rate: number;
   userId: number;
   recipeId: number;
-}
+};
 
 type UpdateInput = Partial<Pick<CreateInput, 'body' | 'rate'>>;
 
