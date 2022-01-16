@@ -61,8 +61,8 @@ model Review {
 model Favorite {
   id        Int      @id @unique @default(autoincrement())
   // hearts from users who deleted thier accounts no longer counts
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int      @map("userId")
   // users should see something like "Content no longer available"
   // incase one thier favorited recipes has been deleted
   recipe    Recipe?  @relation(fields: [recipeId], references: [id], onDelete: SetNull)
