@@ -1,12 +1,12 @@
 import { Prisma } from '@prisma/client';
 import { hash } from 'bcrypt';
-import selectables from './constants/selectables';
+import selectables, { user } from './constants/selectables';
 import type Db from './types/db';
 import type Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
 type User = ReturnType<typeof normalize.user>;
-type UpdateInput = Partial<Pick<User, 'name' | 'email'>>;
+type UpdateInput = Partial<Pick<User, 'name' | 'email' | 'avatar'>>;
 type CreateInput = Required<UpdateInput> & Record<'password', string>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
 type Whereable = Pick<User, 'email' | 'id'>;
@@ -123,10 +123,13 @@ const service = (database: Db) => {
     await collection.delete({ where: { id } });
   };
 
-  // TODO: make these work
   const avatar = {
-    async upsert() {},
-    async delete() {},
+    async set(id: number, avatar: string) {
+      return await update(id, { avatar });
+    },
+    async unset(id: number) {
+      return await update(id, { avatar: null });
+    },
   };
 
   return {
