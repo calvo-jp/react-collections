@@ -14,14 +14,18 @@ type CreateInput = {
 };
 
 type UpdateInput = Partial<Pick<CreateInput, 'body' | 'rate'>>;
+type Whereable = Pick<Review, 'id' | 'authorId' | 'recipeId'>;
 
 const service = (db: Db) => {
   const collection = db.review;
 
   const read = {
-    async one(id: number): Promise<Review | null> {
+    async by<T extends keyof Whereable>(
+      key: T,
+      value: Whereable[T]
+    ): Promise<Review | null> {
       const review = await collection.findFirst({
-        where: { id },
+        where: { [key]: value },
         select: selectables.review,
       });
 
@@ -29,6 +33,8 @@ const service = (db: Db) => {
 
       return normalize.review(review);
     },
+
+    one: async (id: number): Promise<Review | null> => await read.by('id', id),
 
     async all(query?: PagingQuery): Promise<Paginated<Review>> {
       const { page = 1, pageSize = 50 } = query || {};
