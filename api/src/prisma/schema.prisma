@@ -12,16 +12,16 @@ model User {
   id              Int        @id @default(autoincrement())
   name            String
   email           String     @unique
-  emailVerifiedAt DateTime?
+  emailVerifiedAt DateTime?  @map("email_verified_at")
   avatar          String?
   password        String
-  createdAt       DateTime   @default(now()) @db.Timestamptz()
-  updatedAt       DateTime   @updatedAt @db.Timestamptz()
+  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz()
   recipes         Recipe[]
   reviews         Review[]
   favorites       Favorite[]
 
-  @@map(name: "users")
+  @@map("users")
 }
 
 model Recipe {
@@ -33,13 +33,13 @@ model Recipe {
   banner      String?
   // once author deletes thier account, thier recipes will be deleted, too.
   author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId    Int
-  createdAt   DateTime   @default(now()) @db.Timestamptz()
-  updatedAt   DateTime   @updatedAt @db.Timestamptz()
+  authorId    Int        @map("author_id")
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamptz()
   reviews     Review[]
   hearts      Favorite[]
 
-  @@map(name: "recipes")
+  @@map("recipes")
 }
 
 model Review {
@@ -48,26 +48,26 @@ model Review {
   rate      Int
   // reviews from author who deleted thier account are still valid
   author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  authorId  Int?
+  authorId  Int?     @map("author_id")
   // reviews related to a deleted recipes will be removed
   recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  recipeId  Int
-  createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @updatedAt @db.Timestamptz()
+  recipeId  Int      @map("recipe_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
-  @@map(name: "reviews")
+  @@map("reviews")
 }
 
 model Favorite {
   id        Int      @id @default(autoincrement())
   // hearts from users who deleted thier accounts no longer counts
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  Int      @map("userId")
+  authorId  Int      @map("author_id")
   // users should see something like "Content no longer available"
   // incase one thier favorited recipes has been deleted
   recipe    Recipe?  @relation(fields: [recipeId], references: [id], onDelete: SetNull)
-  recipeId  Int?
-  createdAt DateTime @default(now()) @db.Timestamptz()
+  recipeId  Int?     @map("recipe_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
-  @@map(name: "favorites")
+  @@map("favorites")
 }
