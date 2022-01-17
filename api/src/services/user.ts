@@ -134,12 +134,19 @@ const service = (database: Db) => {
     },
   };
 
+  const exists = async (where: Partial<Whereable>) => {
+    const count = await collection.count({ where, take: 1 });
+
+    return count > 0;
+  };
+
   return {
     read,
     create,
     update,
     delete: remove,
     avatar,
+    exists,
   };
 };
 
