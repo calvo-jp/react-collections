@@ -35,6 +35,18 @@ const recipe = Prisma.validator<Prisma.RecipeSelect>()({
   author: {
     select: user,
   },
+  ingredients: true,
+  instructions: {
+    select: {
+      id: true,
+      recipeId: true,
+      description: true,
+      image: true,
+      video: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  },
   reviews: {
     select: {
       rate: true,
