@@ -25,21 +25,36 @@ model User {
 }
 
 model Recipe {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String
-  tags        String[]
-  avatar      String?
-  banner      String?
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String
+  tags         String[]
+  ingredients  String[]
+  instructions Instruction[]
+  avatar       String?
+  banner       String?
   // once author deletes thier account, thier recipes will be deleted, too.
-  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId    Int        @map("author_id")
-  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamptz()
-  reviews     Review[]
-  hearts      Favorite[]
+  author       User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     Int           @map("author_id")
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt    DateTime      @updatedAt @map("updated_at") @db.Timestamptz()
+  reviews      Review[]
+  hearts       Favorite[]
 
   @@map("recipes")
+}
+
+model Instruction {
+  id          Int      @id @default(autoincrement())
+  recipe      Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId    Int      @map("recipe_id")
+  description String
+  video       String?
+  image       String?
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@map("recipe_instructions")
 }
 
 model Review {
