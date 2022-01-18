@@ -1,5 +1,10 @@
 import { Static, Type } from '@sinclair/typebox';
 import { FastifyPluginAsync, RouteShorthandOptions } from 'fastify';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as stream from 'stream';
+import * as util from 'util';
+import { v4 as uuid } from 'uuid';
 import TPaginated from '../../shared/typebox/paginated';
 import TUser from '../../shared/typebox/user';
 
@@ -42,6 +47,9 @@ interface PostRequest {
 interface PatchRequest extends GetSingleRequest {
   Body: Static<typeof TUpdateInput>;
 }
+
+type SetAvatarRequest = GetSingleRequest;
+type UnsetAvatarRequest = GetSingleRequest;
 
 const router: FastifyPluginAsync = async (fastify) => {
   const service = fastify.db.collection.user;
@@ -116,15 +124,69 @@ const router: FastifyPluginAsync = async (fastify) => {
     }
   });
 
-  // TODO
-  fastify.put('/:id/avatar', async (request, reply) => {
-    reply.serviceUnavailable();
-  });
+  const setAvatarOps: RouteShorthandOptions = {
+    schema: {
+      params: THasId,
+      response: {
+        [204]: TUser,
+      },
+    },
+  };
 
-  // TODO
-  fastify.delete('/:id/avatar', async (request, reply) => {
-    reply.serviceUnavailable();
-  });
+  fastify.put<SetAvatarRequest>(
+    '/:id/avatar',
+    setAvatarOps,
+    async (request, reply) => {
+      const id = request.params.id;
+
+      if (!service.exists({ id })) return reply.notFound();
+
+      try {
+        const multipart = await request.file();
+        const pipeline = util.promisify(stream.pipeline);
+        const filename = uuid().concat(path.extname(multipart.filename));
+        const fullpath = path.join(fastify.config.UPLOADS_DIR, filename);
+        const destination = fs.createWriteStream(fullpath);
+
+        await pipeline(multipart.file, destination);
+
+        const user = await service.update(id, { avatar: filename });
+
+        reply.code(202).send(user);
+      } catch (error) {
+        reply.code(500).send(error);
+      }
+    }
+  );
+
+  const unsetAvatarOps: RouteShorthandOptions = {
+    schema: {
+      params: THasId,
+      response: {
+        [204]: TUser,
+      },
+    },
+  };
+
+  fastify.delete<UnsetAvatarRequest>(
+    '/:id/avatar',
+    unsetAvatarOps,
+    async (request, reply) => {
+      const user = await service.read.one(request.params.id);
+
+      if (!user?.avatar) return reply.notFound();
+
+      const fullpath = path.join(fastify.config.UPLOADS_DIR, user.avatar);
+      if (fs.existsSync(fullpath)) fs.unlinkSync(fullpath);
+
+      try {
+        await service.update(user.id, { avatar: null });
+        reply.code(204).send();
+      } catch (error) {
+        reply.code(500).send(error);
+      }
+    }
+  );
 };
 
 export default router;
