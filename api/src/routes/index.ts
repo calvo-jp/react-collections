@@ -14,7 +14,7 @@ const ResponseSchema = Type.Object({
   }),
 });
 
-const index: FastifyPluginAsync = async (fastify): Promise<void> => {
+const index: FastifyPluginAsync = async (fastify) => {
   const cfg: RouteShorthandOptions = {
     schema: {
       response: {
