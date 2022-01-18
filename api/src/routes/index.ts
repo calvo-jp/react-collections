@@ -10,6 +10,7 @@ const ResponseSchema = Type.Object({
     email: Type.String(),
     github: Type.String(),
     twitter: Type.String(),
+    facebook: Type.String(),
     portfolio: Type.String(),
   }),
 });
@@ -33,6 +34,7 @@ const index: FastifyPluginAsync = async (fastify) => {
         email: 'calvojp92@gmail.com',
         github: 'https://github.com/calvo-jp',
         twitter: 'https://twitter.com/calvo__jp',
+        facebook: 'https://facebook.com/calvojp',
         portfolio: 'https://calvo-jp.vercel.app',
       },
     });
