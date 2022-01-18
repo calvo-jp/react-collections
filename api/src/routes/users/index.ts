@@ -1,10 +1,5 @@
 import { Static, Type } from '@sinclair/typebox';
 import { FastifyPluginAsync, RouteShorthandOptions } from 'fastify';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as stream from 'stream';
-import * as util from 'util';
-import { v4 as uuid } from 'uuid';
 import TPaginated from '../../shared/typebox/paginated';
 import TUser from '../../shared/typebox/user';
 
@@ -141,21 +136,13 @@ const router: FastifyPluginAsync = async (fastify) => {
 
       if (!service.exists({ id })) return reply.notFound();
 
-      try {
-        const multipart = await request.file();
-        const pipeline = util.promisify(stream.pipeline);
-        const filename = uuid().concat(path.extname(multipart.filename));
-        const fullpath = path.join(fastify.config.UPLOADS_DIR, filename);
-        const destination = fs.createWriteStream(fullpath);
+      const multipart = await request.file();
+      const uploaded = await fastify.uploadsManager.upload(multipart);
 
-        await pipeline(multipart.file, destination);
+      if (!uploaded) return reply.internalServerError('Something went wrong');
 
-        const user = await service.update(id, { avatar: filename });
-
-        reply.code(202).send(user);
-      } catch (error) {
-        reply.code(500).send(error);
-      }
+      const user = await service.update(id, { avatar: uploaded?.name });
+      reply.code(202).send(user);
     }
   );
 
@@ -176,15 +163,10 @@ const router: FastifyPluginAsync = async (fastify) => {
 
       if (!user?.avatar) return reply.notFound();
 
-      const fullpath = path.join(fastify.config.UPLOADS_DIR, user.avatar);
-      if (fs.existsSync(fullpath)) fs.unlinkSync(fullpath);
+      await fastify.uploadsManager.delete(user.avatar);
+      await service.update(user.id, { avatar: null });
 
-      try {
-        await service.update(user.id, { avatar: null });
-        reply.code(204).send();
-      } catch (error) {
-        reply.code(500).send(error);
-      }
+      reply.code(204).send();
     }
   );
 };
