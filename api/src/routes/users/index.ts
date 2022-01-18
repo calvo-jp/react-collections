@@ -123,7 +123,7 @@ const router: FastifyPluginAsync = async (fastify) => {
     schema: {
       params: THasId,
       response: {
-        [204]: TUser,
+        [200]: TUser,
       },
     },
   };
@@ -133,16 +133,20 @@ const router: FastifyPluginAsync = async (fastify) => {
     setAvatarOps,
     async (request, reply) => {
       const id = request.params.id;
+      const user = await service.read.one(id);
 
-      if (!service.exists({ id })) return reply.notFound();
+      if (!user) return reply.notFound();
+      // delete old avatar
+      if (user.avatar) await fastify.uploadsManager.delete(user.avatar);
 
       const multipart = await request.file();
       const uploaded = await fastify.uploadsManager.upload(multipart);
 
-      if (!uploaded) return reply.internalServerError('Something went wrong');
+      if (!uploaded) return reply.badRequest('Unsupported file');
 
-      const user = await service.update(id, { avatar: uploaded?.name });
-      reply.code(202).send(user);
+      return await service.update(id, {
+        avatar: uploaded.name,
+      });
     }
   );
 
