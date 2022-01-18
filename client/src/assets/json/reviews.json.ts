@@ -10,6 +10,7 @@ const reviews: IReview[] = [
     author: users[0],
     recipe: recipes[1],
     createdAt: '2022-01-01 23:05',
+    updatedAt: '2022-01-01 23:05',
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const reviews: IReview[] = [
     author: users[1],
     recipe: recipes[2],
     createdAt: '2021-12-24 22:01',
+    updatedAt: '2022-01-01 23:05',
   },
 ];
 
