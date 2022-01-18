@@ -3,7 +3,11 @@ import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
 import CogIcon from '@heroicons/react/outline/CogIcon';
 import HeartIcon from '@heroicons/react/outline/HeartIcon';
 import PencilAltIcon from '@heroicons/react/outline/PencilAltIcon';
+import ChevronLeftIcon from '@heroicons/react/solid/ChevronLeftIcon';
+import ChevronRightIcon from '@heroicons/react/solid/ChevronRightIcon';
+import PlayIcon from '@heroicons/react/solid/PlayIcon';
 import StarIcon from '@heroicons/react/solid/StarIcon';
+import StopIcon from '@heroicons/react/solid/StopIcon';
 import recipes from 'assets/json/recipes.json';
 import reviews from 'assets/json/reviews.json';
 import clsx from 'clsx';
@@ -251,7 +255,75 @@ const Review = (props: IReview) => {
 //
 
 const Instructions = () => {
-  return <div></div>;
+  const items = [
+    {
+      id: 1,
+      description: 'Turn the lights off',
+      video: '',
+    },
+    {
+      id: 2,
+      description: 'Change the lights',
+      video: '',
+      playing: true,
+    },
+    {
+      id: 3,
+      description: 'Turn the lights on',
+      video: '',
+    },
+    {
+      id: 4,
+      description: 'Sleep',
+      video: '',
+    },
+    {
+      id: 5,
+      description: 'Eat',
+      video: '',
+    },
+  ];
+
+  return (
+    <div className="flex gap-2 sticky top-0">
+      <div className="w-2/3">
+        <div className="border border-gray-200 h-[360px]"></div>
+        <div className="mt-2">
+          <div>{items[0].description}</div>
+          <div className="text-sm text-gray-400">3 mins ago</div>
+        </div>
+      </div>
+
+      <div className="w-1/3">
+        <div className="flex flex-col gap-2">
+          {items.map(({ id, description, playing }) => (
+            <div
+              key={id}
+              className={clsx(
+                'border p-3 flex items-center',
+                !playing && 'border-gray-200',
+                playing && 'border-green-300'
+              )}
+            >
+              <div className="flex-1">
+                <div className="text-sm">{description}</div>
+                <div className="text-[13px] text-gray-400">3 mins ago</div>
+              </div>
+              <div>
+                {playing && <StopIcon className="fill-green-600 w-8 h-8" />}
+                {!playing && <PlayIcon className="fill-gray-500 w-8 h-8" />}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 text-sm flex items-center justify-end gap-2">
+          <ChevronLeftIcon className="w-5 h-5" />
+          <div>Page 3 of 4</div>
+          <ChevronRightIcon className="w-5 h-5" />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 //
