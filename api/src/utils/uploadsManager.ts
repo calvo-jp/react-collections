@@ -25,9 +25,9 @@ class UploadsManager {
    */
   async upload(
     multipart: MultipartFile,
-    whitelist: string[] = []
+    whitelist?: string[]
   ): Promise<UploadedFile | null> {
-    if (!whitelist.includes(multipart.mimetype)) return null;
+    if (whitelist && !whitelist.includes(multipart.mimetype)) return null;
 
     const extension = path.extname(multipart.filename);
     const basename = path.basename(multipart.filename, extension);
