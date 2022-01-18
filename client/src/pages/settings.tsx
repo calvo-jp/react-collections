@@ -162,7 +162,7 @@ const GeneralSettingsItem: React.FC<GeneralSettingsItemProps> = ({
   return (
     <div>
       <small className="text-sm text-gray-500">{label}</small>
-      <p>{value}</p>
+      <div>{value}</div>
       <div className="flex gap-2">{children}</div>
     </div>
   );
