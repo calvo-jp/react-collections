@@ -1,3 +1,3 @@
 ## Pets
 
-Buy or sell a pet
+Buy or sell a pet online
