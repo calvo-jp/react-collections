@@ -105,7 +105,7 @@ const Recipe: NextPage<IRecipe> = (data) => {
           <div className="max-w-[900px] mx-auto">
             <section>
               <div>
-                <div className="flex justify-between w-full items-start">
+                <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-2">
                     <div>
                       <h2 className="text-2xl">{data.name}</h2>
