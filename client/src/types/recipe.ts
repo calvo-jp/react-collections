@@ -1,3 +1,4 @@
+import Instruction from './instruction';
 import IUser from './user';
 
 interface IRecipe {
@@ -6,8 +7,7 @@ interface IRecipe {
   description: string;
   author: IUser;
   ingredients: string[];
-  // TODO: needs to be changed once API is ready
-  instructions: string[];
+  instructions: Instruction[];
   tags: string[];
   avatar: string;
   banner: string;
