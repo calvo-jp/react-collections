@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import selectables from './constants/selectables';
-import Db from './types/db';
-import Paginated from './types/paginated';
+import type Db from './types/db';
+import type Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
 type Recipe = ReturnType<typeof normalize.recipe>;
@@ -142,11 +142,17 @@ const service = (db: Db) => {
     },
   };
 
+  const exists = async (id: number) => {
+    const count = await collection.count({ where: { id } });
+    return count > 0;
+  };
+
   return {
     read,
     create,
     update,
     delete: remove,
+    exists,
     banner,
     avatar,
   };
