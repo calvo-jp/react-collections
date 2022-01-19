@@ -1,4 +1,4 @@
-interface Instruction {
+interface IInstruction {
   id: number;
   recipeId: number;
   description: string;
@@ -8,4 +8,4 @@ interface Instruction {
   updatedAt: string;
 }
 
-export default Instruction;
+export default IInstruction;
