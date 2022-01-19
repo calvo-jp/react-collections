@@ -33,6 +33,7 @@ const service = (db: Db) => {
       if (search) return await search_({ page, pageSize, search, authorId });
 
       const recipes = await collection.findMany({
+        where: { authorId },
         select: selectables.recipe,
         skip: pageSize * (page - 1),
         take: pageSize,
@@ -53,10 +54,11 @@ const service = (db: Db) => {
   };
 
   const search_ = async (data: Required<PagingQuery> & AuthorQuery) => {
-    const { search, page, pageSize } = data;
+    const { search, page, pageSize, authorId } = data;
 
     const where: Prisma.RecipeWhereInput = {
       OR: {
+        authorId,
         name: {
           search,
           mode: 'insensitive',
