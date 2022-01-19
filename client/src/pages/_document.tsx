@@ -8,7 +8,7 @@ class Document_ extends Document {
           <link rel="shortcut icon" href="#" type="image/x-icon" />
         </Head>
 
-        <body className="min-h-screen text-gray-700 bg-white font-sans">
+        <body className="min-h-screen text-gray-700 bg-white font-sans scroll-smooth">
           <Main />
           <NextScript />
         </body>
