@@ -1,10 +1,11 @@
-import BookOpenIcon from '@heroicons/react/outline/BookOpenIcon';
-import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
-import CogIcon from '@heroicons/react/outline/CogIcon';
-import HeartIcon from '@heroicons/react/outline/HeartIcon';
-import PencilAltIcon from '@heroicons/react/outline/PencilAltIcon';
-import ChevronLeftIcon from '@heroicons/react/solid/ChevronLeftIcon';
-import ChevronRightIcon from '@heroicons/react/solid/ChevronRightIcon';
+import {
+  BookOpenIcon,
+  ClipboardListIcon,
+  CogIcon,
+  HeartIcon,
+  PencilAltIcon,
+} from '@heroicons/react/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import PlayIcon from '@heroicons/react/solid/PlayIcon';
 import StarIcon from '@heroicons/react/solid/StarIcon';
 import StopIcon from '@heroicons/react/solid/StopIcon';
@@ -20,10 +21,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import NotFound from 'pages/404';
 import * as React from 'react';
-import IRecipe from 'types/recipe';
-import IReview from 'types/review';
+import type IRecipe from 'types/recipe';
+import type IReview from 'types/review';
 import capitalize from 'utils/capitalize';
-import Button from 'widgets/Button';
 import Rating from 'widgets/Rating';
 
 interface Params {
@@ -316,6 +316,7 @@ const Instructions = () => {
             </div>
           ))}
         </div>
+
         <div className="mt-3 text-sm flex items-center justify-end gap-2">
           <ChevronLeftIcon className="w-5 h-5" />
           <div>Page 3 of 4</div>
