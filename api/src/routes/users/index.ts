@@ -136,17 +136,23 @@ const router: FastifyPluginAsync = async (fastify) => {
       const user = await service.read.one(id);
 
       if (!user) return reply.notFound();
+
       // delete old avatar
       if (user.avatar) await fastify.uploadsManager.delete(user.avatar);
 
       const multipart = await request.file();
-      const uploaded = await fastify.uploadsManager.upload(multipart);
 
-      if (!uploaded) return reply.badRequest('Unsupported file');
+      try {
+        const uploaded = await fastify.uploadsManager.upload(multipart, [
+          'image/png',
+          'image/jpg',
+          'image/jpeg',
+        ]);
 
-      return await service.update(id, {
-        avatar: uploaded.name,
-      });
+        return await service.update(id, { avatar: uploaded.name });
+      } catch (error) {
+        reply.code(400).send(error);
+      }
     }
   );
 
