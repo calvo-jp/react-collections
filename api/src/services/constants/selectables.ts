@@ -82,6 +82,7 @@ const selectables = {
   user,
   recipe,
   review,
+  instruction,
 };
 
 export default selectables;
