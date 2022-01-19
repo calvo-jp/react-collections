@@ -24,8 +24,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import NotFound from 'pages/404';
 import * as React from 'react';
+import type IInstruction from 'types/instruction';
 import type IRecipe from 'types/recipe';
 import type IReview from 'types/review';
+import arrayChunk from 'utils/arrayChunk';
 import capitalize from 'utils/capitalize';
 import Rating from 'widgets/Rating';
 
@@ -259,75 +261,144 @@ const Review = (props: IReview) => {
 // *-------------------*
 //
 
-const Instructions = () => {
-  const items = [
-    {
-      id: 1,
-      description: 'Turn the lights off',
-      video: '',
-    },
-    {
-      id: 2,
-      description: 'Change the lights',
-      video: '',
-      playing: true,
-    },
-    {
-      id: 3,
-      description: 'Turn the lights on',
-      video: '',
-    },
-    {
-      id: 4,
-      description: 'Sleep',
-      video: '',
-    },
-    {
-      id: 5,
-      description: 'Eat',
-      video: '',
-    },
-  ];
+interface InstructionsProps {
+  items: IInstruction[];
+}
+
+const Instructions = ({ items }: InstructionsProps) => {
+  const [currentItem, setCurrentItem] = React.useState(items.at(0));
+  const [playing, setPlaying] = React.useState(false);
+
+  React.useEffect(() => {
+    return () => {
+      setCurrentItem(undefined);
+      setPlaying(false);
+    };
+  }, []);
 
   return (
-    <div className="flex gap-2 sticky top-0">
+    <div className="flex gap-2">
       <div className="w-2/3">
-        <div className="border border-gray-200 h-[360px]"></div>
-        <div className="mt-2">
-          <div>{items[0].description}</div>
-          <div className="text-sm text-gray-400">3 mins ago</div>
-        </div>
+        <VideoPlayer
+          data={currentItem}
+          playing={playing}
+          onPlay={() => setPlaying(true)}
+          onStop={() => setPlaying(false)}
+        />
       </div>
 
       <div className="w-1/3">
         <div className="flex flex-col gap-2">
-          {items.map(({ id, description, playing }) => (
-            <div
-              key={id}
-              className={clsx(
-                'border p-3 flex items-center',
-                !playing && 'border-gray-200',
-                playing && 'border-green-300'
-              )}
-            >
-              <div className="flex-1">
-                <div className="text-sm">{description}</div>
-                <div className="text-[13px] text-gray-400">3 mins ago</div>
-              </div>
-              <div>
-                {playing && <StopIcon className="fill-green-600 w-8 h-8" />}
-                {!playing && <PlayIcon className="fill-gray-500 w-8 h-8" />}
-              </div>
-            </div>
-          ))}
+          {items.map((item) => {
+            const selected = !!currentItem && currentItem.id === item.id;
+
+            return (
+              <Instruction
+                key={item.id}
+                selected={selected}
+                onClick={setCurrentItem}
+                {...item}
+              />
+            );
+          })}
         </div>
 
-        <div className="mt-3 text-sm flex items-center justify-end gap-2">
-          <ChevronLeftIcon className="w-5 h-5" />
-          <div>Page 3 of 4</div>
-          <ChevronRightIcon className="w-5 h-5" />
+        {items.length > 5 && (
+          <div className="mt-3 flex items-center justify-end gap-2">
+            <button>
+              <ChevronLeftIcon className="w-5 h-5" />
+            </button>
+            <span className="text-sm">Page 3 of 4</span>
+            <button>
+              <ChevronRightIcon className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+type InstructionProps = IInstruction & {
+  selected?: boolean;
+  onClick?: (data: IInstruction) => void;
+};
+
+const Instruction = ({ onClick, selected, ...data }: InstructionProps) => {
+  const handleClick = () => {
+    if (onClick) return onClick(data);
+  };
+
+  return (
+    <a
+      key={data.id}
+      onClick={handleClick}
+      className={clsx(
+        'cursor-pointer border p-3 flex gap-4 items-center',
+        !selected &&
+          'border-gray-200 hover:border-gray-300 transition-colors duration-300',
+        selected && 'border-green-300'
+      )}
+    >
+      <div className="truncate">
+        <div className="text-sm truncate">{data.description}</div>
+        <div className="text-[13px] text-gray-400">3 mins ago</div>
+      </div>
+    </a>
+  );
+};
+
+interface VideoPlayerProps {
+  data?: IInstruction;
+  onPlay?: (data: IInstruction) => void;
+  onStop?: (data: IInstruction) => void;
+  playing?: boolean;
+}
+
+const VideoPlayer = ({ playing, onPlay, onStop, data }: VideoPlayerProps) => {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => setLoading(true);
+  }, []);
+
+  if (loading)
+    return (
+      <div className="animate-pulse">
+        <div className="bg-slate-100 h-[360px]"></div>
+        <div className="mt-2">
+          <div>
+            <div className="h-6 bg-slate-100" />
+            <div className="w-1/3 mt-2 h-4 bg-slate-100" />
+          </div>
         </div>
       </div>
+    );
+
+  return (
+    <div>
+      <div className="border border-gray-200 h-[360px] relative overflow-hidden">
+        <React.Fragment>
+          {data && data.video && (
+            <video>
+              <source src={data.video} />
+            </video>
+          )}
+        </React.Fragment>
+      </div>
+
+      {data && (
+        <div className="mt-2">
+          <div>
+            <div>{data.description}</div>
+            <div className="text-sm text-gray-400">3 mins ago</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -391,7 +462,7 @@ const TabContent = ({ currentView, data }: TabContentProps) => {
     case TAB3:
       return <Reviews items={reviews} />;
     case TAB2:
-      return <Instructions />;
+      return <Instructions items={data.instructions} />;
     default:
       return <Ingredients items={data.ingredients} />;
   }
