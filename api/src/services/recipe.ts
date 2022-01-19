@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import selectables from './constants/selectables';
 import Db from './types/db';
 import Paginated from './types/paginated';
@@ -6,35 +6,31 @@ import normalize from './utils/normalize';
 
 type Recipe = ReturnType<typeof normalize.recipe>;
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
+type AuthorQuery = Partial<Pick<Recipe, 'authorId'>>;
 type CreateInput = Pick<Recipe, 'name' | 'description' | 'authorId'>;
 type UpdateInput = Partial<
   Omit<CreateInput, 'authorId'> & Pick<Recipe, 'avatar' | 'banner'>
 >;
-type Wherable = Pick<Recipe, 'id' | 'authorId'>;
 
 const service = (db: Db) => {
   const collection = db.recipe;
 
   const read = {
-    async by<T extends keyof Wherable>(key: T, value: Wherable[T]) {
+    /** read by id */
+    async one(id: number) {
       const recipe = await collection.findFirst({
-        where: { [key]: value },
+        where: { id },
         select: selectables.recipe,
       });
 
       return recipe ? normalize.recipe(recipe) : null;
     },
 
-    /** read by id */
-    async one(id: number): Promise<Recipe | null> {
-      return await read.by('id', id);
-    },
-
     /** read all or search */
-    async all(query?: PagingQuery): Promise<Paginated<Recipe>> {
-      const { page = 1, pageSize = 50, search } = query || {};
+    async all(query?: PagingQuery & AuthorQuery): Promise<Paginated<Recipe>> {
+      const { page = 1, pageSize = 50, search, authorId } = query || {};
 
-      if (search) return await search_({ page, pageSize, search });
+      if (search) return await search_({ page, pageSize, search, authorId });
 
       const recipes = await collection.findMany({
         select: selectables.recipe,
@@ -56,10 +52,10 @@ const service = (db: Db) => {
     },
   };
 
-  const search_ = async (data: Required<PagingQuery>) => {
+  const search_ = async (data: Required<PagingQuery> & AuthorQuery) => {
     const { search, page, pageSize } = data;
 
-    const where = Prisma.validator<Prisma.RecipeWhereInput>()({
+    const where: Prisma.RecipeWhereInput = {
       OR: {
         name: {
           search,
@@ -73,7 +69,7 @@ const service = (db: Db) => {
           hasSome: search,
         },
       },
-    });
+    };
 
     const recipes = await collection.findMany({
       where,
