@@ -1,4 +1,4 @@
-import Instruction from './instruction';
+import IInstruction from './instruction';
 import IUser from './user';
 
 interface IRecipe {
@@ -7,7 +7,7 @@ interface IRecipe {
   description: string;
   author: IUser;
   ingredients: string[];
-  instructions: Instruction[];
+  instructions: IInstruction[];
   tags: string[];
   avatar: string;
   banner: string;
