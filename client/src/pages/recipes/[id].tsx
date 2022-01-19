@@ -5,10 +5,13 @@ import {
   HeartIcon,
   PencilAltIcon,
 } from '@heroicons/react/outline';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import PlayIcon from '@heroicons/react/solid/PlayIcon';
-import StarIcon from '@heroicons/react/solid/StarIcon';
-import StopIcon from '@heroicons/react/solid/StopIcon';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  PlayIcon,
+  StarIcon,
+  StopIcon,
+} from '@heroicons/react/solid';
 import recipes from 'assets/json/recipes.json';
 import reviews from 'assets/json/reviews.json';
 import clsx from 'clsx';
@@ -70,7 +73,9 @@ const Recipe: NextPage<IRecipe> = (data) => {
   const [currentTab, setCurrentTab] = React.useState(getCurrentTab());
 
   const handleChange = (value: typeof TABS[number]) => {
-    router.push(`/recipes/${query.id}?tab=${value}`);
+    router.push(`/recipes/${query.id}?tab=${value}`, undefined, {
+      scroll: false,
+    });
   };
 
   React.useEffect(() => {
