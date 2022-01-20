@@ -37,7 +37,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     schema: {
       querystring: TPaginationQuery,
       response: {
-        200: TPaginated(Type.Array(TRecipe)),
+        200: TPaginated(TRecipe),
       },
     },
   };
