@@ -1,12 +1,38 @@
 import { Type } from '@sinclair/typebox';
 import TUser from './user';
 
+const TInstruction = Type.Object({
+  description: Type.String({ minLength: 5, maxLength: 100 }),
+  image: Type.Optional(Type.String()),
+  video: Type.Optional(Type.String()),
+});
+
 const TRecipe = Type.Object({
   id: Type.Number(),
-  name: Type.String(),
-  description: Type.String(),
+  name: Type.String({
+    minLength: 4,
+    maxLength: 100,
+  }),
+  description: Type.String({
+    minLength: 5,
+    maxLength: 100,
+  }),
   author: TUser,
-  tags: Type.Array(Type.String()),
+  ingredients: Type.Array(
+    Type.String({
+      minLength: 4,
+      maxLength: 100,
+    }),
+    { default: [] }
+  ),
+  instructions: Type.Array(TInstruction, { default: [] }),
+  tags: Type.Array(
+    Type.String({
+      minLength: 4,
+      maxLength: 25,
+    }),
+    { default: [] }
+  ),
   avatar: Type.Optional(Type.String()),
   banner: Type.Optional(Type.String()),
   createdAt: Type.String({ format: 'date' }),
