@@ -37,30 +37,30 @@ const normalizeUser = (
 const normalizeRecipe = (
   data: NonNullable<Awaited<ReturnType<typeof recipeFn>>>
 ) => {
-  const {
-    _count,
-    reviews,
-    author,
-    // add empty array as default
-    tags = [],
-    ingredients = [],
-    instructions = [],
-    ...etc
-  } = data;
+  if (!data.tags) data.tags = [];
+  if (!data.ingredients) data.ingredients = [];
+  if (!data.instructions) data.instructions = [];
+
+  const { _count, reviews, author, ...others } = data;
+
+  const getRating = () => {
+    return reviews.reduce((total, review, idx, arr) => {
+      const len = arr.length;
+      const sum = total + review.rate;
+
+      if (idx > len) return sum / len;
+
+      return sum;
+    }, 0);
+  };
 
   return {
-    tags,
-    ingredients,
-    instructions,
     author: normalizeUser(author),
     summary: {
       ..._count,
-      // manually calculating average instead of _avg to lessen db queries
-      rating:
-        reviews.reduce((total, review) => total + review.rate, 0) /
-        reviews.length,
+      rating: getRating(),
     },
-    ...etc,
+    ...others,
   };
 };
 
