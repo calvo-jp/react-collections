@@ -30,7 +30,7 @@ model Recipe {
   description  String
   tags         String[]
   ingredients  String[]
-  instructions Json?      @db.Json
+  instructions Json[]     @db.Json
   avatar       String?
   banner       String?
   // once author deletes thier account, thier recipes will be deleted, too.
