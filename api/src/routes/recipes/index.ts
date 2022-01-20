@@ -30,6 +30,10 @@ interface CreateRequest {
   Body: Static<typeof TCreateInput>;
 }
 
+interface DeleteRequest {
+  Params: Static<typeof THasId>;
+}
+
 const router: FastifyPluginAsync = async (fastify, ops) => {
   const collection = fastify.db.collection.recipe;
 
@@ -82,6 +86,27 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     });
 
     return reply.code(201).send(data);
+  });
+
+  const delOps: RouteShorthandOptions = {
+    schema: {
+      params: THasId,
+    },
+  };
+
+  fastify.delete<DeleteRequest>('/:id', delOps, async (request, reply) => {
+    const recipe = await collection.read.one(request.params.id);
+    if (!recipe) return reply.notFound();
+
+    // delete avatar
+    if (recipe.avatar) await fastify.uploadsManager.delete(recipe.avatar);
+    // delete banner
+    if (recipe.banner) await fastify.uploadsManager.delete(recipe.banner);
+    // FIXME: delete instructions images and videos
+    recipe.instructions.map((instruction) => {});
+
+    await collection.delete(recipe.id);
+    reply.code(204).send();
   });
 };
 
