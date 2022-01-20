@@ -37,9 +37,21 @@ const normalizeUser = (
 const normalizeRecipe = (
   data: NonNullable<Awaited<ReturnType<typeof recipeFn>>>
 ) => {
-  const { _count, reviews, author, ...etc } = data;
+  const {
+    _count,
+    reviews,
+    author,
+    // add empty array as default
+    tags = [],
+    ingredients = [],
+    instructions = [],
+    ...etc
+  } = data;
 
   return {
+    tags,
+    ingredients,
+    instructions,
     author: normalizeUser(author),
     summary: {
       ..._count,
