@@ -2,9 +2,10 @@ import { Static, Type } from '@sinclair/typebox';
 import type { FastifyPluginAsync, RouteShorthandOptions } from 'fastify';
 import TPaginated from '../../shared/typebox/paginated';
 import TRecipe from '../../shared/typebox/recipe';
-import TUser from '../../shared/typebox/user';
 
-const THasAuthor = Type.Pick(TUser, ['id']);
+const THasAuthor = Type.Object({
+  authorId: Type.Number(),
+});
 
 const THasId = Type.Pick(TRecipe, ['id']);
 
