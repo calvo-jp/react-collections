@@ -9,6 +9,10 @@ type RecipeQuery = Pick<Favorite, 'recipeId'>;
 type PaginationQuery = Partial<
   Pick<Paginated, 'page' | 'pageSize'> & AuthorQuery & RecipeQuery
 >;
+type CreateInput = {
+  authorId: number;
+  recipeId: number;
+};
 
 const service = (db: Db) => {
   const collection = db.favorite;
@@ -43,10 +47,35 @@ const service = (db: Db) => {
         hasNext,
       };
     },
+    async one(id: number) {
+      const data = await collection.findFirst({
+        where: { id },
+        select: selectables.favorite,
+      });
+
+      if (!data) return null;
+
+      return normalize.favorite(data);
+    },
+  };
+
+  const create = async (data: CreateInput) => {
+    const favorite = await collection.create({
+      data,
+      select: selectables.favorite,
+    });
+
+    return favorite;
+  };
+
+  const remove = async (id: number) => {
+    await collection.delete({ where: { id } });
   };
 
   return {
     read,
+    create,
+    delete: remove,
   };
 };
 
