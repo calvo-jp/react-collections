@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import type { Instruction, Prisma } from '@prisma/client';
 import selectables from './constants/selectables';
 import Db from './types/db';
 import Paginated from './types/paginated';
@@ -6,18 +6,25 @@ import Paginated from './types/paginated';
 type WithRecipe = Record<'recipeId', number>;
 type PagingQuery = Partial<Pick<Paginated, 'page' | 'pageSize' | 'search'>>;
 
+type CreateInput = Pick<Instruction, 'description' | 'recipeId'> &
+  Partial<Pick<Instruction, 'image' | 'video'>>;
+
+type UpdateInput = Partial<Omit<CreateInput, 'recipeId'>>;
+
 const service = (db: Db) => {
   const collection = db.instruction;
 
   const read = {
-    async one(id: number) {
+    async one(id: number): Promise<Instruction | null> {
       return await collection.findFirst({
         where: { id },
         select: selectables.instruction,
       });
     },
 
-    async all(query?: PagingQuery & Partial<WithRecipe>) {
+    async all(
+      query?: PagingQuery & Partial<WithRecipe>
+    ): Promise<Paginated<Instruction>> {
       const { page = 1, pageSize = 50, search, recipeId } = query || {};
 
       if (search) {
@@ -50,7 +57,7 @@ const service = (db: Db) => {
         totalRows,
         hasNext,
         search,
-      } as Paginated<typeof rows[number]>;
+      };
     },
   };
 
@@ -89,8 +96,27 @@ const service = (db: Db) => {
     } as Paginated<typeof rows[number]>;
   };
 
+  const create = async (data: CreateInput) => {
+    return await collection.create({ data, select: selectables.instruction });
+  };
+
+  const update = async (id: number, data: UpdateInput) => {
+    return await collection.update({
+      data,
+      where: { id },
+      select: selectables.instruction,
+    });
+  };
+
+  const remove = async (id: number) => {
+    await collection.delete({ where: { id } });
+  };
+
   return {
     read,
+    create,
+    update,
+    delete: remove,
   };
 };
 
