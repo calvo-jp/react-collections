@@ -23,6 +23,16 @@ const user = Prisma.validator<Prisma.UserSelect>()({
   },
 });
 
+const instruction = Prisma.validator<Prisma.InstructionSelect>()({
+  id: true,
+  description: true,
+  recipeId: true,
+  image: true,
+  video: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 const recipe = Prisma.validator<Prisma.RecipeSelect>()({
   id: true,
   name: true,
@@ -36,7 +46,9 @@ const recipe = Prisma.validator<Prisma.RecipeSelect>()({
     select: user,
   },
   ingredients: true,
-  instructions: true,
+  instructions: {
+    select: instruction,
+  },
   tags: true,
   reviews: {
     select: {
@@ -71,6 +83,7 @@ const selectables = {
   user,
   recipe,
   review,
+  instruction,
 };
 
 export default selectables;
