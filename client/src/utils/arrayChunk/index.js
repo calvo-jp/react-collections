@@ -1,12 +1,12 @@
 const arrayChunk = (array, size) => {
-  const chunks = [];
-  const copy = [...array];
-
-  let len = array.length;
+  let arr = [...array];
+  let len = arr.length;
   let max = Math.ceil(len / size);
   let idx = 0;
 
-  for (; idx < max; idx++) chunks.push(copy.splice(0, size));
+  const chunks = [];
+
+  for (; idx < max; idx++) chunks.push(arr.splice(0, size));
 
   return chunks;
 };
