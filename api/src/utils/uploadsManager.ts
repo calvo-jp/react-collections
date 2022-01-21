@@ -65,8 +65,11 @@ class UploadsManager {
     return filename;
   }
 
-  async delete(filename: string) {
-    const fullpath = path.join(this.uploadsDir, filename);
+  async delete(subject: string | UploadedFile) {
+    const fullpath =
+      typeof subject === 'string'
+        ? path.join(this.uploadsDir, subject)
+        : path.join(this.uploadsDir, subject.name);
 
     if (fs.existsSync(fullpath)) await afs.unlink(fullpath);
   }
