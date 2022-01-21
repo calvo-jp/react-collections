@@ -3,13 +3,10 @@ import selectables from './constants/selectables';
 import Db from './types/db';
 import Paginated from './types/paginated';
 
-type WithRecipe = Record<'recipeId', number>;
-
+type RecipeQuery = Pick<Instruction, 'recipeId'>;
 type PagingQuery = Partial<Pick<Paginated, 'page' | 'pageSize' | 'search'>>;
-
 type CreateInput = Pick<Instruction, 'description' | 'recipeId'> &
   Partial<Pick<Instruction, 'image' | 'video'>>;
-
 type UpdateInput = Partial<CreateInput>;
 
 const service = (db: Db) => {
@@ -24,7 +21,7 @@ const service = (db: Db) => {
     },
 
     async all(
-      query?: PagingQuery & Partial<WithRecipe>
+      query?: PagingQuery & Partial<RecipeQuery>
     ): Promise<Paginated<Instruction>> {
       const { page = 1, pageSize = 50, search, recipeId } = query || {};
 
@@ -63,7 +60,7 @@ const service = (db: Db) => {
   };
 
   const search_ = async (
-    query: Required<PagingQuery> & Partial<WithRecipe>
+    query: Required<PagingQuery> & Partial<RecipeQuery>
   ) => {
     const { page, pageSize, search, recipeId } = query;
 
