@@ -5,11 +5,25 @@ import type Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
 type Recipe = ReturnType<typeof normalize.recipe>;
+
 type PagingQuery = Partial<Pick<Paginated, 'pageSize' | 'page' | 'search'>>;
+
 type AuthorQuery = Partial<Pick<Recipe, 'authorId'>>;
-type CreateInput = Pick<Recipe, 'name' | 'description' | 'authorId'>;
+
+type CreateInput = Pick<Recipe, 'name' | 'description' | 'authorId'> &
+  Partial<Pick<Recipe, 'tags' | 'ingredients'>>;
+
 type UpdateInput = Partial<
-  Omit<CreateInput, 'authorId'> & Pick<Recipe, 'avatar' | 'banner'>
+  Pick<
+    Recipe,
+    | 'name'
+    | 'description'
+    | 'tags'
+    | 'ingredients'
+    // these two are being used below
+    | 'avatar'
+    | 'banner'
+  >
 >;
 
 const service = (db: Db) => {
