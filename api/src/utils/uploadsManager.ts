@@ -27,9 +27,23 @@ class UploadsManager {
     multipart: MultipartFile,
     whitelist?: string[]
   ): Promise<UploadedFile> {
-    if (whitelist && !whitelist.includes(multipart.mimetype))
-      throw Error('Unsupported file');
+    const type = multipart.mimetype;
 
+    if (whitelist && !whitelist.includes(type)) throw Error('Unsupported file');
+
+    const name = this.ensureNameIsUniq(multipart);
+    const dest = fs.createWriteStream(path.join(this.uploadsDir, name));
+    const pipe = util.promisify(stream.pipeline);
+
+    await pipe(multipart.file, dest);
+
+    return {
+      name,
+      type,
+    };
+  }
+
+  private ensureNameIsUniq(multipart: MultipartFile): string {
     const extension = path.extname(multipart.filename);
     const basename = path.basename(multipart.filename, extension);
 
@@ -45,15 +59,10 @@ class UploadsManager {
       .join("")
       .concat(extension);
 
-    const dest = fs.createWriteStream(path.join(this.uploadsDir, filename));
-    const pipe = util.promisify(stream.pipeline);
+    if (fs.existsSync(path.join(this.uploadsDir, filename)))
+      return this.ensureNameIsUniq(multipart);
 
-    await pipe(multipart.file, dest);
-
-    return {
-      type: multipart.mimetype,
-      name: filename,
-    };
+    return filename;
   }
 
   async delete(filename: string) {
