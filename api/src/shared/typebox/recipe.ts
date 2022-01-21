@@ -1,11 +1,6 @@
 import { Type } from '@sinclair/typebox';
+import TInstruction from './instruction';
 import TUser from './user';
-
-const TInstruction = Type.Object({
-  description: Type.String({ minLength: 5, maxLength: 100 }),
-  image: Type.Optional(Type.String()),
-  video: Type.Optional(Type.String()),
-});
 
 const TRecipe = Type.Object({
   id: Type.Number(),
