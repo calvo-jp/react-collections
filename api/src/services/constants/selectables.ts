@@ -79,11 +79,25 @@ const review = Prisma.validator<Prisma.ReviewSelect>()({
   },
 });
 
+const favorite = Prisma.validator<Prisma.FavoriteSelect>()({
+  id: true,
+  author: {
+    select: user,
+  },
+  recipe: {
+    select: recipe,
+  },
+  recipeId: true,
+  authorId: true,
+  createdAt: true,
+});
+
 const selectables = {
   user,
   recipe,
   review,
   instruction,
+  favorite,
 };
 
 export default selectables;
