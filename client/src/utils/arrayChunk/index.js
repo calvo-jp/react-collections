@@ -7,6 +7,9 @@
 const arrayChunk = (array, size) => {
   let arr = [...array];
   let len = arr.length;
+
+  if (len < size) return [arr];
+
   let max = Math.ceil(len / size);
   let idx = 0;
 
