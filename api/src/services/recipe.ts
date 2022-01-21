@@ -32,14 +32,18 @@ const service = (db: Db) => {
 
       if (search) return await search_({ page, pageSize, search, authorId });
 
+      const where: Prisma.RecipeWhereInput = {
+        authorId,
+      };
+
       const recipes = await collection.findMany({
-        where: { authorId },
+        where,
         select: selectables.recipe,
         skip: pageSize * (page - 1),
         take: pageSize,
       });
 
-      const totalRows = await collection.count();
+      const totalRows = await collection.count({ where });
       const hasNext = totalRows - pageSize * page > 0;
       const rows = recipes.map(normalize.recipe);
 
