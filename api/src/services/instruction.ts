@@ -4,12 +4,13 @@ import Db from './types/db';
 import Paginated from './types/paginated';
 
 type WithRecipe = Record<'recipeId', number>;
+
 type PagingQuery = Partial<Pick<Paginated, 'page' | 'pageSize' | 'search'>>;
 
 type CreateInput = Pick<Instruction, 'description' | 'recipeId'> &
   Partial<Pick<Instruction, 'image' | 'video'>>;
 
-type UpdateInput = Partial<Omit<CreateInput, 'recipeId'>>;
+type UpdateInput = Partial<CreateInput>;
 
 const service = (db: Db) => {
   const collection = db.instruction;
