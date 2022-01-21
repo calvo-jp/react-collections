@@ -11,6 +11,15 @@ interface UploadedFile {
   name: string;
 }
 
+export class UnsupportedFile extends Error {
+  constructor(message?: string) {
+    super(message);
+
+    this.name = 'UnsupportedFile';
+    this.message = this.message || 'Unsupported file';
+  }
+}
+
 /** Image or video upload helper */
 class UploadsManager {
   version = '0.0.1';
@@ -22,14 +31,13 @@ class UploadsManager {
    * @param multipart parsed multipart from request
    * @param whitelist allowed mimetypes
    *
+   * @throws UnsupportedFile if whitelist is specified and mime is not found
+   *
    */
-  async upload(
-    multipart: MultipartFile,
-    whitelist?: string[]
-  ): Promise<UploadedFile> {
+  async upload(multipart: MultipartFile, whitelist?: string[]) {
     const type = multipart.mimetype;
 
-    if (whitelist && !whitelist.includes(type)) throw Error('Unsupported file');
+    if (whitelist && !whitelist.includes(type)) throw new UnsupportedFile();
 
     const name = this.ensureNameIsUniq(multipart);
     const dest = fs.createWriteStream(path.join(this.uploadsDir, name));
@@ -37,10 +45,12 @@ class UploadsManager {
 
     await pipe(multipart.file, dest);
 
-    return {
+    const uploaded: UploadedFile = {
       name,
       type,
     };
+
+    return uploaded;
   }
 
   private ensureNameIsUniq(multipart: MultipartFile): string {
