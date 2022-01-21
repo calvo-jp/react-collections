@@ -1,3 +1,9 @@
+/**
+ *
+ * @param {Array} array
+ * @param {number} size
+ *
+ */
 const arrayChunk = (array, size) => {
   let arr = [...array];
   let len = arr.length;
