@@ -10,7 +10,7 @@ const TUser = Type.Object({
     format: 'email',
     maxLength: 255,
   }),
-  avatar: Type.Optional(Type.String()),
+  avatar: Type.Union([Type.String(), Type.Null()]),
   createdAt: Type.String({ format: 'date' }),
   updatedAt: Type.String({ format: 'date' }),
   summary: Type.Object({
