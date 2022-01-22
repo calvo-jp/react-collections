@@ -11,8 +11,8 @@ const TUser = Type.Object({
     maxLength: 255,
   }),
   avatar: Type.Union([Type.String(), Type.Null()]),
-  createdAt: Type.String({ format: 'date' }),
-  updatedAt: Type.String({ format: 'date' }),
+  createdAt: Type.String({ format: 'date-time' }),
+  updatedAt: Type.String({ format: 'date-time' }),
   summary: Type.Object({
     recipes: Type.Number(),
     reviews: Type.Number(),
