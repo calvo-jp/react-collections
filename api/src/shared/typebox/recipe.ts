@@ -28,8 +28,8 @@ const TRecipe = Type.Object({
     }),
     { default: [] }
   ),
-  avatar: Type.Optional(Type.String()),
-  banner: Type.Optional(Type.String()),
+  avatar: Type.Union([Type.String(), Type.Null()]),
+  banner: Type.Union([Type.String(), Type.Null()]),
   createdAt: Type.String({ format: 'date' }),
   updatedAt: Type.String({ format: 'date' }),
   summary: Type.Object({
