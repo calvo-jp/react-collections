@@ -17,16 +17,14 @@ const TRecipe = Type.Object({
     Type.String({
       minLength: 4,
       maxLength: 100,
-    }),
-    { default: [] }
+    })
   ),
-  instructions: Type.Array(TInstruction, { default: [] }),
+  instructions: Type.Array(TInstruction),
   tags: Type.Array(
     Type.String({
       minLength: 4,
       maxLength: 25,
-    }),
-    { default: [] }
+    })
   ),
   avatar: Type.Union([Type.String(), Type.Null()]),
   banner: Type.Union([Type.String(), Type.Null()]),
