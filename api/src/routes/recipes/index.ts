@@ -14,7 +14,14 @@ const TPaginationQuery = Type.Intersect([
   Type.Partial(THasAuthor),
 ]);
 
-const TCreateInput = Type.Pick(TRecipe, ['name', 'description']);
+const TCreateInput = Type.Intersect([
+  Type.Pick(TRecipe, ['name', 'description']),
+  Type.Partial(Type.Pick(TRecipe, ['ingredients', 'tags'])),
+]);
+
+const TUpdateInput = Type.Partial(
+  Type.Pick(TRecipe, ['name', 'description', 'tags', 'ingredients'])
+);
 
 type PaginationQuery = Static<typeof TPaginationQuery>;
 
@@ -26,6 +33,11 @@ interface GetSingleRequest {
   Params: Static<typeof THasId>;
 }
 
+interface PatchRequest {
+  Params: Static<typeof THasId>;
+  Body: Static<typeof TUpdateInput>;
+}
+
 interface CreateRequest {
   Body: Static<typeof TCreateInput>;
 }
@@ -35,7 +47,7 @@ interface DeleteRequest {
 }
 
 const router: FastifyPluginAsync = async (fastify, ops) => {
-  const collection = fastify.db.collection.recipe;
+  const service = fastify.db.collection.recipe;
 
   const getAllOps: RouteShorthandOptions = {
     schema: {
@@ -47,7 +59,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   };
 
   fastify.get<GetAllRequest>('/', getAllOps, async (request) => {
-    return await collection.read.all(request.query);
+    return await service.read.all(request.query);
   });
 
   const getSingleOps: RouteShorthandOptions = {
@@ -63,7 +75,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     '/:id',
     getSingleOps,
     async (request, reply) => {
-      const recipe = await collection.read.one(request.params.id);
+      const recipe = await service.read.one(request.params.id);
       if (!recipe) return reply.notFound();
       return recipe;
     }
@@ -80,7 +92,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   };
 
   fastify.post<CreateRequest>('/', createOps, async (request, reply) => {
-    const data = await collection.create({
+    const data = await service.create({
       ...request.body,
       authorId: request.user.id,
     });
@@ -88,24 +100,56 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     return reply.code(201).send(data);
   });
 
+  const updateOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
+    schema: {
+      params: THasId,
+      body: TUpdateInput,
+      response: {
+        200: TRecipe,
+      },
+    },
+  };
+
+  fastify.patch<PatchRequest>('/:id', updateOps, async (request, reply) => {
+    const recipe = await service.read.one(request.params.id);
+
+    if (!recipe) return reply.notFound();
+
+    // not the author or owner of the recipe
+    if (recipe.authorId !== request.user.id) return reply.forbidden();
+
+    try {
+      return await service.update(request.params.id, request.body);
+    } catch (error) {
+      reply.code(400).send(error);
+    }
+  });
+
   const delOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
     schema: {
       params: THasId,
     },
   };
 
   fastify.delete<DeleteRequest>('/:id', delOps, async (request, reply) => {
-    const recipe = await collection.read.one(request.params.id);
+    const recipe = await service.read.one(request.params.id);
+
     if (!recipe) return reply.notFound();
+
+    // not the author or owner of the recipe
+    if (recipe.authorId !== request.user.id) return reply.forbidden();
 
     // delete avatar
     if (recipe.avatar) await fastify.uploadsManager.delete(recipe.avatar);
     // delete banner
     if (recipe.banner) await fastify.uploadsManager.delete(recipe.banner);
+
     // FIXME: delete instructions images and videos
     recipe.instructions.map((instruction) => {});
 
-    await collection.delete(recipe.id);
+    await service.delete(recipe.id);
     reply.code(204).send();
   });
 };
