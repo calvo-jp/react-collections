@@ -46,6 +46,22 @@ interface DeleteRequest {
   Params: Static<typeof THasId>;
 }
 
+interface SetAvatarRequest {
+  Params: Static<typeof THasId>;
+}
+
+interface UnsetAvatarRequest {
+  Params: Static<typeof THasId>;
+}
+
+interface SetBannerRequest {
+  Params: Static<typeof THasId>;
+}
+
+interface UnsetBannerRequest {
+  Params: Static<typeof THasId>;
+}
+
 const router: FastifyPluginAsync = async (fastify, ops) => {
   const service = fastify.db.collection.recipe;
 
@@ -143,9 +159,11 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
     // delete avatar
     if (recipe.avatar) await fastify.uploadsManager.delete(recipe.avatar);
+
     // delete banner
     if (recipe.banner) await fastify.uploadsManager.delete(recipe.banner);
 
+    // delete images and videos of instructions
     recipe.instructions.map(async (instruction) => {
       if (instruction.image)
         await fastify.uploadsManager.delete(instruction.image);
@@ -157,9 +175,104 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     reply.code(204).send();
   });
 
-  fastify.put('/:id/avatar', async (request, reply) => {});
+  const setAvatarOps: RouteShorthandOptions = {
+    schema: {
+      params: THasId,
+      response: {
+        200: TRecipe,
+      },
+    },
+  };
 
-  fastify.put('/:id/banner', async (request, reply) => {});
+  fastify.put<SetAvatarRequest>(
+    '/:id/avatar',
+    setAvatarOps,
+    async (request, reply) => {
+      const recipe = await service.read.one(request.params.id);
+
+      if (!recipe) return reply.notFound();
+
+      // delete old avatar
+      if (recipe.avatar) await fastify.uploadsManager.delete(recipe.avatar);
+
+      const file = await request.file();
+      const uploaded = await fastify.uploadsManager.upload(file);
+
+      return await service.update(recipe.id, {
+        avatar: uploaded.name,
+      });
+    }
+  );
+
+  const delAvatarOps: RouteShorthandOptions = {
+    schema: {
+      params: THasId,
+    },
+  };
+
+  fastify.delete<UnsetAvatarRequest>(
+    '/:id/avatar',
+    delAvatarOps,
+    async (request, reply) => {
+      const recipe = await service.read.one(request.params.id);
+
+      if (!recipe?.avatar) return reply.notFound();
+
+      await fastify.uploadsManager.delete(recipe.avatar);
+      reply.code(204).send();
+    }
+  );
+
+  const setBannerOps: RouteShorthandOptions = {
+    schema: {
+      params: THasId,
+      response: {
+        200: TRecipe,
+      },
+    },
+  };
+
+  fastify.put<SetBannerRequest>(
+    '/:id/banner',
+    setBannerOps,
+    async (request, reply) => {
+      const recipe = await service.read.one(request.params.id);
+
+      if (!recipe) return reply.notFound();
+
+      // delete old banner
+      if (recipe.banner) await fastify.uploadsManager.delete(recipe.banner);
+
+      const file = await request.file();
+      const uploaded = await fastify.uploadsManager.upload(file);
+
+      return await service.update(recipe.id, {
+        banner: uploaded.name,
+      });
+    }
+  );
+
+  const delBannerOps: RouteShorthandOptions = {
+    schema: {
+      params: THasId,
+      response: {
+        200: TRecipe,
+      },
+    },
+  };
+
+  fastify.delete<UnsetBannerRequest>(
+    '/:id/banner',
+    delBannerOps,
+    async (request, reply) => {
+      const recipe = await service.read.one(request.params.id);
+
+      if (!recipe?.banner) return reply.notFound();
+
+      await fastify.uploadsManager.delete(recipe.banner);
+      reply.code(204).send();
+    }
+  );
 };
 
 export default router;
