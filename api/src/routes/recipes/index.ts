@@ -146,12 +146,20 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     // delete banner
     if (recipe.banner) await fastify.uploadsManager.delete(recipe.banner);
 
-    // FIXME: delete instructions images and videos
-    recipe.instructions.map((instruction) => {});
+    recipe.instructions.map(async (instruction) => {
+      if (instruction.image)
+        await fastify.uploadsManager.delete(instruction.image);
+      if (instruction.video)
+        await fastify.uploadsManager.delete(instruction.video);
+    });
 
     await service.delete(recipe.id);
     reply.code(204).send();
   });
+
+  fastify.put('/:id/avatar', async (request, reply) => {});
+
+  fastify.put('/:id/banner', async (request, reply) => {});
 };
 
 export default router;
