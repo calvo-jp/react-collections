@@ -16,12 +16,24 @@ const THasId = Type.Object({
   id: Type.Number(),
 });
 
+const TCreateInput = Type.Pick(TInstruction, ['description', 'recipeId']);
+const TUpdateInput = Type.Partial(Type.Pick(TCreateInput, ['description']));
+
 interface GetAllRequest {
   Querystring: Static<typeof TPaginationQuery>;
 }
 
 interface GetSingleRequest {
   Params: Static<typeof THasId>;
+}
+
+interface CreateRequest {
+  Body: Static<typeof TCreateInput>;
+}
+
+interface UpdateRequest {
+  Params: Static<typeof THasId>;
+  Body: Static<typeof TUpdateInput>;
 }
 
 const plugin: FastifyPluginAsync = async (fastify, ops) => {
@@ -60,6 +72,51 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
       return recipe;
     }
   );
+
+  const createOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
+    schema: {
+      response: {
+        201: TInstruction,
+      },
+    },
+  };
+
+  fastify.post<CreateRequest>('/', createOps, async (request, reply) => {
+    const recipe = await fastify.db.collection.recipe.read.one(
+      request.body.recipeId
+    );
+
+    // recipe does not or no longer exists
+    if (!recipe) return reply.notFound();
+
+    // not the author
+    if (request.user.id !== recipe.authorId) return reply.forbidden();
+
+    const instruction = await service.create(request.body);
+    reply.code(201).send(instruction);
+  });
+
+  const updateOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
+    schema: {
+      params: THasId,
+      response: {
+        200: TInstruction,
+      },
+    },
+  };
+
+  fastify.patch<UpdateRequest>('/', updateOps, async (request, reply) => {
+    const instruction = await service.read.one(request.params.id);
+
+    if (!instruction) return reply.notFound();
+
+    // not the owner
+    if (instruction.authorId !== request.user.id) return reply.forbidden();
+
+    return await service.update(request.params.id, request.body);
+  });
 };
 
 export default plugin;
