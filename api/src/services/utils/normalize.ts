@@ -51,7 +51,7 @@ const normalizeRecipe = (data: NonNormalized<typeof recipeFn>) => {
       const len = arr.length;
       const sum = total + review.rate;
 
-      if (idx > len) return sum / len;
+      if (idx + 1 === len) return sum / len;
 
       return sum;
     }, 0);
