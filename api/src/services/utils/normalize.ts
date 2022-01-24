@@ -32,7 +32,7 @@ const normalizeUser = (data: NonNormalized<typeof userFn>) => {
 
   return {
     summary,
-    emailVerified: !!emailVerifiedAt,
+    emailVerified: emailVerifiedAt instanceof Date,
     emailVerifiedAt,
     ...others,
   };
@@ -71,7 +71,7 @@ const normalizeInstruction = (data: NonNormalized<typeof instructionFn>) => {
   const { recipe, ...others } = data;
 
   return {
-    authorId: recipe.authorId,
+    ...recipe,
     ...others,
   };
 };
