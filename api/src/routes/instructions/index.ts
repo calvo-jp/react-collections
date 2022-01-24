@@ -36,6 +36,10 @@ interface UpdateRequest {
   Body: Static<typeof TUpdateInput>;
 }
 
+interface DeleteRequest {
+  Params: Static<typeof THasId>;
+}
+
 const plugin: FastifyPluginAsync = async (fastify, ops) => {
   const service = fastify.db.collection.instruction;
 
@@ -107,7 +111,7 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
     },
   };
 
-  fastify.patch<UpdateRequest>('/', updateOps, async (request, reply) => {
+  fastify.patch<UpdateRequest>('/:id', updateOps, async (request, reply) => {
     const instruction = await service.read.one(request.params.id);
 
     if (!instruction) return reply.notFound();
@@ -116,6 +120,29 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
     if (instruction.authorId !== request.user.id) return reply.forbidden();
 
     return await service.update(request.params.id, request.body);
+  });
+
+  const delOps: RouteShorthandOptions = {
+    schema: {
+      params: THasId,
+    },
+  };
+
+  fastify.delete<DeleteRequest>('/:id', delOps, async (request, reply) => {
+    const instruction = await service.read.one(request.params.id);
+
+    if (!instruction) return reply.notFound();
+
+    // delete image
+    if (instruction.image)
+      await fastify.uploadsManager.delete(instruction.image);
+
+    // delete video
+    if (instruction.video)
+      await fastify.uploadsManager.delete(instruction.video);
+
+    await service.delete(request.params.id);
+    reply.code(204).send();
   });
 };
 
