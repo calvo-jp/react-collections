@@ -1,8 +1,10 @@
-import type { Instruction, Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import selectables from './constants/selectables';
 import Db from './types/db';
 import Paginated from './types/paginated';
+import normalize from './utils/normalize';
 
+type Instruction = ReturnType<typeof normalize.instruction>;
 type RecipeQuery = Pick<Instruction, 'recipeId'>;
 type PagingQuery = Partial<Pick<Paginated, 'page' | 'pageSize' | 'search'>>;
 type CreateInput = Pick<Instruction, 'description' | 'recipeId'> &
@@ -13,11 +15,15 @@ const service = (db: Db) => {
   const collection = db.instruction;
 
   const read = {
-    async one(id: number): Promise<Instruction | null> {
-      return await collection.findFirst({
+    async one(id: number) {
+      const instruction = await collection.findFirst({
         where: { id },
         select: selectables.instruction,
       });
+
+      if (!instruction) return null;
+
+      return normalize.instruction(instruction);
     },
 
     async all(
@@ -38,13 +44,14 @@ const service = (db: Db) => {
         recipeId,
       };
 
-      const rows = await collection.findMany({
+      const instructions = await collection.findMany({
         where,
         take: pageSize,
         skip: pageSize * (page - 1),
         select: selectables.instruction,
       });
 
+      const rows = instructions.map(normalize.instruction);
       const totalRows = await collection.count({ where });
       const hasNext = totalRows - pageSize * page > 0;
 
@@ -74,13 +81,14 @@ const service = (db: Db) => {
       },
     };
 
-    const rows = await collection.findMany({
+    const instructions = await collection.findMany({
       where,
       take: pageSize,
       skip: pageSize * (page - 1),
       select: selectables.instruction,
     });
 
+    const rows = instructions.map(normalize.instruction);
     const totalRows = await collection.count({ where });
     const hasNext = totalRows - pageSize * page > 0;
 
@@ -99,11 +107,13 @@ const service = (db: Db) => {
   };
 
   const update = async (id: number, data: UpdateInput) => {
-    return await collection.update({
+    const instruction = await collection.update({
       data,
       where: { id },
       select: selectables.instruction,
     });
+
+    return normalize.instruction(instruction);
   };
 
   const remove = async (id: number) => {

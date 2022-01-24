@@ -16,6 +16,8 @@ const userFn = async (db: Db) =>
   await db.user.findFirst({ select: selectables.user });
 const recipeFn = async (db: Db) =>
   await db.recipe.findFirst({ select: selectables.recipe });
+const instructionFn = async (db: Db) =>
+  await db.instruction.findFirst({ select: selectables.instruction });
 const reviewFn = async (db: Db) =>
   await db.review.findFirst({ select: selectables.review });
 const favoriteFn = async (db: Db) =>
@@ -26,13 +28,13 @@ type NonNormalized<T extends Callable> = NonNullable<Awaited<ReturnType<T>>>;
 
 // TODO: add default avatar
 const normalizeUser = (data: NonNormalized<typeof userFn>) => {
-  const { _count: summary, emailVerifiedAt, ...etc } = data;
+  const { _count: summary, emailVerifiedAt, ...others } = data;
 
   return {
     summary,
     emailVerified: !!emailVerifiedAt,
     emailVerifiedAt,
-    ...etc,
+    ...others,
   };
 };
 
@@ -65,29 +67,39 @@ const normalizeRecipe = (data: NonNormalized<typeof recipeFn>) => {
   };
 };
 
+const normalizeInstruction = (data: NonNormalized<typeof instructionFn>) => {
+  const { recipe, ...others } = data;
+
+  return {
+    authorId: recipe.authorId,
+    ...others,
+  };
+};
+
 const normalizeReview = (data: NonNormalized<typeof reviewFn>) => {
-  const { author, recipe, ...etc } = data;
+  const { author, recipe, ...others } = data;
 
   return {
     author: author ? normalizeUser(author) : null,
     recipe: normalizeRecipe(recipe),
-    ...etc,
+    ...others,
   };
 };
 
 const normalizeFavorite = (data: NonNormalized<typeof favoriteFn>) => {
-  const { author, recipe, ...etc } = data;
+  const { author, recipe, ...others } = data;
 
   return {
     author: normalizeUser(author),
     recipe: recipe ? normalizeRecipe(recipe) : null,
-    ...etc,
+    ...others,
   };
 };
 
 const normalize = {
   user: normalizeUser,
   recipe: normalizeRecipe,
+  instruction: normalizeInstruction,
   review: normalizeReview,
   favorite: normalizeFavorite,
 };

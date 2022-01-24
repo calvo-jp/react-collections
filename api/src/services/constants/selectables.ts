@@ -27,6 +27,11 @@ const instruction = Prisma.validator<Prisma.InstructionSelect>()({
   id: true,
   description: true,
   recipeId: true,
+  recipe: {
+    select: {
+      authorId: true,
+    },
+  },
   image: true,
   video: true,
   createdAt: true,
