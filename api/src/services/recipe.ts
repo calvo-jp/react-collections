@@ -160,17 +160,11 @@ const service = (db: Db) => {
     },
   };
 
-  const exists = async (id: number) => {
-    const count = await collection.count({ where: { id } });
-    return count > 0;
-  };
-
   return {
     read,
     create,
     update,
     delete: remove,
-    exists,
     banner,
     avatar,
   };
