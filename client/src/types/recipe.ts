@@ -9,8 +9,8 @@ interface IRecipe {
   ingredients: string[];
   instructions: IInstruction[];
   tags: string[];
-  avatar: string;
-  banner: string;
+  avatar: string | null;
+  banner: string | null;
   createdAt: string;
   updatedAt: string;
   summary: {

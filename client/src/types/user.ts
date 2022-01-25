@@ -3,7 +3,7 @@ interface IUser {
   name: string;
   email: string;
   emailVerified: boolean;
-  emailVerifiedAt?: string;
+  emailVerifiedAt: string | null;
   avatar: string;
   createdAt: string;
   updatedAt: string;

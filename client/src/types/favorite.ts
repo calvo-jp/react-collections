@@ -4,7 +4,7 @@ import IUser from './user';
 interface Favorite {
   id: number;
   author: IUser;
-  recipe?: IRecipe;
+  recipe: IRecipe | null;
   createdAt: string;
 }
 
