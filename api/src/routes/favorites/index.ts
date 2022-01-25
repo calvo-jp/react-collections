@@ -30,7 +30,7 @@ interface CreateRequest {
   Body: Static<typeof TCreateInput>;
 }
 
-const plugin: FastifyPluginAsync = async (fastify, ops) => {
+const router: FastifyPluginAsync = async (fastify, ops) => {
   const service = fastify.db.collection.favorite;
 
   const getAllOps: RouteShorthandOptions = {
@@ -102,4 +102,4 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
   });
 };
 
-export default plugin;
+export default router;
