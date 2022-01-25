@@ -6,9 +6,11 @@ import normalize from './utils/normalize';
 
 type AuthorQuery = Pick<Favorite, 'authorId'>;
 type RecipeQuery = Pick<Favorite, 'recipeId'>;
+
 type PaginationQuery = Partial<
   Pick<Paginated, 'page' | 'pageSize'> & AuthorQuery & RecipeQuery
 >;
+
 type CreateInput = {
   authorId: number;
   recipeId: number;
@@ -72,8 +74,12 @@ const service = (db: Db) => {
     await collection.delete({ where: { id } });
   };
 
-  const exists = async (id: number) => {
-    const count = await collection.count({ where: { id }, take: 1 });
+  const exists = async (where: Prisma.FavoriteWhereInput) => {
+    const count = await collection.count({
+      where,
+      take: 1,
+    });
+
     return count > 0;
   };
 
