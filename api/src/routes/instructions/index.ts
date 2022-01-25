@@ -40,15 +40,23 @@ interface DeleteRequest {
   Params: Static<typeof THasId>;
 }
 
+interface SetImageRequest {
+  Params: Static<typeof THasId>;
+}
+
+interface UnsetImageRequest {
+  Params: Static<typeof THasId>;
+}
+
 const plugin: FastifyPluginAsync = async (fastify, ops) => {
   const service = fastify.db.collection.instruction;
 
   const getAllOps: RouteShorthandOptions = {
     schema: {
+      querystring: TPaginationQuery,
       response: {
         200: TPaginated(TInstruction),
       },
-      querystring: TPaginationQuery,
     },
   };
 
@@ -56,7 +64,7 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
     return await service.read.all(request.query);
   });
 
-  const getSingleOps: RouteShorthandOptions = {
+  const getByIdOps: RouteShorthandOptions = {
     schema: {
       params: THasId,
       response: {
@@ -65,17 +73,13 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
     },
   };
 
-  fastify.get<GetSingleRequest>(
-    '/:id',
-    getSingleOps,
-    async (request, reply) => {
-      const recipe = await service.read.one(request.params.id);
+  fastify.get<GetSingleRequest>('/:id', getByIdOps, async (request, reply) => {
+    const recipe = await service.read.one(request.params.id);
 
-      if (!recipe) return reply.notFound();
+    if (!recipe) return reply.notFound();
 
-      return recipe;
-    }
-  );
+    return recipe;
+  });
 
   const createOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
@@ -144,6 +148,60 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
     await service.delete(request.params.id);
     reply.code(204).send();
   });
+
+  const setImageOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
+    schema: {
+      params: THasId,
+      response: {
+        200: TInstruction,
+      },
+    },
+  };
+
+  fastify.put<SetImageRequest>(
+    '/:id/image',
+    setImageOps,
+    async (request, reply) => {
+      const instruction = await service.read.one(request.params.id);
+
+      if (!instruction) return reply.notFound();
+
+      // delete old image
+      if (instruction.image)
+        await fastify.uploadsManager.delete(instruction.image);
+
+      const multipart = await request.file();
+      const uploaded = await fastify.uploadsManager.upload(multipart);
+
+      return await service.update(request.params.id, {
+        image: uploaded.name,
+      });
+    }
+  );
+
+  const unsetImageOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
+    schema: {
+      params: THasId,
+    },
+  };
+
+  fastify.delete<DeleteRequest>(
+    '/:id/image',
+    unsetImageOps,
+    async (request, reply) => {
+      const instruction = await service.read.one(request.params.id);
+
+      if (!instruction?.image) return reply.notFound();
+
+      // not the owner
+      if (request.user.id !== instruction.authorId) return reply.forbidden();
+
+      await service.delete(request.params.id);
+      reply.code(204).send();
+    }
+  );
 };
 
 export default plugin;
