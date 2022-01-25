@@ -84,13 +84,21 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
     }
   });
 
-  fastify.delete<DeleteRequest>('/:id', async (request, reply) => {
-    if (await service.exists(request.params.id)) {
-      service.delete(request.params.id);
-      return reply.code(204).send;
-    }
+  const delOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
+    schema: {
+      params: THasId,
+    },
+  };
 
-    reply.notFound();
+  fastify.delete<DeleteRequest>('/:id', delOps, async (request, reply) => {
+    const data = await service.read.one(request.params.id);
+
+    if (!data) return reply.notFound();
+    if (data.authorId !== request.user.id) return reply.forbidden();
+
+    service.delete(request.params.id);
+    reply.code(204).send;
   });
 };
 
