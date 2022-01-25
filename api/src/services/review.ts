@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import selectables from './constants/selectables';
 import Db from './types/db';
 import Paginated from './types/paginated';
@@ -82,11 +83,21 @@ const service = (db: Db) => {
     await collection.delete({ where: { id } });
   };
 
+  const exists = async (condition: Prisma.ReviewWhereInput) => {
+    const count = await collection.count({
+      where: condition,
+      take: 1,
+    });
+
+    return count > 0;
+  };
+
   return {
     read,
     create,
     update,
     delete: remove,
+    exists,
   };
 };
 
