@@ -72,10 +72,16 @@ const service = (db: Db) => {
     await collection.delete({ where: { id } });
   };
 
+  const exists = async (id: number) => {
+    const count = await collection.count({ where: { id }, take: 1 });
+    return count > 0;
+  };
+
   return {
     read,
     create,
     delete: remove,
+    exists,
   };
 };
 
