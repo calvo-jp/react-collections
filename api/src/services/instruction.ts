@@ -120,20 +120,22 @@ const service = (db: Db) => {
     await collection.delete({ where: { id } });
   };
 
-  const video = {
-    set: async (id: number, video: string) => await update(id, { video }),
-    unset: async (id: number) =>
-      await update(id, {
-        video: null,
-      }),
+  const image = {
+    set: async (id: number, image: string) => {
+      return await update(id, { image });
+    },
+    unset: async (id: number) => {
+      return await update(id, { image: null });
+    },
   };
 
-  const image = {
-    set: async (id: number, image: string) => await update(id, { image }),
-    unset: async (id: number) =>
-      await update(id, {
-        image: null,
-      }),
+  const video = {
+    set: async (id: number, video: string) => {
+      return await update(id, { video });
+    },
+    unset: async (id: number) => {
+      return await update(id, { video: null });
+    },
   };
 
   return {
