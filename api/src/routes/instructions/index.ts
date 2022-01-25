@@ -48,6 +48,14 @@ interface UnsetImageRequest {
   Params: Static<typeof THasId>;
 }
 
+interface SetVideoRequest {
+  Params: Static<typeof THasId>;
+}
+
+interface UnsetVideoRequest {
+  Params: Static<typeof THasId>;
+}
+
 const plugin: FastifyPluginAsync = async (fastify, ops) => {
   const service = fastify.db.collection.instruction;
 
@@ -187,7 +195,7 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
     },
   };
 
-  fastify.delete<DeleteRequest>(
+  fastify.delete<UnsetImageRequest>(
     '/:id/image',
     unsetImageOps,
     async (request, reply) => {
@@ -198,7 +206,61 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
       // not the owner
       if (request.user.id !== instruction.authorId) return reply.forbidden();
 
-      await service.delete(request.params.id);
+      await service.update(request.params.id, { image: null });
+      reply.code(204).send();
+    }
+  );
+
+  const setVideoOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
+    schema: {
+      params: THasId,
+      response: {
+        200: TInstruction,
+      },
+    },
+  };
+
+  fastify.put<SetVideoRequest>(
+    '/:id/video',
+    setVideoOps,
+    async (request, reply) => {
+      const instruction = await service.read.one(request.params.id);
+
+      if (!instruction) return reply.notFound();
+
+      // delete old video
+      if (instruction.video)
+        await fastify.uploadsManager.delete(instruction.video);
+
+      const multipart = await request.file();
+      const uploaded = await fastify.uploadsManager.upload(multipart);
+
+      return await service.update(request.params.id, {
+        video: uploaded.name,
+      });
+    }
+  );
+
+  const unsetVideoOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
+    schema: {
+      params: THasId,
+    },
+  };
+
+  fastify.delete<UnsetVideoRequest>(
+    '/:id/video',
+    unsetVideoOps,
+    async (request, reply) => {
+      const instruction = await service.read.one(request.params.id);
+
+      if (!instruction?.video) return reply.notFound();
+
+      // not the owner
+      if (request.user.id !== instruction.authorId) return reply.forbidden();
+
+      await service.update(request.params.id, { video: null });
       reply.code(204).send();
     }
   );
