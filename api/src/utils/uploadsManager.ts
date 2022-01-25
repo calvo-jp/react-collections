@@ -26,14 +26,6 @@ class UploadsManager {
 
   constructor(private uploadsDir: string) {}
 
-  /**
-   *
-   * @param multipart parsed multipart from request
-   * @param whitelist allowed mimetypes
-   *
-   * @throws UnsupportedFile if whitelist is specified and mime is not found
-   *
-   */
   async upload(multipart: MultipartFile, whitelist?: string[]) {
     const type = multipart.mimetype;
 
