@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import selectables from './constants/selectables';
 import Db from './types/db';
 import Paginated from './types/paginated';
