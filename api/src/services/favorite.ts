@@ -74,9 +74,9 @@ const service = (db: Db) => {
     await collection.delete({ where: { id } });
   };
 
-  const exists = async (where: Prisma.FavoriteWhereInput) => {
+  const exists = async (condition: Prisma.FavoriteWhereInput) => {
     const count = await collection.count({
-      where,
+      where: condition,
       take: 1,
     });
 
