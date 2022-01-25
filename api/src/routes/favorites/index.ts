@@ -72,14 +72,27 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   };
 
   fastify.post<CreateRequest>('/', createOps, async (request, reply) => {
-    try {
-      const data = await service.create({
-        ...request.body,
-        authorId: request.user.id,
-      });
+    const authorId = request.user.id;
+    const recipeId = request.body.recipeId;
 
-      reply.code(201).send(data);
+    const exists = await service.exists({
+      AND: {
+        authorId,
+        recipeId,
+      },
+    });
+
+    if (exists) return reply.badRequest('Already in favorites');
+
+    try {
+      reply.code(201).send(
+        await service.create({
+          authorId,
+          recipeId,
+        })
+      );
     } catch (error) {
+      // most probably a recipe not found error
       reply.code(400).send(error);
     }
   });
