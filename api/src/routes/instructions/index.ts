@@ -122,6 +122,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   });
 
   const delOps: RouteShorthandOptions = {
+    preHandler: [fastify.authenticate],
     schema: {
       params: THasId,
     },
@@ -131,6 +132,9 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
     const instruction = await service.read.one(request.params.id);
 
     if (!instruction) return reply.notFound();
+
+    // not owner
+    if (instruction.authorId !== request.user.id) return reply.forbidden();
 
     // delete image
     if (instruction.image)
