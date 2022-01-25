@@ -23,38 +23,25 @@ interface GetAllRequest {
   Querystring: Static<typeof TPaginationQuery>;
 }
 
-interface GetSingleRequest {
+interface WithIdParams {
   Params: Static<typeof THasId>;
 }
+
+type GetSingleRequest = WithIdParams;
 
 interface CreateRequest {
   Body: Static<typeof TCreateInput>;
 }
 
-interface UpdateRequest {
-  Params: Static<typeof THasId>;
+interface UpdateRequest extends WithIdParams {
   Body: Static<typeof TUpdateInput>;
 }
 
-interface DeleteRequest {
-  Params: Static<typeof THasId>;
-}
-
-interface SetImageRequest {
-  Params: Static<typeof THasId>;
-}
-
-interface UnsetImageRequest {
-  Params: Static<typeof THasId>;
-}
-
-interface SetVideoRequest {
-  Params: Static<typeof THasId>;
-}
-
-interface UnsetVideoRequest {
-  Params: Static<typeof THasId>;
-}
+type DeleteRequest = WithIdParams;
+type SetImageRequest = WithIdParams;
+type SetVideoRequest = WithIdParams;
+type UnsetImageRequest = WithIdParams;
+type UnsetVideoRequest = WithIdParams;
 
 const plugin: FastifyPluginAsync = async (fastify, ops) => {
   const service = fastify.db.collection.instruction;
@@ -212,13 +199,7 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
   );
 
   const setVideoOps: RouteShorthandOptions = {
-    preHandler: [fastify.authenticate],
-    schema: {
-      params: THasId,
-      response: {
-        200: TInstruction,
-      },
-    },
+    ...setImageOps,
   };
 
   fastify.put<SetVideoRequest>(
@@ -243,10 +224,7 @@ const plugin: FastifyPluginAsync = async (fastify, ops) => {
   );
 
   const unsetVideoOps: RouteShorthandOptions = {
-    preHandler: [fastify.authenticate],
-    schema: {
-      params: THasId,
-    },
+    ...unsetImageOps,
   };
 
   fastify.delete<UnsetVideoRequest>(
