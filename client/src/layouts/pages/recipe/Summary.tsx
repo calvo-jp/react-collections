@@ -3,8 +3,8 @@ import StarIcon from '@heroicons/react/solid/StarIcon';
 
 const Summary = () => {
   return (
-    <div className="flex gap-3">
-      <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-4 py-3 shadow-md w-[200px] text-white flex items-center gap-2">
+    <div className="flex flex-col md:flex-row gap-3">
+      <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-4 shadow-md md:w-[250px] text-white flex items-center gap-2">
         <StarIcon className="w-16 h-16" />
 
         <div>
@@ -13,7 +13,7 @@ const Summary = () => {
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-red-400 to-pink-400 p-4 py-3 shadow-md w-[200px] text-white flex items-center gap-2">
+      <div className="bg-gradient-to-r from-red-400 to-pink-400 p-4 shadow-md md:w-[250px] text-white flex items-center gap-2">
         <HeartIcon className="w-16 h-16" />
 
         <div>
