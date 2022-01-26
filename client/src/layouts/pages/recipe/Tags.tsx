@@ -1,4 +1,4 @@
-import PlusIcon from '@heroicons/react/outline/PlusIcon';
+import PlusIcon from '@heroicons/react/outline/PlusSmIcon';
 
 interface TagsProps {
   items: string[];
