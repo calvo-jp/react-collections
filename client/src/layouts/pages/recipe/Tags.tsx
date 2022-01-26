@@ -14,9 +14,9 @@ const Tags = (props: TagsProps) => {
       ))}
 
       <li>
-        <button className="text-sm p-2 flex items-center gap-1 text-blue-500 hover:text-blue-600 ">
+        <button className="text-sm p-2 flex items-center gap-1 text-blue-600 hover:text-blue-700 ">
           <PlusIcon className="w-4 h-4" />
-          <span>Create Tag</span>
+          <span>Add Tag</span>
         </button>
       </li>
     </ul>
