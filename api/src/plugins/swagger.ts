@@ -19,7 +19,7 @@ export default fp(
             email: 'calvojp92@gmail.com',
           },
         },
-        host: 'localhost',
+        host: 'localhost:3000',
         schemes: ['http'],
         consumes: ['application/json'],
         produces: ['application/json'],
