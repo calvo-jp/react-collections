@@ -1,5 +1,6 @@
 import {
   BookOpenIcon,
+  ChartPieIcon,
   ClipboardListIcon,
   CogIcon,
   HeartIcon,
@@ -24,10 +25,11 @@ import Tags from './Tags';
 
 // prettier-ignore
 const TABS = [
+  'summary',
   'ingredients',
   'instructions',
   'reviews',
-  'settings'
+  'settings',
 ] as const;
 
 type TabValue = typeof TABS[number];
@@ -56,7 +58,7 @@ const Recipe = (props: RecipeProps) => {
       <div>
         <HeaderTwo url="/recipes" label="Recipes" />
 
-        <Jumbotron src={data.avatar} />
+        <Jumbotron src={data.avatar!} />
 
         <main className="p-8">
           <div className="max-w-[900px] mx-auto">
@@ -93,10 +95,6 @@ const Recipe = (props: RecipeProps) => {
 
             <section className="mt-4">
               <Tags items={data.tags} />
-            </section>
-
-            <section className="mt-8 flex gap-3">
-              <Summary />
             </section>
 
             <section className="mt-8">
@@ -142,6 +140,7 @@ const Tabs = ({ value, onChange }: TabsProps) => {
   };
 
   const items: [TabValue, SVGIcon][] = [
+    ['summary', ChartPieIcon],
     ['ingredients', ClipboardListIcon],
     ['instructions', BookOpenIcon],
     ['reviews', PencilAltIcon],
@@ -202,6 +201,8 @@ interface TabContentProps {
 
 const TabContent = ({ selectedTab, data }: TabContentProps) => {
   switch (selectedTab) {
+    case 'summary':
+      return <Summary />;
     case 'settings':
       return <Settings />;
     case 'reviews':

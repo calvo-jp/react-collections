@@ -79,6 +79,7 @@ const Loader = () => {
 
 // prettier-ignore
 const Tabs = [
+  'summary',
   'instructions',
   'ingredients',
   'settings',
