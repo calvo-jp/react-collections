@@ -12,7 +12,6 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import HeaderTwo from 'layouts/HeaderTwo';
 import Head from 'next/head';
 import Link from 'next/link';
-import Settings from 'pages/settings';
 import * as React from 'react';
 import type IRecipe from 'types/recipe';
 import capitalize from 'utils/capitalize';
@@ -20,6 +19,7 @@ import Ingredients from './Ingredients';
 import Instructions from './Instructions';
 import Jumbotron from './Jumbotron';
 import Reviews from './Reviews';
+import Settings from './Settings';
 import Summary from './Summary';
 import Tags from './Tags';
 
