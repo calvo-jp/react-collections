@@ -7,7 +7,7 @@ interface VideoPlayerProps extends React.ComponentProps<'video'> {
 const VideoPlayer = ({ data, className, ...props }: VideoPlayerProps) => {
   return (
     <div className={className}>
-      <div className="min-h-[300px] max-h-[375px] bg-black">
+      <div>
         {data && data.video && (
           <video
             src={data.video}
