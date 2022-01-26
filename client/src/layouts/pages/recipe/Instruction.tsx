@@ -1,4 +1,4 @@
-import { DotsHorizontalIcon } from '@heroicons/react/outline';
+import DotsHorizontalIcon from '@heroicons/react/outline/DotsVerticalIcon';
 import clsx from 'clsx';
 import IInstruction from 'types/instruction';
 
@@ -17,7 +17,7 @@ const Instruction = ({ onClick, selected, ...data }: InstructionProps) => {
       key={data.id}
       onClick={handleClick}
       className={clsx(
-        'cursor-pointer border p-3 flex gap-4 items-center',
+        'cursor-pointer border p-3 flex gap-4 items-center group',
         !selected &&
           'border-gray-200 hover:border-gray-300 transition-colors duration-300',
         selected && 'border-green-400'
@@ -29,7 +29,7 @@ const Instruction = ({ onClick, selected, ...data }: InstructionProps) => {
       </div>
 
       <button
-        className="border border-transparent hover:border-gray-200 rounded-full p-0.5"
+        className="border border-transparent hover:border-gray-200 rounded-full p-0.5 hidden group-hover:block"
         onClick={(e) => {
           e.stopPropagation();
         }}
