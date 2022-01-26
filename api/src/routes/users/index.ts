@@ -123,6 +123,9 @@ const router: FastifyPluginAsync = async (fastify) => {
     }
   });
 
+  // file-uploads not available yet
+  // ref: https://github.com/fastify/fastify-multipart/issues/173
+  // we will update as soon as the issue has been addressed
   const setAvatarOps: RouteShorthandOptions = {
     schema: {
       tags: ['users'],
