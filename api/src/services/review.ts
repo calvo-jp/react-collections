@@ -24,12 +24,9 @@ const service = (db: Db) => {
   const collection = db.review;
 
   const read = {
-    async by<T extends keyof Whereable>(
-      key: T,
-      value: Whereable[T]
-    ): Promise<Review | null> {
+    async by<T extends keyof Whereable>(k: T, v: Whereable[T]) {
       const review = await collection.findFirst({
-        where: { [key]: value },
+        where: { [k]: v },
         select: selectables.review,
       });
 
