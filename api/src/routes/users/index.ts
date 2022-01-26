@@ -51,6 +51,7 @@ const router: FastifyPluginAsync = async (fastify) => {
 
   const readAllOps: RouteShorthandOptions = {
     schema: {
+      tags: ['users'],
       response: {
         200: TPaginated(TUser),
       },
@@ -65,6 +66,7 @@ const router: FastifyPluginAsync = async (fastify) => {
 
   const readSingleOps: RouteShorthandOptions = {
     schema: {
+      tags: ['users'],
       params: THasId,
       response: {
         200: TUser,
@@ -82,6 +84,7 @@ const router: FastifyPluginAsync = async (fastify) => {
 
   const createOps: RouteShorthandOptions = {
     schema: {
+      tags: ['users'],
       body: TCreateInput,
       response: {
         201: TUser,
@@ -101,6 +104,7 @@ const router: FastifyPluginAsync = async (fastify) => {
 
   const updateOps: RouteShorthandOptions = {
     schema: {
+      tags: ['users'],
       params: THasId,
       body: TUpdateInput,
       response: {
@@ -121,6 +125,7 @@ const router: FastifyPluginAsync = async (fastify) => {
 
   const setAvatarOps: RouteShorthandOptions = {
     schema: {
+      tags: ['users'],
       params: THasId,
       response: {
         [200]: TUser,
@@ -158,6 +163,7 @@ const router: FastifyPluginAsync = async (fastify) => {
 
   const unsetAvatarOps: RouteShorthandOptions = {
     schema: {
+      tags: ['users'],
       params: THasId,
       response: {
         [204]: TUser,

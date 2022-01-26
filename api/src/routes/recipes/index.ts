@@ -67,6 +67,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const getAllOps: RouteShorthandOptions = {
     schema: {
+      tags: ['recipes'],
       querystring: TPaginationQuery,
       response: {
         200: TPaginated(TRecipe),
@@ -80,6 +81,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const getSingleOps: RouteShorthandOptions = {
     schema: {
+      tags: ['recipes'],
       params: THasId,
       response: {
         200: TRecipe,
@@ -100,6 +102,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const createOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['recipes'],
       body: TCreateInput,
       response: {
         201: TRecipe,
@@ -119,6 +122,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const updateOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['recipes'],
       params: THasId,
       body: TUpdateInput,
       response: {
@@ -145,6 +149,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const delOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['recipes'],
       params: THasId,
     },
   };
@@ -177,6 +182,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const setAvatarOps: RouteShorthandOptions = {
     schema: {
+      tags: ['recipes'],
       params: THasId,
       response: {
         200: TRecipe,
@@ -206,6 +212,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const delAvatarOps: RouteShorthandOptions = {
     schema: {
+      tags: ['recipes'],
       params: THasId,
     },
   };
@@ -225,6 +232,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const setBannerOps: RouteShorthandOptions = {
     schema: {
+      tags: ['recipes'],
       params: THasId,
       response: {
         200: TRecipe,
@@ -254,6 +262,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const delBannerOps: RouteShorthandOptions = {
     schema: {
+      tags: ['recipes'],
       params: THasId,
       response: {
         200: TRecipe,

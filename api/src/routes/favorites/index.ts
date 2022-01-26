@@ -35,6 +35,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const getAllOps: RouteShorthandOptions = {
     schema: {
+      tags: ['favorites'],
       querystring: TPaginationQuery,
       response: {
         200: TPaginated(TFavorite),
@@ -48,6 +49,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const getByIdOps: RouteShorthandOptions = {
     schema: {
+      tags: ['favorites'],
       params: THasId,
       response: {
         200: TFavorite,
@@ -64,6 +66,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const createOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['favorites'],
       body: TCreateInput,
       response: {
         201: TFavorite,
@@ -100,6 +103,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const delOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['favorites'],
       params: THasId,
     },
   };

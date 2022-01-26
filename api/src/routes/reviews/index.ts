@@ -7,6 +7,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const readAllOps: RouteShorthandOptions = {
     schema: {
+      tags: ['reviews'],
       response: {
         200: TPaginated(TReview),
       },

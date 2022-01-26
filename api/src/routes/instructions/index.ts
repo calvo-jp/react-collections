@@ -48,6 +48,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const getAllOps: RouteShorthandOptions = {
     schema: {
+      tags: ['instructions'],
       querystring: TPaginationQuery,
       response: {
         200: TPaginated(TInstruction),
@@ -61,6 +62,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const getByIdOps: RouteShorthandOptions = {
     schema: {
+      tags: ['instructions'],
       params: THasId,
       response: {
         200: TInstruction,
@@ -79,6 +81,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const createOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['instructions'],
       response: {
         201: TInstruction,
       },
@@ -103,6 +106,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const updateOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['instructions'],
       params: THasId,
       response: {
         200: TInstruction,
@@ -124,6 +128,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const delOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['instructions'],
       params: THasId,
     },
   };
@@ -151,6 +156,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const setImageOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['instructions'],
       params: THasId,
       response: {
         200: TInstruction,
@@ -182,6 +188,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
   const unsetImageOps: RouteShorthandOptions = {
     preHandler: [fastify.authenticate],
     schema: {
+      tags: ['instructions'],
       params: THasId,
     },
   };

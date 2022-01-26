@@ -18,6 +18,7 @@ const ResponseSchema = Type.Object({
 const index: FastifyPluginAsync = async (fastify) => {
   const cfg: RouteShorthandOptions = {
     schema: {
+      tags: ['root'],
       response: {
         200: ResponseSchema,
       },

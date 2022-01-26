@@ -36,6 +36,7 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const loginOps: RouteShorthandOptions = {
     schema: {
+      tags: ['sessions'],
       body: TCredential,
       response: {
         201: TLoginResponse,
@@ -72,6 +73,9 @@ const router: FastifyPluginAsync = async (fastify, ops) => {
 
   const logoutOps: RouteShorthandOptions = {
     preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['sessions'],
+    },
   };
 
   fastify.delete<LogoutRequest>('/', logoutOps, async (request, reply) => {
