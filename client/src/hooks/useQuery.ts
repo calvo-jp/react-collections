@@ -2,9 +2,10 @@ import { useRouter } from 'next/router';
 
 /**
  * @description abstraction of `router.query`
+ *
  * @example
  * ```javascript
- * useQuery("page")
+ * useQuery("page") // { page: undefined | string | string[] }
  * useQuery("page", "pageSize")
  * ...
  * ```
