@@ -60,7 +60,7 @@ const Recipe = (props: RecipeProps) => {
 
         <Jumbotron src={data.avatar!} />
 
-        <main className="p-8">
+        <main className="p-4 md:p-6 lg:p-8">
           <div className="max-w-[900px] mx-auto">
             <section>
               <div>
