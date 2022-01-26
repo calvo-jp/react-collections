@@ -21,7 +21,7 @@ export default fp(
         },
         host: 'localhost:3000',
         schemes: ['http'],
-        consumes: ['application/json'],
+        consumes: ['application/json', 'multipart/form-data'],
         produces: ['application/json'],
       },
     });
