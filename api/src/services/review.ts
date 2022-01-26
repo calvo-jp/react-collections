@@ -5,12 +5,15 @@ import Paginated from './types/paginated';
 import normalize from './utils/normalize';
 
 type Review = ReturnType<typeof normalize.review>;
-type PagingQuery = Pick<Paginated, 'page' | 'pageSize'>;
+type PagingQuery = Partial<Pick<Paginated, 'page' | 'pageSize'>> & {
+  authorId?: number;
+  recipeId?: number;
+};
 
 type CreateInput = {
   body: string;
   rate: number;
-  userId: number;
+  authorId: number;
   recipeId: number;
 };
 
