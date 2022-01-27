@@ -1,20 +1,17 @@
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import MenuIcon from '@heroicons/react/solid/MenuIcon';
+import useStoreState from 'hooks/store/useState';
 import Searchbar from 'layouts/Searchbar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Brand from './Brand';
 
-class HeaderProps {
-  /** this will be removed once globalState is available */
-  authorized?: boolean;
-}
-
-const Header = (props: HeaderProps) => {
+const Header = () => {
   const ref = React.useRef<HTMLElement>(null);
   const router = useRouter();
   const [keyword, setKeyword] = React.useState('');
+  const [globalState] = useStoreState();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,13 +54,13 @@ const Header = (props: HeaderProps) => {
             />
           </form>
 
-          {props.authorized && (
+          {globalState.authorized && (
             <button className="relative">
               <BellIcon className="w-8 h-8 fill-[#cccccc] hover:fill-[#c4c4c4] transition-all duration-200" />
             </button>
           )}
 
-          {!props.authorized && (
+          {!globalState.authorized && (
             <nav>
               <ul className="flex gap-4">
                 <li>
