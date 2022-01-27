@@ -85,7 +85,7 @@ const Recipe = (props: RecipeProps) => {
                         </time>
                         <div>by</div>
                         <Link href="/users/1" passHref>
-                          <a className="hover:text-blue-500 hover:font-semibold">
+                          <a className="hover:text-blue-500">
                             {data.author.name}
                           </a>
                         </Link>
@@ -130,10 +130,11 @@ const AddToFav = () => {
 
   return (
     <button
-      className="flex text-sm items-center gap-2 border p-2 px-3 border-red-300 text-red-400 rounded-md hover:border-red-400 hover:ring-4 hover:ring-red-100"
+      className="flex text-sm items-center gap-2 sm:border p-2 px-3 border-red-300 text-red-400 rounded-md hover:border-red-400 sm:hover:ring-4 hover:ring-red-100"
       onClick={handleClick}
+      title="Save recipe to favorites"
     >
-      <HeartIcon className="w-4 h-4" />
+      <HeartIcon className="w-6 h-6 sm:w-4 sm:h-4" />
       <span className="hidden sm:block">Add to favs</span>
     </button>
   );
