@@ -2,6 +2,7 @@ import IInstruction from 'types/instruction';
 
 interface VideoPlayerProps extends React.ComponentProps<'video'> {
   data?: IInstruction;
+  caption?: boolean;
 }
 
 const Wrapper: React.FC = ({ children }) => {
@@ -12,7 +13,12 @@ const Wrapper: React.FC = ({ children }) => {
   );
 };
 
-const VideoPlayer = ({ data, className, ...props }: VideoPlayerProps) => {
+const VideoPlayer = ({
+  data,
+  caption,
+  className,
+  ...props
+}: VideoPlayerProps) => {
   if (!data) {
     return (
       <Wrapper>
@@ -40,7 +46,7 @@ const VideoPlayer = ({ data, className, ...props }: VideoPlayerProps) => {
         )}
       </div>
 
-      {data && (
+      {caption && (
         <div className="mt-2">
           <div>
             <div>{data.description}</div>

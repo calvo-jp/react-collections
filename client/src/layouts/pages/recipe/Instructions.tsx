@@ -24,12 +24,12 @@ const Instructions = ({ items }: InstructionsProps) => {
     <div>
       <div className="sm:hidden"></div>
 
-      <div className="hidden sm:flex gap-3">
-        <div className="w-2/3">
-          <VideoPlayer data={currentItem} />
+      <div className="sm:flex sm:gap-3">
+        <div className="hidden sm:block sm:w-2/3">
+          <VideoPlayer data={currentItem} caption />
         </div>
 
-        <div className="w-1/3">
+        <div className="sm:w-1/3">
           <div className="flex flex-col gap-2">
             <Button
               variant="outlined"
