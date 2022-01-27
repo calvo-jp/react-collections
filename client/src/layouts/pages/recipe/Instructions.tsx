@@ -31,13 +31,16 @@ const Instructions = ({ items }: InstructionsProps) => {
 
         <div className="sm:w-1/3">
           <div className="flex flex-col gap-2">
-            <Button
-              variant="outlined"
-              color="primary"
-              label="Add Instruction"
-              icon={<PlusIcon className="w-4 h-4" />}
-              size="sm"
-            />
+            <div className="mb-1 sm:mb-0">
+              <Button
+                variant="outlined"
+                color="primary"
+                label="Add Instruction"
+                icon={<PlusIcon className="w-4 h-4" />}
+                size="sm"
+                fullWidth
+              />
+            </div>
 
             {items.map((item) => {
               const selected = !!currentItem && currentItem.id === item.id;
