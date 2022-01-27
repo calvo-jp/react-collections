@@ -25,8 +25,8 @@ const Layout: React.FC<LayoutProps> = ({ transparent, children }) => {
       </div>
 
       <div className="md:flex">
-        <div className="bg-black bg-opacity-70 hidden bottom-0 top-0 left-0 right-0 z-50 md:static md:bg-transparent">
-          <div className="bg-white w-fit h-full md:bg-transparent">
+        <div className="bg-black md:bg-transparent bg-opacity-70 fixed md:static bottom-0 top-0 left-0 right-0 z-50 md:z-10">
+          <div className="bg-white md:bg-transparent w-fit h-full">
             <Sidebar />
           </div>
         </div>
