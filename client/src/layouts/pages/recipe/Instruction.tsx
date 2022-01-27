@@ -36,11 +36,11 @@ const Instruction = ({ onClick, selected, ...data }: InstructionProps) => {
         </div>
 
         <button
-          className="border border-transparent hover:border-gray-200 rounded-full p-0.5 hidden group-hover:block"
+          tabIndex={-1}
+          className="border border-transparent hover:border-gray-200 rounded-full p-0.5 block sm:hidden sm:group-hover:block"
           onClick={(e) => {
             e.stopPropagation();
           }}
-          tabIndex={-1}
         >
           <DotsHorizontalIcon className="w-5 h-5" />
         </button>
