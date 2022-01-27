@@ -120,7 +120,7 @@ const AddToFav = () => {
       onClick={handleClick}
     >
       <HeartIcon className="w-4 h-4" />
-      <span>Add to favs</span>
+      <span className="hidden sm:block">Add to favs</span>
     </button>
   );
 };
@@ -151,9 +151,9 @@ const Tabs = ({ value, onChange }: TabsProps) => {
     <nav>
       <ul className="flex flex-wrap gap-x-4 gap-y-2">
         {items.map(([tabValue, SVGIcon]) => (
-          <li key={tabValue}>
+          <li key={tabValue} title={tabValue}>
             <Tab
-              icon={<SVGIcon className="w-4 h-4" />}
+              icon={<SVGIcon className="w-6 h-6 sm:w-4 md:h-4" />}
               value={capitalize(tabValue)}
               active={tabValue === value}
               onClick={handleClick(tabValue)}
@@ -189,7 +189,7 @@ const Tab: React.FC<TabProps & React.ComponentProps<'button'>> = ({
       {...props}
     >
       <span>{icon}</span>
-      <span>{value}</span>
+      <span className="hidden sm:block">{value}</span>
     </button>
   );
 };
