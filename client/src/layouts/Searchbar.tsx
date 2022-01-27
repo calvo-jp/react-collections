@@ -60,7 +60,7 @@ const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
   return (
     <div
       className={clsx(
-        'flex items-center gap-1 p-2 border outline-none transition-all duration-300 rounded-lg group cursor-text',
+        'flex items-center gap-1 p-1.5 border outline-none transition-all duration-300 rounded-xl group cursor-text',
         !focused && 'border-gray-200 hover:border-gray-400',
         focused && 'border-blue-400 ring-blue-200',
         focused && !outline && 'ring-4',
@@ -69,26 +69,7 @@ const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
       )}
       onClick={handleClick}
     >
-      <input
-        ref={inputRef}
-        type="search"
-        onBlur={handleMouseEvent}
-        onFocus={handleMouseEvent}
-        onChange={handleChange}
-        className="outline-none w-full"
-        placeholder="Search"
-        {...props}
-      />
-
-      {onReset && !empty && (
-        <button type="button" className="mr-1" onClick={onReset}>
-          <CloseIcon className="w-4 h-4 text-gray-400" />
-        </button>
-      )}
-
-      <div className="h-4 w-px bg-gray-200 mx-1" />
-
-      <div className="mx-1" tabIndex={-1}>
+      <div className="mx-0.5" tabIndex={-1}>
         <SearchIcon
           className={clsx(
             'w-4 h-4 transition-all duration-300',
@@ -97,6 +78,22 @@ const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
           )}
         />
       </div>
+      <input
+        ref={inputRef}
+        type="search"
+        onBlur={handleMouseEvent}
+        onFocus={handleMouseEvent}
+        onChange={handleChange}
+        className="outline-none w-full"
+        placeholder="Search recipes"
+        {...props}
+      />
+
+      {onReset && !empty && (
+        <button type="button" className="mr-1" onClick={onReset}>
+          <CloseIcon className="w-4 h-4 text-gray-400" />
+        </button>
+      )}
     </div>
   );
 };
