@@ -1,5 +1,8 @@
+import users from 'assets/json/users.json';
+import useStoreState from 'hooks/store/useState';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import Alert from 'widgets/Alert';
 import Button from 'widgets/Button';
@@ -11,6 +14,8 @@ interface Credential {
 }
 
 const Login = () => {
+  const router = useRouter();
+  const [globalState, setGlobalState] = useStoreState();
   const [credential, setCredential] = React.useState<Credential>({
     username: 'calvojp',
     password: '',
@@ -25,7 +30,14 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setGlobalState({
+      type: 'session.login',
+      payload: users[0],
+    });
   };
+
+  if (globalState.authorized) router.push('/recipes');
 
   return (
     <React.Fragment>
