@@ -62,15 +62,16 @@ const Header = () => {
 
           {!globalState.authorized && (
             <nav>
-              <ul className="flex gap-4">
+              <ul className="flex gap-3">
                 <li>
                   <Link href="/login" passHref>
                     <a>Login</a>
                   </Link>
                 </li>
+
                 <li>
                   <Link href="/create-account" passHref>
-                    <a className="uppercase">Sign up</a>
+                    <a>Sign up</a>
                   </Link>
                 </li>
               </ul>
