@@ -67,7 +67,14 @@ const Recipe = (props: RecipeProps) => {
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-2">
                     <div>
-                      <h2 className="text-2xl">{data.name}</h2>
+                      <h2
+                        className="text-2xl focus:outline-dotted"
+                        contentEditable
+                        suppressContentEditableWarning
+                        spellCheck={false}
+                      >
+                        {data.name}
+                      </h2>
 
                       <small className="text-gray-500 flex items-center gap-1">
                         <time>
@@ -89,7 +96,14 @@ const Recipe = (props: RecipeProps) => {
                   <AddToFav />
                 </div>
 
-                <p className="mt-4">{data.description}</p>
+                <p
+                  className="mt-4 focus:outline-dotted"
+                  contentEditable
+                  suppressContentEditableWarning
+                  spellCheck={false}
+                >
+                  {data.description}
+                </p>
               </div>
             </section>
 
