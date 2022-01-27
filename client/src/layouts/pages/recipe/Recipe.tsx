@@ -68,7 +68,7 @@ const Recipe = (props: RecipeProps) => {
                   <div className="flex items-center gap-2">
                     <div>
                       <h2
-                        className="text-2xl focus:outline-dotted"
+                        className="text-2xl focus:outline-dotted focus:outline-1"
                         contentEditable
                         suppressContentEditableWarning
                         spellCheck={false}
@@ -97,7 +97,7 @@ const Recipe = (props: RecipeProps) => {
                 </div>
 
                 <p
-                  className="mt-4 focus:outline-dotted"
+                  className="mt-4 focus:outline-dotted focus:outline-1"
                   contentEditable
                   suppressContentEditableWarning
                   spellCheck={false}
