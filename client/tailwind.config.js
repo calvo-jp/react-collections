@@ -3,7 +3,19 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      sans: ['M PLUS Code Latin', 'sans-serif'],
+      IBMPlexSans: [
+        "'IBM Plex Sans'",
+        '-apple-system',
+        'BlinkMacSystemFont',
+        "'Segoe UI'",
+        'Roboto',
+        'Oxygen',
+        'Ubuntu',
+        'Cantarell',
+        "'Open Sans'",
+        "'Helvetica Neue'",
+        'sans-serif',
+      ],
     },
     fontWeight: {
       extralight: 100,
