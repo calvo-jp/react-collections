@@ -25,15 +25,9 @@ const Layout: React.FC<LayoutProps> = ({ transparent, children }) => {
       </div>
 
       <div className="md:flex">
-        <div className="bg-black bg-opacity-70 fixed bottom-0 top-0 left-0 right-0 z-50 md:static md:bg-transparent flex">
+        <div className="bg-black bg-opacity-70 hidden bottom-0 top-0 left-0 right-0 z-50 md:static md:bg-transparent">
           <div className="bg-white w-fit h-full md:bg-transparent">
             <Sidebar />
-          </div>
-
-          <div className="flex items-center">
-            <button className="bg-white rounded-r-full p-4">
-              <CloseIcon className="w-8 h-8" />
-            </button>
           </div>
         </div>
 
