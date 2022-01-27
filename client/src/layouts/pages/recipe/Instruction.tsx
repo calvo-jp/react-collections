@@ -15,12 +15,13 @@ const Instruction = ({ onClick, selected, ...data }: InstructionProps) => {
   return (
     <a
       key={data.id}
+      tabIndex={0}
       onClick={handleClick}
       className={clsx(
-        'cursor-pointer border p-3 flex gap-4 items-center group',
+        'cursor-pointer border p-3 flex gap-4 items-center group outline-none focus:ring-2 transition-colors duration-300',
         !selected &&
-          'border-gray-200 hover:border-gray-300 transition-colors duration-300',
-        selected && 'border-green-400'
+          'border-gray-200 hover:border-gray-300 focus:border-blue-400 focus:ring-blue-200',
+        selected && 'border-green-400 focus:ring-green-100'
       )}
     >
       <div className="truncate flex-grow">
@@ -33,6 +34,7 @@ const Instruction = ({ onClick, selected, ...data }: InstructionProps) => {
         onClick={(e) => {
           e.stopPropagation();
         }}
+        tabIndex={-1}
       >
         <DotsHorizontalIcon className="w-5 h-5" />
       </button>
