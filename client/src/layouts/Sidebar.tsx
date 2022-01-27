@@ -13,13 +13,20 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import Button from 'widgets/Button';
 import HelpLinks from './HelpLinks';
+import Searchbar from './Searchbar';
 
 const Sidebar: React.FC<React.ComponentProps<'div'>> = ({
   className,
   ...props
 }) => {
   return (
-    <div className={clsx('p-8 flex flex-col gap-8', className)} {...props}>
+    <div
+      className={clsx(
+        'w-fit p-8 flex flex-col gap-8 bottom-0 top-0',
+        className
+      )}
+      {...props}
+    >
       <Avatar />
       <CreateButton />
       <Navbar />

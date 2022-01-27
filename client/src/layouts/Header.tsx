@@ -1,11 +1,9 @@
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import MenuIcon from '@heroicons/react/solid/MenuIcon';
-import UserIcon from '@heroicons/react/solid/UserIcon';
 import Searchbar from 'layouts/Searchbar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import onScrollReveal from 'utils/onScrollReveal';
 import Brand from './Brand';
 
 class HeaderProps {
@@ -34,13 +32,11 @@ const Header = (props: HeaderProps) => {
     setKeyword(e.target.value);
 
   React.useEffect(() => {
-    if (ref.current) onScrollReveal(ref.current);
-
     return () => setKeyword('');
   }, []);
 
   return (
-    <header ref={ref} className="bg-white shadow-md sticky top-0 z-50">
+    <header ref={ref} className="bg-white shadow-md">
       <div className="flex justify-between items-center gap-4 p-2 px-3">
         <div className="flex items-center gap-2">
           <button>
@@ -51,7 +47,7 @@ const Header = (props: HeaderProps) => {
         </div>
 
         <div className="flex items-center gap-4">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="hidden md:block">
             <Searchbar
               outline="sm"
               className="w-[300px]"
