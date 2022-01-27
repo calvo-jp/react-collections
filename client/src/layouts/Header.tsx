@@ -55,9 +55,9 @@ const Header = () => {
           </form>
 
           {globalState.authorized && (
-            <button className="relative">
-              <BellIcon className="w-8 h-8 fill-[#cccccc] hover:fill-[#c4c4c4] transition-all duration-200" />
-            </button>
+            <div className="flex items-center gap-2">
+              <IconButton icon={BellIcon} />
+            </div>
           )}
 
           {!globalState.authorized && (
@@ -79,6 +79,18 @@ const Header = () => {
         </div>
       </div>
     </header>
+  );
+};
+
+interface IconButtonProps {
+  icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
+}
+
+const IconButton = ({ icon: SVGIcon }: IconButtonProps) => {
+  return (
+    <button className="">
+      <SVGIcon className="w-8 h-8 fill-gray-300 hover:fill-gray-400 transition-all duration-200" />
+    </button>
   );
 };
 
