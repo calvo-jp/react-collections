@@ -12,7 +12,9 @@ const Landing = () => {
       </Head>
 
       <div className="min-h-screen flex flex-col">
-        <Header />
+        <div className="z-20">
+          <Header />
+        </div>
 
         <main className="flex-grow">
           <Banner />
