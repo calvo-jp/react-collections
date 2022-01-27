@@ -13,7 +13,6 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import Button from 'widgets/Button';
 import HelpLinks from './HelpLinks';
-import Searchbar from './Searchbar';
 
 const Sidebar: React.FC<React.ComponentProps<'div'>> = ({
   className,
