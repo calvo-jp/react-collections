@@ -9,10 +9,14 @@ import * as React from 'react';
 import Brand from './Brand';
 import Sidebar from './Sidebar';
 
-const Header = () => {
+interface HeaderProps {
+  sidebar?: boolean;
+}
+
+const Header = (props: HeaderProps) => {
   const router = useRouter();
   const [keyword, setKeyword] = React.useState('');
-  const [globalState, dispatch] = useStoreState();
+  const [globalState] = useStoreState();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,36 +33,22 @@ const Header = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setKeyword(e.target.value);
 
-  const handleClick = () => {
-    dispatch({
-      type: 'navbar.toggle',
-    });
-  };
-
   React.useEffect(() => {
     return () => setKeyword('');
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
-      <div className="flex items-center gap-2">
-        <button className="md:hidden z-[998]" onClick={handleClick}>
-          {globalState.navbarOpened && (
-            <CloseIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
-          )}
-
-          {!globalState.navbarOpened && (
-            <MenuIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
-          )}
-        </button>
+    <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
+      <div className="flex items-center gap-2 z-[90]">
+        {props.sidebar && <Hamburger />}
 
         <div className="hidden sm:block">
           <Brand />
         </div>
       </div>
 
-      <div className="flex items-center gap-1 md:gap-4 w-full sm:w-fit">
-        <form onSubmit={handleSubmit} className="w-full md:w-[300px]">
+      <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+        <form onSubmit={handleSubmit} className="grow">
           <Searchbar
             outline="sm"
             className="w-full"
@@ -93,15 +83,37 @@ const Header = () => {
         )}
       </div>
 
-      {/*
-       *
-       * Sidebar is here instead of having it in the Layout is
-       * for toggler to still be visible by just increasing its zIndex.
-       * This might change in the future if we find a better solution.
-       *
-       */}
-      <Sidebar />
+      {
+        /*
+         *
+         * Sidebar is here instead of having it in the Layout is
+         * for toggler to still be visible by just increasing its zIndex.
+         * This might change in the future if we find a better solution.
+         *
+         */
+        props.sidebar && <Sidebar />
+      }
     </header>
+  );
+};
+
+const Hamburger = () => {
+  const [globalState, dispatch] = useStoreState();
+
+  const handleClick = () => dispatch({ type: 'navbar.toggle' });
+
+  if (globalState.navbarOpened) {
+    return (
+      <button className="md:hidden" onClick={handleClick}>
+        <CloseIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
+      </button>
+    );
+  }
+
+  return (
+    <button className="md:hidden" onClick={handleClick}>
+      <MenuIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
+    </button>
   );
 };
 

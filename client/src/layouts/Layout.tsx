@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ transparent, children }) => {
         transparent && 'bg-transparent'
       )}
     >
-      <Header />
+      <Header sidebar />
 
       <div className="flex">
         {/*

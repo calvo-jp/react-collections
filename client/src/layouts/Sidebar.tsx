@@ -23,7 +23,7 @@ const Sidebar = () => {
   return (
     <div
       className={clsx(
-        'fixed md:block bg-black md:bg-transparent bg-opacity-60 top-0 left-0 w-full h-full md:w-fit z-[99] md:z-auto',
+        'fixed md:block bg-black md:bg-transparent bg-opacity-60 top-0 left-0 w-full h-full md:w-fit z-[80] md:z-auto',
         !opened && 'hidden',
         opened && 'block'
       )}
