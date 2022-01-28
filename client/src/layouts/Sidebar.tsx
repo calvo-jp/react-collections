@@ -1,18 +1,16 @@
-import CameraIcon from '@heroicons/react/solid/CameraIcon';
 import ChartPieIcon from '@heroicons/react/solid/ChartPieIcon';
 import CogIcon from '@heroicons/react/solid/CogIcon';
-import FolderIcon from '@heroicons/react/solid/FolderIcon';
 import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import LightningBoltIcon from '@heroicons/react/solid/LightningBoltIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import avatar from 'assets/images/avatar.jpg';
 import clsx from 'clsx';
 import useStoreState from 'hooks/store/useState';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Button from 'widgets/Button';
+import Avatar from './Avatar';
 import HelpLinks from './HelpLinks';
 
 const Sidebar = () => {
@@ -40,7 +38,12 @@ const Sidebar = () => {
         <div className="h-[50px]" />
 
         <div className="flex flex-col gap-8">
-          <Avatar />
+          <Link passHref href="/users/1">
+            <a>
+              <Avatar src={avatar} />
+            </a>
+          </Link>
+
           <CreateButton />
           <Navbar />
           <Footer />
@@ -66,28 +69,6 @@ const CreateButton = () => {
           icon={<PencilAltIcon className="w-5 h-5" />}
           fullWidth
         />
-      </a>
-    </Link>
-  );
-};
-
-const Avatar = () => {
-  return (
-    <Link passHref href="/users/1">
-      <a className="w-[200px] h-[200px] relative">
-        <div className="border-4 border-gray-100 relative w-full h-full rounded-full overflow-hidden">
-          <Image
-            src={avatar}
-            alt=""
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-          />
-        </div>
-
-        <button className="flex items-center justify-center z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 h-12 w-12 to-blue-400 rounded-full border-4 border-gray-100 group">
-          <CameraIcon className="fill-white w-7 h-7 group-hover:w-8 group-hover:h-8 transition-all duration-100" />
-        </button>
       </a>
     </Link>
   );
