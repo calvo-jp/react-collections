@@ -1,5 +1,6 @@
+import MenuIcon from '@heroicons/react/outline/MenuIcon';
 import BellIcon from '@heroicons/react/solid/BellIcon';
-import MenuIcon from '@heroicons/react/solid/MenuIcon';
+import CloseIcon from '@heroicons/react/solid/XIcon';
 import useStoreState from 'hooks/store/useState';
 import Searchbar from 'layouts/Searchbar';
 import Link from 'next/link';
@@ -39,20 +40,28 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-white shadow-md h-[50px] flex items-center justify-between px-3">
+    <header className="sticky top-0 z-40 bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
       <div className="flex items-center gap-2">
         <button className="md:hidden z-[60]" onClick={handleClick}>
-          <MenuIcon className="w-4 h-4" />
+          {globalState.navbarOpened && (
+            <CloseIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
+          )}
+
+          {!globalState.navbarOpened && (
+            <MenuIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
+          )}
         </button>
 
-        <Brand />
+        <div className="hidden sm:block">
+          <Brand />
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <form onSubmit={handleSubmit} className="hidden sm:block">
+      <div className="flex items-center gap-1 md:gap-4 w-full sm:w-fit">
+        <form onSubmit={handleSubmit} className="w-full md:w-[300px]">
           <Searchbar
             outline="sm"
-            className="w-[300px]"
+            className="w-full"
             onReset={handleReset}
             onChange={handleChange}
             value={keyword}

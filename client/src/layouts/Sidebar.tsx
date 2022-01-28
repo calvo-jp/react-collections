@@ -84,7 +84,7 @@ const Avatar = () => {
   return (
     <Link passHref href="/users/1">
       <a className="w-[200px] h-[200px] relative">
-        <div className="relative w-full h-full rounded-full overflow-hidden">
+        <div className="border-4 border-gray-100 relative w-full h-full rounded-full overflow-hidden">
           <Image
             src={avatar}
             alt=""
