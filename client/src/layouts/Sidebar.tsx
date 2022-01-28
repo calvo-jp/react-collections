@@ -7,6 +7,7 @@ import LightningBoltIcon from '@heroicons/react/solid/LightningBoltIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import avatar from 'assets/images/avatar.jpg';
 import clsx from 'clsx';
+import useStoreState from 'hooks/store/useState';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,21 +15,48 @@ import * as React from 'react';
 import Button from 'widgets/Button';
 import HelpLinks from './HelpLinks';
 
-const Sidebar: React.FC<React.ComponentProps<'div'>> = ({
-  className,
-  ...props
-}) => {
+interface SidebarProps {
+  mobile?: boolean;
+}
+
+const Sidebar = (props: SidebarProps) => {
+  const [globalState] = useStoreState();
+
+  const mobile = props.mobile;
+  const opened = globalState.navbarOpened;
+
   return (
     <div
-      className={clsx('w-fit p-8 flex flex-col gap-8', className)}
-      {...props}
+      className={clsx(
+        !mobile && 'hidden md:block',
+        mobile && !opened && 'hidden',
+        mobile &&
+          opened &&
+          'fixed md:hidden bg-black bg-opacity-60 top-0 left-0 w-full h-full'
+      )}
     >
-      <Avatar />
-      <CreateButton />
-      <Navbar />
-      <Footer />
+      <div className="w-fit h-full p-8 bg-white md:bg-transparent">
+        <FakeMargin />
+
+        <div className="flex flex-col gap-8">
+          <Avatar />
+          <CreateButton />
+          <Navbar />
+          <Footer />
+        </div>
+      </div>
     </div>
   );
+};
+
+/**
+ *
+ * This is a fake margin based on header's height
+ * this helps us have a consistent design
+ *
+ */
+const FakeMargin = () => {
+  return <div className="h-[50px] md:hidden" />;
 };
 
 const CreateButton = () => {
@@ -72,25 +100,23 @@ const Avatar = () => {
   );
 };
 
+const links = [
+  { href: '/dashboard', label: 'Dashboard', icon: ChartPieIcon },
+  { href: '/recipes', label: 'Recipes', icon: HeartIcon },
+  { href: '/favorites', label: 'Favorites', icon: HeartIcon },
+  { href: '/settings', label: 'Settings', icon: CogIcon },
+  { href: '/logout', label: 'Logout', icon: LightningBoltIcon },
+];
+
 const Navbar = () => {
   return (
     <nav>
       <ul>
-        <li>
-          <NavbarLink href="/dashboard" icon={ChartPieIcon} label="Dashboard" />
-        </li>
-        <li>
-          <NavbarLink href="/recipes" icon={FolderIcon} label="Recipes" />
-        </li>
-        <li>
-          <NavbarLink href="/favorites" icon={HeartIcon} label="Favorites" />
-        </li>
-        <li>
-          <NavbarLink href="/settings" icon={CogIcon} label="Settings" />
-        </li>
-        <li>
-          <NavbarLink icon={LightningBoltIcon} label="Logout" />
-        </li>
+        {links.map((link) => (
+          <li key={link.href}>
+            <NavbarLink {...link} />
+          </li>
+        ))}
       </ul>
     </nav>
   );
@@ -107,10 +133,23 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
   label,
   children,
   className,
+  onClick,
   ...props
 }) => {
+  const [globalState, dispatch] = useStoreState();
+
   const router = useRouter();
   const active = router.pathname === href;
+
+  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    if (globalState.navbarOpened) {
+      dispatch({
+        type: 'navbar.toggle',
+      });
+
+      if (onClick) onClick(e);
+    }
+  };
 
   const anchor = (
     <a
@@ -120,6 +159,7 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
         active && 'text-blue-500',
         className
       )}
+      onClick={handleClick}
       {...props}
     >
       <SVGIcon className="w-5 h-5" />

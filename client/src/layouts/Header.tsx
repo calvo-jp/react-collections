@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Brand from './Brand';
+import Sidebar from './Sidebar';
 
 const Header = () => {
-  const ref = React.useRef<HTMLElement>(null);
   const router = useRouter();
   const [keyword, setKeyword] = React.useState('');
   const [globalState, dispatch] = useStoreState();
@@ -39,52 +39,52 @@ const Header = () => {
   }, []);
 
   return (
-    <header ref={ref} className="bg-white shadow-md">
-      <div className="flex justify-between items-center gap-4 p-2 px-3">
-        <div className="flex items-center gap-2">
-          <button className="block md:hidden">
-            <MenuIcon className="w-4 h-4" onClick={handleClick} />
-          </button>
+    <header className="sticky top-0 z-40 bg-white shadow-md h-[50px] flex items-center justify-between px-3">
+      <div className="flex items-center gap-2">
+        <button className="md:hidden z-[60]" onClick={handleClick}>
+          <MenuIcon className="w-4 h-4" />
+        </button>
 
-          <Brand />
-        </div>
-
-        <div className="flex items-center gap-4">
-          <form onSubmit={handleSubmit} className="hidden md:block">
-            <Searchbar
-              outline="sm"
-              className="w-[300px]"
-              onReset={handleReset}
-              onChange={handleChange}
-              value={keyword}
-            />
-          </form>
-
-          {globalState.authorized && (
-            <div className="flex items-center gap-2">
-              <IconButton icon={BellIcon} />
-            </div>
-          )}
-
-          {!globalState.authorized && (
-            <nav>
-              <ul className="flex gap-3">
-                <li>
-                  <Link href="/login" passHref>
-                    <a>Login</a>
-                  </Link>
-                </li>
-
-                <li>
-                  <Link href="/create-account" passHref>
-                    <a>Sign up</a>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          )}
-        </div>
+        <Brand />
       </div>
+
+      <div className="flex items-center gap-4">
+        <form onSubmit={handleSubmit} className="hidden sm:block">
+          <Searchbar
+            outline="sm"
+            className="w-[300px]"
+            onReset={handleReset}
+            onChange={handleChange}
+            value={keyword}
+          />
+        </form>
+
+        {globalState.authorized && (
+          <div className="flex items-center gap-2">
+            <IconButton icon={BellIcon} />
+          </div>
+        )}
+
+        {!globalState.authorized && (
+          <nav>
+            <ul className="flex gap-3">
+              <li>
+                <Link href="/login" passHref>
+                  <a>Login</a>
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/create-account" passHref>
+                  <a>Sign up</a>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        )}
+      </div>
+
+      <Sidebar mobile />
     </header>
   );
 };
