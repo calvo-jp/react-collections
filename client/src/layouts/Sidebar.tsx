@@ -82,21 +82,23 @@ const CreateButton = () => {
 
 const Avatar = () => {
   return (
-    <div className="w-[200px] h-[200px] relative">
-      <div className="relative w-full h-full rounded-full overflow-hidden">
-        <Image
-          src={avatar}
-          alt=""
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
-        />
-      </div>
+    <Link passHref href="/users/1">
+      <a className="w-[200px] h-[200px] relative">
+        <div className="relative w-full h-full rounded-full overflow-hidden">
+          <Image
+            src={avatar}
+            alt=""
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+          />
+        </div>
 
-      <button className="flex items-center justify-center z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 h-12 w-12 to-blue-400 rounded-full border-4 border-gray-100 group">
-        <CameraIcon className="fill-white w-7 h-7 group-hover:w-8 group-hover:h-8 transition-all duration-100" />
-      </button>
-    </div>
+        <button className="flex items-center justify-center z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 h-12 w-12 to-blue-400 rounded-full border-4 border-gray-100 group">
+          <CameraIcon className="fill-white w-7 h-7 group-hover:w-8 group-hover:h-8 transition-all duration-100" />
+        </button>
+      </a>
+    </Link>
   );
 };
 
