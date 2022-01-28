@@ -93,23 +93,25 @@ const Avatar = () => {
   );
 };
 
-const links = [
-  { href: '/dashboard', label: 'Dashboard', icon: ChartPieIcon },
-  { href: '/recipes', label: 'Recipes', icon: HeartIcon },
-  { href: '/favorites', label: 'Favorites', icon: HeartIcon },
-  { href: '/settings', label: 'Settings', icon: CogIcon },
-  { href: '/logout', label: 'Logout', icon: LightningBoltIcon },
-];
-
 const Navbar = () => {
   return (
     <nav>
       <ul>
-        {links.map((link) => (
-          <li key={link.href}>
-            <NavbarLink {...link} />
-          </li>
-        ))}
+        <li>
+          <NavbarLink href="/dashboard" label="Dashboard" icon={ChartPieIcon} />
+        </li>
+        <li>
+          <NavbarLink href="/recipes" label="Recipes" icon={HeartIcon} />
+        </li>
+        <li>
+          <NavbarLink href="/favorites" label="Favorites" icon={HeartIcon} />
+        </li>
+        <li>
+          <NavbarLink href="/settings" label="Settings" icon={CogIcon} />
+        </li>
+        <li>
+          <NavbarLink label="Logout" icon={LightningBoltIcon} />
+        </li>
       </ul>
     </nav>
   );
