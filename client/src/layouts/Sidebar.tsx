@@ -15,28 +15,29 @@ import * as React from 'react';
 import Button from 'widgets/Button';
 import HelpLinks from './HelpLinks';
 
-interface SidebarProps {
-  mobile?: boolean;
-}
-
-const Sidebar = (props: SidebarProps) => {
+const Sidebar = () => {
   const [globalState] = useStoreState();
 
-  const mobile = props.mobile;
   const opened = globalState.navbarOpened;
 
   return (
     <div
       className={clsx(
-        !mobile && 'hidden md:block',
-        mobile && !opened && 'hidden',
-        mobile &&
-          opened &&
-          'fixed md:hidden bg-black bg-opacity-60 top-0 left-0 w-full h-full'
+        'fixed md:block bg-black md:bg-transparent bg-opacity-60 top-0 left-0 w-full h-full md:w-fit z-[99] md:z-auto',
+        !opened && 'hidden',
+        opened && 'block'
       )}
     >
-      <div className="w-fit h-full p-8 bg-white md:bg-transparent">
-        <FakeMargin />
+      <div className="w-[265px] flex flex-col items-center h-full py-8 bg-white md:bg-transparent">
+        {/*
+         *
+         * This element is based on the height of Header.
+         * This serves as the margin inorder to properly
+         * position the content of Sidebar and
+         * to have a consistent ui in mobile and desktop view
+         *
+         */}
+        <div className="h-[50px]" />
 
         <div className="flex flex-col gap-8">
           <Avatar />
@@ -47,16 +48,6 @@ const Sidebar = (props: SidebarProps) => {
       </div>
     </div>
   );
-};
-
-/**
- *
- * This is a fake margin based on header's height
- * this helps us have a consistent design
- *
- */
-const FakeMargin = () => {
-  return <div className="h-[50px] md:hidden" />;
 };
 
 const CreateButton = () => {
