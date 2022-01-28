@@ -1,28 +1,12 @@
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import StarIcon from '@heroicons/react/solid/StarIcon';
-import recipes from 'assets/json/recipes.json';
 import clsx from 'clsx';
 import Layout from 'layouts/Layout';
-import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import * as React from 'react';
-import IRecipe from 'types/recipe';
 
-interface Props {
-  items: IRecipe[];
-}
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  return {
-    props: {
-      items: recipes,
-    },
-    revalidate: 60 * 60 * 24,
-  };
-};
-
-const Dashboard: NextPage<Props> = ({ items }) => {
+const Dashboard = () => {
   return (
     <Layout>
       <Head>
