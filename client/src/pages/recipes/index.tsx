@@ -1,3 +1,4 @@
+import DotsHorizontalIcon from '@heroicons/react/solid/DotsHorizontalIcon';
 import recipes from 'assets/json/recipes.json';
 import Layout from 'layouts/Layout';
 import type { GetStaticProps, NextPage } from 'next';
@@ -55,13 +56,23 @@ const Recipe = ({ data }: RecipeProps) => {
     <Link href={'/recipes/'.concat(id.toString())} passHref>
       <a
         key={name}
-        className="block bg-white shadow-md hover:ring-4 hover:ring-blue-200 group"
+        className="block bg-white shadow-md hover:ring-4 hover:ring-blue-200 group relative"
       >
+        <button
+          className="absolute z-30 top-[6px] right-[16px] hidden group-hover:block"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        >
+          <DotsHorizontalIcon className="w-10 h-10 fill-white" />
+        </button>
+
         <figure className="relative overflow-hidden h-[250px]">
           <div className="absolute w-full h-full z-20 top-0 left-0 bg-black bg-opacity-50 hidden group-hover:flex items-center justify-center" />
 
           <Image
-            src={banner}
+            src={banner!}
             alt=""
             layout="fill"
             objectFit="cover"
