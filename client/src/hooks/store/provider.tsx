@@ -8,6 +8,8 @@ const initializer = () => {
 
   // window needs to be checked since this is initially run on server
   if (typeof window === 'object') {
+    // place all client code here
+
     const currentUser = localStorage.getItem('current_user');
 
     if (!!currentUser) {
