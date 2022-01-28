@@ -11,7 +11,7 @@ const Header = () => {
   const ref = React.useRef<HTMLElement>(null);
   const router = useRouter();
   const [keyword, setKeyword] = React.useState('');
-  const [globalState] = useStoreState();
+  const [globalState, dispatch] = useStoreState();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,6 +28,12 @@ const Header = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setKeyword(e.target.value);
 
+  const handleClick = () => {
+    dispatch({
+      type: 'navbar.toggle',
+    });
+  };
+
   React.useEffect(() => {
     return () => setKeyword('');
   }, []);
@@ -36,8 +42,8 @@ const Header = () => {
     <header ref={ref} className="bg-white shadow-md">
       <div className="flex justify-between items-center gap-4 p-2 px-3">
         <div className="flex items-center gap-2">
-          <button>
-            <MenuIcon className="w-4 h-4" />
+          <button className="block md:hidden">
+            <MenuIcon className="w-4 h-4" onClick={handleClick} />
           </button>
 
           <Brand />
