@@ -58,28 +58,26 @@ const Header = (props: HeaderProps) => {
           />
         </form>
 
-        {globalState.authorized && (
+        {!!globalState.authorized && (
           <div className="flex items-center gap-2">
             <IconButton icon={BellIcon} />
           </div>
         )}
 
         {!globalState.authorized && (
-          <nav>
-            <ul className="flex gap-3">
-              <li>
-                <Link href="/login" passHref>
-                  <a>Login</a>
-                </Link>
-              </li>
+          <ul className="flex gap-3">
+            <li>
+              <Link href="/login" passHref>
+                <a>Login</a>
+              </Link>
+            </li>
 
-              <li>
-                <Link href="/create-account" passHref>
-                  <a>Sign up</a>
-                </Link>
-              </li>
-            </ul>
-          </nav>
+            <li>
+              <Link href="/create-account" passHref>
+                <a>Sign up</a>
+              </Link>
+            </li>
+          </ul>
         )}
       </div>
 
