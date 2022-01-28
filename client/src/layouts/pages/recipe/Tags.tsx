@@ -1,15 +1,17 @@
 import PlusIcon from '@heroicons/react/outline/PlusSmIcon';
+import CloseIcon from '@heroicons/react/outline/XIcon';
 
 interface TagsProps {
   items: string[];
+  onChange?: (value: string[]) => void;
 }
 
 const Tags = (props: TagsProps) => {
   return (
     <ul className="flex flex-wrap gap-1 items-center">
       {props.items.map((item) => (
-        <li key={item} className="text-sm p-2 bg-blue-100">
-          {item}
+        <li key={item}>
+          <Tag value={item} />
         </li>
       ))}
 
@@ -20,6 +22,27 @@ const Tags = (props: TagsProps) => {
         </button>
       </li>
     </ul>
+  );
+};
+
+interface TagProps {
+  value: string;
+  onChange?: (value: string[]) => void;
+}
+
+const Tag = ({ value }: TagProps) => {
+  return (
+    <div
+      className="text-sm p-2 bg-blue-100 outline-none"
+      contentEditable
+      suppressContentEditableWarning
+      spellCheck={false}
+      onBlur={(e) => {
+        console.log(e.target.textContent);
+      }}
+    >
+      {value}
+    </div>
   );
 };
 
