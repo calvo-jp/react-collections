@@ -1,5 +1,6 @@
 import PlusIcon from '@heroicons/react/outline/PlusSmIcon';
 import CloseIcon from '@heroicons/react/outline/XIcon';
+import * as React from 'react';
 
 interface TagsProps {
   items: string[];
@@ -33,7 +34,7 @@ interface TagProps {
 const Tag = ({ value }: TagProps) => {
   return (
     <div
-      className="text-sm p-2 bg-blue-100 outline-none"
+      className="text-sm p-2 bg-blue-100 outline-none relative"
       contentEditable
       suppressContentEditableWarning
       spellCheck={false}
