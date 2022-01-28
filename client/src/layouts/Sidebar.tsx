@@ -20,10 +20,7 @@ const Sidebar: React.FC<React.ComponentProps<'div'>> = ({
 }) => {
   return (
     <div
-      className={clsx(
-        'w-fit p-8 flex flex-col gap-8 bottom-0 top-0',
-        className
-      )}
+      className={clsx('w-fit p-8 flex flex-col gap-8', className)}
       {...props}
     >
       <Avatar />
@@ -42,11 +39,10 @@ const CreateButton = () => {
       href={'/recipes/new?origin=' + encodeURIComponent(router.asPath)}
       passHref
     >
-      <a>
+      <a className="block">
         <Button
-          type="button"
-          color="primary"
           variant="contained"
+          color="primary"
           label="Create New"
           icon={<PencilAltIcon className="w-5 h-5" />}
           fullWidth
@@ -69,7 +65,7 @@ const Avatar = () => {
         />
       </div>
 
-      <button className="z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 h-12 w-12 to-blue-400 rounded-full border-4 border-gray-100 flex items-center justify-center group">
+      <button className="flex items-center justify-center z-10 absolute right-1 bottom-1 bg-gradient-to-r from-cyan-500 h-12 w-12 to-blue-400 rounded-full border-4 border-gray-100 group">
         <CameraIcon className="fill-white w-7 h-7 group-hover:w-8 group-hover:h-8 transition-all duration-100" />
       </button>
     </div>
@@ -77,44 +73,23 @@ const Avatar = () => {
 };
 
 const Navbar = () => {
-  const iconCls = 'block w-[18px] h-[18px]';
-
   return (
     <nav>
       <ul>
         <li>
-          <NavbarLink
-            href="/dashboard"
-            icon={<ChartPieIcon className={iconCls} />}
-            label="Dashboard"
-          />
+          <NavbarLink href="/dashboard" icon={ChartPieIcon} label="Dashboard" />
         </li>
         <li>
-          <NavbarLink
-            href="/recipes"
-            icon={<FolderIcon className={iconCls} />}
-            label="Recipes"
-          />
+          <NavbarLink href="/recipes" icon={FolderIcon} label="Recipes" />
         </li>
         <li>
-          <NavbarLink
-            href="/favorites"
-            icon={<HeartIcon className={iconCls} />}
-            label="Favorites"
-          />
+          <NavbarLink href="/favorites" icon={HeartIcon} label="Favorites" />
         </li>
         <li>
-          <NavbarLink
-            href="/settings"
-            icon={<CogIcon className={iconCls} />}
-            label="Settings"
-          />
+          <NavbarLink href="/settings" icon={CogIcon} label="Settings" />
         </li>
         <li>
-          <NavbarLink
-            icon={<LightningBoltIcon className={iconCls} />}
-            label="Logout"
-          />
+          <NavbarLink icon={LightningBoltIcon} label="Logout" />
         </li>
       </ul>
     </nav>
@@ -122,13 +97,13 @@ const Navbar = () => {
 };
 
 interface NavbarLinkProps {
-  icon?: JSX.Element;
-  label?: string;
+  icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
+  label: string;
 }
 
 const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
   href,
-  icon,
+  icon: SVGIcon,
   label,
   children,
   className,
@@ -140,16 +115,15 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
   const anchor = (
     <a
       className={clsx(
-        'cursor-pointer flex items-center gap-2 px-2',
+        'cursor-pointer flex items-center gap-2',
         !active && 'text-slate-600 hover:text-slate-700',
         active && 'text-blue-500',
         className
       )}
       {...props}
     >
-      {icon}
-      {label}
-      {children}
+      <SVGIcon className="w-5 h-5" />
+      <div>{label}</div>
     </a>
   );
 
