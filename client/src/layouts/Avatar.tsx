@@ -9,7 +9,7 @@ interface AvatarProps {
 
 const Avatar = (props: AvatarProps) => {
   return (
-    <div className="w-[200px] h-[200px] relative">
+    <div className="w-[200px] h-[200px] basis-[200px] shrink-0 grow-0 relative">
       <div className="border-4 border-gray-100 relative w-full h-full rounded-full overflow-hidden">
         <Image
           src={props.src}
