@@ -1,5 +1,6 @@
 import ChartPieIcon from '@heroicons/react/solid/ChartPieIcon';
 import CogIcon from '@heroicons/react/solid/CogIcon';
+import FolderIcon from '@heroicons/react/solid/FolderIcon';
 import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import LightningBoltIcon from '@heroicons/react/solid/LightningBoltIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
@@ -93,7 +94,7 @@ const Navbar = () => {
           <NavbarLink href="/dashboard" label="Dashboard" icon={ChartPieIcon} />
         </li>
         <li>
-          <NavbarLink href="/recipes" label="Recipes" icon={HeartIcon} />
+          <NavbarLink href="/recipes" label="Recipes" icon={FolderIcon} />
         </li>
         <li>
           <NavbarLink href="/favorites" label="Favorites" icon={HeartIcon} />
