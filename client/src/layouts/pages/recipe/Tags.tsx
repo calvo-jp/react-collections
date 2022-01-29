@@ -34,7 +34,7 @@ interface TagProps {
 const Tag = ({ value }: TagProps) => {
   return (
     <div
-      className="text-sm p-2 bg-blue-100 outline-none relative"
+      className="text-sm p-2 bg-blue-100 relative focus:outline-dotted focus:outline-1"
       contentEditable
       suppressContentEditableWarning
       spellCheck={false}
