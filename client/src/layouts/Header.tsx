@@ -3,7 +3,6 @@ import BellIcon from '@heroicons/react/solid/BellIcon';
 import CloseIcon from '@heroicons/react/solid/XIcon';
 import useStoreState from 'hooks/store/useState';
 import Searchbar from 'layouts/Searchbar';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Brand from './Brand';
@@ -16,7 +15,6 @@ interface HeaderProps {
 const Header = (props: HeaderProps) => {
   const router = useRouter();
   const [keyword, setKeyword] = React.useState('');
-  const [globalState] = useStoreState();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,27 +56,9 @@ const Header = (props: HeaderProps) => {
           />
         </form>
 
-        {!!globalState.authorized && (
-          <div className="flex items-center gap-2">
-            <IconButton icon={BellIcon} />
-          </div>
-        )}
-
-        {!globalState.authorized && (
-          <ul className="flex gap-3">
-            <li>
-              <Link href="/login" passHref>
-                <a>Login</a>
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/create-account" passHref>
-                <a>Sign up</a>
-              </Link>
-            </li>
-          </ul>
-        )}
+        <div className="flex items-center gap-2">
+          <IconButton icon={BellIcon} />
+        </div>
       </div>
 
       {
