@@ -75,6 +75,14 @@ const CreateButton = () => {
 };
 
 const Navbar = () => {
+  const [, dispatch] = useStoreState();
+
+  const handleClick = () => {
+    dispatch({
+      type: 'session.logout',
+    });
+  };
+
   return (
     <nav>
       <ul>
@@ -91,7 +99,11 @@ const Navbar = () => {
           <NavbarLink href="/settings" label="Settings" icon={CogIcon} />
         </li>
         <li>
-          <NavbarLink label="Logout" icon={LightningBoltIcon} />
+          <NavbarLink
+            label="Logout"
+            icon={LightningBoltIcon}
+            onClick={handleClick}
+          />
         </li>
       </ul>
     </nav>
@@ -118,12 +130,12 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
   const active = router.pathname === href;
 
   const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    if (onClick) onClick(e);
+
     if (globalState.navbarOpened) {
       dispatch({
         type: 'navbar.toggle',
       });
-
-      if (onClick) onClick(e);
     }
   };
 
