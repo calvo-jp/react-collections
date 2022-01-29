@@ -75,12 +75,15 @@ const CreateButton = () => {
 };
 
 const Navbar = () => {
+  const router = useRouter();
   const [, dispatch] = useStoreState();
 
   const handleClick = () => {
     dispatch({
       type: 'session.logout',
     });
+
+    router.push('/');
   };
 
   return (
