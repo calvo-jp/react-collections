@@ -9,9 +9,7 @@ type Collection = {
 type DbInstance = PrismaClient;
 
 interface Db {
-  /** aka `PrismaClient` */
   instance: DbInstance;
-  /** aka `services` */
   collection: Collection;
 }
 
