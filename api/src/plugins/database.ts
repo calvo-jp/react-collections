@@ -16,7 +16,7 @@ interface Db {
 }
 
 export default fp(
-  async (fastify, ops) => {
+  async (fastify) => {
     const instance = new PrismaClient();
     await instance.$connect();
 

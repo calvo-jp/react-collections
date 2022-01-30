@@ -3,7 +3,7 @@ import jwt from 'fastify-jwt';
 import fp from 'fastify-plugin';
 
 export default fp(
-  async (fastify, ops) => {
+  async (fastify) => {
     const blacklisted = async (id: string) => !!(await fastify.redis.get(id));
 
     fastify.register(jwt, {

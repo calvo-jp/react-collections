@@ -3,7 +3,7 @@ import swagger from 'fastify-swagger';
 
 // TODO: live docs should have a different config
 export default fp(
-  async (fastify, ops) => {
+  async (fastify) => {
     fastify.register(swagger, {
       mode: 'dynamic',
       staticCSP: true,

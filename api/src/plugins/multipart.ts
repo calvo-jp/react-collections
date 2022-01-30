@@ -2,7 +2,7 @@ import multipart from 'fastify-multipart';
 import fp from 'fastify-plugin';
 
 export default fp(
-  async (fastify, ops) => {
+  async (fastify) => {
     fastify.register(multipart, {
       limits: {
         files: 1,

@@ -2,7 +2,7 @@ import fp from 'fastify-plugin';
 import { createClient, RedisClientType, RedisScripts } from 'redis';
 
 export default fp(
-  async (fastify, ops) => {
+  async (fastify) => {
     const redis = createClient({ url: fastify.config.REDIS_DSN });
     await redis.connect();
 
