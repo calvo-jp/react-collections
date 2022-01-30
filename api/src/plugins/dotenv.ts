@@ -29,10 +29,7 @@ export default fp(
 
       if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
 
-      // @ts-expect-error
       server.config.DEBUG = debug;
-
-      // @ts-expect-error
       server.config.UPLOADS_DIR = uploadsDir;
     });
   },
@@ -40,16 +37,12 @@ export default fp(
 );
 
 type Config = Static<typeof TConfig> & {
-  /** `true` if `NODE_ENV` is set to development */
   DEBUG: boolean;
-  /** uploaded files directory */
   UPLOADS_DIR: string;
 };
 
 declare module 'fastify' {
   interface FastifyInstance {
-    config: {
-      readonly [P in keyof Config]: Config[P];
-    };
+    config: Config;
   }
 }
