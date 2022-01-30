@@ -6,16 +6,12 @@ import * as path from 'node:path';
 
 const TConfig = Type.Strict(
   Type.Object({
-    // prettier-ignore
     NODE_ENV: Type.Optional(
-      Type.Union([
-        Type.Literal('production'), 
-        Type.Literal('development')
-      ])
+      Type.Union([Type.Literal('production'), Type.Literal('development')])
     ),
-    ACCESS_TOKEN_SECRETKEY: Type.String(),
-    REDIS_URL: Type.String(),
-    TZ: Type.String(),
+    PGSQL_DSN: Type.String(),
+    REDIS_DSN: Type.String(),
+    JWT_SECRET: Type.String(),
   })
 );
 
@@ -35,6 +31,7 @@ export default fp(
 
       // @ts-expect-error
       server.config.DEBUG = debug;
+
       // @ts-expect-error
       server.config.UPLOADS_DIR = uploadsDir;
     });

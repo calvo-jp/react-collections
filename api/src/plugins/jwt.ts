@@ -7,7 +7,7 @@ export default fp(
     const blacklisted = async (id: string) => !!(await fastify.redis.get(id));
 
     fastify.register(jwt, {
-      secret: fastify.config.ACCESS_TOKEN_SECRETKEY,
+      secret: fastify.config.JWT_SECRET,
       sign: {
         algorithm: 'HS256',
         expiresIn: '14 days',
