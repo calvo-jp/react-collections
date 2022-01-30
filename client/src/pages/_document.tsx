@@ -18,7 +18,7 @@ class Document_ extends Document {
           />
         </Head>
 
-        <body className="min-h-screen text-gray-700 bg-white font-IBMPlexSans scroll-smooth">
+        <body className="min-h-screen text-gray-700 bg-white font-sans scroll-smooth">
           <Main />
           <NextScript />
         </body>

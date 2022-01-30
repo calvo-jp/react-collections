@@ -1,9 +1,8 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
     fontFamily: {
-      IBMPlexSans: [
+      sans: [
         "'IBM Plex Sans'",
         '-apple-system',
         'BlinkMacSystemFont',
@@ -26,6 +25,7 @@ module.exports = {
       bold: 600,
       extrabold: 700,
     },
+    extend: {},
   },
   variants: {
     extend: {},
