@@ -143,7 +143,7 @@ const HeartButton = (props: HeartButtonProps) => {
   return (
     <button onClick={handleClick}>
       {active && <HeartIconSolid className="w-6 h-6 fill-red-400" />}
-      {!active && <HeartIcon className="w-6 h-6 text-red-400" />}
+      {!active && <HeartIcon className="w-6 h-6 text-red-300" />}
     </button>
   );
 };
