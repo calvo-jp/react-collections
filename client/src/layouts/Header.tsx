@@ -6,7 +6,7 @@ import Searchbar from 'layouts/Searchbar';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Brand from './Brand';
-import Sidebar from './Navbar';
+import Navbar from './Navbar';
 
 interface HeaderProps {
   sidebar?: boolean;
@@ -37,7 +37,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 md:z-10">
         {props.sidebar && <Hamburger />}
 
         <div className="hidden sm:block">
@@ -68,7 +68,7 @@ const Header = (props: HeaderProps) => {
          * This might change in the future if we find a better solution.
          *
          */
-        props.sidebar && <Sidebar />
+        props.sidebar && <Navbar />
       }
     </header>
   );
