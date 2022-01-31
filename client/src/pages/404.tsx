@@ -12,7 +12,7 @@ const NotFound = () => {
       </Head>
 
       <div className="flex flex-col min-h-screen">
-        <HeaderTwo url="/" label="Go to homepage" />
+        <HeaderTwo redirect="/" label="Go to homepage" />
 
         <main className="flex-grow flex justify-center items-center">
           <div className="text-9xl font-bold text-gray-300">4O4</div>
