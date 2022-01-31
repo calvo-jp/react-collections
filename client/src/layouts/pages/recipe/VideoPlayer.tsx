@@ -7,7 +7,7 @@ interface VideoPlayerProps extends React.ComponentProps<'video'> {
 
 const Wrapper: React.FC = ({ children }) => {
   return (
-    <div className="h-[250px] md:h-[300px] flex items-center justify-center bg-gray-100">
+    <div className="h-[250px] md:h-[300px] lg:h-[350px] flex items-center justify-center bg-gray-100">
       {children}
     </div>
   );
