@@ -56,7 +56,7 @@ const Recipe = (props: RecipeProps) => {
       </Head>
 
       <div>
-        <HeaderTwo url="/recipes" label="Recipes" />
+        <HeaderTwo redirect="/recipes" label="Recipes" />
 
         <Jumbotron src={data.avatar!} />
 
