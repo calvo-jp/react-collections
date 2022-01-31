@@ -4,10 +4,6 @@ import clsx from 'clsx';
 import * as React from 'react';
 
 interface SearchbarProps {
-  /** decrease ring size from 4 to 2 */
-  outline?: 'sm';
-
-  /** adds a clear textfield option */
   onReset?: () => void;
 }
 
@@ -17,7 +13,6 @@ const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
   onReset,
   onChange,
   className,
-  outline,
   ...props
 }) => {
   const [empty, setEmpty] = React.useState(!props.value);
@@ -60,11 +55,9 @@ const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
   return (
     <div
       className={clsx(
-        'flex items-center gap-1 p-1.5 border outline-none transition-all duration-300 rounded-xl group cursor-text',
+        'flex items-center gap-1 p-1.5 border outline-none transition-all duration-300 rounded-md group cursor-text',
         !focused && 'border-gray-200 hover:border-gray-400',
-        focused && 'border-blue-400 ring-blue-200',
-        focused && !outline && 'ring-4',
-        focused && outline && 'ring-2',
+        focused && 'border-blue-400 ring-2 ring-blue-200',
         className
       )}
       onClick={handleClick}

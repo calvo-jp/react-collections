@@ -48,7 +48,6 @@ const Header = (props: HeaderProps) => {
       <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
         <form onSubmit={handleSubmit} className="grow">
           <Searchbar
-            outline="sm"
             className="w-full"
             onReset={handleReset}
             onChange={handleChange}
