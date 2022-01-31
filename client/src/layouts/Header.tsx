@@ -41,7 +41,7 @@ const Header = (props: HeaderProps) => {
         {props.sidebar && <Hamburger />}
 
         <div className="hidden sm:block">
-          <Brand />
+          <Brand redirect="/newsfeed" />
         </div>
       </div>
 
