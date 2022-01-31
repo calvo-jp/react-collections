@@ -86,18 +86,18 @@ const TextField: React.FC<TextFieldProps> = ({
         className={clsx(
           'p-2 w-full border rounded-md outline-none transition-all duration-300',
           !error && 'border-gray-300 hover:border-gray-400',
-          !error && 'focus:ring-4 focus:ring-blue-200 focus:border-blue-400',
-          error && 'focus:ring-4 focus:ring-red-200 border-red-400'
+          !error && 'focus:ring-2 focus:ring-blue-200 focus:border-blue-400',
+          error && 'focus:ring-2 focus:ring-red-200 border-red-400'
         )}
         onChange={handleChange}
         {...props}
       />
 
       {!!helperText && error && (
-        <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
-          <ExclamationIcon className="block w-4 h-4" />
-          <span>{helperText}</span>
-        </p>
+        <div className="mt-1 flex items-center gap-1">
+          <ExclamationIcon className="block w-4 h-4 fill-red-400" />
+          <span className="text-sm text-red-500">{helperText}</span>
+        </div>
       )}
     </div>
   );

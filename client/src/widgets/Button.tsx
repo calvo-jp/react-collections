@@ -73,7 +73,7 @@ const Button = (props: ButtonProps) => {
         size === 'lg' && 'text-lg',
         size === 'xl' && 'text-xl',
         // with variant
-        variant && 'focus:ring-4',
+        variant && 'focus:ring-2',
         // contained
         contained && 'text-white',
         contained &&
