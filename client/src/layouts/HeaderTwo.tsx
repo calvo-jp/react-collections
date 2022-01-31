@@ -8,9 +8,9 @@ interface HeaderTwoProps {
 }
 
 /** header which purpose is to somewhat have a back button */
-const HeaderTwo = ({ redirect, label }: HeaderTwoProps) => {
+const HeaderTwo: React.FC<HeaderTwoProps> = ({ redirect, label, children }) => {
   return (
-    <header className="bg-white shadow-md z-50 sticky top-0 h-[50px] flex items-center px-3">
+    <header className="bg-white shadow-md z-50 sticky top-0 h-[50px] flex items-center justify-between px-3">
       <Link href={redirect} passHref>
         <a className="flex items-center gap-1">
           <ChevronLeftIcon className="w-5 h-5" />
@@ -19,6 +19,8 @@ const HeaderTwo = ({ redirect, label }: HeaderTwoProps) => {
           {!label && <React.Fragment>Go back</React.Fragment>}
         </a>
       </Link>
+
+      <div>{children}</div>
     </header>
   );
 };
