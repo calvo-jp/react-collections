@@ -134,7 +134,7 @@ interface HeartButtonProps {
 }
 
 const HeartButton = (props: HeartButtonProps) => {
-  const { active = true, onToggle } = props;
+  const { active, onToggle } = props;
 
   const handleClick = () => {
     if (onToggle) onToggle(!active);
