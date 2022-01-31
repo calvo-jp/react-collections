@@ -37,7 +37,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
-      <div className="flex items-center gap-2 z-[90]">
+      <div className="flex items-center gap-2">
         {props.sidebar && <Hamburger />}
 
         <div className="hidden sm:block">
@@ -81,7 +81,7 @@ const Hamburger = () => {
 
   if (globalState.navbarOpened) {
     return (
-      <button className="md:hidden" onClick={handleClick}>
+      <button className="md:hidden z-[90]" onClick={handleClick}>
         <CloseIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
       </button>
     );
