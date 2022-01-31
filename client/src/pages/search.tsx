@@ -36,7 +36,7 @@ const Search = () => {
       </Head>
 
       <div>
-        <HeaderTwo url={origin} />
+        <HeaderTwo redirect={origin} />
 
         <div className="max-w-[900px] mx-auto p-4">
           <form className="py-8" onSubmit={handleSubmit}>

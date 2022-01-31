@@ -16,7 +16,7 @@ const CreateRecipe = () => {
       </Head>
 
       <div className="flex flex-col min-h-screen">
-        <HeaderTwo url={origin} label="Go back" />
+        <HeaderTwo redirect={origin} label="Go back" />
 
         <main className="flex-grow flex flex-col justify-center">
           <div>
