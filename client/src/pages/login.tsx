@@ -1,6 +1,6 @@
-import users from 'assets/json/users.json';
 import { Form, Formik } from 'formik';
 import useStoreState from 'hooks/store/useState';
+import Brand from 'layouts/Brand';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -27,7 +27,11 @@ const Login = () => {
 
       <div className="min-h-screen flex flex-col justify-center">
         <main>
-          <div className="max-w-[350px] mx-auto p-2 flex flex-col gap-4">
+          <div className="max-w-[320px] mx-auto p-2 flex flex-col gap-4">
+            <div className="w-fit mx-auto mb-4">
+              <Brand />
+            </div>
+
             <Alert
               open={!!error}
               variant="error"
@@ -114,11 +118,13 @@ const Login = () => {
               )}
             </Formik>
 
-            <div className="text-center mt-4 text-gray-600">
-              <span>No account?</span>
+            <div className="text-center mt-2">
+              <span className="text-gray-500">No account?</span>
 
               <Link href="/create-account" passHref>
-                <a className="ml-1 font-bold">Sign up</a>
+                <a className="ml-1 font-bold text-gray-600 hover:text-blue-500 transition-colors duration-300">
+                  Sign up
+                </a>
               </Link>
             </div>
           </div>
