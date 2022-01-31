@@ -1,4 +1,4 @@
-import recipes from 'assets/json/recipes.json';
+import recipes from 'assets/samples/json/recipes.json';
 import Layout from 'layouts/Layout';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';

@@ -4,7 +4,7 @@ import FolderIcon from '@heroicons/react/solid/FolderIcon';
 import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import LightningBoltIcon from '@heroicons/react/solid/LightningBoltIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
-import avatar from 'assets/images/avatar.jpg';
+import avatar from 'assets/samples/images/avatar.jpg';
 import clsx from 'clsx';
 import useStoreState from 'hooks/store/useState';
 import Link from 'next/link';

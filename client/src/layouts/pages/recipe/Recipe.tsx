@@ -6,7 +6,7 @@ import {
   HeartIcon,
   PencilAltIcon,
 } from '@heroicons/react/outline';
-import reviews from 'assets/json/reviews.json';
+import reviews from 'assets/samples/json/reviews.json';
 import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import HeaderTwo from 'layouts/HeaderTwo';

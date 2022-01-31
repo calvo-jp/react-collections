@@ -1,4 +1,4 @@
-import recipes from 'assets/json/recipes.json';
+import recipes from 'assets/samples/json/recipes.json';
 import Recipe from 'layouts/pages/recipe';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
