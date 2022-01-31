@@ -6,6 +6,7 @@ import {
   HeartIcon,
   PencilAltIcon,
 } from '@heroicons/react/outline';
+import HeartIconSolid from '@heroicons/react/solid/HeartIcon';
 import reviews from 'assets/samples/json/reviews.json';
 import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
@@ -93,7 +94,9 @@ const Recipe = (props: RecipeProps) => {
                     </div>
                   </div>
 
-                  <AddToFav />
+                  <div>
+                    <HeartButton />
+                  </div>
                 </div>
 
                 <p
@@ -125,16 +128,22 @@ const Recipe = (props: RecipeProps) => {
   );
 };
 
-const AddToFav = () => {
-  const handleClick = () => {};
+interface HeartButtonProps {
+  active?: boolean;
+  onToggle?: (value: boolean) => void;
+}
+
+const HeartButton = (props: HeartButtonProps) => {
+  const { active = true, onToggle } = props;
+
+  const handleClick = () => {
+    if (onToggle) onToggle(!active);
+  };
 
   return (
-    <button
-      className="flex text-sm items-center gap-2 sm:border p-2 px-3 border-red-300 text-red-400 rounded-md hover:border-red-400 sm:hover:ring-2 hover:ring-red-100"
-      onClick={handleClick}
-    >
-      <HeartIcon className="w-6 h-6 sm:w-4 sm:h-4" />
-      <span className="hidden sm:block">Add to favs</span>
+    <button onClick={handleClick}>
+      {active && <HeartIconSolid className="w-6 h-6 fill-red-400" />}
+      {!active && <HeartIcon className="w-6 h-6 text-red-400" />}
     </button>
   );
 };
@@ -146,7 +155,9 @@ interface TabsProps {
 
 type SVGIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
 
-const Tabs = ({ value, onChange }: TabsProps) => {
+const Tabs = (props: TabsProps) => {
+  const { value, onChange } = props;
+
   const handleClick = (newValue: TabValue) => {
     return function () {
       if (onChange) onChange(newValue);
@@ -213,7 +224,9 @@ interface TabContentProps {
   selectedTab?: TabValue;
 }
 
-const TabContent = ({ selectedTab, data }: TabContentProps) => {
+const TabContent = (props: TabContentProps) => {
+  const { selectedTab, data } = props;
+
   switch (selectedTab) {
     case 'summary':
       return <Summary />;
