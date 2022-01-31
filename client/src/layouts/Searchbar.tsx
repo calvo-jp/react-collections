@@ -71,6 +71,7 @@ const Searchbar: React.FC<SearchbarProps & React.ComponentProps<'input'>> = ({
           )}
         />
       </div>
+
       <input
         ref={inputRef}
         type="search"
