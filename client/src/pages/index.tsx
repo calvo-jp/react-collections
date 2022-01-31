@@ -26,12 +26,12 @@ const Landing = () => {
 
           <div className="flex gap-4 items-center">
             <Link href="/login" passHref>
-              <a>Login</a>
+              <a>Log in</a>
             </Link>
 
             <Link href="/create-account" passHref>
               <a className="border border-blue-400 text-blue-500 p-1 px-4 rounded-md hover:bg-blue-400 hover:text-white">
-                Sign up
+                Join us
               </a>
             </Link>
           </div>
