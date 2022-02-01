@@ -9,7 +9,6 @@ import Link from 'next/link';
 import * as React from 'react';
 import FacebookIcon from 'widgets/icons/Facebook';
 import InstagramIcon from 'widgets/icons/Instagram';
-import MessengerIcon from 'widgets/icons/Messenger';
 import TwitterIcon from 'widgets/icons/Twitter';
 import YoutubeIcon from 'widgets/icons/Youtube';
 
