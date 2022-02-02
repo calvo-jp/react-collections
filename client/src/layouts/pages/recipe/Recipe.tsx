@@ -62,7 +62,7 @@ const Recipe = (props: RecipeProps) => {
         <Jumbotron src={data.avatar!} />
 
         <main className="p-4 md:p-6 lg:p-8">
-          <div className="max-w-[900px] mx-auto">
+          <div className="max-w-screen-md mx-auto">
             <section>
               <div>
                 <div className="flex items-center justify-between w-full">
@@ -92,6 +92,10 @@ const Recipe = (props: RecipeProps) => {
                         </Link>
                       </small>
                     </div>
+                  </div>
+
+                  <div>
+                    <Bookmark />
                   </div>
                 </div>
 
@@ -130,8 +134,8 @@ interface BookmarkProps {}
 
 const Bookmark = (props: BookmarkProps) => {
   return (
-    <button className="p-3 rounded-full bg-blue-400 shadow-md fixed bottom-4 right-4 lg:bottom-6 lg:right-6">
-      <BookmarkIcon className="w-6 h-6 text-white" />
+    <button className="">
+      <BookmarkIcon className="w-6 h-6 text-blue-500" />
     </button>
   );
 };
