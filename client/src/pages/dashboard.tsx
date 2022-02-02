@@ -28,13 +28,6 @@ const Dashboard = () => {
             value={13}
             icon={BellIcon}
           />
-
-          <Item
-            gradientBg="from-red-400 to-pink-400"
-            label="Favorites"
-            value={8}
-            icon={HeartIcon}
-          />
         </div>
       </div>
     </Layout>
@@ -55,18 +48,22 @@ const Item = ({
   gradientBg: className,
 }: ItemProps) => {
   return (
-    <div
-      className={clsx(
-        'bg-gradient-to-r from-orange-400 to-yellow-500 p-6 flex items-center gap-4 shadow-md',
-        className
-      )}
-    >
-      <SVGIcon className="w-20 h-20 fill-white" />
+    <div>
+      <div
+        className={clsx(
+          'bg-gradient-to-r from-orange-400 to-yellow-500 p-6 flex items-center gap-4 shadow-md',
+          className
+        )}
+      >
+        <SVGIcon className="w-20 h-20 fill-white" />
 
-      <div className="flex-col gap-2 text-white">
-        <div className="text-sm">{label}</div>
-        <div className="text-3xl">{value}</div>
+        <div className="flex-col gap-2 text-white">
+          <div className="text-sm">{label}</div>
+          <div className="text-3xl">{value}</div>
+        </div>
       </div>
+
+      <div></div>
     </div>
   );
 };
