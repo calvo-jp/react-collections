@@ -1,8 +1,8 @@
-import ChartPieIcon from '@heroicons/react/solid/ChartPieIcon';
-import CogIcon from '@heroicons/react/solid/CogIcon';
-import FolderIcon from '@heroicons/react/solid/FolderIcon';
-import HeartIcon from '@heroicons/react/solid/HeartIcon';
-import LightningBoltIcon from '@heroicons/react/solid/LightningBoltIcon';
+import BookmarkIcon from '@heroicons/react/outline/BookmarkIcon';
+import ChartPieIcon from '@heroicons/react/outline/ChartPieIcon';
+import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
+import CogIcon from '@heroicons/react/outline/CogIcon';
+import LockClosedIcon from '@heroicons/react/outline/LockClosedIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import avatar from 'assets/samples/images/avatar.jpg';
 import clsx from 'clsx';
@@ -94,10 +94,14 @@ const Navbar = () => {
           <NavbarLink href="/dashboard" label="Dashboard" icon={ChartPieIcon} />
         </li>
         <li>
-          <NavbarLink href="/recipes" label="Recipes" icon={FolderIcon} />
+          <NavbarLink
+            href="/recipes"
+            label="Recipes"
+            icon={ClipboardListIcon}
+          />
         </li>
         <li>
-          <NavbarLink href="/favorites" label="Favorites" icon={HeartIcon} />
+          <NavbarLink href="/bookmarks" label="Bookmarks" icon={BookmarkIcon} />
         </li>
         <li>
           <NavbarLink href="/settings" label="Settings" icon={CogIcon} />
@@ -105,7 +109,7 @@ const Navbar = () => {
         <li>
           <NavbarLink
             label="Logout"
-            icon={LightningBoltIcon}
+            icon={LockClosedIcon}
             onClick={handleClick}
           />
         </li>
