@@ -1,26 +1,40 @@
 import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import StarIcon from '@heroicons/react/solid/StarIcon';
+import clsx from 'clsx';
 
 const Summary = () => {
   return (
-    <div className="flex flex-col md:flex-row gap-3">
-      <div className="bg-gradient-to-r from-orange-400 to-yellow-500 p-4 shadow-md md:w-[250px] text-white flex items-center gap-2">
-        <StarIcon className="w-16 h-16" />
+    <div className="w-fit bg-gradient-to-r from-orange-400 to-yellow-500 p-4 shadow-md text-center">
+      <div className="text-white">Average Rating</div>
 
-        <div>
-          <div className="text-sm">Average Rate</div>
-          <div className="text-2xl">4</div>
-        </div>
-      </div>
+      <Rating value={1} />
+    </div>
+  );
+};
 
-      <div className="bg-gradient-to-r from-red-400 to-pink-400 p-4 shadow-md md:w-[250px] text-white flex items-center gap-2">
-        <HeartIcon className="w-16 h-16" />
+interface RatingProps {
+  value?: number;
+  onChange?: (value: number) => void;
+}
 
-        <div>
-          <div className="text-sm">Total hearts</div>
-          <div className="text-2xl">1</div>
-        </div>
-      </div>
+const Rating = (props: RatingProps) => {
+  const { value = 0, onChange = function () {} } = props;
+
+  return (
+    <div className="flex mt-1.5">
+      {Array(5)
+        .fill(null)
+        .map((_, idx) => idx)
+        .map((n) => (
+          <StarIcon
+            key={n}
+            onClick={() => onChange(n)}
+            className={clsx(
+              'w-8 h-8 cursor-pointer',
+              n < value ? 'text-white' : 'text-amber-300'
+            )}
+          />
+        ))}
     </div>
   );
 };

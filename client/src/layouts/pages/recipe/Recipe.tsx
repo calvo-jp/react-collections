@@ -1,4 +1,5 @@
 import {
+  BookmarkIcon,
   BookOpenIcon,
   ChartPieIcon,
   ClipboardListIcon,
@@ -6,7 +7,6 @@ import {
   HeartIcon,
   PencilAltIcon,
 } from '@heroicons/react/outline';
-import HeartIconSolid from '@heroicons/react/solid/HeartIcon';
 import reviews from 'assets/samples/json/reviews.json';
 import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
@@ -93,10 +93,6 @@ const Recipe = (props: RecipeProps) => {
                       </small>
                     </div>
                   </div>
-
-                  <div>
-                    <HeartButton />
-                  </div>
                 </div>
 
                 <p
@@ -124,26 +120,18 @@ const Recipe = (props: RecipeProps) => {
           </div>
         </main>
       </div>
+
+      <Bookmark />
     </React.Fragment>
   );
 };
 
-interface HeartButtonProps {
-  active?: boolean;
-  onToggle?: (value: boolean) => void;
-}
+interface BookmarkProps {}
 
-const HeartButton = (props: HeartButtonProps) => {
-  const { active, onToggle } = props;
-
-  const handleClick = () => {
-    if (onToggle) onToggle(!active);
-  };
-
+const Bookmark = (props: BookmarkProps) => {
   return (
-    <button onClick={handleClick}>
-      {active && <HeartIconSolid className="w-6 h-6 fill-red-400" />}
-      {!active && <HeartIcon className="w-6 h-6 text-red-300" />}
+    <button className="p-3 rounded-full bg-blue-400 shadow-md fixed bottom-4 right-4 lg:bottom-6 lg:right-6">
+      <BookmarkIcon className="w-6 h-6 text-white" />
     </button>
   );
 };
