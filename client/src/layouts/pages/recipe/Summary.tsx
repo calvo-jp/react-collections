@@ -1,4 +1,3 @@
-import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import StarIcon from '@heroicons/react/solid/StarIcon';
 import clsx from 'clsx';
 
