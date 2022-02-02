@@ -1,21 +1,16 @@
-import {
-  BookmarkIcon,
-  BookOpenIcon,
-  ChartPieIcon,
-  ClipboardListIcon,
-  CogIcon,
-  HeartIcon,
-  PencilAltIcon,
-} from '@heroicons/react/outline';
+import BookOpenIcon from '@heroicons/react/outline/BookOpenIcon';
+import ChartPieIcon from '@heroicons/react/outline/ChartPieIcon';
+import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
+import CogIcon from '@heroicons/react/outline/CogIcon';
+import PencilAltIcon from '@heroicons/react/outline/PencilAltIcon';
 import reviews from 'assets/samples/json/reviews.json';
 import clsx from 'clsx';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import HeaderTwo from 'layouts/HeaderTwo';
 import Head from 'next/head';
-import Link from 'next/link';
 import * as React from 'react';
 import type IRecipe from 'types/recipe';
 import capitalize from 'utils/capitalize';
+import Article from './Article';
 import Ingredients from './Ingredients';
 import Instructions from './Instructions';
 import Jumbotron from './Jumbotron';
@@ -64,50 +59,7 @@ const Recipe = (props: RecipeProps) => {
         <main className="p-4 md:p-6 lg:p-8">
           <div className="max-w-screen-md mx-auto">
             <section>
-              <div>
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <h2
-                        className="text-2xl focus:outline-dotted focus:outline-1"
-                        contentEditable
-                        suppressContentEditableWarning
-                        spellCheck={false}
-                      >
-                        {data.name}
-                      </h2>
-
-                      <small className="text-gray-500 flex items-center gap-1">
-                        <time>
-                          {formatDistanceToNow(new Date(data.createdAt), {
-                            includeSeconds: true,
-                            addSuffix: true,
-                          })}
-                        </time>
-                        <div>by</div>
-                        <Link href="/users/1" passHref>
-                          <a className="hover:text-blue-500">
-                            {data.author.name}
-                          </a>
-                        </Link>
-                      </small>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Bookmark />
-                  </div>
-                </div>
-
-                <p
-                  className="mt-4 focus:outline-dotted focus:outline-1"
-                  contentEditable
-                  suppressContentEditableWarning
-                  spellCheck={false}
-                >
-                  {data.description}
-                </p>
-              </div>
+              <Article data={data} />
             </section>
 
             <section className="mt-4">
@@ -124,19 +76,7 @@ const Recipe = (props: RecipeProps) => {
           </div>
         </main>
       </div>
-
-      <Bookmark />
     </React.Fragment>
-  );
-};
-
-interface BookmarkProps {}
-
-const Bookmark = (props: BookmarkProps) => {
-  return (
-    <button className="">
-      <BookmarkIcon className="w-6 h-6 text-blue-500" />
-    </button>
   );
 };
 
