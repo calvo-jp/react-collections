@@ -22,12 +22,12 @@ const Sidebar = () => {
   return (
     <div
       className={clsx(
-        'fixed md:block bg-black md:bg-transparent bg-opacity-60 top-0 left-0 w-full h-full md:w-fit z-[80] md:z-0',
+        'fixed lg:block bg-black lg:bg-transparent bg-opacity-60 top-0 left-0 w-full h-full lg:w-fit z-[80] md:z-0',
         !opened && 'hidden',
         opened && 'block'
       )}
     >
-      <div className="w-[265px] flex flex-col items-center h-full py-8 bg-white md:bg-transparent">
+      <div className="w-[265px] flex flex-col items-center h-full py-8 bg-white lg:bg-transparent">
         {/*
          *
          * This element is based on the height of Header.

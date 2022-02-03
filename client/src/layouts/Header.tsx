@@ -81,14 +81,14 @@ const Hamburger = () => {
 
   if (globalState.navbarOpened) {
     return (
-      <button className="md:hidden z-[90]" onClick={handleClick}>
+      <button className="lg:hidden z-[90]" onClick={handleClick}>
         <CloseIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
       </button>
     );
   }
 
   return (
-    <button className="md:hidden" onClick={handleClick}>
+    <button className="lg:hidden" onClick={handleClick}>
       <MenuIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
     </button>
   );

@@ -35,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ transparent, children }) => {
          * which is positioned fixed
          *
          */}
-        <div className="hidden md:block basis-[265px] shrink-0 grow-0" />
+        <div className="hidden lg:block basis-[265px] shrink-0 grow-0" />
 
         <main className="p-4 md:p-6 lg:p-8 grow">{children}</main>
       </div>
