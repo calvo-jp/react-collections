@@ -59,7 +59,7 @@ const Recipe = (props: RecipeProps) => {
         <main className="p-4 md:p-6 lg:p-8">
           <div className="max-w-screen-md mx-auto">
             <section>
-              <Article data={data} />
+              <Article {...data} />
             </section>
 
             <section className="mt-4">

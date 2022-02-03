@@ -3,17 +3,17 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import Link from 'next/link';
 import IRecipe from 'types/recipe';
 
-interface ArticleProps {
-  data: IRecipe;
-}
-
-const Article = (props: ArticleProps) => {
-  const { name, description, author } = props.data;
-
-  const dateCreated = formatDistanceToNow(new Date(props.data.createdAt), {
-    includeSeconds: true,
-    addSuffix: true,
-  });
+const Article = ({
+  name,
+  description,
+  author,
+  createdAt,
+  updatedAt,
+}: IRecipe) => {
+  const date = formatDistanceToNow(
+    new Date(!!updatedAt ? updatedAt : createdAt),
+    { includeSeconds: true, addSuffix: true }
+  );
 
   return (
     <div>
@@ -29,12 +29,12 @@ const Article = (props: ArticleProps) => {
               {name}
             </h2>
 
-            <small className="text-gray-500 flex items-center gap-1">
-              <time>{dateCreated}</time>
-              <div>by</div>
-              <Link href="/users/1" passHref>
+            <small className="text-gray-500 flex items-center gap-1.5">
+              Posted by
+              <Link href={'/users/' + author.id} passHref>
                 <a className="hover:text-blue-500">{author.name}</a>
               </Link>
+              {date}
             </small>
           </div>
         </div>
