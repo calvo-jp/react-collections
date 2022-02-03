@@ -72,7 +72,9 @@ const Recipe = ({ data }: RecipeProps) => {
         <article className="p-4">
           <h4 className="text-lg">{name}</h4>
 
-          <p className="text-sm text-gray-700 truncate">{description}</p>
+          <p className="text-sm text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">
+            {description}
+          </p>
 
           <div className="mt-2">
             <Rating value={summary.rating} />
