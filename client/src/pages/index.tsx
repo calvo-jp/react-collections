@@ -1,8 +1,6 @@
-import { StarIcon } from '@heroicons/react/solid';
 import world from 'assets/world.svg';
 import Brand from 'layouts/Brand';
 import Footer from 'layouts/Footer';
-import Searchbar from 'layouts/Searchbar';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
