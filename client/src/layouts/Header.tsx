@@ -2,6 +2,7 @@ import MenuIcon from '@heroicons/react/outline/MenuIcon';
 import SearchIcon from '@heroicons/react/outline/SearchIcon';
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import HomeIcon from '@heroicons/react/solid/HomeIcon';
+import UserIcon from '@heroicons/react/solid/UserIcon';
 import CloseIcon from '@heroicons/react/solid/XIcon';
 import clsx from 'clsx';
 import useStoreState from 'hooks/store/useState';
@@ -16,8 +17,6 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const router = useRouter();
-
   return (
     <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
       <div className="flex items-center gap-2 md:z-10">
@@ -37,13 +36,7 @@ const Header = (props: HeaderProps) => {
           />
         </form>
 
-        <IconButton
-          icon={HomeIcon}
-          href="/newsfeed"
-          active={router.pathname === '/newsfeed'}
-        />
-
-        <IconButton icon={BellIcon} />
+        <IconButtons />
       </div>
 
       {
@@ -77,6 +70,25 @@ const Hamburger = () => {
     <button className="lg:hidden" onClick={handleClick}>
       <MenuIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
     </button>
+  );
+};
+
+const IconButtons = () => {
+  const router = useRouter();
+  const isNewsfeed = router.pathname === '/newsfeed';
+
+  return (
+    <React.Fragment>
+      <IconButton icon={HomeIcon} href="/newsfeed" active={isNewsfeed} />
+
+      <IconButton
+        icon={UserIcon}
+        href={isNewsfeed ? '/dashboard' : undefined}
+        active={!isNewsfeed}
+      />
+
+      <IconButton icon={BellIcon} />
+    </React.Fragment>
   );
 };
 
