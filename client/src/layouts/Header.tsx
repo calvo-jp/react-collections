@@ -83,7 +83,7 @@ const IconButton = ({ icon: SVGIcon, href, onClick }: IconButtonProps) => {
 
     return (
       <Link href={href}>
-        <a {...props} />
+        <a {...props} onClick={onClick} />
       </Link>
     );
   };
