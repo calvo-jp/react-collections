@@ -47,7 +47,7 @@ const Bookmark = ({
 
   return (
     <Link href={`/recipes/${id}?redirect=${encodeURIComponent(path)}`} passHref>
-      <a className="p-4 flex items-center gap-4 shadow-md bg-white hover:ring-4 hover:ring-blue-200">
+      <a className="p-4 flex items-center gap-4 shadow-md bg-white md:hover:ring-4 md:hover:ring-blue-200">
         <div className="relative h-[85px] basis-[85px] shrink-0 grow-0 rounded-full overflow-hidden">
           <Image
             src={banner!}
