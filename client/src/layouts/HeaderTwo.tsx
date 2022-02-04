@@ -9,7 +9,7 @@ import * as React from 'react';
  *
  */
 const HeaderTwo: React.FC = ({ children }) => {
-  const redirect = useQuery('redirect').__get__('redirect') || '/';
+  const redirect = useQuery('redirect').get('redirect') || '/';
 
   return (
     <header className="bg-white shadow-md z-50 sticky top-0 h-[50px] flex items-center justify-between px-3">
