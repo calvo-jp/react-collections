@@ -1,6 +1,5 @@
 import useQuery from 'hooks/useQuery';
 import HeaderTwo from 'layouts/HeaderTwo';
-import Searchbar from 'layouts/Searchbar';
 import Head from 'next/head';
 import * as React from 'react';
 import IRecipe from 'types/recipe';
@@ -35,15 +34,7 @@ const Search = () => {
         <title>{!keyword ? 'Search' : keyword}</title>
       </Head>
 
-      <div>
-        <HeaderTwo redirect={origin} />
-
-        <div className="max-w-[900px] mx-auto p-4">
-          <form className="py-8" onSubmit={handleSubmit}>
-            <Searchbar autoFocus />
-          </form>
-        </div>
-      </div>
+      <div></div>
     </React.Fragment>
   );
 };
