@@ -2,6 +2,7 @@ import MenuIcon from '@heroicons/react/outline/MenuIcon';
 import SearchIcon from '@heroicons/react/outline/SearchIcon';
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import HomeIcon from '@heroicons/react/solid/HomeIcon';
+import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import UserIcon from '@heroicons/react/solid/UserIcon';
 import CloseIcon from '@heroicons/react/solid/XIcon';
 import clsx from 'clsx';
@@ -13,14 +14,22 @@ import Brand from './Brand';
 import Navbar from './Navbar';
 
 interface HeaderProps {
-  sidebar?: boolean;
+  navbar?: boolean;
 }
 
 const Header = (props: HeaderProps) => {
+  const hasNavbar = !!props.navbar;
+
   return (
     <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
-      <div className="flex items-center gap-2 md:z-10">
-        {props.sidebar && <Hamburger />}
+      <div
+        className={clsx(
+          'items-center gap-2 md:z-10',
+          hasNavbar && 'flex',
+          !hasNavbar && 'hidden sm:flex'
+        )}
+      >
+        {hasNavbar && <Hamburger />}
 
         <div className="hidden sm:block">
           <Brand redirectUrl="/newsfeed" />
@@ -47,7 +56,7 @@ const Header = (props: HeaderProps) => {
          * This might change in the future if we find a better solution.
          *
          */
-        props.sidebar && <Navbar />
+        hasNavbar && <Navbar />
       }
     </header>
   );
@@ -75,16 +84,37 @@ const Hamburger = () => {
 
 const IconButtons = () => {
   const router = useRouter();
-  const isNewsfeed = router.pathname === '/newsfeed';
+  const pathname = router.pathname;
+
+  const newsfeedPath = '/newsfeed';
+  const isInNewsfeed = pathname === newsfeedPath;
+
+  const createRecipePath = '/recipes/new';
+
+  const getAccountHref = () => {
+    if (isInNewsfeed) return '/dashboard';
+  };
 
   return (
     <React.Fragment>
-      <IconButton icon={HomeIcon} href="/newsfeed" active={isNewsfeed} />
+      <IconButton
+        icon={PencilAltIcon}
+        href={`${createRecipePath}?redirect=${encodeURIComponent(pathname)}`}
+        /**
+         *
+         * this might be unnecessary, but we'll just leave it here
+         * just incase we decide to bring this header in create recipe page someday
+         *
+         */
+        active={pathname === createRecipePath}
+      />
+
+      <IconButton icon={HomeIcon} href={newsfeedPath} active={isInNewsfeed} />
 
       <IconButton
         icon={UserIcon}
-        href={isNewsfeed ? '/dashboard' : undefined}
-        active={!isNewsfeed}
+        href={getAccountHref()}
+        active={!isInNewsfeed}
       />
 
       <IconButton icon={BellIcon} />
