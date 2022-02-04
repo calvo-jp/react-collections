@@ -1,9 +1,10 @@
 import MenuIcon from '@heroicons/react/outline/MenuIcon';
+import SearchIcon from '@heroicons/react/outline/SearchIcon';
 import BellIcon from '@heroicons/react/solid/BellIcon';
+import HomeIcon from '@heroicons/react/solid/HomeIcon';
 import CloseIcon from '@heroicons/react/solid/XIcon';
 import useStoreState from 'hooks/store/useState';
-import Searchbar from 'layouts/Searchbar';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import * as React from 'react';
 import Brand from './Brand';
 import Navbar from './Navbar';
@@ -13,28 +14,6 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const router = useRouter();
-  const [keyword, setKeyword] = React.useState('');
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (keyword.trim().length === 0) return setKeyword('');
-
-    const params = new URLSearchParams();
-    params.append('origin', router.asPath);
-    params.append('keyword', keyword);
-    router.push('/search?' + params.toString());
-  };
-
-  const handleReset = () => setKeyword('');
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setKeyword(e.target.value);
-
-  React.useEffect(() => {
-    return () => setKeyword('');
-  }, []);
-
   return (
     <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
       <div className="flex items-center gap-2 md:z-10">
@@ -45,19 +24,17 @@ const Header = (props: HeaderProps) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
-        <form onSubmit={handleSubmit} className="grow">
-          <Searchbar
-            className="w-full"
-            onReset={handleReset}
-            onChange={handleChange}
-            value={keyword}
+      <div className="flex items-center gap-2 w-full sm:w-auto">
+        <form className="grow bg-gray-100 p-1.5 rounded-full flex items-center gap-2">
+          <SearchIcon className="w-4 h-4" />
+          <input
+            placeholder="Search"
+            className="bg-transparent placeholder:opacity-100 placeholder:text-gray-500 outline-none"
           />
         </form>
 
-        <div className="flex items-center gap-2">
-          <IconButton icon={BellIcon} />
-        </div>
+        <IconButton icon={HomeIcon} href="/newsfeed" />
+        <IconButton icon={BellIcon} />
       </div>
 
       {
@@ -96,13 +73,25 @@ const Hamburger = () => {
 
 interface IconButtonProps {
   icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
+  href?: string;
+  onClick?: () => void;
 }
 
-const IconButton = ({ icon: SVGIcon }: IconButtonProps) => {
+const IconButton = ({ icon: SVGIcon, href, onClick }: IconButtonProps) => {
+  const Container: React.FC<Record<'className', string>> = (props) => {
+    if (!href) return <button onClick={onClick} {...props} />;
+
+    return (
+      <Link href={href}>
+        <a {...props} />
+      </Link>
+    );
+  };
+
   return (
-    <button className="">
-      <SVGIcon className="w-8 h-8 fill-gray-300 hover:fill-gray-400 transition-all duration-200" />
-    </button>
+    <Container className="bg-gray-100 hover:bg-gray-200 rounded-full p-1.5">
+      <SVGIcon className="w-7 h-7 fill-gray-500" />
+    </Container>
   );
 };
 
