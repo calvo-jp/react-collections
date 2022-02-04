@@ -3,14 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface BrandProps {
-  redirect?: string;
+  redirectUrl?: string;
 }
 
-const Brand = (props: BrandProps) => {
-  const redirect = props.redirect || '/';
-
+const Brand = ({ redirectUrl = '/' }: BrandProps) => {
   return (
-    <Link href={redirect} passHref>
+    <Link href={redirectUrl} passHref>
       <a className="flex h-fit">
         <Image src={logo} alt="logo" />
       </a>
