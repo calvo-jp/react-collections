@@ -10,7 +10,7 @@ const User = () => {
         <title>JP Calvo</title>
       </Head>
 
-      <HeaderTwo redirect="/" />
+      <HeaderTwo />
 
       <main className="p-16 max-w-3xl mx-auto">
         <div>
