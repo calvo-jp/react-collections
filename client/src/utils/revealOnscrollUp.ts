@@ -9,11 +9,11 @@
  * @example
  * ```javascript
  * const header = document.getElementById("header")
- * onScrollReveal(header)
+ * revealOnscrollUp(header)
  * ```
  *
  */
-const onScrollReveal = function (element: HTMLElement) {
+const revealOnscrollUp = function (element: HTMLElement) {
   var prevScrollPos = window.scrollY;
 
   const handleScrolling = function () {
@@ -25,4 +25,4 @@ const onScrollReveal = function (element: HTMLElement) {
   document.addEventListener('scroll', handleScrolling, false);
 };
 
-export default onScrollReveal;
+export default revealOnscrollUp;
