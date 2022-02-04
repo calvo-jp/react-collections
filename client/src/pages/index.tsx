@@ -18,7 +18,7 @@ const Landing = () => {
       </Head>
 
       <div className="min-h-screen">
-        <header className="h-[50px] shadow-md z-20 flex items-center px-8 justify-between">
+        <header className="h-[50px] shadow-md z-20 flex items-center px-2 sm:px-4 md:px-6 lg:px-8 justify-between">
           <Brand />
 
           <div className="flex gap-4 items-center">
