@@ -1,4 +1,3 @@
-import useQuery from 'hooks/useQuery';
 import HeaderTwo from 'layouts/HeaderTwo';
 import Head from 'next/head';
 import * as React from 'react';
@@ -6,9 +5,6 @@ import Button from 'widgets/Button';
 import TextField from 'widgets/TextField';
 
 const CreateRecipe = () => {
-  const query = useQuery('origin');
-  const origin = [query.origin].flat(1).at(0) || '/';
-
   return (
     <React.Fragment>
       <Head>
@@ -16,7 +12,7 @@ const CreateRecipe = () => {
       </Head>
 
       <div className="flex flex-col min-h-screen">
-        <HeaderTwo redirect={origin} label="Go back" />
+        <HeaderTwo />
 
         <main className="flex-grow flex flex-col justify-center">
           <div>
