@@ -1,5 +1,4 @@
 import BellIcon from '@heroicons/react/solid/BellIcon';
-import HeartIcon from '@heroicons/react/solid/HeartIcon';
 import StarIcon from '@heroicons/react/solid/StarIcon';
 import clsx from 'clsx';
 import Layout from 'layouts/Layout';
