@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import IRecipe from 'types/recipe';
+import Rating from 'widgets/Rating';
 
 const Bookmarks = () => {
   return (
@@ -16,7 +17,7 @@ const Bookmarks = () => {
       </Head>
 
       <div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-4">
           {recipes.map((recipe) => (
             <li key={recipe.id}>
               <Bookmark {...recipe} />
@@ -28,7 +29,14 @@ const Bookmarks = () => {
   );
 };
 
-const Bookmark = ({ id, name, description, banner, createdAt }: IRecipe) => {
+const Bookmark = ({
+  id,
+  name,
+  description,
+  banner,
+  summary,
+  createdAt,
+}: IRecipe) => {
   const router = useRouter();
   const path = router.asPath;
 
@@ -39,7 +47,7 @@ const Bookmark = ({ id, name, description, banner, createdAt }: IRecipe) => {
 
   return (
     <Link href={`/recipes/${id}?redirect=${encodeURIComponent(path)}`} passHref>
-      <a className="p-4 flex items-center gap-4 shadow-md bg-white">
+      <a className="p-4 flex items-center gap-4 shadow-md bg-white hover:ring-4 hover:ring-blue-200">
         <div className="relative h-[85px] basis-[85px] shrink-0 grow-0 rounded-full overflow-hidden">
           <Image
             src={banner!}
@@ -55,7 +63,10 @@ const Bookmark = ({ id, name, description, banner, createdAt }: IRecipe) => {
           <p className="text-sm text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
             {description}
           </p>
-          <div className="text-xs text-gray-500">{date}</div>
+
+          <div className="mt-1">
+            <Rating value={summary.rating} />
+          </div>
         </div>
 
         <button>
