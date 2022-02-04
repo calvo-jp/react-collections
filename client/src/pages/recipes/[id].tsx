@@ -1,4 +1,5 @@
 import recipes from 'assets/samples/json/recipes.json';
+import useQuery from 'hooks/useQuery';
 import Recipe from 'layouts/pages/recipe';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -38,11 +39,13 @@ export const getStaticProps: GetStaticProps<IRecipe, Params> = async ({
 };
 
 const RecipePage: NextPage<IRecipe> = (props) => {
-  const { query, isFallback, ...router } = useRouter();
+  const { isFallback, ...router } = useRouter();
+
+  const query = useQuery('id', 'tab', 'redirect');
 
   const getCurrentTab = React.useMemo(() => {
     return function () {
-      const tab = [query.tab].flat().at(0)?.toLowerCase() || Tabs[0];
+      const tab = query.get('tab')?.toLowerCase() || Tabs[0];
 
       if (isValidTab(tab)) return tab;
     };
@@ -51,9 +54,15 @@ const RecipePage: NextPage<IRecipe> = (props) => {
   const [currentTab, setCurrentTab] = React.useState(getCurrentTab());
 
   const handleChange = (value: string) => {
-    router.push(`/recipes/${query.id}?tab=${value}`, undefined, {
-      scroll: false,
-    });
+    let redirect: string;
+
+    redirect = query.get('redirect') || '/recipes';
+    redirect = encodeURIComponent(redirect);
+
+    const id = query.get('id')!;
+    const url = `/recipes/${id}?redirect=${redirect}&tab=${value}`;
+
+    router.push(url, undefined, { scroll: false });
   };
 
   React.useEffect(() => {
