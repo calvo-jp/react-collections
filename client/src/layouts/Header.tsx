@@ -3,8 +3,10 @@ import SearchIcon from '@heroicons/react/outline/SearchIcon';
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import HomeIcon from '@heroicons/react/solid/HomeIcon';
 import CloseIcon from '@heroicons/react/solid/XIcon';
+import clsx from 'clsx';
 import useStoreState from 'hooks/store/useState';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import Brand from './Brand';
 import Navbar from './Navbar';
@@ -14,6 +16,8 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
+  const router = useRouter();
+
   return (
     <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
       <div className="flex items-center gap-2 md:z-10">
@@ -33,7 +37,12 @@ const Header = (props: HeaderProps) => {
           />
         </form>
 
-        <IconButton icon={HomeIcon} href="/newsfeed" />
+        <IconButton
+          icon={HomeIcon}
+          href="/newsfeed"
+          active={router.pathname === '/newsfeed'}
+        />
+
         <IconButton icon={BellIcon} />
       </div>
 
@@ -75,9 +84,15 @@ interface IconButtonProps {
   icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
   href?: string;
   onClick?: () => void;
+  active?: boolean;
 }
 
-const IconButton = ({ icon: SVGIcon, href, onClick }: IconButtonProps) => {
+const IconButton = ({
+  icon: SVGIcon,
+  href,
+  onClick,
+  active,
+}: IconButtonProps) => {
   const Container: React.FC<Record<'className', string>> = (props) => {
     if (!href) return <button onClick={onClick} {...props} />;
 
@@ -89,8 +104,14 @@ const IconButton = ({ icon: SVGIcon, href, onClick }: IconButtonProps) => {
   };
 
   return (
-    <Container className="bg-gray-100 hover:bg-gray-200 rounded-full p-1.5">
-      <SVGIcon className="w-7 h-7 fill-gray-500" />
+    <Container
+      className={clsx(
+        'rounded-full p-1.5',
+        !active && 'bg-gray-100 hover:bg-gray-200 text-gray-500',
+        active && 'bg-blue-100 text-blue-500'
+      )}
+    >
+      <SVGIcon className="w-7 h-7" />
     </Container>
   );
 };
