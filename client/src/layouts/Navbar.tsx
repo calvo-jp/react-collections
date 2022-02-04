@@ -47,7 +47,10 @@ const Sidebar = () => {
 
           <CreateButton />
           <Navbar />
-          <Footer />
+
+          <div>
+            <HelpLinks className="max-w-[205px]" />
+          </div>
         </div>
       </div>
     </div>
@@ -64,7 +67,7 @@ const CreateButton = () => {
     >
       <a className="block">
         <Button
-          variant="contained"
+          variant="outlined"
           color="primary"
           label="Create New"
           icon={<PencilAltIcon className="w-5 h-5" />}
@@ -170,10 +173,6 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
       {anchor}
     </Link>
   );
-};
-
-const Footer = () => {
-  return <HelpLinks className="max-w-[200px]" />;
 };
 
 export default Sidebar;
