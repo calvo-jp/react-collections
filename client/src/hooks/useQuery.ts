@@ -7,13 +7,11 @@ const useQuery = <T extends string>(...keys: T[]) => {
   for (const key of keys) params[key] = router.query[key];
 
   return {
-    ...params,
-
-    __get__(key: keyof typeof params) {
+    get(key: keyof typeof params) {
       return [params[key]].flat().at(0);
     },
 
-    __getAll__(key: keyof typeof params) {
+    getAll(key: keyof typeof params) {
       const v = params[key];
 
       return !!v ? (Array.isArray(v) ? v : [v]) : [];
