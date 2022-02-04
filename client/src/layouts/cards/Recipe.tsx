@@ -24,7 +24,7 @@ const RecipeCard = (props: RecipeCardProps) => {
       href={`/recipes/${id}?redirect=${encodeURIComponent(router.pathname)}`}
       passHref
     >
-      <a className="block bg-white shadow-md hover:ring-4 hover:ring-blue-200">
+      <a className="block bg-white shadow-md md:hover:ring-4 md:hover:ring-blue-200">
         <figure
           className="relative"
           style={{
