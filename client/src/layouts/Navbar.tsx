@@ -59,7 +59,7 @@ const CreateButton = () => {
 
   return (
     <Link
-      href={'/recipes/new?origin=' + encodeURIComponent(router.asPath)}
+      href={'/recipes/new?redirect=' + encodeURIComponent(router.asPath)}
       passHref
     >
       <a className="block">
