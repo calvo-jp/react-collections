@@ -1,5 +1,4 @@
 import useQuery from 'hooks/useQuery';
-import HeaderTwo from 'layouts/HeaderTwo';
 import Head from 'next/head';
 import * as React from 'react';
 import IRecipe from 'types/recipe';
