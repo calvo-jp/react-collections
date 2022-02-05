@@ -22,7 +22,7 @@ const Header = (props: HeaderProps) => {
   const hasNavbar = !!props.navbar;
 
   return (
-    <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-1 sm:gap-2">
+    <header className="sticky top-0 z-[70] bg-white shadow-md h-header flex items-center justify-between px-3 gap-1 sm:gap-2">
       <div
         className={clsx(
           'items-center gap-2 md:z-10',

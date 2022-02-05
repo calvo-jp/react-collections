@@ -27,7 +27,7 @@ const Navbar = () => {
         opened && 'block'
       )}
     >
-      <div className="w-[265px] flex flex-col items-center h-full py-8 bg-white lg:bg-transparent">
+      <div className="w-navbar flex flex-col items-center h-full py-8 bg-white lg:bg-transparent">
         {/*
          *
          * This element is based on the height of Header.

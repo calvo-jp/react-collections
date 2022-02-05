@@ -1,3 +1,6 @@
+const header = 50;
+const navbar = 265;
+
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
@@ -25,7 +28,17 @@ module.exports = {
       bold: 600,
       extrabold: 700,
     },
-    extend: {},
+    extend: {
+      height: {
+        header,
+      },
+      width: {
+        navbar,
+      },
+      flexBasis: {
+        navbar,
+      },
+    },
   },
   variants: {
     extend: {},
