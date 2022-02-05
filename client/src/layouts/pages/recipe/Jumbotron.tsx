@@ -7,7 +7,7 @@ interface JumbotronProps {
 
 const Jumbotron = (props: JumbotronProps) => {
   return (
-    <figure className="max-w-screen-md mx-auto relative h-[250px] sm-[300px] md:h-[350px] lg:h-[400px] shadow-md overflow-hidden md:rounded-b-md">
+    <figure className="relative h-[250px] sm-[300px] md:h-[350px] lg:h-[400px] shadow-md">
       <Image
         src={props.src}
         alt=""
