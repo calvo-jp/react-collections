@@ -3,7 +3,7 @@ import Loader from 'layouts/Loader';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';
-import 'tailwindcss/tailwind.css';
+import 'styles/index.css';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
