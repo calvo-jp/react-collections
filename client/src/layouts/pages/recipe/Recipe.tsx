@@ -54,27 +54,29 @@ const Recipe = (props: RecipeProps) => {
       <div>
         <HeaderTwo />
 
-        <Jumbotron src={data.avatar!} />
+        <div className="max-w-screen-md mx-auto md:px-2">
+          <Jumbotron src={data.avatar!} />
 
-        <main className="p-4 md:p-6 lg:p-8">
-          <div className="max-w-screen-md mx-auto">
-            <section>
-              <Article {...data} />
-            </section>
+          <main className="my-4 px-4 md:px-0">
+            <div>
+              <section className="mt-4">
+                <Article {...data} />
+              </section>
 
-            <section className="mt-4">
-              <Tags items={data.tags} />
-            </section>
+              <section className="mt-4">
+                <Tags items={data.tags} />
+              </section>
 
-            <section className="mt-8">
-              <Tabs value={tab} onChange={onTabChange} />
-            </section>
+              <section className="mt-8">
+                <Tabs value={tab} onChange={onTabChange} />
+              </section>
 
-            <section className="mt-4">
-              <TabContent selectedTab={tab} data={data} />
-            </section>
-          </div>
-        </main>
+              <section className="mt-4">
+                <TabContent selectedTab={tab} data={data} />
+              </section>
+            </div>
+          </main>
+        </div>
       </div>
     </React.Fragment>
   );
