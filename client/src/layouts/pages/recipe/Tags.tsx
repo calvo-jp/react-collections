@@ -1,5 +1,4 @@
 import PlusIcon from '@heroicons/react/outline/PlusSmIcon';
-import CloseIcon from '@heroicons/react/outline/XIcon';
 import * as React from 'react';
 
 interface TagsProps {
