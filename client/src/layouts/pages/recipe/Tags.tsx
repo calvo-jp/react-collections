@@ -8,15 +8,15 @@ interface TagsProps {
 
 const Tags = (props: TagsProps) => {
   return (
-    <ul className="flex flex-wrap gap-1 items-center">
-      {props.items.map((item) => (
-        <li key={item}>
-          <Tag value={item} />
+    <ul className="flex flex-wrap gap-1 items-center text-sm">
+      {props.items.map((tag) => (
+        <li key={tag}>
+          <Tag value={tag} />
         </li>
       ))}
 
       <li>
-        <button className="text-sm p-2 flex items-center gap-1 text-blue-600 hover:text-blue-700 ">
+        <button className="p-2 flex items-center gap-1 text-blue-600 hover:text-blue-700 ">
           <PlusIcon className="w-4 h-4" />
           <span>Add Tag</span>
         </button>
@@ -33,7 +33,7 @@ interface TagProps {
 const Tag = ({ value }: TagProps) => {
   return (
     <div
-      className="text-sm p-2 bg-blue-100 relative focus:outline-dotted focus:outline-1"
+      className="p-2 bg-blue-100 relative focus:outline-dotted focus:outline-1"
       contentEditable
       suppressContentEditableWarning
       spellCheck={false}
