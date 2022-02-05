@@ -3,10 +3,11 @@ import SearchIcon from '@heroicons/react/outline/SearchIcon';
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import HomeIcon from '@heroicons/react/solid/HomeIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
-import UserIcon from '@heroicons/react/solid/UserIcon';
+import ViewGridIcon from '@heroicons/react/solid/ViewGridIcon';
 import CloseIcon from '@heroicons/react/solid/XIcon';
 import clsx from 'clsx';
 import useStoreState from 'hooks/store/useState';
+import useQuery from 'hooks/useQuery';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -85,6 +86,7 @@ const Hamburger = () => {
 const IconButtons = () => {
   const router = useRouter();
   const pathname = router.pathname;
+  const redirect = useQuery('redirect').get('redirect');
 
   const newsfeedPath = '/newsfeed';
   const isInNewsfeed = pathname === newsfeedPath;
@@ -92,7 +94,7 @@ const IconButtons = () => {
   const createRecipePath = '/recipes/new';
 
   const getAccountHref = () => {
-    if (isInNewsfeed) return '/dashboard';
+    if (isInNewsfeed) return redirect || '/dashboard';
   };
 
   return (
@@ -109,10 +111,14 @@ const IconButtons = () => {
         active={pathname === createRecipePath}
       />
 
-      <IconButton icon={HomeIcon} href={newsfeedPath} active={isInNewsfeed} />
+      <IconButton
+        icon={HomeIcon}
+        href={`${newsfeedPath}?redirect=${encodeURIComponent(pathname)}`}
+        active={isInNewsfeed}
+      />
 
       <IconButton
-        icon={UserIcon}
+        icon={ViewGridIcon}
         href={getAccountHref()}
         active={!isInNewsfeed}
       />
