@@ -22,7 +22,7 @@ const Header = (props: HeaderProps) => {
   const hasNavbar = !!props.navbar;
 
   return (
-    <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-2">
+    <header className="sticky top-0 z-[70] bg-white shadow-md h-[50px] flex items-center justify-between px-3 gap-1 sm:gap-2">
       <div
         className={clsx(
           'items-center gap-2 md:z-10',
@@ -37,14 +37,8 @@ const Header = (props: HeaderProps) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 w-full sm:w-auto">
-        <form className="grow bg-gray-100 p-1.5 rounded-full flex items-center gap-2">
-          <SearchIcon className="w-4 h-4" />
-          <input
-            placeholder="Search"
-            className="bg-transparent placeholder:opacity-100 placeholder:text-gray-500 outline-none"
-          />
-        </form>
+      <div className="flex items-center gap-1 sm:gap-2 w-full sm:w-auto">
+        <Searchbar />
 
         <IconButtons />
       </div>
@@ -60,6 +54,18 @@ const Header = (props: HeaderProps) => {
         hasNavbar && <Navbar />
       }
     </header>
+  );
+};
+
+const Searchbar = () => {
+  return (
+    <form className="grow bg-gray-100 p-1 sm:p-1.5 rounded-full flex items-center gap-2">
+      <SearchIcon className="w-4 h-4" />
+      <input
+        placeholder="Search"
+        className="bg-transparent placeholder:opacity-100 placeholder:text-gray-500 outline-none"
+      />
+    </form>
   );
 };
 
@@ -155,12 +161,12 @@ const IconButton = ({
   return (
     <Container
       className={clsx(
-        'rounded-full p-1.5',
+        'rounded-full p-1 sm:p-1.5',
         !active && 'bg-gray-100 hover:bg-gray-200 text-gray-500',
         active && 'bg-blue-100 text-blue-500'
       )}
     >
-      <SVGIcon className="w-7 h-7" />
+      <SVGIcon className="w-6 h-6 sm:w-7 sm:h-7" />
     </Container>
   );
 };
