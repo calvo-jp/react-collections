@@ -14,7 +14,7 @@ import Button from 'widgets/Button';
 import Avatar from './Avatar';
 import HelpLinks from './HelpLinks';
 
-const Sidebar = () => {
+const Navbar = () => {
   const [globalState] = useStoreState();
 
   const opened = globalState.navbarOpened;
@@ -46,7 +46,7 @@ const Sidebar = () => {
           </Link>
 
           <CreateButton />
-          <Navbar />
+          <Menu />
 
           <div>
             <HelpLinks className="max-w-[205px]" />
@@ -78,7 +78,7 @@ const CreateButton = () => {
   );
 };
 
-const Navbar = () => {
+const Menu = () => {
   const router = useRouter();
   const [, dispatch] = useStoreState();
 
@@ -175,4 +175,4 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
   );
 };
 
-export default Sidebar;
+export default Navbar;
