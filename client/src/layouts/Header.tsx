@@ -85,35 +85,36 @@ const Hamburger = () => {
 
 const IconButtons = () => {
   const router = useRouter();
-  const pathname = router.pathname;
+  const pathname = router.asPath;
+  const encodedPathname = encodeURIComponent(router.asPath);
   const redirect = useQuery('redirect').get('redirect');
 
   const newsfeedPath = '/newsfeed';
-  const isInNewsfeed = pathname === newsfeedPath;
-
   const createRecipePath = '/recipes/new';
 
+  const isInNewsfeed = pathname.startsWith(newsfeedPath);
+
   const getAccountHref = () => {
-    if (isInNewsfeed) return redirect || '/dashboard';
+    if (isInNewsfeed) return !!redirect ? redirect : '/dashboard';
   };
 
   return (
     <React.Fragment>
       <IconButton
         icon={PencilAltIcon}
-        href={`${createRecipePath}?redirect=${encodeURIComponent(pathname)}`}
+        href={`${createRecipePath}?redirect=${encodedPathname}`}
         /**
          *
          * this might be unnecessary, but we'll just leave it here
          * just incase we decide to bring this header in create recipe page someday
          *
          */
-        active={pathname === createRecipePath}
+        active={pathname.startsWith(createRecipePath)}
       />
 
       <IconButton
         icon={HomeIcon}
-        href={`${newsfeedPath}?redirect=${encodeURIComponent(pathname)}`}
+        href={`${newsfeedPath}?redirect=${encodedPathname}`}
         active={isInNewsfeed}
       />
 
