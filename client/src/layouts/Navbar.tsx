@@ -36,7 +36,7 @@ const Navbar = () => {
          * to have a consistent ui in mobile and desktop view
          *
          */}
-        <div className="h-[50px]" />
+        <div className="h-header" />
 
         <div className="flex flex-col gap-8">
           <Link passHref href="/users/1">
