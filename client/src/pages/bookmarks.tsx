@@ -58,11 +58,9 @@ const Bookmark = ({
           />
         </div>
 
-        <div className="grow min-w-0">
+        <div className="grow">
           <div className="md:text-lg">{name}</div>
-          <p className="text-sm text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
-            {description}
-          </p>
+          <p className="text-sm text-gray-600 line-clamp-1">{description}</p>
 
           <div className="mt-1">
             <Rating value={summary.rating} />
