@@ -17,7 +17,7 @@ const Jumbotron = (props: JumbotronProps) => {
       />
 
       <button className="bg-white p-2 absolute bottom-6 right-6 rounded-full shadow-md">
-        <CameraIcon className="w-6 h-6" />
+        <CameraIcon className="w-6 h-6 stroke-gray-500" />
       </button>
     </figure>
   );
