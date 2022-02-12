@@ -44,9 +44,7 @@ const RecipeCard = (props: RecipeCardProps) => {
         <article className="p-4">
           <h4 className="text-lg">{name}</h4>
 
-          <p className="text-sm text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">
-            {description}
-          </p>
+          <p className="text-sm text-gray-700 line-clamp-1">{description}</p>
 
           <div className="mt-2">
             <Rating value={summary.rating} />
