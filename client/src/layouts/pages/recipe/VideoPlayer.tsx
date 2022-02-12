@@ -37,12 +37,7 @@ const VideoPlayer = ({
         )}
 
         {data.video && (
-          <video
-            src={data.video}
-            className="w-full aspect-video"
-            controls
-            {...props}
-          />
+          <video src={data.video} className="w-full" controls {...props} />
         )}
       </div>
 
