@@ -1,43 +1,24 @@
-const fontFamily = {
-  sans: [
-    "'IBM Plex Sans'",
-    '-apple-system',
-    'BlinkMacSystemFont',
-    "'Segoe UI'",
-    'Roboto',
-    'Oxygen',
-    'Ubuntu',
-    'Cantarell',
-    "'Open Sans'",
-    "'Helvetica Neue'",
-    'sans-serif',
-  ],
-};
-
-const fontWeight = {
-  extralight: 100,
-  light: 200,
-  semilight: 300,
-  normal: 400,
-  semibold: 500,
-  bold: 600,
-  extrabold: 700,
-};
-
-/** header height */
-const header = 50;
-
-/** navbar width */
-const navbar = 265;
-
-const tailwindConfig = {
+module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    fontFamily,
-    fontWeight,
-    extend: { height: { header }, width: { navbar }, flexBasis: { navbar } },
+    fontFamily: {
+      sans: ["'IBM Plex Sans'", 'sans-serif'],
+    },
+    fontWeight: {
+      extralight: 100,
+      light: 200,
+      semilight: 300,
+      normal: 400,
+      semibold: 500,
+      bold: 600,
+      extrabold: 700,
+    },
+    extend: {
+      spacing: {
+        header: 50,
+        navbar: 265,
+      },
+    },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
 };
-
-module.exports = tailwindConfig;
