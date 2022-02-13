@@ -1,7 +1,8 @@
+import logo from 'assets/logo.png';
 import { Form, Formik } from 'formik';
 import useStoreState from 'hooks/store/useState';
-import Brand from 'layouts/Brand';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -29,7 +30,7 @@ const Login = () => {
         <main>
           <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 bg-white">
             <div className="w-fit mx-auto mb-4">
-              <Brand />
+              <Image src={logo} alt="" width={64} height={64} />
             </div>
 
             <Alert
