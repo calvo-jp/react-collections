@@ -11,7 +11,6 @@ import useQuery from 'hooks/useQuery';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import Brand from './Brand';
 import Navbar from './Navbar';
 
 interface HeaderProps {
@@ -33,7 +32,7 @@ const Header = (props: HeaderProps) => {
         {hasNavbar && <Hamburger />}
 
         <div className="hidden sm:block">
-          <Brand redirectUrl="/newsfeed" />
+          <div className="font-extrabold">Recipes</div>
         </div>
       </div>
 
@@ -43,23 +42,14 @@ const Header = (props: HeaderProps) => {
         <IconButtons />
       </div>
 
-      {
-        /*
-         *
-         * Sidebar is here instead of having it in the Layout is
-         * for toggler to still be visible by just increasing its zIndex.
-         * This might change in the future if we find a better solution.
-         *
-         */
-        hasNavbar && <Navbar />
-      }
+      {hasNavbar && <Navbar />}
     </header>
   );
 };
 
 const Searchbar = () => {
   return (
-    <form className="grow bg-gray-100 p-1 sm:p-1.5 rounded-full flex items-center gap-2">
+    <form className="grow bg-gray-200 p-1 sm:p-1.5 rounded-full flex items-center gap-2">
       <SearchIcon className="w-4 h-4" />
       <input
         placeholder="Search"
@@ -109,12 +99,6 @@ const IconButtons = () => {
       <IconButton
         icon={PencilAltIcon}
         href={`${createRecipePath}?redirect=${encodedPathname}`}
-        /**
-         *
-         * this might be unnecessary, but we'll just leave it here
-         * just incase we decide to bring this header in create recipe page someday
-         *
-         */
         active={pathname.startsWith(createRecipePath)}
       />
 
@@ -162,11 +146,17 @@ const IconButton = ({
     <Container
       className={clsx(
         'rounded-full p-1 sm:p-1.5',
-        !active && 'bg-gray-100 hover:bg-gray-200 text-gray-500',
-        active && 'bg-blue-100 text-blue-500'
+        !active && 'bg-gray-100 hover:bg-gray-200',
+        active && 'bg-blue-100'
       )}
     >
-      <SVGIcon className="w-6 h-6 sm:w-7 sm:h-7" />
+      <SVGIcon
+        className={clsx(
+          'w-6 h-6 sm:w-7 sm:h-7',
+          !active && 'fill-gray-500',
+          active && 'fill-blue-500'
+        )}
+      />
     </Container>
   );
 };

@@ -28,14 +28,6 @@ const Navbar = () => {
       )}
     >
       <div className="w-navbar flex flex-col items-center h-full py-8 bg-white lg:bg-transparent">
-        {/*
-         *
-         * This element is based on the height of Header.
-         * This serves as the margin inorder to properly
-         * position the content of Sidebar and
-         * to have a consistent ui in mobile and desktop view
-         *
-         */}
         <div className="h-header" />
 
         <div className="flex flex-col gap-8">
