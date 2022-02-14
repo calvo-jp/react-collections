@@ -33,17 +33,19 @@ const Instruction = ({ onClick, selected, ...data }: InstructionProps) => {
       >
         <div className="truncate flex-grow">
           <div className="text-sm truncate">{data.description}</div>
-          <div className="text-[13px] text-gray-400">3 mins ago</div>
+          <div className="text-[13px] text-gray-400 dark:text-zinc-400">
+            3 mins ago
+          </div>
         </div>
 
         <button
           tabIndex={-1}
-          className="border border-transparent hover:border-gray-200 rounded-full p-0.5 block sm:hidden sm:group-hover:block"
+          className="border border-transparent hover:border-gray-200 rounded-full p-0.5 block sm:hidden sm:group-hover:block dark:hover:border-zinc-800"
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
-          <DotsHorizontalIcon className="w-5 h-5" />
+          <DotsHorizontalIcon className="w-5 h-5 dark:stroke-zinc-500" />
         </button>
       </div>
     </div>
