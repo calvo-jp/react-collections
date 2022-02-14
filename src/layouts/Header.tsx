@@ -11,6 +11,7 @@ import useQuery from 'hooks/useQuery';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import LogoIcon from 'widgets/icons/logo';
 import Navbar from './Navbar';
 
 interface HeaderProps {
@@ -32,7 +33,7 @@ const Header = (props: HeaderProps) => {
         {hasNavbar && <Hamburger />}
 
         <div className="hidden sm:block">
-          <div className="font-extrabold">Recipes</div>
+          <LogoIcon />
         </div>
       </div>
 
