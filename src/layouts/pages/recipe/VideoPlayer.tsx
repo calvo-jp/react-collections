@@ -22,7 +22,7 @@ const VideoPlayer = ({
   if (!data) {
     return (
       <Wrapper>
-        <p className="text-gray-500">Select to play</p>
+        <p className="text-gray-500 dark:text-zinc-400">Select to play</p>
       </Wrapper>
     );
   }
@@ -32,7 +32,9 @@ const VideoPlayer = ({
       <div>
         {!data.video && (
           <Wrapper>
-            <p className="text-gray-500">No video available</p>
+            <p className="text-gray-500 dark:text-zinc-400">
+              No video available
+            </p>
           </Wrapper>
         )}
 
