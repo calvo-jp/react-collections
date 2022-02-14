@@ -1,10 +1,10 @@
 const firebaseConfig = {
-  apiKey: 'AIzaSyBDKnxTGx_1BI6ZQ5QKwh6cdt-lpEmFO8g',
-  authDomain: 'recipes-d076e.firebaseapp.com',
-  projectId: 'recipes-d076e',
-  storageBucket: 'recipes-d076e.appspot.com',
-  messagingSenderId: '1033295662065',
-  appId: '1:1033295662065:web:52e2f1a0f2f8937d805250',
+  apiKey: 'AIzaSyAdj_NICHyZoM2w972riyRq5bvcFAncN8Q',
+  authDomain: 'amazing-recipes-dev.firebaseapp.com',
+  projectId: 'amazing-recipes-dev',
+  storageBucket: 'amazing-recipes-dev.appspot.com',
+  messagingSenderId: '674528148593',
+  appId: '1:674528148593:web:cf062073db5ad3f476efd0',
 };
 
 export default firebaseConfig;
