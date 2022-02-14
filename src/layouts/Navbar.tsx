@@ -6,10 +6,12 @@ import LockClosedIcon from '@heroicons/react/outline/LockClosedIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import avatar from 'assets/samples/images/avatar.jpg';
 import clsx from 'clsx';
+import { signOut } from 'firebase/auth';
 import useStoreState from 'hooks/store/useState';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import firebaseAuth from 'utils/firebase/auth';
 import Button from 'widgets/Button';
 import Avatar from './Avatar';
 import HelpLinks from './HelpLinks';
@@ -74,12 +76,14 @@ const Menu = () => {
   const router = useRouter();
   const [, dispatch] = useStoreState();
 
-  const handleClick = () => {
-    dispatch({
-      type: 'session.logout',
-    });
-
-    router.push('/');
+  const handleClick = async () => {
+    try {
+      await signOut(firebaseAuth);
+      dispatch({ type: 'session.logout' });
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
