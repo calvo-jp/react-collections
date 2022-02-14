@@ -30,7 +30,7 @@ const Login = () => {
 
       <div className="min-h-screen flex flex-col justify-center md:bg-gradient-to-r from-sky-400 via-blue-300 to-purple-300 dark:md:bg-zinc-900">
         <main>
-          <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 bg-white dark:bg-zinc-900 md:dark:bg-zinc-800">
+          <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 bg-white dark:bg-zinc-900">
             <div className="w-fit mx-auto mb-4">
               <Image src={logo} alt="" width={64} height={64} />
             </div>
@@ -117,7 +117,10 @@ const Login = () => {
                       <span>Forgot password?</span>
 
                       <Link href="/account-recovery" passHref>
-                        <a tabIndex={-1} className="ml-1 text-blue-600">
+                        <a
+                          tabIndex={-1}
+                          className="ml-1 text-blue-600 dark:text-sky-500"
+                        >
                           Click here
                         </a>
                       </Link>
@@ -137,10 +140,12 @@ const Login = () => {
             </Formik>
 
             <div className="text-center mt-2">
-              <span className="text-gray-500">No account?</span>
+              <span className="text-gray-500 dark:text-zinc-400">
+                No account?
+              </span>
 
               <Link href="/create-account" passHref>
-                <a className="ml-1 font-bold text-gray-600 hover:text-blue-500 transition-colors duration-300">
+                <a className="ml-1 text-gray-600 hover:text-blue-500 transition-colors duration-300 dark:text-zinc-300 dark:hover:text-sky-400">
                   Sign up
                 </a>
               </Link>

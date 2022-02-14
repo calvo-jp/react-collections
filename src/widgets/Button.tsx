@@ -78,7 +78,7 @@ const Button = (props: ButtonProps) => {
         contained && 'text-white',
         contained &&
           primary &&
-          'border-blue-500 bg-blue-500 focus:ring-blue-200',
+          'border-blue-500 bg-blue-500 focus:ring-blue-200 dark:border-sky-800 dark:bg-sky-800 dark:focus:ring-sky-800 dark:focus:ring-opacity-20',
         contained &&
           secondary &&
           'border-red-500 bg-red-500 focus:ring-red-200',
@@ -89,7 +89,7 @@ const Button = (props: ButtonProps) => {
           'border-blue-400 text-blue-500 focus:ring-blue-200 dark:border-sky-800 dark:text-sky-500 dark:focus:ring-sky-900 dark:focus:ring-opacity-20',
         outlined &&
           secondary &&
-          'border-red-400 text-red-500 focus:ring-red-200 dark:border-pink-900 dark:text-pink-600 dark:focus:ring-pink-900 dark:focus:ring-opacity-20',
+          'border-red-400 text-red-500 focus:ring-red-200 dark:border-red-900 dark:text-red-600 dark:focus:ring-red-900 dark:focus:ring-opacity-20',
         // color without variant
         !variant && primary && 'text-blue-500 dark:text-sky-500',
         !variant && secondary && 'text-red-500',

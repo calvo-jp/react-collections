@@ -75,8 +75,8 @@ const TextField: React.FC<TextFieldProps> = ({
         className={clsx(
           'absolute transition-all duration-100 cursor-text',
           !empty &&
-            'text-gray-500 -top-2 left-2 bg-white px-1 text-sm dark:bg-transparent',
-          empty && 'text-gray-600 top-2 left-3'
+            'text-gray-500 -top-2 left-2 bg-white px-1 text-sm dark:bg-zinc-900 dark:text-zinc-500',
+          empty && 'text-gray-600 dark:text-zinc-400 top-2 left-3'
         )}
       >
         {label}
@@ -85,11 +85,13 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         ref={inputRef}
         className={clsx(
-          'p-2 w-full border rounded-md outline-none transition-all duration-300 dark:bg-zinc-800',
+          'p-2 w-full border rounded-md outline-none transition-all duration-300 bg-transparent',
           !error &&
-            'border-gray-300 hover:border-gray-400 dark:border-zinc-700',
-          !error && 'focus:ring-2 focus:ring-blue-200 focus:border-blue-400',
-          error && 'focus:ring-2 focus:ring-red-200 border-red-400'
+            'border-gray-300 hover:border-gray-400 dark:border-zinc-700 dark:hover:border-zinc-600',
+          !error &&
+            'focus:ring-2 focus:ring-blue-200 focus:border-blue-400 dark:focus:ring-sky-900 dark:focus:ring-opacity-20 dark:focus:border-sky-900',
+          error &&
+            'focus:ring-2 focus:ring-red-200 border-red-400 dark:border-red-800 dark:focus:ring-red-600 dark:focus:ring-opacity-20'
         )}
         onChange={handleChange}
         {...props}
@@ -98,7 +100,9 @@ const TextField: React.FC<TextFieldProps> = ({
       {!!helperText && error && (
         <div className="mt-1 flex items-center gap-1">
           <ExclamationIcon className="block w-4 h-4 fill-red-400" />
-          <span className="text-sm text-red-500">{helperText}</span>
+          <span className="text-sm text-red-500 dark:text-red-400">
+            {helperText}
+          </span>
         </div>
       )}
     </div>

@@ -22,7 +22,7 @@ const Dashboard = () => {
           />
 
           <Item
-            gradientBg="from-blue-400 to-violet-400 dark:from-blue-600 dark:to-blue-700"
+            gradientBg="from-blue-400 to-violet-400 dark:from-sky-600 dark:to-blue-600"
             label="Notifications"
             value={13}
             icon={BellIcon}

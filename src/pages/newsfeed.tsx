@@ -5,7 +5,7 @@ import Head from 'next/head';
 
 const NewsFeed = () => {
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 dark:bg-zinc-900 min-h-screen">
       <Head>
         <title>Newsfeed</title>
       </Head>
