@@ -10,6 +10,7 @@ import * as React from 'react';
 import firebaseAuth from 'utils/firebase/auth';
 import Alert from 'widgets/Alert';
 import Button from 'widgets/Button';
+import LogoIcon from 'widgets/icons/logo';
 import TextField from 'widgets/TextField';
 import * as yup from 'yup';
 
@@ -31,9 +32,11 @@ const Login = () => {
       <div className="min-h-screen flex flex-col justify-center md:bg-gradient-to-r dark:bg-zinc-900 dark:md:bg-zinc-800">
         <main>
           <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 bg-white dark:bg-zinc-900 dark:md:shadow-none dark:md:border dark:md:border-[#333337]">
-            <div className="w-fit mx-auto mb-4">
-              <Image src={logo} alt="" width={64} height={64} />
-            </div>
+            <Link href="/" passHref>
+              <a className="w-fit mx-auto mb-4">
+                <LogoIcon />
+              </a>
+            </Link>
 
             <Alert
               open={!!error}
