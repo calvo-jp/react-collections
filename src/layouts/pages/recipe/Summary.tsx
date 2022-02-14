@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 const Summary = () => {
   return (
-    <div className="w-fit bg-gradient-to-r from-orange-400 to-yellow-500 p-4 shadow-md text-center">
+    <div className="w-fit bg-gradient-to-r from-orange-400 to-yellow-500 p-4 shadow-md text-center dark:from-orange-600 dark:to-yellow-700">
       <div className="text-white">Average Rating</div>
 
       <Rating value={1} />
@@ -30,7 +30,7 @@ const Rating = (props: RatingProps) => {
             onClick={() => onChange(n)}
             className={clsx(
               'w-8 h-8 cursor-pointer',
-              n < value ? 'text-white' : 'text-amber-300'
+              n < value ? 'text-white' : 'text-amber-600'
             )}
           />
         ))}

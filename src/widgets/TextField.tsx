@@ -74,7 +74,8 @@ const TextField: React.FC<TextFieldProps> = ({
         onClick={handleClick}
         className={clsx(
           'absolute transition-all duration-100 cursor-text',
-          !empty && 'text-gray-500 -top-2 left-2 bg-white px-1 text-sm',
+          !empty &&
+            'text-gray-500 -top-2 left-2 bg-white px-1 text-sm dark:bg-transparent',
           empty && 'text-gray-600 top-2 left-3'
         )}
       >
@@ -84,8 +85,9 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         ref={inputRef}
         className={clsx(
-          'p-2 w-full border rounded-md outline-none transition-all duration-300',
-          !error && 'border-gray-300 hover:border-gray-400',
+          'p-2 w-full border rounded-md outline-none transition-all duration-300 dark:bg-zinc-800',
+          !error &&
+            'border-gray-300 hover:border-gray-400 dark:border-zinc-700',
           !error && 'focus:ring-2 focus:ring-blue-200 focus:border-blue-400',
           error && 'focus:ring-2 focus:ring-red-200 border-red-400'
         )}

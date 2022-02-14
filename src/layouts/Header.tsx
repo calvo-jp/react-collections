@@ -1,7 +1,7 @@
-import MenuIcon from '@heroicons/react/outline/MenuIcon';
 import SearchIcon from '@heroicons/react/outline/SearchIcon';
 import BellIcon from '@heroicons/react/solid/BellIcon';
 import HomeIcon from '@heroicons/react/solid/HomeIcon';
+import MenuIcon from '@heroicons/react/solid/MenuIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import ViewGridIcon from '@heroicons/react/solid/ViewGridIcon';
 import CloseIcon from '@heroicons/react/solid/XIcon';
@@ -21,7 +21,7 @@ const Header = (props: HeaderProps) => {
   const hasNavbar = !!props.navbar;
 
   return (
-    <header className="sticky top-0 z-[70] bg-white shadow-md h-header flex items-center justify-between px-3 gap-1 sm:gap-2">
+    <header className="sticky top-0 z-[70] bg-white shadow-md h-header flex items-center justify-between px-3 gap-1 sm:gap-2 dark:bg-zinc-800 dark:shadow-none dark:border-b dark:border-zinc-700">
       <div
         className={clsx(
           'items-center gap-2 md:z-10',
@@ -49,7 +49,7 @@ const Header = (props: HeaderProps) => {
 
 const Searchbar = () => {
   return (
-    <form className="grow bg-gray-200 p-1 sm:p-1.5 rounded-full flex items-center gap-2">
+    <form className="grow bg-gray-200 p-1 sm:p-1.5 rounded-full flex items-center gap-2 dark:bg-zinc-700">
       <SearchIcon className="w-4 h-4" />
       <input
         placeholder="Search"
@@ -67,14 +67,14 @@ const Hamburger = () => {
   if (globalState.navbarOpened) {
     return (
       <button className="lg:hidden z-[90]" onClick={handleClick}>
-        <CloseIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
+        <CloseIcon className="w-6 h-6 fill-gray-400 hover:fill-gray-500 dark:fill-zinc-500 dark:hover:fill-zinc-400" />
       </button>
     );
   }
 
   return (
     <button className="lg:hidden" onClick={handleClick}>
-      <MenuIcon className="w-6 h-6 text-gray-400 hover:text-gray-500" />
+      <MenuIcon className="w-6 h-6 fill-gray-400 hover:fill-gray-500 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
     </button>
   );
 };
@@ -146,15 +146,16 @@ const IconButton = ({
     <Container
       className={clsx(
         'rounded-full p-1 sm:p-1.5',
-        !active && 'bg-gray-100 hover:bg-gray-200',
-        active && 'bg-blue-100'
+        !active &&
+          'bg-gray-100 hover:bg-gray-200 dark:bg-zinc-700 dark:hover:bg-zinc-600',
+        active && 'bg-blue-100 dark:bg-sky-500'
       )}
     >
       <SVGIcon
         className={clsx(
           'w-6 h-6 sm:w-7 sm:h-7',
-          !active && 'fill-gray-500',
-          active && 'fill-blue-500'
+          !active && 'fill-gray-500 dark:fill-zinc-300',
+          active && 'fill-blue-500 dark:fill-white'
         )}
       />
     </Container>

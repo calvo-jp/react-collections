@@ -29,7 +29,7 @@ const Navbar = () => {
         opened && 'block'
       )}
     >
-      <div className="w-navbar flex flex-col items-center h-full py-8 bg-white lg:bg-transparent">
+      <div className="w-navbar flex flex-col items-center h-full py-8 bg-white lg:bg-transparent border-r border-transparent dark:bg-zinc-900 dark:border-zinc-800 dark:lg:border-transparent">
         <div className="h-header" />
 
         <div className="flex flex-col gap-8">
@@ -150,8 +150,9 @@ const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
     <a
       className={clsx(
         'cursor-pointer flex items-center gap-2',
-        !active && 'text-slate-600 hover:text-slate-700',
-        active && 'text-blue-500',
+        !active &&
+          'text-gray-600 hover:text-gray-700 dark:text-zinc-300 dark:hover:text-zinc-100',
+        active && 'text-blue-500 dark:text-sky-400',
         className
       )}
       onClick={handleClick}

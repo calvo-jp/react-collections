@@ -18,7 +18,7 @@ const Reviews = (props: ReviewsProps) => {
       <div className="flex gap-4">
         <Pagination />
 
-        <button className="flex items-center gap-1 text-blue-600">
+        <button className="flex items-center gap-1 text-blue-600 dark:text-sky-500 dark:hover:text-sky-400">
           <HeartIcon className="w-4 h-4" />
           <span className="text-sm">Post a feedback</span>
         </button>

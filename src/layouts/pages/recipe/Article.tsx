@@ -34,7 +34,7 @@ const Article = ({
               {name}
             </h2>
 
-            <small className="text-gray-500 text0-sm">
+            <small className="text-gray-500 dark:text-slate-400">
               Posted by&nbsp;
               <Link
                 href={`/users/${author.id}?redirect=${encodedPath}`}
@@ -70,7 +70,7 @@ interface BookmarkProps {}
 const Bookmark = (props: BookmarkProps) => {
   return (
     <button className="">
-      <BookmarkIcon className="w-6 h-6 text-blue-500" />
+      <BookmarkIcon className="w-6 h-6 text-blue-500 dark:text-sky-500" />
     </button>
   );
 };

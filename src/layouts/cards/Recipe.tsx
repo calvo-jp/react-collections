@@ -24,7 +24,7 @@ const RecipeCard = (props: RecipeCardProps) => {
       href={`/recipes/${id}?redirect=${encodeURIComponent(router.pathname)}`}
       passHref
     >
-      <a className="block bg-white shadow-md md:hover:ring-4 md:hover:ring-blue-200">
+      <a className="block bg-white shadow-md md:hover:ring-4 md:hover:ring-blue-200 dark:bg-zinc-800 dark:md:hover:ring-0 dark:border dark:border-zinc-700 dark:shadow-none">
         <figure
           className="relative"
           style={{
@@ -44,7 +44,9 @@ const RecipeCard = (props: RecipeCardProps) => {
         <article className="p-4">
           <h4 className="text-lg">{name}</h4>
 
-          <p className="text-sm text-gray-700 line-clamp-1">{description}</p>
+          <p className="text-sm text-gray-700 line-clamp-1 dark:text-slate-400">
+            {description}
+          </p>
 
           <div className="mt-2">
             <Rating value={summary.rating} />

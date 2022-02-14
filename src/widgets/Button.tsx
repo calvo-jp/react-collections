@@ -86,7 +86,7 @@ const Button = (props: ButtonProps) => {
         outlined && 'border',
         outlined &&
           primary &&
-          'border-blue-400 text-blue-500 focus:ring-blue-200',
+          'border-blue-400 text-blue-500 focus:ring-blue-200 dark:border-sky-800 dark:text-sky-500 dark:focus:ring-sky-900 dark:focus:ring-opacity-20',
         outlined &&
           secondary &&
           'border-red-400 text-red-500 focus:ring-red-200',

@@ -18,7 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ transparent, children }) => {
     <div
       className={clsx(
         'min-h-screen',
-        !transparent && 'bg-gray-100',
+        !transparent && 'bg-gray-100 dark:bg-zinc-900',
         transparent && 'bg-transparent'
       )}
     >

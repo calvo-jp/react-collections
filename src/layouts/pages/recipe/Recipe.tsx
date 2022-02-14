@@ -142,7 +142,7 @@ const Tab: React.FC<TabProps & React.ComponentProps<'button'>> = ({
     <button
       className={clsx(
         'flex items-center gap-1',
-        active && 'text-blue-600',
+        active && 'text-blue-600 dark:text-sky-500',
         className
       )}
       {...props}
