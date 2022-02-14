@@ -16,7 +16,7 @@ const Settings = () => {
         <title>Settings</title>
       </Head>
 
-      <div className="bg-white p-4 shadow-md flex flex-col gap-4">
+      <div className="bg-white p-4 shadow-md flex flex-col gap-4 dark:bg-zinc-800">
         <GeneralSettings />
         <Subscriptions />
         <DangerZone />
@@ -84,7 +84,7 @@ const LabeledCheckbox = ({
         type="checkbox"
         checked={checked}
         onChange={handleChange}
-        className="cursor-pointer"
+        className="cursor-pointer checked:accent-green-700"
       />
 
       <label className="cursor-pointer" onClick={handleClick}>
@@ -115,7 +115,7 @@ const GeneralSettings = () => {
           value={
             <div className="flex items-center gap-2">
               <div>calvojp92@gmail.com</div>
-              <CheckIcon className="w-4 h-4 fill-green-600" />
+              <CheckIcon className="w-4 h-4 fill-green-600 dark:fill-green-700" />
             </div>
           }
         >
@@ -161,7 +161,9 @@ const GeneralSettingsItem: React.FC<GeneralSettingsItemProps> = ({
 }) => {
   return (
     <div>
-      <small className="text-sm text-gray-500">{label}</small>
+      <small className="text-sm text-gray-500 dark:text-zinc-500">
+        {label}
+      </small>
       <div>{value}</div>
       <div className="flex gap-2">{children}</div>
     </div>
@@ -172,7 +174,7 @@ const Heading = ({ icon: SVGIcon, label }: IconedLabel) => {
   return (
     <div className="flex items-center gap-1">
       <SVGIcon className="w-4 h-4" />
-      <h4 className="text-sm text-gray-600">{label}</h4>
+      <h4 className="text-sm text-gray-600 dark:text-zinc-300">{label}</h4>
     </div>
   );
 };

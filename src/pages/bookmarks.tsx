@@ -47,7 +47,7 @@ const Bookmark = ({
 
   return (
     <Link href={`/recipes/${id}?redirect=${encodeURIComponent(path)}`} passHref>
-      <a className="p-4 flex items-center gap-4 shadow-md bg-white md:hover:ring-4 md:hover:ring-blue-200">
+      <a className="p-4 flex items-center gap-4 shadow-md bg-white md:hover:ring-4 md:hover:ring-blue-200 dark:bg-zinc-800 dark:md:hover:ring-sky-900 dark:md:hover:ring-0">
         <div className="relative h-[85px] basis-[85px] shrink-0 grow-0 rounded-full overflow-hidden">
           <Image
             src={banner!}
@@ -60,7 +60,9 @@ const Bookmark = ({
 
         <div className="grow">
           <div className="md:text-lg">{name}</div>
-          <p className="text-sm text-gray-600 line-clamp-1">{description}</p>
+          <p className="text-sm text-gray-600 dark:text-zinc-400 line-clamp-1">
+            {description}
+          </p>
 
           <div className="mt-1">
             <Rating value={summary.rating} />
@@ -68,7 +70,7 @@ const Bookmark = ({
         </div>
 
         <button>
-          <XIcon className="w-6 h-6 text-gray-200" />
+          <XIcon className="w-6 h-6 stroke-gray-200 dark:stroke-zinc-700 dark:hover:stroke-zinc-600 transition-colors duration-300" />
         </button>
       </a>
     </Link>

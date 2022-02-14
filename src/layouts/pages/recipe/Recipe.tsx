@@ -54,12 +54,12 @@ const Recipe = (props: RecipeProps) => {
       <div>
         <HeaderTwo />
 
-        <div className="max-w-screen-md mx-auto md:px-2">
+        <div className="max-w-screen-md mx-auto md:px-4">
           <Jumbotron src={data.avatar!} />
 
-          <main className="my-4 px-4 md:px-0">
-            <div>
-              <section className="mt-4">
+          <main className="p-4 md:px-0">
+            <div className="">
+              <section>
                 <Article {...data} />
               </section>
 

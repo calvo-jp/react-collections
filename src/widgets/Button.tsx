@@ -91,7 +91,7 @@ const Button = (props: ButtonProps) => {
           secondary &&
           'border-red-400 text-red-500 focus:ring-red-200 dark:border-pink-900 dark:text-pink-600 dark:focus:ring-pink-900 dark:focus:ring-opacity-20',
         // color without variant
-        !variant && primary && 'text-blue-500',
+        !variant && primary && 'text-blue-500 dark:text-sky-500',
         !variant && secondary && 'text-red-500',
         // disabled
         disabled && 'bg-gray-100 text-gray-400 cursor-not-allowed',
