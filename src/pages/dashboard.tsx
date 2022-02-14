@@ -15,14 +15,14 @@ const Dashboard = () => {
       <div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           <Item
-            gradientBg="from-orange-400 to-yellow-500"
+            gradientBg="from-orange-400 to-yellow-500 dark:from-orange-600 dark:to-yellow-700"
             label="Average Rating"
             value={4}
             icon={StarIcon}
           />
 
           <Item
-            gradientBg="from-blue-400 to-violet-400"
+            gradientBg="from-blue-400 to-violet-400 dark:from-blue-600 dark:to-blue-700"
             label="Notifications"
             value={13}
             icon={BellIcon}
@@ -50,7 +50,7 @@ const Item = ({
     <div>
       <div
         className={clsx(
-          'bg-gradient-to-r from-orange-400 to-yellow-500 p-6 flex items-center gap-4 shadow-md',
+          'bg-gradient-to-r p-6 flex items-center gap-4 shadow-md',
           className
         )}
       >

@@ -34,13 +34,15 @@ const Article = ({
               {name}
             </h2>
 
-            <small className="text-gray-500 dark:text-slate-400">
+            <small className="text-gray-500 dark:text-zinc-400">
               Posted by&nbsp;
               <Link
                 href={`/users/${author.id}?redirect=${encodedPath}`}
                 passHref
               >
-                <a className="hover:text-blue-500">{author.name}</a>
+                <a className="hover:text-blue-500 dark:hover:text-sky-400">
+                  {author.name}
+                </a>
               </Link>
               &nbsp;
               {date}

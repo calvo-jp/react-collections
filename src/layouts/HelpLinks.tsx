@@ -70,7 +70,7 @@ interface LinkProps {
 const Link: React.FC<LinkProps> = ({ href, children }) => {
   return (
     <NextLink href={href} passHref>
-      <a className="hover:text-blue-600">{children}</a>
+      <a className="hover:text-blue-600 dark:hover:text-sky-400">{children}</a>
     </NextLink>
   );
 };

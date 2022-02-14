@@ -7,7 +7,7 @@ interface VideoPlayerProps extends React.ComponentProps<'video'> {
 
 const Wrapper: React.FC = ({ children }) => {
   return (
-    <div className="h-[250px] md:h-[300px] lg:h-[350px] flex items-center justify-center bg-gray-100 dark:bg-zinc-800">
+    <div className="h-[250px] md:h-[300px] lg:h-[325px] flex items-center justify-center bg-gray-100 dark:bg-zinc-800">
       {children}
     </div>
   );
@@ -45,7 +45,9 @@ const VideoPlayer = ({
         <div className="mt-2">
           <div>
             <div>{data.description}</div>
-            <div className="text-sm text-gray-400">3 mins ago</div>
+            <div className="text-sm text-gray-400 dark:text-zinc-500">
+              3 mins ago
+            </div>
           </div>
         </div>
       )}
