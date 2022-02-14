@@ -12,7 +12,7 @@ const Review = (props: IReview) => {
 
       <p>{body}</p>
 
-      <small className="text-gray-500 flex gap-1">
+      <small className="text-gray-500 flex gap-1 dark:text-zinc-400">
         <time>
           {formatDistanceToNow(new Date(createdAt), {
             addSuffix: true,
@@ -23,7 +23,7 @@ const Review = (props: IReview) => {
 
         {author && (
           <Link passHref href={'/users/' + author.id}>
-            <a className="hover:text-blue-500 hover:font-semibold">
+            <a className="hover:text-blue-500 dark:hover:text-sky-400">
               {author.name}
             </a>
           </Link>
