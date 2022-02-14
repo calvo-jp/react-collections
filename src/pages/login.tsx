@@ -1,4 +1,5 @@
 import logo from 'assets/logo.png';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, Formik } from 'formik';
 import useStoreState from 'hooks/store/useState';
 import Head from 'next/head';
@@ -6,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import firebaseAuth from 'utils/firebase/auth';
 import Alert from 'widgets/Alert';
 import Button from 'widgets/Button';
 import TextField from 'widgets/TextField';
@@ -13,7 +15,7 @@ import * as yup from 'yup';
 
 const Login = () => {
   const router = useRouter();
-  const [globalState, setGlobalState] = useStoreState();
+  const [globalState, dispatch] = useStoreState();
 
   // login error
   const [error, setError] = React.useState<string>();
@@ -43,21 +45,35 @@ const Login = () => {
 
             <Formik
               initialValues={{
-                username: '',
+                email: '',
                 password: '',
               }}
               validationSchema={yup.object().shape({
-                username: yup
+                email: yup
                   .string()
-                  .email('username must be an email')
-                  .required('username is required'),
+                  .email('email must be an email')
+                  .required('email is required'),
                 password: yup
                   .string()
                   .min(5, 'password must be 5 characters or more')
                   .max(100, 'password must be 100 characters or less')
                   .required('password is required'),
               })}
-              onSubmit={(values) => {}}
+              onSubmit={(credential, { setSubmitting }) => {
+                signInWithEmailAndPassword(
+                  firebaseAuth,
+                  credential.email,
+                  credential.password
+                )
+                  .then((data) => {
+                    // TODO: update globalState
+                    console.log(data);
+                  })
+                  .catch(() => {
+                    setSubmitting(false);
+                    setError('Invalid username or password');
+                  });
+              }}
             >
               {({
                 values,
@@ -69,15 +85,15 @@ const Login = () => {
               }) => (
                 <Form className="flex flex-col gap-3">
                   <TextField
-                    id="username"
+                    id="email"
                     type="email"
-                    name="username"
-                    label="username"
+                    name="email"
+                    label="email"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.username}
-                    error={touched.username && !!errors.username}
-                    helperText={errors.username}
+                    value={values.email}
+                    error={touched.email && !!errors.email}
+                    helperText={errors.email}
                     autoFocus
                     fullWidth
                     autoComplete="off"
