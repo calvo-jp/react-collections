@@ -32,9 +32,11 @@ const Header = (props: HeaderProps) => {
       >
         {hasNavbar && <Hamburger />}
 
-        <div className="hidden sm:block">
-          <LogoIcon />
-        </div>
+        <Link href="/newsfeed" passHref>
+          <a className="hidden sm:block">
+            <LogoIcon />
+          </a>
+        </Link>
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2 w-full sm:w-auto">
