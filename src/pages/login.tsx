@@ -28,9 +28,9 @@ const Login = () => {
         <title>Login</title>
       </Head>
 
-      <div className="min-h-screen flex flex-col justify-center md:bg-gradient-to-r from-sky-400 via-blue-300 to-purple-300 dark:md:bg-zinc-900">
+      <div className="min-h-screen flex flex-col justify-center md:bg-gradient-to-r dark:bg-zinc-900 dark:md:bg-zinc-800">
         <main>
-          <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 bg-white dark:bg-zinc-900">
+          <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 bg-white dark:bg-zinc-900 dark:md:shadow-none dark:md:border dark:md:border-[#333337]">
             <div className="w-fit mx-auto mb-4">
               <Image src={logo} alt="" width={64} height={64} />
             </div>
