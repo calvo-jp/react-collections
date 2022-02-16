@@ -1,20 +1,14 @@
-import BookmarkIcon from '@heroicons/react/outline/BookmarkIcon';
-import ChartPieIcon from '@heroicons/react/outline/ChartPieIcon';
-import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
-import CogIcon from '@heroicons/react/outline/CogIcon';
-import LockClosedIcon from '@heroicons/react/outline/LockClosedIcon';
 import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import avatar from 'assets/samples/images/avatar.jpg';
 import clsx from 'clsx';
-import { signOut } from 'firebase/auth';
 import useStoreState from 'hooks/store/useState';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import firebaseAuth from 'utils/firebase/auth';
 import Button from 'widgets/Button';
 import Avatar from '../Avatar';
 import HelpLinks from './HelpLinks';
+import Menu from './Menu';
 
 const Navbar = () => {
   const [globalState] = useStoreState();
@@ -68,106 +62,6 @@ const CreateButton = () => {
           fullWidth
         />
       </a>
-    </Link>
-  );
-};
-
-const Menu = () => {
-  const router = useRouter();
-  const [, dispatch] = useStoreState();
-
-  const handleClick = async () => {
-    try {
-      await signOut(firebaseAuth);
-      dispatch({ type: 'session.logout' });
-      router.push('/');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
-    <nav>
-      <ul>
-        <li>
-          <NavbarLink href="/dashboard" label="Dashboard" icon={ChartPieIcon} />
-        </li>
-        <li>
-          <NavbarLink
-            href="/recipes"
-            label="Recipes"
-            icon={ClipboardListIcon}
-          />
-        </li>
-        <li>
-          <NavbarLink href="/bookmarks" label="Bookmarks" icon={BookmarkIcon} />
-        </li>
-        <li>
-          <NavbarLink href="/settings" label="Settings" icon={CogIcon} />
-        </li>
-        <li>
-          <NavbarLink
-            label="Logout"
-            icon={LockClosedIcon}
-            onClick={handleClick}
-          />
-        </li>
-      </ul>
-    </nav>
-  );
-};
-
-interface NavbarLinkProps {
-  icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
-  label: string;
-}
-
-const NavbarLink: React.FC<NavbarLinkProps & React.ComponentProps<'a'>> = ({
-  href,
-  icon: SVGIcon,
-  label,
-  children,
-  className,
-  onClick,
-  ...props
-}) => {
-  const [globalState, dispatch] = useStoreState();
-
-  const router = useRouter();
-  const active = router.pathname === href;
-
-  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-    if (onClick) onClick(e);
-
-    if (globalState.navbarOpened) {
-      dispatch({
-        type: 'navbar.toggle',
-      });
-    }
-  };
-
-  const anchor = (
-    <a
-      className={clsx(
-        'cursor-pointer flex items-center gap-2',
-        !active &&
-          'text-gray-600 hover:text-gray-700 dark:text-zinc-300 dark:hover:text-zinc-100',
-        active && 'text-blue-500 dark:text-sky-400',
-        className
-      )}
-      onClick={handleClick}
-      {...props}
-    >
-      <SVGIcon className="w-5 h-5" />
-      <div>{label}</div>
-    </a>
-  );
-
-  if (!href) return anchor;
-
-  return (
-    <Link href={href} passHref>
-      {anchor}
     </Link>
   );
 };
