@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import firebaseAuth from 'utils/firebase/auth';
 import Button from 'widgets/Button';
-import Avatar from './Avatar';
+import Avatar from '../Avatar';
 import HelpLinks from './HelpLinks';
 
 const Navbar = () => {
@@ -42,8 +42,8 @@ const Navbar = () => {
           <CreateButton />
           <Menu />
 
-          <div>
-            <HelpLinks className="max-w-[205px]" />
+          <div className="max-w-[205px]">
+            <HelpLinks />
           </div>
         </div>
       </div>

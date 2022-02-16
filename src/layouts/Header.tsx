@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import LogoIcon from 'widgets/icons/logo';
-import Navbar from './Navbar';
+import Navbar from './navbar';
 
 interface HeaderProps {
   navbar?: boolean;
