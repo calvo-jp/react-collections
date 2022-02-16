@@ -37,11 +37,7 @@ const Landing = () => {
           </section>
         </main>
 
-        <footer className="z-10 relative py-4 px-8 flex justify-between items-center">
-          <FooterBackgroundGradient />
-
-          <div className="text-sm">&copy; Amazing Recipes {currentYear}</div>
-        </footer>
+        <Footer />
       </div>
     </React.Fragment>
   );
@@ -73,6 +69,16 @@ const BackgroundImage = () => {
 const BackgroundGradient = () => {
   return (
     <div className="absolute w-full h-full left-0 top-0 bg-black bg-opacity-80" />
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="z-10 relative py-4 px-8 flex justify-between items-center">
+      <FooterBackgroundGradient />
+
+      <div className="text-sm">&copy; Amazing Recipes {currentYear}</div>
+    </footer>
   );
 };
 
