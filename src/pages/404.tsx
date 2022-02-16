@@ -1,4 +1,3 @@
-import Footer from 'layouts/Footer';
 import HeaderTwo from 'layouts/HeaderTwo';
 import Head from 'next/head';
 import * as React from 'react';
@@ -18,8 +17,6 @@ const NotFound = () => {
             <h1 className="text-9xl font-extrabold text-gray-200">404</h1>
           </div>
         </main>
-
-        <Footer />
       </div>
     </React.Fragment>
   );
