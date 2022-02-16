@@ -6,7 +6,7 @@ import YoutubeIcon from 'widgets/icons/Youtube';
 
 type SVGIcon = React.FC<React.SVGProps<SVGSVGElement>>;
 
-const useSocials = (): [string, SVGIcon][] => [
+const useSocials = (): [url: string, icon: SVGIcon][] => [
   ['https://www.facebook.com/recipes', FacebookIcon],
   ['https://www.instagram.com/recipes', InstagramIcon],
   ['https://www.twitter.com/recipes', TwitterIcon],
