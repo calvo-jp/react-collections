@@ -1,12 +1,10 @@
-import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
 import avatar from 'assets/samples/images/avatar.jpg';
 import clsx from 'clsx';
 import useStoreState from 'hooks/store/useState';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import * as React from 'react';
-import Button from 'widgets/Button';
 import Avatar from '../Avatar';
+import CreateButton from './CreateButton';
 import HelpLinks from './HelpLinks';
 import Menu from './Menu';
 
@@ -42,27 +40,6 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-const CreateButton = () => {
-  const router = useRouter();
-
-  return (
-    <Link
-      href={'/recipes/new?redirect=' + encodeURIComponent(router.asPath)}
-      passHref
-    >
-      <a className="block">
-        <Button
-          variant="outlined"
-          color="primary"
-          label="Create New"
-          icon={<PencilAltIcon className="w-5 h-5" />}
-          fullWidth
-        />
-      </a>
-    </Link>
   );
 };
 
