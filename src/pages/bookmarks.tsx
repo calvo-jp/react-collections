@@ -70,7 +70,7 @@ const Bookmark = ({
         </div>
 
         <button>
-          <XIcon className="w-6 h-6 stroke-gray-200 dark:stroke-zinc-700 dark:hover:stroke-zinc-600 transition-colors duration-300" />
+          <XIcon className="w-6 h-6 stroke-gray-200 hover:stroke-gray-300 dark:stroke-zinc-700 dark:hover:stroke-zinc-600 transition-colors duration-300" />
         </button>
       </a>
     </Link>
