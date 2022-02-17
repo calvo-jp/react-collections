@@ -45,7 +45,7 @@ const Landing = () => {
 
 const FooterBackgroundGradient = () => {
   return (
-    <div className="bg-gradient-to-r from-black to-sky-500 absolute w-full h-full left-0 top-0 opacity-25 -z-10" />
+    <div className="bg-gradient-to-r from-white to-blue-900 opacity-80 dark:to-sky-500 absolute w-full h-full left-0 top-0 dark:opacity-25 -z-10" />
   );
 };
 
@@ -68,7 +68,7 @@ const BackgroundImage = () => {
 
 const BackgroundGradient = () => {
   return (
-    <div className="absolute w-full h-full left-0 top-0 bg-black bg-opacity-80" />
+    <div className="absolute w-full h-full left-0 top-0 bg-white bg-opacity-50 dark:bg-black dark:bg-opacity-80" />
   );
 };
 
@@ -96,7 +96,7 @@ const Article = () => {
 
       <div>
         <Link href="/create-account" passHref>
-          <a className="flex gap-4 items-center w-fit bg-black bg-opacity-50 p-3 px-6 mt-4 rounded-full ">
+          <a className="flex gap-4 items-center w-fit bg-white bg-opacity-80 dark:bg-black dark:bg-opacity-50 p-3 px-6 mt-4 rounded-full ">
             <span>Register now</span>
             <ArrowRightIcon className="w-4 h-4" />
           </a>
