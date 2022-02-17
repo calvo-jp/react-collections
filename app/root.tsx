@@ -1,15 +1,15 @@
+import type { MetaFunction } from 'remix';
 import {
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
-} from "remix";
-import type { MetaFunction } from "remix";
+  ScrollRestoration,
+} from 'remix';
 
 export const meta: MetaFunction = () => {
-  return { title: "New Remix App" };
+  return { title: 'Pets - Buy or sell a pet online' };
 };
 
 export default function App() {
