@@ -31,7 +31,7 @@ const Login = () => {
 
       <div className="min-h-screen flex flex-col justify-center md:bg-gradient-to-r md:bg-gray-100 dark:bg-zinc-900 dark:md:bg-zinc-800">
         <main>
-          <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 md:bg-white dark:bg-zinc-900 dark:md:shadow-none dark:md:border dark:md:border-[#333337]">
+          <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 md:bg-white dark:md:bg-zinc-900 dark:md:shadow-none dark:md:border dark:md:border-[#333337]">
             <Link href="/" passHref>
               <a className="w-fit mx-auto mb-4">
                 <LogoIcon />
