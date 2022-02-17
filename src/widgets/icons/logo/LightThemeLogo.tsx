@@ -1,10 +1,6 @@
-import clsx from 'clsx';
 import * as React from 'react';
 
-const LightThemeLogoIcon = ({
-  className,
-  ...props
-}: React.ComponentProps<'svg'>) => {
+const LightThemeLogoIcon = (props: React.ComponentProps<'svg'>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +8,6 @@ const LightThemeLogoIcon = ({
       height="30"
       fill="none"
       viewBox="0 0 160 30"
-      className={clsx(className, 'dark:hidden block')}
       {...props}
     >
       <path
