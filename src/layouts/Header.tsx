@@ -52,7 +52,7 @@ const Header = (props: HeaderProps) => {
 
 const Searchbar = () => {
   return (
-    <form className="grow bg-gray-200 p-1 sm:p-1.5 rounded-full flex items-center gap-2 dark:bg-zinc-700">
+    <form className="grow bg-gray-100 p-1 sm:p-1.5 rounded-full flex items-center gap-2 dark:bg-zinc-700">
       <SearchIcon className="w-4 h-4" />
       <input
         placeholder="Search"
