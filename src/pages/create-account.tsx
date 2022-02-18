@@ -1,35 +1,9 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { Form, Formik } from 'formik';
 import Head from 'next/head';
 import * as React from 'react';
-import firebaseAuth from 'utils/firebase/auth';
-import sha256 from 'utils/sha256';
 import Button from 'widgets/Button';
 import TextField from 'widgets/TextField';
 import * as yup from 'yup';
-
-interface Credential {
-  displayName: string;
-  email: string;
-  password: string;
-}
-
-const createAccount = async (credential: Credential) => {
-  const data = await createUserWithEmailAndPassword(
-    firebaseAuth,
-    credential.email,
-    credential.password
-  );
-
-  const hashed = await sha256(credential.email);
-
-  await updateProfile(data.user, {
-    displayName: credential.displayName,
-    photoURL: 'https://www.gravatar.com/avatar/' + hashed + '?default=retro',
-  });
-
-  return data.user;
-};
 
 const CreateAccount = () => {
   return (
@@ -57,12 +31,7 @@ const CreateAccount = () => {
               .max(100, 'password must not be more than 100 characters')
               .required('password is required'),
           })}
-          onSubmit={(credential, { setSubmitting }) => {
-            createAccount(credential).then((user) => {
-              console.log(user);
-              setSubmitting(false);
-            });
-          }}
+          onSubmit={() => {}}
         >
           {({
             isSubmitting,
@@ -104,9 +73,10 @@ const CreateAccount = () => {
 
               <Button
                 type="submit"
-                label=" Create account"
+                label="Create account"
                 variant="contained"
                 color="primary"
+                disabled={isSubmitting}
               />
             </Form>
           )}
