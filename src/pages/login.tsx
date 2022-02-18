@@ -3,11 +3,9 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, Formik } from 'formik';
 import useStoreState from 'hooks/store/useState';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import firebaseAuth from 'utils/firebase/auth';
 import Alert from 'widgets/Alert';
 import Button from 'widgets/Button';
 import LogoIcon from 'widgets/icons/logo';
@@ -62,21 +60,7 @@ const Login = () => {
                   .max(100, 'password must be 100 characters or less')
                   .required('password is required'),
               })}
-              onSubmit={(credential, { setSubmitting }) => {
-                signInWithEmailAndPassword(
-                  firebaseAuth,
-                  credential.email,
-                  credential.password
-                )
-                  .then((data) => {
-                    // TODO: update globalState
-                    console.log(data);
-                  })
-                  .catch(() => {
-                    setSubmitting(false);
-                    setError('Invalid username or password');
-                  });
-              }}
+              onSubmit={(credential, { setSubmitting }) => {}}
             >
               {({
                 values,

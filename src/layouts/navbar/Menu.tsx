@@ -4,11 +4,9 @@ import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
 import CogIcon from '@heroicons/react/outline/CogIcon';
 import LockClosedIcon from '@heroicons/react/outline/LockClosedIcon';
 import clsx from 'clsx';
-import { signOut } from 'firebase/auth';
 import useStoreState from 'hooks/store/useState';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import firebaseAuth from 'utils/firebase/auth';
 
 const Menu = () => {
   const router = useRouter();
@@ -16,7 +14,6 @@ const Menu = () => {
 
   const handleClick = async () => {
     try {
-      await signOut(firebaseAuth);
       dispatch({ type: 'session.logout' });
       router.push('/');
     } catch (error) {
