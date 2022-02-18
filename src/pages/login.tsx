@@ -1,5 +1,3 @@
-import logo from 'assets/logo.png';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, Formik } from 'formik';
 import useStoreState from 'hooks/store/useState';
 import Head from 'next/head';
