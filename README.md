@@ -4,7 +4,8 @@ Share or find amazing recipes
 
 **Requirements**
 
-- nodejs 16
+- nodejs 17.\*
+- yarn
 
 **Installation**
 
@@ -13,7 +14,7 @@ Share or find amazing recipes
 - run the command below
 
 ```
-npm i
+yarn
 ```
 
 - enjoy
