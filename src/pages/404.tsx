@@ -14,7 +14,9 @@ const NotFound = () => {
 
         <main className="flex-grow flex justify-center items-center">
           <div>
-            <h1 className="text-9xl font-extrabold text-gray-200">404</h1>
+            <h1 className="text-9xl font-extrabold text-gray-200 dark:text-zinc-600">
+              404
+            </h1>
           </div>
         </main>
       </div>
