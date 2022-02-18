@@ -3,6 +3,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ["'IBM Plex Sans'", 'sans-serif'],
+      heading: ["'Open Sans Condensed'", 'sans-serif'],
     },
     fontWeight: {
       extralight: 100,
@@ -12,6 +13,8 @@ module.exports = {
       semibold: 500,
       bold: 600,
       extrabold: 700,
+      'heading-thin': 300,
+      'heading-thick': 700,
     },
     extend: {
       spacing: {
