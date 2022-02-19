@@ -1,3 +1,3 @@
 export default function Index() {
-  return <div></div>;
+  return <div className="text-blue-400">Hello world</div>;
 }

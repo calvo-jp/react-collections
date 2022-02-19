@@ -7,6 +7,11 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'remix';
+import styles from './styles/app.css';
+
+export function links() {
+  return [{ rel: 'stylesheet', href: styles }];
+}
 
 export const meta: MetaFunction = () => {
   return { title: 'Pets - Buy or sell a pet online' };
