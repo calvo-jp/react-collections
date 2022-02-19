@@ -5,10 +5,11 @@ import recipes from 'assets/samples/json/recipes.json';
 import RecipeCard from 'layouts/cards/Recipe';
 import Header from 'layouts/Header';
 import Head from 'next/head';
+import * as React from 'react';
 
 const NewsFeed = () => {
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>Newsfeed</title>
       </Head>
@@ -17,7 +18,7 @@ const NewsFeed = () => {
         <Header />
         <Main />
       </div>
-    </>
+    </React.Fragment>
   );
 };
 
@@ -43,17 +44,17 @@ const Main = () => {
 
 const New = () => {
   return (
-    <>
+    <React.Fragment>
       <HeadLine label="New" icon={SparklesIcon} />
 
       <div></div>
-    </>
+    </React.Fragment>
   );
 };
 
 const Popular = () => {
   return (
-    <>
+    <React.Fragment>
       <HeadLine label="Popular" icon={ThumbUpIcon} />
 
       <div className="grid grid-cols-2 gap-4 mt-2">
@@ -61,7 +62,7 @@ const Popular = () => {
           <RecipeCard key={recipe.id} data={recipe} height={200} />
         ))}
       </div>
-    </>
+    </React.Fragment>
   );
 };
 
