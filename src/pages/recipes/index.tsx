@@ -28,7 +28,7 @@ const Recipes: NextPage<Props> = ({ items }) => {
 
       <div className="grid gap-4 lg:gap-6 grid-cols-1 sm:grid-cols-2 grid-flow-row-dense">
         {items.map((item) => (
-          <RecipeCard key={item.id} data={item} height={250} />
+          <RecipeCard key={item.id} data={item} height={250} ratings />
         ))}
       </div>
     </Layout>
