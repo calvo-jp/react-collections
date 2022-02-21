@@ -8,6 +8,8 @@ interface RecipeCardProps {
   data: IRecipe;
   width?: number;
   height?: number;
+  ratings?: boolean;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
 const RecipeCard = (props: RecipeCardProps) => {
@@ -17,6 +19,8 @@ const RecipeCard = (props: RecipeCardProps) => {
     data: { id, name, description, banner, summary },
     width,
     height,
+    ratings,
+    size,
   } = props;
 
   return (
@@ -48,9 +52,11 @@ const RecipeCard = (props: RecipeCardProps) => {
             {description}
           </p>
 
-          <div className="mt-2">
-            <Rating value={summary.rating} />
-          </div>
+          {ratings && (
+            <div className="mt-2">
+              <Rating value={summary.rating} />
+            </div>
+          )}
         </article>
       </a>
     </Link>
