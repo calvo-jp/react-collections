@@ -2,7 +2,7 @@ interface ITodo {
   id: string;
   name: string;
   complete?: boolean;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export default ITodo;
