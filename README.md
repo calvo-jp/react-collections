@@ -16,8 +16,7 @@ A basic Todo app using React, TypeScript & Tailwind
 
 ```
 yarn
-npx json-server -w -p 3001 db.json
 yarn dev
 ```
 
-- Open a browser and go to http://localhost:3000
+- Open your browser and go to http://localhost:3000
