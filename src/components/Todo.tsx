@@ -5,14 +5,24 @@ import clsx from 'clsx';
 import ITodo from '../types/todo';
 import dateFormatter from '../utils/dateFormatter';
 
+type UpdateInput = Partial<Pick<ITodo, 'name' | 'complete'>>;
+
 interface TodoProps {
   data: ITodo;
+  onDelete: () => void;
+  onUpdate: (data: UpdateInput) => void;
 }
 
-const Todo = ({ data }: TodoProps) => {
+const Todo = ({ data, onUpdate, onDelete }: TodoProps) => {
   return (
     <div className="p-4 flex justify-between items-center shadow-md gap-4 bg-white rounded-md">
-      <button>
+      <button
+        onClick={() => {
+          onUpdate({
+            complete: !data.complete,
+          });
+        }}
+      >
         <CheckIcon
           className={clsx(
             'h-6 w-6 transition-colors duration-300',
@@ -23,7 +33,19 @@ const Todo = ({ data }: TodoProps) => {
       </button>
 
       <div className="grow">
-        <p>{data.name}</p>
+        <p
+          contentEditable
+          suppressContentEditableWarning
+          spellCheck={false}
+          className="outline-none"
+          onBlur={(e) => {
+            const value = e.target.textContent;
+
+            if (value && value !== data.name) onUpdate({ name: value });
+          }}
+        >
+          {data.name}
+        </p>
 
         <div className="flex items-center gap-1">
           <ClockIcon className="h-4 w-4 stroke-slate-400" />
@@ -33,7 +55,7 @@ const Todo = ({ data }: TodoProps) => {
         </div>
       </div>
 
-      <button>
+      <button onClick={onDelete}>
         <XIcon className="h-6 w-6 text-gray-300 hover:text-red-400 transition-colors duration-300" />
       </button>
     </div>
