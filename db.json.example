@@ -1,3 +1,10 @@
 {
-  "todos": []
+  "todos": [
+    {
+      "id": 1,
+      "name": "My first todo",
+      "completed": true,
+      "createdAt": 1645517616231
+    }
+  ]
 }
