@@ -39,7 +39,7 @@ type UpdateInput = Partial<Pick<ITodo, 'name' | 'complete'>>;
 
 const update = async (id: string, data: UpdateInput) => {
   const response = await fetch('http://localhost:3001/todos/' + id, {
-    method: 'POST',
+    method: 'PATCH',
     body: JSON.stringify(data),
   });
 
