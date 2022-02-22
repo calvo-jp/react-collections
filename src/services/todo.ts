@@ -29,6 +29,9 @@ const create = async (name: string): Promise<ITodo> => {
       name,
       createdAt,
     }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
   const todo = await response.json();
@@ -41,6 +44,9 @@ const update = async (id: string, data: UpdateInput) => {
   const response = await fetch('http://localhost:3001/todos/' + id, {
     method: 'PATCH',
     body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
   const todo = await response.json();
