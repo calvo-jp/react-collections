@@ -1,6 +1,7 @@
 ## Todo App
 
 A basic Todo app using React, TypeScript & Tailwind
+
 ![screenshot](/docs/screenshot.png)
 
 **Requirements**
