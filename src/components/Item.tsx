@@ -17,8 +17,8 @@ const Item = ({ data, onUpdate = noop, onDelete = noop }: ExpenseProps) => {
       <MainContent>
         <Amount>
           <IconWrapper success={data.isIncome}>
-            {data.isIncome && <DollarArrowUpIcon />}
-            {!data.isIncome && <DollarArrowDownIcon />}
+            {data.isIncome && <DollarArrowDownIcon />}
+            {!data.isIncome && <DollarArrowUpIcon />}
           </IconWrapper>
 
           <h4>{formatter.currency.format(data.amount)}</h4>
