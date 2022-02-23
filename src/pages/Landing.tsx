@@ -1,63 +1,16 @@
+import ArrowRightIcon from '@heroicons/react/outline/ArrowRightIcon';
 import PlusIcon from '@heroicons/react/outline/PlusIcon';
 import XIcon from '@heroicons/react/outline/XIcon';
 import { Fragment, useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+import Header from '../components/Header';
 import Todo from '../components/Todo';
 import service from '../services';
 import ITodo from '../types/todo';
 
+// TODO: add loader when pending
 const Landing = () => {
   const [open, setOpen] = useState(false);
-
-  return (
-    <div className="min-h-screen w-full bg-slate-100 text-slate-700">
-      <header className="p-8 pt-16 text-center text-5xl">
-        <h1 className="">Todos</h1>
-      </header>
-
-      <main className="max-w-screen-md mx-auto p-4 sm:p-6 md:p-8">
-        <section>
-          <button
-            className="flex gap-1 items-center group"
-            onClick={() => setOpen(true)}
-          >
-            <PlusIcon className="h-4 w-4 stroke-blue-400 group-hover:stroke-blue-500" />
-
-            <span className="font-medium text-blue-400 group-hover:text-blue-500">
-              Create New
-            </span>
-          </button>
-        </section>
-
-        <section className="mt-4">
-          <TodoList />
-        </section>
-      </main>
-
-      <CreatePopup open={open} onClose={() => setOpen((value) => !value)} />
-    </div>
-  );
-};
-
-interface CreatePopupProps {
-  open?: boolean;
-  onClose?: () => void;
-}
-
-const CreatePopup = ({ open, onClose }: CreatePopupProps) => {
-  if (!open) return <Fragment />;
-
-  return (
-    <div className="fixed w-full h-full left-0 top-0 bg-black bg-opacity-75 flex items-center justify-center">
-      <button className="absolute right-4 top-4 group" onClick={onClose}>
-        <XIcon className="w-8 h-8 stroke-gray-300 opacity-30 group-hover:opacity-60 transition-opacity duration-300" />
-      </button>
-
-      <div className="w-full h-full bg-white md:w-[600px] md:h-[400px] md:rounded-lg shadow-md"></div>
-    </div>
-  );
-};
-
-const TodoList = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [pending, setPending] = useState(true);
 
@@ -72,20 +25,116 @@ const TodoList = () => {
   }, []);
 
   return (
-    <div id="todos" className="flex flex-col gap-2">
-      {todos.map((todo) => (
+    <div className="min-h-screen w-full bg-slate-100 text-slate-700 dark:bg-[#082032] dark:text-[#c2e1f8]">
+      <Header />
+
+      <main className="max-w-screen-md mx-auto p-4 sm:p-6 md:p-8">
+        <section>
+          <button
+            className="flex gap-1 items-center group gradient-text"
+            onClick={() => setOpen(true)}
+          >
+            <PlusIcon className="h-4 w-4 stroke-blue-400 dark:stroke-orange-400" />
+
+            <span className="">Create New</span>
+          </button>
+        </section>
+
+        <section className="mt-4">
+          <TodoList
+            items={todos}
+            onUpdate={(todo) => {
+              setTodos((array) =>
+                array.map((t) => (t.id === todo.id ? todo : t))
+              );
+            }}
+            onDelete={(todo) => {
+              setTodos((array) => array.filter((i) => i.id !== todo.id));
+            }}
+          />
+        </section>
+      </main>
+
+      <CreateTodoForm
+        open={open}
+        onClose={() => setOpen((value) => !value)}
+        onCreate={(todo) => {
+          setTodos((array) => [todo, ...array]);
+        }}
+      />
+    </div>
+  );
+};
+
+interface CreatePopupProps {
+  open?: boolean;
+  onCreate: (todo: ITodo) => void;
+  onClose?: () => void;
+}
+
+const CreateTodoForm = ({ open, onClose }: CreatePopupProps) => {
+  if (!open) return <Fragment />;
+
+  return (
+    <div className="fixed w-full h-full left-0 top-0 bg-black bg-opacity-75 flex items-center justify-center">
+      <button className="absolute right-4 top-4 group" onClick={onClose}>
+        <XIcon className="w-8 h-8 stroke-gray-300 opacity-30 group-hover:opacity-60 transition-opacity duration-300" />
+      </button>
+
+      <div className="w-full h-full bg-white md:w-[600px] md:h-[400px] md:rounded-lg shadow-md">
+        <div></div>
+      </div>
+    </div>
+  );
+};
+
+interface TodoListProps {
+  items: ITodo[];
+  onUpdate: (todo: ITodo) => void;
+  onDelete: (todo: ITodo) => void;
+}
+
+const TodoList = ({ items, onUpdate, onDelete }: TodoListProps) => {
+  return (
+    <div className="flex flex-col gap-2">
+      {items.length === 0 && <EmptyTodo />}
+
+      {items.map((todo) => (
         <Todo
           key={todo.id}
           data={todo}
           onUpdate={(data) => {
-            service.todo.update(todo.id, data);
+            service.todo
+              .update(todo.id, data)
+              .then(onUpdate)
+              .catch((exception) => {
+                if (import.meta.env.DEV) console.error(exception);
+              });
           }}
           onDelete={() => {
-            service.todo.delete(todo.id);
+            service.todo
+              .delete(todo.id)
+              .then(() => onDelete(todo))
+              .catch((exception) => {
+                if (import.meta.env.DEV) console.error(exception);
+              });
           }}
         />
       ))}
     </div>
+  );
+};
+
+const EmptyTodo = () => {
+  return (
+    <Todo
+      readonly
+      data={{
+        id: uuid(),
+        name: 'Create first todo',
+        createdAt: Date.now(),
+      }}
+    />
   );
 };
 
