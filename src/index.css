@@ -6,7 +6,6 @@
   .gradient-text {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    @apply from-blue-400 via-cyan-500 to-sky-400;
-    @apply bg-gradient-to-r dark:from-orange-500 dark:via-amber-600 dark:to-amber-700;
+    @apply bg-gradient-to-r from-blue-400 via-cyan-500 to-sky-400;
   }
 }

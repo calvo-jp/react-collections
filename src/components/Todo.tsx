@@ -52,7 +52,7 @@ const Todo = ({
   }, []);
 
   return (
-    <div className="p-4 flex justify-between items-center shadow-md gap-4 bg-white rounded-md dark:bg-[#0d2b42]">
+    <div className="p-4 flex justify-between items-center shadow-md gap-4 bg-white rounded-md">
       <button
         disabled={readonly}
         onClick={() => {
@@ -64,7 +64,7 @@ const Todo = ({
         <CheckIcon
           className={clsx(
             'h-6 w-6 transition-colors duration-300',
-            readonly && 'text-gray-200 cursor-not-allowed dark:text-[#164366]',
+            readonly && 'text-gray-200 cursor-not-allowed',
             !readonly && data.complete && 'stroke-green-400',
             !readonly &&
               !data.complete &&
@@ -85,8 +85,8 @@ const Todo = ({
         </p>
 
         <div className="flex items-center gap-1">
-          <ClockIcon className="h-4 w-4 stroke-slate-400 dark:stroke-[#164366]" />
-          <p className="text-xs text-gray-400 dark:text-[#7396b4]">
+          <ClockIcon className="h-4 w-4 stroke-slate-400" />
+          <p className="text-xs text-gray-400">
             {dateFormatter.format(data.createdAt)}
           </p>
         </div>
@@ -96,8 +96,7 @@ const Todo = ({
         <XIcon
           className={clsx(
             'h-6 w-6',
-            readonly &&
-              'stroke-gray-200 cursor-not-allowed dark:stroke-[#164366]',
+            readonly && 'stroke-gray-200 cursor-not-allowed',
             !readonly &&
               'stroke-gray-300 hover:stroke-red-400 transition-colors duration-300'
           )}

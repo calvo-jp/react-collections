@@ -25,7 +25,7 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-slate-100 text-slate-700 dark:bg-[#082032] dark:text-[#c2e1f8]">
+    <div className="min-h-screen w-full bg-slate-100 text-slate-700 font-sans font-400">
       <Header />
 
       <main className="max-w-screen-md mx-auto p-4 sm:p-6 md:p-8">
@@ -34,7 +34,7 @@ const Landing = () => {
             className="flex gap-1 items-center group gradient-text"
             onClick={() => setOpen(true)}
           >
-            <PlusIcon className="h-4 w-4 stroke-blue-400 dark:stroke-orange-400" />
+            <PlusIcon className="h-4 w-4 stroke-blue-400" />
 
             <span className="">Create New</span>
           </button>
@@ -81,8 +81,22 @@ const CreateTodoForm = ({ open, onClose }: CreatePopupProps) => {
         <XIcon className="w-8 h-8 stroke-gray-300 opacity-30 group-hover:opacity-60 transition-opacity duration-300" />
       </button>
 
-      <div className="w-full h-full bg-white md:w-[600px] md:h-[400px] md:rounded-lg shadow-md">
-        <div></div>
+      <div className="w-full h-full bg-white md:w-[600px] md:h-[400px] md:rounded-lg shadow-md flex items-center">
+        <form className="w-[80%] mx-auto">
+          <h3 className="mb-2">Create todo</h3>
+
+          <input
+            className="border border-gray-300 rounded-md w-full p-2 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+            autoFocus
+          />
+
+          <button
+            type="submit"
+            className="p-2 mt-2 border border-sky-400 text-sm uppercase rounded-md"
+          >
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );
