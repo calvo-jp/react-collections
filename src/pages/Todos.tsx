@@ -12,7 +12,7 @@ import ITodo from '../types/todo';
 import dateFormatter from '../utils/dateFormatter';
 
 // TODO: add loader when pending
-const Landing = () => {
+const Todos = () => {
   const [open, setOpen] = useState(false);
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [pending, setPending] = useState(true);
@@ -210,4 +210,4 @@ const EmptyTodo = () => {
   );
 };
 
-export default Landing;
+export default Todos;

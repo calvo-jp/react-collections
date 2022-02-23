@@ -1,13 +1,19 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Landing from './pages/Landing';
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom';
+import Todos from './pages/Todos';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/todos" element={<Todos />} />
+        <Route path="*" element={<Navigate to="/todos" replace />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 };
 
