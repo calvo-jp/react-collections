@@ -1,21 +1,69 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["mongoDb"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id              Int       @id
+  id              String     @id @default(uuid()) @map("_id") @db.ObjectId
   name            String
-  email           String    @unique
-  emailVerifiedAt DateTime? @map("email_verified_at") @db.Timestamptz()
+  email           String     @unique
+  emailVerifiedAt DateTime?
   password        String
-  createdAt       DateTime  @map("created_at") @db.Timestamptz()
-  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz()
+  avatar          String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  recipes         Recipe[]
+  reviews         Review[]
+  bookmarks       Bookmark[]
 
   @@map("users")
+}
+
+model Recipe {
+  id           String        @id @default(uuid()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  author       User          @relation(fields: [authorId], references: [id])
+  authorId     String        @db.ObjectId
+  cover        String?
+  ingredients  String[]
+  instructions Instruction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reviews      Review[]
+  bookmarks    Bookmark[]
+
+  @@map("recipes")
+}
+
+type Instruction {
+  description String
+  video       String?
+}
+
+model Review {
+  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  rate      Int
+  body      String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String   @db.ObjectId
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bookmark {
+  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  String?  @db.ObjectId
+  recipeId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
