@@ -1,12 +1,15 @@
 import ArrowRightIcon from '@heroicons/react/outline/ArrowRightIcon';
+import ClockIcon from '@heroicons/react/outline/ClockIcon';
 import PlusIcon from '@heroicons/react/outline/PlusIcon';
 import XIcon from '@heroicons/react/outline/XIcon';
-import { Fragment, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import React, { Fragment, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import Header from '../components/Header';
 import Todo from '../components/Todo';
 import service from '../services';
 import ITodo from '../types/todo';
+import dateFormatter from '../utils/dateFormatter';
 
 // TODO: add loader when pending
 const Landing = () => {
@@ -55,25 +58,34 @@ const Landing = () => {
         </section>
       </main>
 
-      <CreateTodoForm
-        open={open}
-        onClose={() => setOpen((value) => !value)}
-        onCreate={(todo) => {
-          setTodos((array) => [todo, ...array]);
-        }}
-      />
+      {!!open && (
+        <CreateTodoForm
+          onClose={() => setOpen((value) => !value)}
+          onCreate={(todo) => {
+            setTodos((array) => [todo, ...array]);
+            setOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };
 
 interface CreatePopupProps {
-  open?: boolean;
   onCreate: (todo: ITodo) => void;
   onClose?: () => void;
 }
 
-const CreateTodoForm = ({ open, onClose }: CreatePopupProps) => {
-  if (!open) return <Fragment />;
+const CreateTodoForm = ({ onClose, onCreate }: CreatePopupProps) => {
+  const [error, setError] = useState(false);
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    return () => {
+      setName('');
+      setError(false);
+    };
+  }, []);
 
   return (
     <div className="fixed w-full h-full left-0 top-0 bg-black bg-opacity-75 flex items-center justify-center">
@@ -82,22 +94,68 @@ const CreateTodoForm = ({ open, onClose }: CreatePopupProps) => {
       </button>
 
       <div className="w-full h-full bg-white md:w-[600px] md:h-[400px] md:rounded-lg shadow-md flex items-center">
-        <form className="w-[80%] mx-auto">
-          <h3 className="mb-2">Create todo</h3>
+        <div className="w-[80%] mx-auto">
+          <Timestamp />
 
-          <input
-            className="border border-gray-300 rounded-md w-full p-2 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
-            autoFocus
-          />
+          <form
+            className="flex gap-1 items-center mt-1"
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault();
 
-          <button
-            type="submit"
-            className="p-2 mt-2 border border-sky-400 text-sm uppercase rounded-md"
+              if (name.length < 3) return setError(true);
+
+              service.todo
+                .create(name)
+                .then(onCreate)
+                .catch((exception) => {
+                  if (import.meta.env.DEV) console.error(exception);
+                });
+            }}
           >
-            Submit
-          </button>
-        </form>
+            <input
+              className={clsx(
+                'border rounded-md w-full p-1.5 outline-none transition-all duration-300 placeholder:text-gray-500',
+                error && 'border-red-400 focus:ring-2 focus:ring-red-100',
+                !error &&
+                  'border-gray-300 hover:border-gray-400 focus:border-sky-400 focus:ring-2 focus:ring-sky-100 '
+              )}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              autoFocus
+              placeholder="eg. Buy milk"
+            />
+
+            <button
+              type="submit"
+              className="p-2 rounded-full outline-none group"
+            >
+              <ArrowRightIcon className="w-4 h-4 stroke-gray-400 group-hover:stroke-gray-500 group-focus:stroke-sky-500 transition-all duration-300" />
+            </button>
+          </form>
+        </div>
       </div>
+    </div>
+  );
+};
+
+const Timestamp = () => {
+  const [date, setDate] = useState(Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setDate(Date.now());
+    }, 1000);
+
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="text-gray-500 text-sm flex items-center gap-1">
+      <ClockIcon className="w-4 h-4" />
+
+      <span>{dateFormatter.format(date)}</span>
     </div>
   );
 };
