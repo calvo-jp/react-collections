@@ -135,6 +135,4 @@ const Container = styled.div`
   }
 `;
 
-function noop() {}
-
 export default Item;
