@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import React from 'react';
+import styled, { css } from 'styled-components';
 import CloseIcon from '../components/icons/Close';
 import DollarIcon from '../components/icons/Dollar';
 import Item from '../components/Item';
@@ -57,6 +58,10 @@ const CreateItemPopup = ({
   onCancel,
   onCreate = noop,
 }: CreateItemPopupProps) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <Modal>
       <ModalContent>
@@ -64,13 +69,110 @@ const CreateItemPopup = ({
           <CloseIcon />
         </CloseButton>
 
-        <form></form>
+        <Form onSubmit={handleSubmit} noValidate>
+          <TextField
+            placeholder="Amount"
+            type="number"
+            min={0}
+            required
+            autoFocus
+            name="amount"
+          />
+
+          <TextField
+            type="text"
+            placeholder="Description"
+            name="description"
+            required
+          />
+
+          <Select required name="type">
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </Select>
+
+          <Button type="submit">Submit</Button>
+        </Form>
       </ModalContent>
     </Modal>
   );
 };
 
-const TextField = styled.input``;
+const Button = styled.button`
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to right, #f59e0b, #fb923c);
+  border: none;
+  border-radius: 0.25rem;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+
+  &:focus {
+    box-shadow: 0 0 0 3px #fdbb7442;
+  }
+`;
+
+const Form = styled.form`
+  padding: 1rem;
+  width: 400px;
+  max-width: 80%;
+  margin: 0 auto;
+
+  *:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+`;
+
+const formControlBaseStyle = css`
+  border: 1px solid #e2e8f0;
+  background-color: transparent;
+  padding: 0.75rem;
+  display: block;
+  width: 100%;
+  outline: none;
+  border-radius: 0.25rem;
+  color: #475569;
+  transition: border 300ms ease-in-out, box-shadow 300ms ease-in-out;
+
+  &:hover {
+    border: 1px solid #cbd5e1;
+  }
+
+  &:focus {
+    border: 1px solid #fb923c;
+    box-shadow: 0 0 0 2px #ffedd5c5;
+  }
+`;
+
+const TextField = styled.input`
+  ${formControlBaseStyle}
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  &::placeholder {
+    opacity: 1;
+  }
+`;
+
+const Select = styled.select`
+  ${formControlBaseStyle}
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+`;
 
 const CloseButton = styled.button`
   background-color: transparent;
@@ -102,6 +204,9 @@ const ModalContent = styled.div`
   border-radius: 0.15rem;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   @media screen and (min-width: 900px) {
     width: 80%;
