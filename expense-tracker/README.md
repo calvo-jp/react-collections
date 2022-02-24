@@ -2,7 +2,7 @@
 
 A basic expense tracker made using React, TypeScript and styled-components
 
-![screenshot](/docs/screenshot.png)
+![screenshot](./docs/screenshot.png)
 
 **Requirements**
 
