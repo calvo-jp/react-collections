@@ -1,8 +1,9 @@
-## React 101
+## React 101 🧑‍🎓
 
-Basic apps created using React
+React apps for beginners
 
-**Available Apps**
+**🧩 Apps**
+
 - [x] [Todo App](https://github.com/calvo-jp/react-101/tree/main/todo#todo-app)
 - [x] [Expense Tracker](https://github.com/calvo-jp/react-101/tree/main/expense-tracker#money-tor)
 - [ ] Weather App
