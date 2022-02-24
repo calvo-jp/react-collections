@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import CloseIcon from '../components/icons/Close';
 import DollarIcon from '../components/icons/Dollar';
@@ -7,6 +7,8 @@ import IItem from '../types/item';
 import noop from '../utils/noop';
 
 const Landing = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <Container>
       <Header>
@@ -40,11 +42,16 @@ const Landing = () => {
         </Items>
       </Main>
 
-      <CreateButton>
+      <CreateButton onClick={() => setOpen(true)}>
         <DollarIcon />
       </CreateButton>
 
-      <CreateItemPopup />
+      {open && (
+        <CreateItemPopup
+          onCancel={() => setOpen(false)}
+          onCreate={() => setOpen(false)}
+        />
+      )}
     </Container>
   );
 };
