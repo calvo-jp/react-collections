@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import CloseIcon from '../components/icons/Close';
 import DollarIcon from '../components/icons/Dollar';
 import Item from '../components/Item';
+import services from '../services';
 import IItem from '../types/item';
 import noop from '../utils/noop';
 
 const Landing = () => {
-  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<IItem[]>([]);
+  const [poppedUp, setPoppedUp] = useState(false);
+
+  useEffect(() => {
+    services.item.read
+      .all()
+      .then(setItems)
+      .catch((e) => {
+        if (import.meta.env.DEV) console.error(e);
+      });
+
+    return () => {
+      setItems([]);
+      setPoppedUp(false);
+    };
+  }, []);
 
   return (
     <Container>
@@ -20,36 +36,50 @@ const Landing = () => {
 
       <Main>
         <Items>
-          <Item
-            data={{
-              id: 'example-id-1',
-              amount: 5000,
-              description: 'payment for shoppee',
-              createdAt: Date.now(),
-              type: 'expense',
-            }}
-          />
-
-          <Item
-            data={{
-              id: 'example-id-2',
-              amount: 15000,
-              description: 'salary',
-              createdAt: Date.now(),
-              type: 'income',
-            }}
-          />
+          {items.map((item) => (
+            <Item
+              key={item.id}
+              data={item}
+              onDelete={() => {
+                services.item
+                  .delete(item.id)
+                  .then(() => {
+                    setItems((array) => array.filter((i) => i.id !== item.id));
+                  })
+                  .catch((exception) => {
+                    if (import.meta.env.DEV) console.error(exception);
+                  });
+              }}
+              onUpdate={(data) => {
+                services.item
+                  .update(item.id, data)
+                  .then((o) => {
+                    if (o) {
+                      setItems((array) =>
+                        array.map((i) => (i.id === o.id ? o : i))
+                      );
+                    }
+                  })
+                  .catch((exception) => {
+                    if (import.meta.env.DEV) console.error(exception);
+                  });
+              }}
+            />
+          ))}
         </Items>
       </Main>
 
-      <CreateButton onClick={() => setOpen(true)}>
+      <CreateButton onClick={() => setPoppedUp(true)}>
         <DollarIcon />
       </CreateButton>
 
-      {open && (
+      {poppedUp && (
         <CreateItemPopup
-          onCancel={() => setOpen(false)}
-          onCreate={() => setOpen(false)}
+          onCancel={() => setPoppedUp(false)}
+          onCreate={(item) => {
+            setItems((array) => [item, ...array]);
+            setPoppedUp(false);
+          }}
         />
       )}
     </Container>
@@ -61,13 +91,37 @@ interface CreateItemPopupProps {
   onCreate?: (data: IItem) => void;
 }
 
+// TODO: setup validation
 const CreateItemPopup = ({
   onCancel,
   onCreate = noop,
 }: CreateItemPopupProps) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [type, setType] = useState<IItem['type']>('expense');
+  const [amount, setAmount] = useState<number | ''>('');
+  const [description, setDescription] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // TODO: implement something to show error here, too
+    if (!type || !amount || !description) return;
+
+    const item = await services.item.create({
+      type,
+      amount,
+      description,
+    });
+
+    onCreate(item);
   };
+
+  useEffect(() => {
+    return () => {
+      setType('expense');
+      setAmount('');
+      setDescription('');
+    };
+  }, []);
 
   return (
     <Modal>
@@ -87,17 +141,27 @@ const CreateItemPopup = ({
             min={0}
             required
             autoFocus
-            name="amount"
+            value={amount}
+            onChange={(e) => {
+              const value = e.target.valueAsNumber;
+              if (!Number.isNaN(value)) setAmount('');
+              setAmount(value);
+            }}
           />
 
           <TextField
             type="text"
             placeholder="Description"
-            name="description"
             required
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
 
-          <Select required name="type">
+          <Select
+            required
+            value={type}
+            onChange={(e) => setType(e.target.value as IItem['type'])}
+          >
             <option value="expense">Expense</option>
             <option value="income">Income</option>
           </Select>
@@ -129,12 +193,13 @@ const Button = styled.button`
   border-radius: 0.25rem;
   color: #fff;
   cursor: pointer;
-  outline: none;
   text-transform: uppercase;
   font-family: 'Montserrat', sans-serif;
   filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1))
     drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
+
   &:focus {
+    outline: none;
     box-shadow: 0 0 0 3px #fdbb7442;
   }
 `;
@@ -156,7 +221,6 @@ const formControlBaseStyle = css`
   padding: 0.75rem;
   display: block;
   width: 100%;
-  outline: none;
   border-radius: 0.25rem;
   color: #475569;
   transition: border 300ms ease-in-out, box-shadow 300ms ease-in-out;
@@ -168,6 +232,7 @@ const formControlBaseStyle = css`
   &:focus {
     border: 1px solid #fb923c;
     box-shadow: 0 0 0 2px #ffedd5c5;
+    outline: none;
   }
 `;
 
