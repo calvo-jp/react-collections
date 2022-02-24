@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import IItem from '../types/item';
 import formatter from '../utils/formatter';
+import noop from '../utils/noop';
 import CloseIcon from './icons/Close';
 import DollarArrowDownIcon from './icons/DollarArrowDown';
 import DollarArrowUpIcon from './icons/DollarArrowUp';
