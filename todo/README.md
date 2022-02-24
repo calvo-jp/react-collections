@@ -2,7 +2,7 @@
 
 A basic Todo app using React, TypeScript & Tailwind
 
-![screenshot](/docs/screenshot-1.png)
+![screenshot](./docs/screenshot-1.png)
 
 **Requirements**
 
