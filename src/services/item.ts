@@ -2,10 +2,14 @@ import { v4 as uuid } from 'uuid';
 import IItem from '../types/item';
 
 const read = {
-  async all(): Promise<IItem[]> {
+  async all() {
     const response = await fetch('http://localhost:3001/items');
-    return await response.json();
+    const items: IItem[] = await response.json();
+
+    // Recent first
+    return items.reverse();
   },
+
   async one(id: string): Promise<IItem | null> {
     const response = await fetch('http://localhost:3001/items/' + id);
     if (!response.ok) return null;
