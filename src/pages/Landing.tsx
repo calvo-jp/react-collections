@@ -23,6 +23,7 @@ const Landing = () => {
               amount: 5000,
               description: 'payment for shoppee',
               createdAt: Date.now(),
+              type: 'expense',
             }}
           />
 
@@ -32,7 +33,7 @@ const Landing = () => {
               amount: 15000,
               description: 'salary',
               createdAt: Date.now(),
-              isIncome: true,
+              type: 'income',
             }}
           />
         </Items>

@@ -1,9 +1,11 @@
+type ItemType = 'income' | 'expense';
+
 interface IItem {
   id: string;
   amount: number;
   description: string;
   createdAt: number;
-  isIncome?: boolean;
+  type: ItemType;
 }
 
 export default IItem;

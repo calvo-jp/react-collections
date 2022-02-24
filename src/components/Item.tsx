@@ -13,13 +13,15 @@ interface ExpenseProps {
 }
 
 const Item = ({ data, onUpdate = noop, onDelete = noop }: ExpenseProps) => {
+  const isIncome = data.type === 'income';
+
   return (
     <Container>
       <MainContent>
         <Amount>
-          <IconWrapper success={data.isIncome}>
-            {data.isIncome && <DollarArrowDownIcon />}
-            {!data.isIncome && <DollarArrowUpIcon />}
+          <IconWrapper success={isIncome}>
+            {isIncome && <DollarArrowDownIcon />}
+            {!isIncome && <DollarArrowUpIcon />}
           </IconWrapper>
 
           <h4 contentEditable suppressContentEditableWarning spellCheck={false}>
