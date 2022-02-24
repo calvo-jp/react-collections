@@ -2,17 +2,19 @@ import styled from 'styled-components';
 import IItem from '../types/item';
 import formatter from '../utils/formatter';
 import noop from '../utils/noop';
-import CloseIcon from './icons/Close';
 import DollarArrowDownIcon from './icons/DollarArrowDown';
 import DollarArrowUpIcon from './icons/DollarArrowUp';
 import TrashIcon from './icons/Trash';
 
+type UpdateInput = Partial<Pick<IItem, 'amount' | 'description' | 'type'>>;
+
 interface ExpenseProps {
   data: IItem;
   onDelete?: () => void;
-  onUpdate?: () => void;
+  onUpdate?: (data: UpdateInput) => void;
 }
 
+// TODO: add validation
 const Item = ({ data, onUpdate = noop, onDelete = noop }: ExpenseProps) => {
   const isIncome = data.type === 'income';
 
@@ -25,13 +27,38 @@ const Item = ({ data, onUpdate = noop, onDelete = noop }: ExpenseProps) => {
             {!isIncome && <DollarArrowUpIcon />}
           </IconWrapper>
 
-          <h4 contentEditable suppressContentEditableWarning spellCheck={false}>
+          <h4
+            contentEditable
+            suppressContentEditableWarning
+            spellCheck={false}
+            onBlur={(e) => {
+              const value = e.target.textContent;
+
+              if (value) {
+                const amount = parseInt(value);
+
+                if (!Number.isNaN(amount) && data.amount !== amount) {
+                  onUpdate({ amount });
+                }
+              }
+            }}
+          >
             {formatter.currency.format(data.amount)}
           </h4>
         </Amount>
 
         <Summary spellCheck={false}>
-          <p contentEditable suppressContentEditableWarning>
+          <p
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const description = e.target.textContent;
+
+              if (description && data.description !== description) {
+                onUpdate({ description });
+              }
+            }}
+          >
             {data.description}
           </p>
 
