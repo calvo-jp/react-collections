@@ -76,6 +76,10 @@ const CreateItemPopup = ({
           <CloseIcon />
         </CloseButton>
 
+        <ModalLogo>
+          <DollarIcon />
+        </ModalLogo>
+
         <Form onSubmit={handleSubmit} noValidate>
           <TextField
             placeholder="Amount"
@@ -105,6 +109,17 @@ const CreateItemPopup = ({
   );
 };
 
+const ModalLogo = styled.div`
+  width: fit-content;
+  margin: 0 auto 2rem;
+
+  svg {
+    width: 64px;
+    height: 64px;
+    fill: #e2e8f0;
+  }
+`;
+
 const Button = styled.button`
   display: block;
   width: 100%;
@@ -117,17 +132,18 @@ const Button = styled.button`
   outline: none;
   text-transform: uppercase;
   font-family: 'Montserrat', sans-serif;
-
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1))
+    drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
   &:focus {
     box-shadow: 0 0 0 3px #fdbb7442;
   }
 `;
 
 const Form = styled.form`
-  padding: 1rem;
   width: 400px;
-  max-width: 80%;
+  max-width: 100%;
   margin: 0 auto;
+  padding: 1rem;
 
   *:not(:last-child) {
     margin-bottom: 1rem;
@@ -216,8 +232,8 @@ const ModalContent = styled.div`
   justify-content: center;
 
   @media screen and (min-width: 900px) {
-    width: 80%;
-    height: 80%;
+    width: 450px;
+    height: 95%;
   }
 `;
 
