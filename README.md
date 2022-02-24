@@ -1,6 +1,6 @@
 ## React 101 🧑‍🎓
 
-React apps for beginners
+Simple projects using React
 
 **🧩 Apps**
 
