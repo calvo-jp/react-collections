@@ -21,11 +21,16 @@ const Item = ({ data, onUpdate = noop, onDelete = noop }: ExpenseProps) => {
             {!data.isIncome && <DollarArrowUpIcon />}
           </IconWrapper>
 
-          <h4>{formatter.currency.format(data.amount)}</h4>
+          <h4 contentEditable suppressContentEditableWarning spellCheck={false}>
+            {formatter.currency.format(data.amount)}
+          </h4>
         </Amount>
 
-        <Summary>
-          <p>{data.description}</p>
+        <Summary spellCheck={false}>
+          <p contentEditable suppressContentEditableWarning>
+            {data.description}
+          </p>
+
           <small>{formatter.dateTime.format(data.createdAt)}</small>
         </Summary>
       </MainContent>
@@ -73,6 +78,10 @@ const IconWrapper = styled.div<IconWrapperProps>`
 
 const Summary = styled.div`
   flex-grow: 1;
+
+  p {
+    outline: none;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -113,6 +122,7 @@ const Container = styled.div`
   h4 {
     font-size: 2.4rem;
     font-weight: 300;
+    outline: none;
   }
 
   p {
