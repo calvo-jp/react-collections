@@ -1,9 +1,9 @@
-import StoreProvider from 'hooks/store/provider';
-import Loader from 'layouts/Loader';
-import type { AppProps } from 'next/app';
-import Head from 'next/head';
-import * as React from 'react';
-import 'styles/index.css';
+import StoreProvider from "hooks/store/provider";
+import Loader from "layouts/Loader";
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import * as React from "react";
+import "styles/index.css";
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
@@ -17,17 +17,17 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
         <meta
           name="keywords"
           content={[
-            'recipe',
-            'how to',
-            'share',
-            'cook',
-            'food',
-            'find',
-            'free',
-            'chef',
-            'tasty',
-            'amazing',
-            'delicious',
+            "recipe",
+            "how to",
+            "share",
+            "cook",
+            "food",
+            "find",
+            "free",
+            "chef",
+            "tasty",
+            "amazing",
+            "delicious",
           ].join()}
         />
       </Head>

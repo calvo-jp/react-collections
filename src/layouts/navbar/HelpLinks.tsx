@@ -1,16 +1,16 @@
-import Link from 'next/link';
-import * as React from 'react';
+import Link from "next/link";
+import * as React from "react";
 
 const HelpLinks = () => {
   const links: [path: string, label: string][] = [
-    ['/about', 'About'],
-    ['/terms', 'Cookies and Terms'],
-    ['/contact', 'Contact us'],
-    ['/help', 'Help'],
+    ["/about", "About"],
+    ["/terms", "Cookies and Terms"],
+    ["/contact", "Contact us"],
+    ["/help", "Help"],
   ];
 
   return (
-    <ul className="flex flex-wrap gap-x-2 gap-y-1 items-center text-sm">
+    <ul className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
       {links.map(([path, label], idx, arr) => {
         const divider = idx + 1 < arr.length;
 
@@ -26,7 +26,7 @@ const HelpLinks = () => {
 
             {divider && (
               <li>
-                <span className="block w-1 h-1 bg-gray-300 rounded-full" />
+                <span className="block h-1 w-1 rounded-full bg-gray-300" />
               </li>
             )}
           </React.Fragment>

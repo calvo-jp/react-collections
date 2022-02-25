@@ -1,7 +1,7 @@
-import avatar from 'assets/samples/images/avatar.jpg';
-import Avatar from 'layouts/Avatar';
-import HeaderTwo from 'layouts/HeaderTwo';
-import Head from 'next/head';
+import avatar from "assets/samples/images/avatar.jpg";
+import Avatar from "layouts/Avatar";
+import HeaderTwo from "layouts/HeaderTwo";
+import Head from "next/head";
 
 const User = () => {
   return (
@@ -12,7 +12,7 @@ const User = () => {
 
       <HeaderTwo />
 
-      <main className="p-16 max-w-3xl mx-auto">
+      <main className="mx-auto max-w-3xl p-16">
         <div>
           <Avatar src={avatar} />
         </div>

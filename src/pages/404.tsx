@@ -1,6 +1,6 @@
-import HeaderTwo from 'layouts/HeaderTwo';
-import Head from 'next/head';
-import * as React from 'react';
+import HeaderTwo from "layouts/HeaderTwo";
+import Head from "next/head";
+import * as React from "react";
 
 const NotFound = () => {
   return (
@@ -9,10 +9,10 @@ const NotFound = () => {
         <title>Error 404 - Page Not Found</title>
       </Head>
 
-      <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-screen flex-col">
         <HeaderTwo />
 
-        <main className="flex-grow flex justify-center items-center">
+        <main className="flex flex-grow items-center justify-center">
           <div>
             <h1 className="text-9xl font-extrabold text-gray-200 dark:text-zinc-600">
               404

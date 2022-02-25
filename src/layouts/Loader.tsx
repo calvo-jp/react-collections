@@ -1,6 +1,6 @@
-import clsx from 'clsx';
-import { useRouter } from 'next/router';
-import * as React from 'react';
+import clsx from "clsx";
+import { useRouter } from "next/router";
+import * as React from "react";
 
 enum Status {
   waiting,
@@ -20,18 +20,18 @@ const Loader = () => {
   };
 
   React.useEffect(() => {
-    router.events.on('routeChangeStart', handleStart);
-    router.events.on('routeChangeComplete', handleComplete);
-    router.events.on('routeChangeError', handleComplete);
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
   }, [router.events]);
 
   return (
     <div
       className={clsx(
-        'fixed h-[3px] top-0 left-0 z-[999] bg-gradient-to-r from-cyan-500 to-blue-300 transition-all duration-300 dark:from-sky-600 dark:to-blue-400',
-        status === Status.waiting && 'hidden',
-        status === Status.started && 'w-1/2',
-        status === Status.complte && 'w-full'
+        "fixed top-0 left-0 z-[999] h-[3px] bg-gradient-to-r from-cyan-500 to-blue-300 transition-all duration-300 dark:from-sky-600 dark:to-blue-400",
+        status === Status.waiting && "hidden",
+        status === Status.started && "w-1/2",
+        status === Status.complte && "w-full"
       )}
     />
   );

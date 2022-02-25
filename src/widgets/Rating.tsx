@@ -1,8 +1,8 @@
-import StarIcon from '@heroicons/react/solid/StarIcon';
-import clsx from 'clsx';
-import * as React from 'react';
+import StarIcon from "@heroicons/react/solid/StarIcon";
+import clsx from "clsx";
+import * as React from "react";
 
-type Size = 'sm' | 'md' | 'lg' | 'xl' | 'lg';
+type Size = "sm" | "md" | "lg" | "xl" | "lg";
 
 interface RatingProps {
   size?: Size;
@@ -13,7 +13,7 @@ interface RatingProps {
 }
 
 const Rating: React.FC<RatingProps> = ({
-  size = 'md',
+  size = "md",
   value,
   readonly,
   onChange,
@@ -29,19 +29,19 @@ const Rating: React.FC<RatingProps> = ({
   const numbers = new Array(5).fill(1).map((one, index) => index + one);
 
   return (
-    <div className="flex w-fit -mx-0.5">
+    <div className="-mx-0.5 flex w-fit">
       {numbers.map((number) => (
         <StarIcon
           key={number}
           onClick={handleChange(number)}
           className={clsx(
-            'transition-colors duration-300',
-            size === 'sm' && 'w-4 h-4',
-            size === 'md' && 'w-5 h-5',
-            size === 'lg' && 'w-7 h-7',
-            size === 'xl' && 'w-9 h-9',
-            number > currentValue ? 'fill-gray-300' : 'fill-amber-500',
-            !readonly && 'cursor-pointer hover:fill-amber-400'
+            "transition-colors duration-300",
+            size === "sm" && "h-4 w-4",
+            size === "md" && "h-5 w-5",
+            size === "lg" && "h-7 w-7",
+            size === "xl" && "h-9 w-9",
+            number > currentValue ? "fill-gray-300" : "fill-amber-500",
+            !readonly && "cursor-pointer hover:fill-amber-400"
           )}
         />
       ))}

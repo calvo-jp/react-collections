@@ -1,5 +1,5 @@
-import PlusIcon from '@heroicons/react/outline/PlusSmIcon';
-import * as React from 'react';
+import PlusIcon from "@heroicons/react/outline/PlusSmIcon";
+import * as React from "react";
 
 interface TagsProps {
   items: string[];
@@ -8,7 +8,7 @@ interface TagsProps {
 
 const Tags = (props: TagsProps) => {
   return (
-    <ul className="flex flex-wrap gap-1 items-center text-sm">
+    <ul className="flex flex-wrap items-center gap-1 text-sm">
       {props.items.map((tag) => (
         <li key={tag}>
           <Tag value={tag} />
@@ -16,8 +16,8 @@ const Tags = (props: TagsProps) => {
       ))}
 
       <li>
-        <button className="p-2 flex items-center gap-1 text-blue-600 hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-400">
-          <PlusIcon className="w-4 h-4" />
+        <button className="flex items-center gap-1 p-2 text-blue-600 hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-400">
+          <PlusIcon className="h-4 w-4" />
           <span>Add Tag</span>
         </button>
       </li>
@@ -33,7 +33,7 @@ interface TagProps {
 const Tag = ({ value }: TagProps) => {
   return (
     <div
-      className="p-2 bg-blue-100 relative focus:outline-dotted focus:outline-1 dark:bg-zinc-800 dark:text-zinc-100"
+      className="relative bg-blue-100 p-2 focus:outline-dotted focus:outline-1 dark:bg-zinc-800 dark:text-zinc-100"
       contentEditable
       suppressContentEditableWarning
       spellCheck={false}

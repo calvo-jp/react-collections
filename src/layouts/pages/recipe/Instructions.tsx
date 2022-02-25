@@ -1,9 +1,9 @@
-import PlusIcon from '@heroicons/react/outline/PlusIcon';
-import * as React from 'react';
-import IInstruction from 'types/instruction';
-import Button from 'widgets/Button';
-import Instruction from './Instruction';
-import VideoPlayer from './VideoPlayer';
+import PlusIcon from "@heroicons/react/outline/PlusIcon";
+import * as React from "react";
+import IInstruction from "types/instruction";
+import Button from "widgets/Button";
+import Instruction from "./Instruction";
+import VideoPlayer from "./VideoPlayer";
 
 interface InstructionsProps {
   items: IInstruction[];
@@ -36,7 +36,7 @@ const Instructions = ({ items }: InstructionsProps) => {
                 variant="outlined"
                 color="primary"
                 label="Add Instruction"
-                icon={<PlusIcon className="w-4 h-4" />}
+                icon={<PlusIcon className="h-4 w-4" />}
                 size="sm"
                 fullWidth
               />

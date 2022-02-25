@@ -1,9 +1,9 @@
-import { Form, Formik } from 'formik';
-import Head from 'next/head';
-import * as React from 'react';
-import Button from 'widgets/Button';
-import TextField from 'widgets/TextField';
-import * as yup from 'yup';
+import { Form, Formik } from "formik";
+import Head from "next/head";
+import * as React from "react";
+import Button from "widgets/Button";
+import TextField from "widgets/TextField";
+import * as yup from "yup";
 
 const CreateAccount = () => {
   return (
@@ -14,22 +14,22 @@ const CreateAccount = () => {
 
       <div>
         <Formik
-          initialValues={{ displayName: '', email: '', password: '' }}
+          initialValues={{ displayName: "", email: "", password: "" }}
           validationSchema={yup.object().shape({
             displayName: yup
               .string()
-              .min(4, 'name must be 4 or more characters')
-              .max(25, 'name must not be more than 25 characters')
-              .required('name is required'),
+              .min(4, "name must be 4 or more characters")
+              .max(25, "name must not be more than 25 characters")
+              .required("name is required"),
             email: yup
               .string()
-              .email('invalid email format')
-              .required('email is required'),
+              .email("invalid email format")
+              .required("email is required"),
             password: yup
               .string()
-              .min(5, 'password must be 5 or more characters')
-              .max(100, 'password must not be more than 100 characters')
-              .required('password is required'),
+              .min(5, "password must be 5 or more characters")
+              .max(100, "password must not be more than 100 characters")
+              .required("password is required"),
           })}
           onSubmit={() => {}}
         >

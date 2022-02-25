@@ -1,15 +1,15 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import IRecipe from 'types/recipe';
-import Rating from 'widgets/Rating';
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import IRecipe from "types/recipe";
+import Rating from "widgets/Rating";
 
 interface RecipeCardProps {
   data: IRecipe;
   width?: number;
   height?: number;
   ratings?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
 const RecipeCard = (props: RecipeCardProps) => {
@@ -28,7 +28,7 @@ const RecipeCard = (props: RecipeCardProps) => {
       href={`/recipes/${id}?redirect=${encodeURIComponent(router.pathname)}`}
       passHref
     >
-      <a className="block bg-white shadow-md md:hover:ring-4 md:hover:ring-blue-200 dark:bg-zinc-800 dark:md:hover:ring-0">
+      <a className="block bg-white shadow-md dark:bg-zinc-800 md:hover:ring-4 md:hover:ring-blue-200 dark:md:hover:ring-0">
         <figure
           className="relative"
           style={{

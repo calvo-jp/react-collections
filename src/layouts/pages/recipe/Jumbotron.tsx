@@ -1,5 +1,5 @@
-import CameraIcon from '@heroicons/react/outline/CameraIcon';
-import Image from 'next/image';
+import CameraIcon from "@heroicons/react/outline/CameraIcon";
+import Image from "next/image";
 
 interface JumbotronProps {
   src: string;
@@ -7,7 +7,7 @@ interface JumbotronProps {
 
 const Jumbotron = (props: JumbotronProps) => {
   return (
-    <figure className="relative h-[250px] sm-[300px] md:h-[350px] lg:h-[400px] shadow-md dark:bg-zinc-800">
+    <figure className="sm-[300px] relative h-[250px] shadow-md dark:bg-zinc-800 md:h-[350px] lg:h-[400px]">
       <Image
         src={props.src}
         alt=""
@@ -16,8 +16,8 @@ const Jumbotron = (props: JumbotronProps) => {
         objectPosition="center"
       />
 
-      <button className="bg-white p-2 absolute bottom-6 right-6 rounded-full shadow-md dark:bg-zinc-900 opacity-90 hover:opacity-100">
-        <CameraIcon className="w-6 h-6 stroke-gray-500 dark:stroke-zinc-400" />
+      <button className="absolute bottom-6 right-6 rounded-full bg-white p-2 opacity-90 shadow-md hover:opacity-100 dark:bg-zinc-900">
+        <CameraIcon className="h-6 w-6 stroke-gray-500 dark:stroke-zinc-400" />
       </button>
     </figure>
   );

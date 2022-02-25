@@ -1,23 +1,23 @@
-import BookOpenIcon from '@heroicons/react/outline/BookOpenIcon';
-import ChartPieIcon from '@heroicons/react/outline/ChartPieIcon';
-import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
-import CogIcon from '@heroicons/react/outline/CogIcon';
-import PencilAltIcon from '@heroicons/react/outline/PencilAltIcon';
-import reviews from 'assets/samples/json/reviews.json';
-import clsx from 'clsx';
-import HeaderTwo from 'layouts/HeaderTwo';
-import Head from 'next/head';
-import * as React from 'react';
-import type IRecipe from 'types/recipe';
-import capitalize from 'utils/capitalize';
-import Article from './Article';
-import Ingredients from './Ingredients';
-import Instructions from './Instructions';
-import Jumbotron from './Jumbotron';
-import Reviews from './Reviews';
-import Settings from './Settings';
-import Summary from './Summary';
-import Tags from './Tags';
+import BookOpenIcon from "@heroicons/react/outline/BookOpenIcon";
+import ChartPieIcon from "@heroicons/react/outline/ChartPieIcon";
+import ClipboardListIcon from "@heroicons/react/outline/ClipboardListIcon";
+import CogIcon from "@heroicons/react/outline/CogIcon";
+import PencilAltIcon from "@heroicons/react/outline/PencilAltIcon";
+import reviews from "assets/samples/json/reviews.json";
+import clsx from "clsx";
+import HeaderTwo from "layouts/HeaderTwo";
+import Head from "next/head";
+import * as React from "react";
+import type IRecipe from "types/recipe";
+import capitalize from "utils/capitalize";
+import Article from "./Article";
+import Ingredients from "./Ingredients";
+import Instructions from "./Instructions";
+import Jumbotron from "./Jumbotron";
+import Reviews from "./Reviews";
+import Settings from "./Settings";
+import Summary from "./Summary";
+import Tags from "./Tags";
 
 // prettier-ignore
 const TABS = [
@@ -54,7 +54,7 @@ const Recipe = (props: RecipeProps) => {
       <div>
         <HeaderTwo />
 
-        <div className="max-w-screen-md mx-auto md:px-4">
+        <div className="mx-auto max-w-screen-md md:px-4">
           <Jumbotron src={data.avatar!} />
 
           <main className="p-4 md:px-0">
@@ -87,7 +87,7 @@ interface TabsProps {
   onChange?: (value: TabValue) => void;
 }
 
-type SVGIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
+type SVGIcon = (props: React.ComponentProps<"svg">) => JSX.Element;
 
 const Tabs = (props: TabsProps) => {
   const { value, onChange } = props;
@@ -99,11 +99,11 @@ const Tabs = (props: TabsProps) => {
   };
 
   const items: [TabValue, SVGIcon][] = [
-    ['summary', ChartPieIcon],
-    ['ingredients', ClipboardListIcon],
-    ['instructions', BookOpenIcon],
-    ['reviews', PencilAltIcon],
-    ['settings', CogIcon],
+    ["summary", ChartPieIcon],
+    ["ingredients", ClipboardListIcon],
+    ["instructions", BookOpenIcon],
+    ["reviews", PencilAltIcon],
+    ["settings", CogIcon],
   ];
 
   return (
@@ -112,7 +112,7 @@ const Tabs = (props: TabsProps) => {
         {items.map(([tabValue, SVGIcon]) => (
           <li key={tabValue} title={tabValue}>
             <Tab
-              icon={<SVGIcon className="w-6 h-6 sm:w-4 md:h-4" />}
+              icon={<SVGIcon className="h-6 w-6 sm:w-4 md:h-4" />}
               value={capitalize(tabValue)}
               active={tabValue === value}
               onClick={handleClick(tabValue)}
@@ -130,7 +130,7 @@ interface TabProps {
   active?: boolean;
 }
 
-const Tab: React.FC<TabProps & React.ComponentProps<'button'>> = ({
+const Tab: React.FC<TabProps & React.ComponentProps<"button">> = ({
   icon,
   value,
   active,
@@ -141,8 +141,8 @@ const Tab: React.FC<TabProps & React.ComponentProps<'button'>> = ({
   return (
     <button
       className={clsx(
-        'flex items-center gap-1',
-        active && 'text-blue-600 dark:text-sky-500',
+        "flex items-center gap-1",
+        active && "text-blue-600 dark:text-sky-500",
         className
       )}
       {...props}
@@ -162,13 +162,13 @@ const TabContent = (props: TabContentProps) => {
   const { selectedTab, data } = props;
 
   switch (selectedTab) {
-    case 'summary':
+    case "summary":
       return <Summary />;
-    case 'settings':
+    case "settings":
       return <Settings />;
-    case 'reviews':
+    case "reviews":
       return <Reviews items={reviews} />;
-    case 'instructions':
+    case "instructions":
       return <Instructions items={data.instructions} />;
     default:
       return <Ingredients items={data.ingredients} />;

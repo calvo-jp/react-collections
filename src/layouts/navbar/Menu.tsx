@@ -1,12 +1,12 @@
-import BookmarkIcon from '@heroicons/react/outline/BookmarkIcon';
-import ChartPieIcon from '@heroicons/react/outline/ChartPieIcon';
-import ClipboardListIcon from '@heroicons/react/outline/ClipboardListIcon';
-import CogIcon from '@heroicons/react/outline/CogIcon';
-import LockClosedIcon from '@heroicons/react/outline/LockClosedIcon';
-import clsx from 'clsx';
-import useStoreState from 'hooks/store/useState';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import BookmarkIcon from "@heroicons/react/outline/BookmarkIcon";
+import ChartPieIcon from "@heroicons/react/outline/ChartPieIcon";
+import ClipboardListIcon from "@heroicons/react/outline/ClipboardListIcon";
+import CogIcon from "@heroicons/react/outline/CogIcon";
+import LockClosedIcon from "@heroicons/react/outline/LockClosedIcon";
+import clsx from "clsx";
+import useStoreState from "hooks/store/useState";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Menu = () => {
   const router = useRouter();
@@ -14,8 +14,8 @@ const Menu = () => {
 
   const handleClick = async () => {
     try {
-      dispatch({ type: 'session.logout' });
-      router.push('/');
+      dispatch({ type: "session.logout" });
+      router.push("/");
     } catch (error) {
       console.error(error);
     }
@@ -26,31 +26,31 @@ const Menu = () => {
       <ul>
         <li>
           <MenuLink href="/dashboard">
-            <ChartPieIcon className="w-5 h-5" />
+            <ChartPieIcon className="h-5 w-5" />
             Dashboard
           </MenuLink>
         </li>
         <li>
           <MenuLink href="/recipes">
-            <ClipboardListIcon className="w-5 h-5" />
+            <ClipboardListIcon className="h-5 w-5" />
             Recipes
           </MenuLink>
         </li>
         <li>
           <MenuLink href="/bookmarks">
-            <BookmarkIcon className="w-5 h-5" />
+            <BookmarkIcon className="h-5 w-5" />
             Bookmarks
           </MenuLink>
         </li>
         <li>
           <MenuLink href="/settings">
-            <CogIcon className="w-5 h-5" />
+            <CogIcon className="h-5 w-5" />
             Settings
           </MenuLink>
         </li>
         <li>
           <MenuButton onClick={handleClick}>
-            <LockClosedIcon className="w-5 h-5" />
+            <LockClosedIcon className="h-5 w-5" />
             Logout
           </MenuButton>
         </li>
@@ -59,7 +59,7 @@ const Menu = () => {
   );
 };
 
-const MenuButton: React.FC<React.ComponentProps<'button'>> = ({
+const MenuButton: React.FC<React.ComponentProps<"button">> = ({
   children,
   className,
   ...props
@@ -71,7 +71,7 @@ const MenuButton: React.FC<React.ComponentProps<'button'>> = ({
   );
 };
 
-interface MenuLinkProps extends React.ComponentProps<'a'> {
+interface MenuLinkProps extends React.ComponentProps<"a"> {
   href: string;
 }
 
@@ -91,7 +91,7 @@ const MenuLink: React.FC<MenuLinkProps> = ({
     if (onClick) onClick(e);
     if (globalState.navbarOpened) {
       dispatch({
-        type: 'navbar.toggle',
+        type: "navbar.toggle",
       });
     }
   };
@@ -111,10 +111,10 @@ const MenuLink: React.FC<MenuLinkProps> = ({
 
 const getLinkCls = (active?: boolean) => {
   return clsx(
-    'cursor-pointer flex items-center gap-2',
-    active && 'text-blue-500 dark:text-sky-400',
+    "cursor-pointer flex items-center gap-2",
+    active && "text-blue-500 dark:text-sky-400",
     !active &&
-      'text-gray-600 hover:text-gray-700 dark:text-zinc-300 dark:hover:text-zinc-100'
+      "text-gray-600 hover:text-gray-700 dark:text-zinc-300 dark:hover:text-zinc-100"
   );
 };
 

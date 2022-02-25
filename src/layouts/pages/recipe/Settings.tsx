@@ -1,6 +1,6 @@
-import ExclamationCircleIcon from '@heroicons/react/solid/ExclamationCircleIcon';
-import * as React from 'react';
-import Button from 'widgets/Button';
+import ExclamationCircleIcon from "@heroicons/react/solid/ExclamationCircleIcon";
+import * as React from "react";
+import Button from "widgets/Button";
 
 const Settings = () => {
   return (
@@ -19,14 +19,14 @@ const Settings = () => {
 
 interface ItemProps {
   label: any;
-  icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
+  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
 }
 
 const Item: React.FC<ItemProps> = ({ icon: SVGIcon, label, children }) => {
   return (
     <div>
       <div className="flex items-center gap-1">
-        <SVGIcon className="w-4 h-4" />
+        <SVGIcon className="h-4 w-4" />
         <div className="text-sm">{label}</div>
       </div>
       <div className="p-4">{children}</div>

@@ -1,10 +1,10 @@
-import { Form, Formik } from 'formik';
-import HeaderTwo from 'layouts/HeaderTwo';
-import Head from 'next/head';
-import * as React from 'react';
-import Button from 'widgets/Button';
-import TextField from 'widgets/TextField';
-import * as yup from 'yup';
+import { Form, Formik } from "formik";
+import HeaderTwo from "layouts/HeaderTwo";
+import Head from "next/head";
+import * as React from "react";
+import Button from "widgets/Button";
+import TextField from "widgets/TextField";
+import * as yup from "yup";
 
 const CreateRecipe = () => {
   return (
@@ -13,15 +13,15 @@ const CreateRecipe = () => {
         <title>New Recipe</title>
       </Head>
 
-      <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-screen flex-col">
         <HeaderTwo />
 
-        <main className="flex-grow flex flex-col justify-center">
+        <main className="flex flex-grow flex-col justify-center">
           <div>
             <Formik
               initialValues={{
-                name: '',
-                description: '',
+                name: "",
+                description: "",
               }}
               validationSchema={yup.object().shape({
                 name: yup.string().min(5).max(25).required(),
@@ -39,7 +39,7 @@ const CreateRecipe = () => {
                 errors,
                 touched,
               }) => (
-                <Form className="p-4 flex flex-col gap-3 max-w-[350px] mx-auto">
+                <Form className="mx-auto flex max-w-[350px] flex-col gap-3 p-4">
                   <TextField
                     fullWidth
                     label="Name"
@@ -66,7 +66,7 @@ const CreateRecipe = () => {
 
                   <Button
                     type="submit"
-                    label={isSubmitting ? 'loading...' : 'Submit'}
+                    label={isSubmitting ? "loading..." : "Submit"}
                     color="primary"
                     variant="contained"
                     disabled={isSubmitting}

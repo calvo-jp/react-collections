@@ -1,14 +1,14 @@
-import { Form, Formik } from 'formik';
-import useStoreState from 'hooks/store/useState';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import * as React from 'react';
-import Alert from 'widgets/Alert';
-import Button from 'widgets/Button';
-import LogoIcon from 'widgets/icons/logo';
-import TextField from 'widgets/TextField';
-import * as yup from 'yup';
+import { Form, Formik } from "formik";
+import useStoreState from "hooks/store/useState";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import * as React from "react";
+import Alert from "widgets/Alert";
+import Button from "widgets/Button";
+import LogoIcon from "widgets/icons/logo";
+import TextField from "widgets/TextField";
+import * as yup from "yup";
 
 const Login = () => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const Login = () => {
   // login error
   const [error, setError] = React.useState<string>();
 
-  if (globalState.authorized) router.push('/recipes');
+  if (globalState.authorized) router.push("/recipes");
 
   return (
     <React.Fragment>
@@ -25,11 +25,11 @@ const Login = () => {
         <title>Login</title>
       </Head>
 
-      <div className="min-h-screen flex flex-col justify-center md:bg-gradient-to-r md:bg-gray-100 dark:bg-zinc-900 dark:md:bg-zinc-800">
+      <div className="flex min-h-screen flex-col justify-center dark:bg-zinc-900 md:bg-gray-100 md:bg-gradient-to-r dark:md:bg-zinc-800">
         <main>
-          <div className="max-w-[350px] mx-auto p-2 md:p-8 md:shadow-md flex flex-col gap-4 md:bg-white dark:md:bg-zinc-900 dark:md:shadow-none dark:md:border dark:md:border-[#333337]">
+          <div className="mx-auto flex max-w-[350px] flex-col gap-4 p-2 md:bg-white md:p-8 md:shadow-md dark:md:border dark:md:border-[#333337] dark:md:bg-zinc-900 dark:md:shadow-none">
             <Link href="/" passHref>
-              <a className="w-fit mx-auto mb-4">
+              <a className="mx-auto mb-4 w-fit">
                 <LogoIcon />
               </a>
             </Link>
@@ -44,19 +44,19 @@ const Login = () => {
 
             <Formik
               initialValues={{
-                email: '',
-                password: '',
+                email: "",
+                password: "",
               }}
               validationSchema={yup.object().shape({
                 email: yup
                   .string()
-                  .email('email must be an email')
-                  .required('email is required'),
+                  .email("email must be an email")
+                  .required("email is required"),
                 password: yup
                   .string()
-                  .min(5, 'password must be 5 characters or more')
-                  .max(100, 'password must be 100 characters or less')
-                  .required('password is required'),
+                  .min(5, "password must be 5 characters or more")
+                  .max(100, "password must be 100 characters or less")
+                  .required("password is required"),
               })}
               onSubmit={(credential, { setSubmitting }) => {}}
             >
@@ -98,7 +98,7 @@ const Login = () => {
                       fullWidth
                     />
 
-                    <p className="text-sm mt-1.5">
+                    <p className="mt-1.5 text-sm">
                       <span>Forgot password?</span>
 
                       <Link href="/account-recovery" passHref>
@@ -124,13 +124,13 @@ const Login = () => {
               )}
             </Formik>
 
-            <div className="text-center mt-2">
+            <div className="mt-2 text-center">
               <span className="text-gray-500 dark:text-zinc-400">
                 No account?
               </span>
 
               <Link href="/create-account" passHref>
-                <a className="ml-1 text-gray-600 hover:text-blue-500 transition-colors duration-300 dark:text-zinc-300 dark:hover:text-sky-400">
+                <a className="ml-1 text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-zinc-300 dark:hover:text-sky-400">
                   Sign up
                 </a>
               </Link>

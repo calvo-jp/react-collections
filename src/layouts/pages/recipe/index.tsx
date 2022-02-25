@@ -1,2 +1,2 @@
-import Recipe from './Recipe';
+import Recipe from "./Recipe";
 export default Recipe;

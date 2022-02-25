@@ -1,4 +1,4 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from "next/document";
 
 class Document_ extends Document {
   render() {
@@ -19,7 +19,7 @@ class Document_ extends Document {
           />
         </Head>
 
-        <body className="min-h-screen text-gray-700 bg-white font-sans scroll-smooth dark:bg-zinc-900 dark:text-zinc-200">
+        <body className="min-h-screen scroll-smooth bg-white font-sans text-gray-700 dark:bg-zinc-900 dark:text-zinc-200">
           <Main />
           <NextScript />
         </body>

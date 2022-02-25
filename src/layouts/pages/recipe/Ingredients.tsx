@@ -1,4 +1,4 @@
-import PlusIcon from '@heroicons/react/outline/PlusSmIcon';
+import PlusIcon from "@heroicons/react/outline/PlusSmIcon";
 
 interface IngredientsProps {
   items: string[];
@@ -13,8 +13,8 @@ const Ingredients = (props: IngredientsProps) => {
         ))}
       </ul>
 
-      <button className="text-sm flex items-center gap-1 text-blue-600 mt-2 dark:text-sky-500 dark:hover:text-sky-400">
-        <PlusIcon className="w-4 h-4" />
+      <button className="mt-2 flex items-center gap-1 text-sm text-blue-600 dark:text-sky-500 dark:hover:text-sky-400">
+        <PlusIcon className="h-4 w-4" />
         <span>Add Ingredient</span>
       </button>
     </div>

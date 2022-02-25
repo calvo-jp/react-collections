@@ -1,8 +1,8 @@
-import BookmarkIcon from '@heroicons/react/outline/BookmarkIcon';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import IRecipe from 'types/recipe';
+import BookmarkIcon from "@heroicons/react/outline/BookmarkIcon";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import IRecipe from "types/recipe";
 
 const Article = ({
   name,
@@ -22,7 +22,7 @@ const Article = ({
 
   return (
     <div>
-      <div className="flex items-center justify-between w-full">
+      <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
           <div>
             <h2
@@ -72,7 +72,7 @@ interface BookmarkProps {}
 const Bookmark = (props: BookmarkProps) => {
   return (
     <button className="">
-      <BookmarkIcon className="w-6 h-6 text-blue-500 dark:text-sky-500" />
+      <BookmarkIcon className="h-6 w-6 text-blue-500 dark:text-sky-500" />
     </button>
   );
 };

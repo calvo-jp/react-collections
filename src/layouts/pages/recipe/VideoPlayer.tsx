@@ -1,13 +1,13 @@
-import IInstruction from 'types/instruction';
+import IInstruction from "types/instruction";
 
-interface VideoPlayerProps extends React.ComponentProps<'video'> {
+interface VideoPlayerProps extends React.ComponentProps<"video"> {
   data?: IInstruction;
   caption?: boolean;
 }
 
 const Wrapper: React.FC = ({ children }) => {
   return (
-    <div className="h-[250px] md:h-[300px] lg:h-[325px] flex items-center justify-center bg-gray-100 dark:bg-zinc-800">
+    <div className="flex h-[250px] items-center justify-center bg-gray-100 dark:bg-zinc-800 md:h-[300px] lg:h-[325px]">
       {children}
     </div>
   );

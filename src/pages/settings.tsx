@@ -1,13 +1,13 @@
-import CheckIcon from '@heroicons/react/solid/CheckCircleIcon';
-import CogIcon from '@heroicons/react/solid/CogIcon';
-import ExclamationIcon from '@heroicons/react/solid/ExclamationCircleIcon';
-import BellIcon from '@heroicons/react/solid/MailIcon';
-import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
-import UserIcon from '@heroicons/react/solid/UserIcon';
-import Layout from 'layouts/Layout';
-import Head from 'next/head';
-import * as React from 'react';
-import Button from 'widgets/Button';
+import CheckIcon from "@heroicons/react/solid/CheckCircleIcon";
+import CogIcon from "@heroicons/react/solid/CogIcon";
+import ExclamationIcon from "@heroicons/react/solid/ExclamationCircleIcon";
+import BellIcon from "@heroicons/react/solid/MailIcon";
+import PencilAltIcon from "@heroicons/react/solid/PencilAltIcon";
+import UserIcon from "@heroicons/react/solid/UserIcon";
+import Layout from "layouts/Layout";
+import Head from "next/head";
+import * as React from "react";
+import Button from "widgets/Button";
 
 const Settings = () => {
   return (
@@ -16,7 +16,7 @@ const Settings = () => {
         <title>Settings</title>
       </Head>
 
-      <div className="bg-white p-4 shadow-md flex flex-col gap-4 dark:bg-zinc-800">
+      <div className="flex flex-col gap-4 bg-white p-4 shadow-md dark:bg-zinc-800">
         <GeneralSettings />
         <Subscriptions />
         <DangerZone />
@@ -57,7 +57,7 @@ const Subscriptions = () => {
 };
 
 const ItemContentWrapper: React.FC = ({ children }) => {
-  return <div className="p-4 flex flex-col gap-2">{children}</div>;
+  return <div className="flex flex-col gap-2 p-4">{children}</div>;
 };
 
 interface LabeledCheckboxProps {
@@ -105,7 +105,7 @@ const GeneralSettings = () => {
             size="xs"
             color="primary"
             label="Change"
-            icon={<PencilAltIcon className="w-3 h-3" />}
+            icon={<PencilAltIcon className="h-3 w-3" />}
             compact
           />
         </GeneralSettingsItem>
@@ -115,7 +115,7 @@ const GeneralSettings = () => {
           value={
             <div className="flex items-center gap-2">
               <div>calvojp92@gmail.com</div>
-              <CheckIcon className="w-4 h-4 fill-green-600 dark:fill-green-700" />
+              <CheckIcon className="h-4 w-4 fill-green-600 dark:fill-green-700" />
             </div>
           }
         >
@@ -123,14 +123,14 @@ const GeneralSettings = () => {
             size="xs"
             color="primary"
             label="Change"
-            icon={<PencilAltIcon className="w-3 h-3" />}
+            icon={<PencilAltIcon className="h-3 w-3" />}
             compact
           />
           <Button
             size="xs"
             color="primary"
             label="Verify"
-            icon={<CogIcon className="w-3 h-3" />}
+            icon={<CogIcon className="h-3 w-3" />}
             compact
           />
         </GeneralSettingsItem>
@@ -140,7 +140,7 @@ const GeneralSettings = () => {
             size="xs"
             color="primary"
             label="Change"
-            icon={<PencilAltIcon className="w-3 h-3" />}
+            icon={<PencilAltIcon className="h-3 w-3" />}
             compact
           />
         </GeneralSettingsItem>
@@ -173,7 +173,7 @@ const GeneralSettingsItem: React.FC<GeneralSettingsItemProps> = ({
 const Heading = ({ icon: SVGIcon, label }: IconedLabel) => {
   return (
     <div className="flex items-center gap-1">
-      <SVGIcon className="w-4 h-4" />
+      <SVGIcon className="h-4 w-4" />
       <h4 className="text-sm text-gray-600 dark:text-zinc-300">{label}</h4>
     </div>
   );
@@ -181,7 +181,7 @@ const Heading = ({ icon: SVGIcon, label }: IconedLabel) => {
 
 /** typeof label with icon */
 interface IconedLabel {
-  icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
+  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
   label: string;
 }
 

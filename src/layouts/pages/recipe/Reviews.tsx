@@ -1,8 +1,8 @@
-import HeartIcon from '@heroicons/react/outline/HeartIcon';
-import ChevronLeftIcon from '@heroicons/react/solid/ChevronLeftIcon';
-import ChevronRightIcon from '@heroicons/react/solid/ChevronRightIcon';
-import IReview from 'types/review';
-import Review from './Review';
+import HeartIcon from "@heroicons/react/outline/HeartIcon";
+import ChevronLeftIcon from "@heroicons/react/solid/ChevronLeftIcon";
+import ChevronRightIcon from "@heroicons/react/solid/ChevronRightIcon";
+import IReview from "types/review";
+import Review from "./Review";
 
 interface ReviewsProps {
   items: IReview[];
@@ -19,7 +19,7 @@ const Reviews = (props: ReviewsProps) => {
         <Pagination />
 
         <button className="flex items-center gap-1 text-blue-600 dark:text-sky-500 dark:hover:text-sky-400">
-          <HeartIcon className="w-4 h-4" />
+          <HeartIcon className="h-4 w-4" />
           <span className="text-sm">Post a feedback</span>
         </button>
       </div>
@@ -29,13 +29,13 @@ const Reviews = (props: ReviewsProps) => {
 
 const Pagination = () => {
   return (
-    <div className="flex items-center text-sm gap-1">
+    <div className="flex items-center gap-1 text-sm">
       <button>
-        <ChevronLeftIcon className="w-4 h-4" />
+        <ChevronLeftIcon className="h-4 w-4" />
       </button>
       <span>Page 1 of 4</span>
       <button>
-        <ChevronRightIcon className="w-4 h-4" />
+        <ChevronRightIcon className="h-4 w-4" />
       </button>
     </div>
   );

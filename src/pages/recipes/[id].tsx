@@ -1,11 +1,11 @@
-import recipes from 'assets/samples/json/recipes.json';
-import useQuery from 'hooks/useQuery';
-import Recipe from 'layouts/pages/recipe';
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
-import NotFound from 'pages/404';
-import * as React from 'react';
-import type IRecipe from 'types/recipe';
+import recipes from "assets/samples/json/recipes.json";
+import useQuery from "hooks/useQuery";
+import Recipe from "layouts/pages/recipe";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
+import NotFound from "pages/404";
+import * as React from "react";
+import type IRecipe from "types/recipe";
 
 interface Params {
   id: string;
@@ -41,11 +41,11 @@ export const getStaticProps: GetStaticProps<IRecipe, Params> = async ({
 const RecipePage: NextPage<IRecipe> = (props) => {
   const { isFallback, ...router } = useRouter();
 
-  const query = useQuery('id', 'tab', 'redirect');
+  const query = useQuery("id", "tab", "redirect");
 
   const getCurrentTab = React.useMemo(() => {
     return function () {
-      const tab = query.get('tab')?.toLowerCase() || Tabs[0];
+      const tab = query.get("tab")?.toLowerCase() || Tabs[0];
 
       if (isValidTab(tab)) return tab;
     };
@@ -56,10 +56,10 @@ const RecipePage: NextPage<IRecipe> = (props) => {
   const handleChange = (value: string) => {
     let redirect: string;
 
-    redirect = query.get('redirect') || '/recipes';
+    redirect = query.get("redirect") || "/recipes";
     redirect = encodeURIComponent(redirect);
 
-    const id = query.get('id')!;
+    const id = query.get("id")!;
     const url = `/recipes/${id}?redirect=${redirect}&tab=${value}`;
 
     router.push(url, undefined, { scroll: false });

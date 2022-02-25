@@ -1,18 +1,18 @@
-import SearchIcon from '@heroicons/react/outline/SearchIcon';
-import BellIcon from '@heroicons/react/solid/BellIcon';
-import HomeIcon from '@heroicons/react/solid/HomeIcon';
-import MenuIcon from '@heroicons/react/solid/MenuIcon';
-import PencilAltIcon from '@heroicons/react/solid/PencilAltIcon';
-import ViewGridIcon from '@heroicons/react/solid/ViewGridIcon';
-import CloseIcon from '@heroicons/react/solid/XIcon';
-import clsx from 'clsx';
-import useStoreState from 'hooks/store/useState';
-import useQuery from 'hooks/useQuery';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import * as React from 'react';
-import LogoIcon from 'widgets/icons/logo';
-import Navbar from './navbar';
+import SearchIcon from "@heroicons/react/outline/SearchIcon";
+import BellIcon from "@heroicons/react/solid/BellIcon";
+import HomeIcon from "@heroicons/react/solid/HomeIcon";
+import MenuIcon from "@heroicons/react/solid/MenuIcon";
+import PencilAltIcon from "@heroicons/react/solid/PencilAltIcon";
+import ViewGridIcon from "@heroicons/react/solid/ViewGridIcon";
+import CloseIcon from "@heroicons/react/solid/XIcon";
+import clsx from "clsx";
+import useStoreState from "hooks/store/useState";
+import useQuery from "hooks/useQuery";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import * as React from "react";
+import LogoIcon from "widgets/icons/logo";
+import Navbar from "./navbar";
 
 interface HeaderProps {
   navbar?: boolean;
@@ -22,12 +22,12 @@ const Header = (props: HeaderProps) => {
   const hasNavbar = !!props.navbar;
 
   return (
-    <header className="sticky top-0 z-[70] bg-white shadow-md h-header flex items-center justify-between px-3 gap-1 sm:gap-2 dark:bg-zinc-800 dark:shadow-none dark:border-b dark:border-zinc-700">
+    <header className="sticky top-0 z-[70] flex h-header items-center justify-between gap-1 bg-white px-3 shadow-md dark:border-b dark:border-zinc-700 dark:bg-zinc-800 dark:shadow-none sm:gap-2">
       <div
         className={clsx(
-          'items-center gap-2 md:z-10',
-          hasNavbar && 'flex',
-          !hasNavbar && 'hidden sm:flex'
+          "items-center gap-2 md:z-10",
+          hasNavbar && "flex",
+          !hasNavbar && "hidden sm:flex"
         )}
       >
         {hasNavbar && <Hamburger />}
@@ -39,7 +39,7 @@ const Header = (props: HeaderProps) => {
         </Link>
       </div>
 
-      <div className="flex items-center gap-1 sm:gap-2 w-full sm:w-auto">
+      <div className="flex w-full items-center gap-1 sm:w-auto sm:gap-2">
         <Searchbar />
 
         <IconButtons />
@@ -52,11 +52,11 @@ const Header = (props: HeaderProps) => {
 
 const Searchbar = () => {
   return (
-    <form className="grow bg-gray-100 p-1 sm:p-1.5 rounded-full flex items-center gap-2 dark:bg-zinc-700">
-      <SearchIcon className="w-4 h-4" />
+    <form className="flex grow items-center gap-2 rounded-full bg-gray-100 p-1 dark:bg-zinc-700 sm:p-1.5">
+      <SearchIcon className="h-4 w-4" />
       <input
         placeholder="Search"
-        className="bg-transparent placeholder:opacity-100 placeholder:text-gray-500 outline-none"
+        className="bg-transparent outline-none placeholder:text-gray-500 placeholder:opacity-100"
       />
     </form>
   );
@@ -65,19 +65,19 @@ const Searchbar = () => {
 const Hamburger = () => {
   const [globalState, dispatch] = useStoreState();
 
-  const handleClick = () => dispatch({ type: 'navbar.toggle' });
+  const handleClick = () => dispatch({ type: "navbar.toggle" });
 
   if (globalState.navbarOpened) {
     return (
-      <button className="lg:hidden z-[90]" onClick={handleClick}>
-        <CloseIcon className="w-6 h-6 fill-gray-400 hover:fill-gray-500 dark:fill-zinc-500 dark:hover:fill-zinc-400" />
+      <button className="z-[90] lg:hidden" onClick={handleClick}>
+        <CloseIcon className="h-6 w-6 fill-gray-400 hover:fill-gray-500 dark:fill-zinc-500 dark:hover:fill-zinc-400" />
       </button>
     );
   }
 
   return (
     <button className="lg:hidden" onClick={handleClick}>
-      <MenuIcon className="w-6 h-6 fill-gray-400 hover:fill-gray-500 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
+      <MenuIcon className="h-6 w-6 fill-gray-400 hover:fill-gray-500 dark:fill-zinc-400 dark:hover:fill-zinc-300" />
     </button>
   );
 };
@@ -86,15 +86,15 @@ const IconButtons = () => {
   const router = useRouter();
   const pathname = router.asPath;
   const encodedPathname = encodeURIComponent(router.asPath);
-  const redirect = useQuery('redirect').get('redirect');
+  const redirect = useQuery("redirect").get("redirect");
 
-  const newsfeedPath = '/newsfeed';
-  const createRecipePath = '/recipes/new';
+  const newsfeedPath = "/newsfeed";
+  const createRecipePath = "/recipes/new";
 
   const isInNewsfeed = pathname.startsWith(newsfeedPath);
 
   const getAccountHref = () => {
-    if (isInNewsfeed) return !!redirect ? redirect : '/dashboard';
+    if (isInNewsfeed) return !!redirect ? redirect : "/dashboard";
   };
 
   return (
@@ -123,7 +123,7 @@ const IconButtons = () => {
 };
 
 interface IconButtonProps {
-  icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
+  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
   href?: string;
   onClick?: () => void;
   active?: boolean;
@@ -135,7 +135,7 @@ const IconButton = ({
   onClick,
   active,
 }: IconButtonProps) => {
-  const Container: React.FC<Record<'className', string>> = (props) => {
+  const Container: React.FC<Record<"className", string>> = (props) => {
     if (!href) return <button onClick={onClick} {...props} />;
 
     return (
@@ -148,17 +148,17 @@ const IconButton = ({
   return (
     <Container
       className={clsx(
-        'rounded-full p-1 sm:p-1.5',
+        "rounded-full p-1 sm:p-1.5",
         !active &&
-          'bg-gray-100 hover:bg-gray-200 dark:bg-zinc-700 dark:hover:bg-zinc-600',
-        active && 'bg-blue-100 dark:bg-sky-500'
+          "bg-gray-100 hover:bg-gray-200 dark:bg-zinc-700 dark:hover:bg-zinc-600",
+        active && "bg-blue-100 dark:bg-sky-500"
       )}
     >
       <SVGIcon
         className={clsx(
-          'w-6 h-6 sm:w-7 sm:h-7',
-          !active && 'fill-gray-500 dark:fill-zinc-300',
-          active && 'fill-blue-500 dark:fill-white'
+          "h-6 w-6 sm:h-7 sm:w-7",
+          !active && "fill-gray-500 dark:fill-zinc-300",
+          active && "fill-blue-500 dark:fill-white"
         )}
       />
     </Container>
