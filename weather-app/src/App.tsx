@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import getWeather from "./utils/getWeather";
 
 const App = () => {
   const [weather, setWeather] = useState<Record<string, any> | null>(null);
@@ -35,7 +36,7 @@ const App = () => {
 
       <footer>
         <div>
-          {'Powered by '}
+          {"Powered by "}
 
           <a href="https://www.weatherapi.com/" title="Free Weather API">
             WeatherAPI.com
@@ -44,14 +45,6 @@ const App = () => {
       </footer>
     </div>
   );
-};
-
-const getWeather = async () => {
-  const response = await fetch(
-    'http://api.weatherapi.com/v1/current.json?key=61c0cad003b84cecad191330222402&q=auto:ip'
-  );
-
-  return await response.json();
 };
 
 export default App;
