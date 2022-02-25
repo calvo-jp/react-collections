@@ -1,9 +1,9 @@
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontFamily: {
-      sans: ["'IBM Plex Sans'", 'sans-serif'],
-      heading: ["'Roboto Condensed'", 'sans-serif'],
+      sans: ["'IBM Plex Sans'", "sans-serif"],
+      heading: ["'Roboto Condensed'", "sans-serif"],
     },
     fontWeight: {
       extralight: 100,
@@ -13,9 +13,9 @@ module.exports = {
       semibold: 500,
       bold: 600,
       extrabold: 700,
-      'heading-thin': 300,
-      'heading-normal': 400,
-      'heading-thick': 700,
+      "heading-thin": 300,
+      "heading-normal": 400,
+      "heading-thick": 700,
     },
     extend: {
       spacing: {
@@ -24,5 +24,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [
+    require("@tailwindcss/line-clamp"),
+    require("prettier-plugin-tailwindcss"),
+  ],
 };
