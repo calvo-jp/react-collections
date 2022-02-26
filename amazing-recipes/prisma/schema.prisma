@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id              String     @id @default(uuid()) @map("_id") @db.ObjectId
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   email           String     @unique
   emailVerifiedAt DateTime?
@@ -25,7 +25,7 @@ model User {
 }
 
 model Recipe {
-  id           String        @id @default(uuid()) @map("_id") @db.ObjectId
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   description  String
   author       User          @relation(fields: [authorId], references: [id])
@@ -47,7 +47,7 @@ type Instruction {
 }
 
 model Review {
-  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   rate      Int
   body      String
   author    User     @relation(fields: [authorId], references: [id])
@@ -61,7 +61,7 @@ model Review {
 }
 
 model Bookmark {
-  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   recipe    Recipe   @relation(fields: [recipeId], references: [id])
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  String?  @db.ObjectId
