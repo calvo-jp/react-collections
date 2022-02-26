@@ -1,0 +1,73 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String     @id @default(uuid()) @map("_id") @db.ObjectId
+  name            String
+  email           String     @unique
+  emailVerifiedAt DateTime?
+  password        String
+  avatar          String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  recipes         Recipe[]
+  reviews         Review[]
+  bookmarks       Bookmark[]
+
+  @@map("users")
+}
+
+model Recipe {
+  id           String        @id @default(uuid()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  author       User          @relation(fields: [authorId], references: [id])
+  authorId     String        @db.ObjectId
+  cover        String?
+  ingredients  String[]
+  instructions Instruction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reviews      Review[]
+  bookmarks    Bookmark[]
+
+  @@map("recipes")
+}
+
+type Instruction {
+  description String
+  video       String?
+}
+
+model Review {
+  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  rate      Int
+  body      String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String   @db.ObjectId
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
+}
+
+model Bookmark {
+  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  String?  @db.ObjectId
+  recipeId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("bookmarks")
+}
