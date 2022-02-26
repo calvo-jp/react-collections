@@ -1,3 +1,3 @@
-## React Collections 🔥
+## ⚛️ React Collections
 
-This is the collection of (basic to not so basic 😄) websites I have created using `React` (including `NextJs`, `Remix`, and family)
+This is the collection of (basic to not so basic 😄) websites I have created using `React` (including `NextJs`, `Remix`, and family) 🔥
