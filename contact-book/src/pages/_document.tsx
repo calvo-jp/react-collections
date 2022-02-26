@@ -16,7 +16,8 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body className="min-h-screen scroll-smooth bg-white font-sans text-gray-700">
+
+        <body className="min-h-screen scroll-smooth bg-white font-sans font-normal text-gray-700">
           <Main />
           <NextScript />
         </body>
