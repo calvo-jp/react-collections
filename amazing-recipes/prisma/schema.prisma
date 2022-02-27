@@ -14,7 +14,7 @@ model User {
   email           String     @unique
   emailVerifiedAt DateTime?
   password        String
-  avatar          String?
+  avatar          String
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
   recipes         Recipe[]
@@ -30,7 +30,7 @@ model Recipe {
   description  String
   author       User          @relation(fields: [authorId], references: [id])
   authorId     String        @db.ObjectId
-  cover        String?
+  cover        String
   ingredients  String[]
   instructions Instruction[]
   createdAt    DateTime      @default(now())
