@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import selectables from "constants/selectables";
+import crypto from "crypto";
+import selectables from "./constants/selectables";
 
 interface CreateInput {
   name: string;
@@ -29,8 +30,16 @@ const service = (db: PrismaClient) => {
     },
   };
 
+  const generateDefaultAvatar = (email: string) => {
+    const hash = crypto.createHash("md5").update(email).digest("hex");
+    return `https://www.gravatar.com/avatar/${hash}?s=275&d=retro`;
+  };
+
   const create = async (data: CreateInput) => {
-    const user = await collection.create({ data, select: selectables.user });
+    const user = await collection.create({
+      data: { ...data, avatar: generateDefaultAvatar(data.email) },
+      select: selectables.user,
+    });
 
     return user;
   };
