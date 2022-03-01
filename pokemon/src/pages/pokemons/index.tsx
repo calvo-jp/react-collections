@@ -63,7 +63,7 @@ const PokemonCard = ({ data }: PokemonCardProps) => {
   return (
     <Link href={"/pokemons/" + data.id} passHref>
       <a className="block rounded-lg border border-transparent bg-white p-8 shadow-md transition-all duration-300 hover:border-orange-300 hover:ring-2 hover:ring-orange-200 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-200">
-        <div className="flex h-[100px] items-center justify-center overflow-hidden relative">
+        <div className="relative flex h-[100px] items-center justify-center overflow-hidden">
           <Image src={data.image} alt="" layout="fill" />
         </div>
 
