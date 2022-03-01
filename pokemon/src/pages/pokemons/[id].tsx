@@ -1,5 +1,6 @@
 import ChevronLeftIcon from "@heroicons/react/outline/ChevronLeftIcon";
 import CogIcon from "@heroicons/react/solid/CogIcon";
+import SpinnerIcon from "components/icons/Spinner";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -49,8 +50,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 const Pokemon: NextPage<Props> = ({ pokemon }) => {
   const router = useRouter();
 
-  if (router.isFallback)
-    return <div className="p-2 text-sm text-gray-500">Loading...</div>;
+  if (router.isFallback) return <Loader />;
 
   return (
     <>
@@ -68,6 +68,14 @@ const Pokemon: NextPage<Props> = ({ pokemon }) => {
         </div>
       </div>
     </>
+  );
+};
+
+const Loader = () => {
+  return (
+    <div className="fixed top-0 left-0 flex h-full w-full place-items-center">
+      <SpinnerIcon width={150} height={150} />
+    </div>
   );
 };
 
