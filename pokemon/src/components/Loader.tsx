@@ -24,6 +24,9 @@ const Loader = () => {
     router.events.on("routeChangeError", handleComplete);
   }, [router.events]);
 
+  // Conceal loader when generating new pages or probably an error
+  if (router.isFallback) return <React.Fragment />;
+
   return (
     <div
       className={clsx(
