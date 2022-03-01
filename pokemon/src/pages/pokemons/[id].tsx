@@ -52,8 +52,6 @@ const Pokemon: NextPage<Props> = ({ pokemon }) => {
   if (router.isFallback)
     return <div className="p-2 text-sm text-gray-500">Loading...</div>;
 
-  console.log(pokemon);
-
   return (
     <>
       <Head>
@@ -64,9 +62,9 @@ const Pokemon: NextPage<Props> = ({ pokemon }) => {
         <Header data={pokemon} />
 
         <div className="flex flex-col gap-4 p-6">
-          <Abilities items={pokemon.abilities} />
-          <Moves items={pokemon.moves} />
           <Stats items={pokemon.stats} />
+          <Moves items={pokemon.moves} />
+          <Abilities items={pokemon.abilities} />
         </div>
       </div>
     </>
@@ -136,7 +134,7 @@ interface Itemable<T> {
 
 const Card = ({ children }: React.PropsWithChildren<{}>) => {
   return (
-    <div className="col-span-2 rounded-lg bg-white p-8 shadow-md md:col-span-1">
+    <div className="col-span-2 rounded-sm bg-white p-8 shadow-md md:col-span-1">
       {children}
     </div>
   );
