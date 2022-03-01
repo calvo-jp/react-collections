@@ -4,6 +4,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import IPokemon from "types/pokemon";
 import getPokemons from "utils/getPokemons";
 import normalizePokemonObject from "utils/normalizePokemonObject";
@@ -19,7 +20,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
     params: { id: pokemon.id.toString() },
   }));
 
-  return { paths, fallback: "blocking" };
+  return { paths, fallback: true };
 };
 
 interface Props {
@@ -46,6 +47,11 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 };
 
 const Pokemon: NextPage<Props> = ({ pokemon }) => {
+  const router = useRouter();
+
+  if (router.isFallback)
+    return <div className="p-2 text-sm text-gray-500">Loading...</div>;
+
   return (
     <>
       <Head>
