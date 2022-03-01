@@ -5,6 +5,8 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import IPokemon from "types/pokemon";
+import getPokemons from "utils/getPokemons";
+import normalizePokemonObject from "utils/normalizePokemonObject";
 
 interface Params {
   [key: string]: string;
@@ -12,33 +14,33 @@ interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  return {
-    fallback: "blocking",
-    paths: [
-      { params: { id: "1" } },
-      { params: { id: "2" } },
-      { params: { id: "3" } },
-    ],
-  };
+  const pokemons = await getPokemons();
+  const paths = pokemons.map((pokemon) => ({
+    params: { id: pokemon.id.toString() },
+  }));
+
+  return { paths, fallback: "blocking" };
 };
 
 interface Props {
   pokemon: IPokemon;
 }
 
-export const getStaticProps: GetStaticProps<Props, Params> = async () => {
+export const getStaticProps: GetStaticProps<Props, Params> = async ({
+  params,
+}) => {
+  const id = params?.id;
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon/" + id);
+
+  if (!response.ok) return { notFound: true };
+
+  const parsed = await response.json();
+  const pokemon = normalizePokemonObject(parsed);
+
   return {
     props: {
-      revalidate: 60,
-      pokemon: {
-        id: 1,
-        name: "Pikachu",
-        image: "/unknown.jpg",
-        stats: [],
-        types: [],
-        moves: [],
-        abilities: [],
-      },
+      pokemon,
+      revalidate: 60 * 60 * 24 * 7,
     },
   };
 };
@@ -198,8 +200,14 @@ interface AvatarProps {
 
 const Avatar = ({ src }: AvatarProps) => {
   return (
-    <div className="flex h-[150px] w-[150px] shrink-0 grow-0 basis-[150px] items-center justify-center overflow-hidden rounded-full bg-white bg-opacity-30 p-6 relative">
-      <Image src={src} alt="" layout="fill" />
+    <div className="relative flex h-[150px] w-[150px] shrink-0 grow-0 basis-[150px] items-center justify-center overflow-hidden rounded-full bg-white bg-opacity-30 p-6">
+      <Image
+        src={src}
+        alt=""
+        layout="fill"
+        objectFit="cover"
+        objectPosition="center"
+      />
     </div>
   );
 };
