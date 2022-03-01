@@ -1,8 +1,10 @@
+import ChevronUpIcon from "@heroicons/react/outline/ChevronUpIcon";
 import pokeball from "assets/pokeball.png";
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import IPokemon from "types/pokemon";
 import getPokemons from "utils/getPokemons";
 
@@ -10,11 +12,10 @@ interface Props {
   pokemons: IPokemon[];
 }
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const pokemons = await getPokemons();
 
   return {
-    revalidate: 60 * 60 * 24 * 7, // 7days
     props: {
       pokemons,
     },
@@ -22,6 +23,24 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const Pokemons: NextPage<Props> = ({ pokemons }) => {
+  const [showScrollTopButton, setShowScollTopButton] = useState(false);
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) setShowScollTopButton(true);
+    else setShowScollTopButton(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      setShowScollTopButton(false);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       <Head>
@@ -40,8 +59,21 @@ const Pokemons: NextPage<Props> = ({ pokemons }) => {
             ))}
           </section>
         </main>
+
+        {showScrollTopButton && <ScrollToTopButton onClick={scrollToTop} />}
       </div>
     </>
+  );
+};
+
+const ScrollToTopButton = (props: React.ComponentProps<"button">) => {
+  return (
+    <button
+      className="fixed right-4 bottom-4 z-20 flex rounded-full bg-gradient-to-r from-orange-500 to-amber-600 p-4 shadow-md"
+      {...props}
+    >
+      <ChevronUpIcon className="h-6 w-6 stroke-white" />
+    </button>
   );
 };
 
