@@ -14,8 +14,7 @@ interface IPaginated {
 }
 
 const getPokemons = async () => {
-  const endpoint = "https://pokeapi.co/api/v2/pokemon";
-  const response = await fetch(endpoint);
+  const response = await fetch(process.env.API_BASE_URL!);
   const data: IPaginated = await response.json();
 
   const promises = data.results.map(({ url }) => fetch(url));

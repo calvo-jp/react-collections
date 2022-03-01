@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
   const id = params?.id;
-  const response = await fetch("https://pokeapi.co/api/v2/pokemon/" + id);
+  const response = await fetch(process.env.API_BASE_URL! + id);
 
   if (!response.ok) return { notFound: true };
 
