@@ -9,8 +9,9 @@ All your lovely little pokemon characters
 
 **Installation**
 
-1. Clone repo
-1. Open terminal, cd to repo and run the command below
+- Clone repo
+- Open repo and rename `.env.example` to `.env.local`
+- Open terminal, cd to repo and run the command below
 
 ```
 yarn
