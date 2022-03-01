@@ -17,8 +17,6 @@ yarn
 yarn dev
 ```
 
-1. Enjoy
-
 ---
 
 powered by [pokeapi](https://pokeapi.co/)
