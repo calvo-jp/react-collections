@@ -16,8 +16,8 @@ interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const pokemons = await getPokemons();
-  const paths = pokemons.map((pokemon) => ({
+  const data = await getPokemons(process.env.API_BASE_URL + "?limit=100");
+  const paths = data.results.map((pokemon) => ({
     params: { id: pokemon.id.toString() },
   }));
 

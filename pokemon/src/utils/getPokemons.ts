@@ -13,8 +13,20 @@ interface IPaginated {
   previous: string | null;
 }
 
-const getPokemons = async () => {
-  const response = await fetch(process.env.API_BASE_URL!);
+/**
+ *
+ * @param url - the pokedex api url to fetch
+ *
+ * @example
+ * ```javascript
+ * const url = "https://pokeapi.co/api/v2/pokemon?limit=12";
+ * const data = await getPokemons(url);
+ * ...
+ * ```
+ *
+ */
+const getPokemons = async (url: string) => {
+  const response = await fetch(url);
   const data: IPaginated = await response.json();
 
   const promises = data.results.map(({ url }) => fetch(url));
@@ -30,7 +42,7 @@ const getPokemons = async () => {
     }
   }
 
-  return pokemons;
+  return { ...data, results: pokemons };
 };
 
 export default getPokemons;

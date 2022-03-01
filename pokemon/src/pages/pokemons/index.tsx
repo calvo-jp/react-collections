@@ -9,20 +9,20 @@ import IPokemon from "types/pokemon";
 import getPokemons from "utils/getPokemons";
 
 interface Props {
-  pokemons: IPokemon[];
+  data: Awaited<ReturnType<typeof getPokemons>>;
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const pokemons = await getPokemons();
+  const data = await getPokemons(process.env.API_BASE_URL + "?limit=30");
 
   return {
     props: {
-      pokemons,
+      data,
     },
   };
 };
 
-const Pokemons: NextPage<Props> = ({ pokemons }) => {
+const Pokemons: NextPage<Props> = ({ data }) => {
   const [showScrollTopButton, setShowScollTopButton] = useState(false);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -52,7 +52,7 @@ const Pokemons: NextPage<Props> = ({ pokemons }) => {
 
         <main className="grow p-6">
           <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {pokemons.map((pokemon) => (
+            {data.results.map((pokemon) => (
               <div key={pokemon.id}>
                 <PokemonCard data={pokemon} />
               </div>
