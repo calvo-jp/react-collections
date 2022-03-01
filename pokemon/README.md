@@ -2,6 +2,8 @@
 
 All your lovely little pokemon characters
 
+![screenshot](./docs/screenshot.png)
+
 **Requirements**
 
 - node 16.\*
