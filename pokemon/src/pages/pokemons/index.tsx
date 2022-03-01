@@ -1,4 +1,5 @@
 import { GetStaticProps, NextPage } from "next";
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import IPokemon from "types/pokemon";
@@ -28,19 +29,25 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 const Pokemons: NextPage<Props> = ({ pokemons }) => {
   return (
-    <div className="mx-auto flex min-h-screen max-w-screen-lg flex-col">
-      <Header />
+    <>
+      <Head>
+        <title>Pokemons</title>
+      </Head>
 
-      <main className="grow p-6">
-        <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {pokemons.map((pokemon) => (
-            <div key={pokemon.id}>
-              <PokemonCard data={pokemon} />
-            </div>
-          ))}
-        </section>
-      </main>
-    </div>
+      <div className="mx-auto flex min-h-screen max-w-screen-lg flex-col">
+        <Header />
+
+        <main className="grow p-6">
+          <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {pokemons.map((pokemon) => (
+              <div key={pokemon.id}>
+                <PokemonCard data={pokemon} />
+              </div>
+            ))}
+          </section>
+        </main>
+      </div>
+    </>
   );
 };
 

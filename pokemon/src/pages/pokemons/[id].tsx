@@ -1,6 +1,7 @@
 import ChevronLeftIcon from "@heroicons/react/outline/ChevronLeftIcon";
 import CogIcon from "@heroicons/react/solid/CogIcon";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import IPokemon from "types/pokemon";
@@ -44,15 +45,21 @@ export const getStaticProps: GetStaticProps<Props, Params> = async () => {
 
 const Pokemon: NextPage<Props> = ({ pokemon }) => {
   return (
-    <div className="mx-auto max-w-screen-md">
-      <Header data={pokemon} />
+    <>
+      <Head>
+        <title>Pokemons | {pokemon.name}</title>
+      </Head>
 
-      <div className="flex flex-col gap-4 p-6">
-        <Abilities items={pokemon.abilities} />
-        <Moves items={pokemon.moves} />
-        <Stats items={pokemon.stats} />
+      <div className="mx-auto max-w-screen-md">
+        <Header data={pokemon} />
+
+        <div className="flex flex-col gap-4 p-6">
+          <Abilities items={pokemon.abilities} />
+          <Moves items={pokemon.moves} />
+          <Stats items={pokemon.stats} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
