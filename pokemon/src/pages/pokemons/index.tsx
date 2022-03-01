@@ -22,8 +22,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
   };
 };
 
-const Pokemons: NextPage<Props> = ({ data }) => {
+const Pokemons: NextPage<Props> = ({ data: initialData }) => {
   const [showScrollTopButton, setShowScollTopButton] = useState(false);
+  const [fetching, setFetching] = useState(false);
+  const [data, setData] = useState(initialData);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -32,14 +34,33 @@ const Pokemons: NextPage<Props> = ({ data }) => {
     else setShowScollTopButton(false);
   };
 
+  const loadMore = async () => {
+    if (!data.next) return;
+
+    setFetching(true);
+
+    try {
+      const newData = await getPokemons(data.next);
+
+      setData((oldData) => ({
+        ...newData,
+        results: [...oldData.results, ...newData.results],
+      }));
+    } finally {
+      setFetching(false);
+    }
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
+      setData(initialData);
+      setFetching(false);
       setShowScollTopButton(false);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [initialData]);
 
   return (
     <>
@@ -58,6 +79,19 @@ const Pokemons: NextPage<Props> = ({ data }) => {
               </div>
             ))}
           </section>
+
+          {data.next && (
+            <div className="text-center">
+              <button
+                className="p-4 text-sm"
+                onClick={loadMore}
+                disabled={fetching}
+              >
+                {fetching && <span className="text-gray-500">Loading...</span>}
+                {!fetching && <span>Load more</span>}
+              </button>
+            </div>
+          )}
         </main>
 
         {showScrollTopButton && <ScrollToTopButton onClick={scrollToTop} />}
