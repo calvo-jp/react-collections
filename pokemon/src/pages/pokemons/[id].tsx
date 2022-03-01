@@ -52,6 +52,8 @@ const Pokemon: NextPage<Props> = ({ pokemon }) => {
   if (router.isFallback)
     return <div className="p-2 text-sm text-gray-500">Loading...</div>;
 
+  console.log(pokemon);
+
   return (
     <>
       <Head>
@@ -206,14 +208,10 @@ interface AvatarProps {
 
 const Avatar = ({ src }: AvatarProps) => {
   return (
-    <div className="relative flex h-[150px] w-[150px] shrink-0 grow-0 basis-[150px] items-center justify-center overflow-hidden rounded-full bg-white bg-opacity-30 p-6">
-      <Image
-        src={src}
-        alt=""
-        layout="fill"
-        objectFit="cover"
-        objectPosition="center"
-      />
+    <div className="relative flex h-[150px] w-[150px] overflow-hidden rounded-full bg-white bg-opacity-30">
+      <div className="relative m-auto h-[80%] w-[80%]">
+        <Image src={src} alt="" layout="fill" />
+      </div>
     </div>
   );
 };
