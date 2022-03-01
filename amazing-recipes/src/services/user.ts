@@ -8,7 +8,11 @@ interface CreateInput {
   password: string;
 }
 
-type UpdateInput = Partial<Omit<CreateInput, "password">>;
+interface UpdateInput {
+  name: string;
+  email: string;
+  avatar: string;
+}
 
 const service = (db: PrismaClient) => {
   const collection = db.user;
@@ -44,7 +48,7 @@ const service = (db: PrismaClient) => {
     return user;
   };
 
-  const update = async (id: string, data: UpdateInput) => {
+  const update = async (id: string, data: Partial<UpdateInput>) => {
     const user = await collection.update({
       where: { id },
       data,
@@ -58,11 +62,31 @@ const service = (db: PrismaClient) => {
     await collection.delete({ where: { id } });
   };
 
+  const avatar = {
+    async set(id: string, avatar: string) {
+      return await update(id, { avatar });
+    },
+
+    async unset(id: string) {
+      const user = await collection.findUnique({
+        where: { id },
+        select: { email: true },
+      });
+
+      if (!user) throw new Error("No record found");
+
+      return await update(id, {
+        avatar: generateDefaultAvatar(user.email),
+      });
+    },
+  };
+
   return {
     read,
     create,
     update,
     delete: remove,
+    avatar,
   };
 };
 
