@@ -1,3 +1,4 @@
+import pokeball from "assets/pokeball.png";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -46,10 +47,14 @@ const Pokemons: NextPage<Props> = ({ pokemons }) => {
 
 const Header = () => {
   return (
-    <header className="overflow-hidden bg-gradient-to-r from-orange-400 to-amber-400 p-6 lg:rounded-b-3xl">
+    <header className="relative overflow-hidden bg-gradient-to-r from-orange-400 to-amber-400 p-6 lg:rounded-b-3xl">
       <div>
         <h1 className="text-6xl font-bold text-white">Pokedex</h1>
         <p className="-mt-1 ml-1 text-sm text-amber-100">Powered by pokeapi</p>
+      </div>
+
+      <div className="absolute -right-6 top-2 opacity-40">
+        <Image src={pokeball} alt="" width={160} height={160} />
       </div>
     </header>
   );
