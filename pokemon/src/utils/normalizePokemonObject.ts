@@ -14,5 +14,9 @@ export default function normalizePokemonObject(data: Dict): IPokemon {
       value: stat.base_stat,
       name: stat.stat.name,
     })),
+    experience: data.base_experience,
+    weight: data.weight,
+    height: data.height,
+    __original__: data,
   };
 }

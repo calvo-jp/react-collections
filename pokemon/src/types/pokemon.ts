@@ -6,6 +6,10 @@ export default interface IPokemon {
   moves: string[];
   abilities: string[];
   stats: Stat[];
+  weight: number;
+  height: number;
+  experience: number;
+  __original__: Record<string, any>;
 }
 
 interface Stat {
