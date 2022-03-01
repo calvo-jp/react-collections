@@ -27,7 +27,7 @@ const Loader = () => {
   return (
     <div
       className={clsx(
-        "fixed top-0 left-0 z-50 h-[3px] bg-gradient-to-r from-yellow-300 to-orange-400 transition-all duration-30",
+        "duration-30 fixed top-0 left-0 z-50 h-[2px] bg-gradient-to-r from-rose-400 to-pink-400 transition-all",
         status === Status.waiting && "hidden",
         status === Status.started && "w-1/2",
         status === Status.complte && "w-full"
