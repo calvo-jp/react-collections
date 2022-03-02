@@ -120,7 +120,13 @@ const Header = () => {
       </div>
 
       <div className="absolute -right-6 top-2 opacity-40">
-        <Image src={pokeball} alt="" width={160} height={160} />
+        <Image
+          src={pokeball}
+          alt=""
+          width={160}
+          height={160}
+          placeholder="blur"
+        />
       </div>
     </header>
   );
